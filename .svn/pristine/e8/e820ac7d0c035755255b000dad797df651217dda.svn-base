@@ -1,0 +1,49 @@
+﻿using System;
+
+namespace TradesDataModel
+{
+    
+    public class Trades
+    {
+        //public Trade()
+        //{
+        //    this.Related_Trade = new HashSet<Related_Trade>();
+        //    this.Related_Trade1 = new HashSet<Related_Trade>();
+        //    this.Track_Record = new HashSet<Track_Record>();
+        //    this.Trade_Comment = new HashSet<Trade_Comment>();
+        //    this.Trade_Instruction = new HashSet<Trade_Instruction>();
+        //    this.Trade_Line = new HashSet<Trade_Line>();
+        //    this.Trade_Performance = new HashSet<Trade_Performance>();
+        //}
+    
+        public int TradeId { get; set; }
+        public string TradeUri { get; set; }
+        public int? RelativityId { get; set; }
+        public int? LengthTypeId { get; set; }
+        public int? StructureTypeId { get; set; }
+        public int? ServiceId { get; set; }
+        public int? CurrencyId { get; set; }
+        public int? BenchmarkId { get; set; }
+        public string TradeLabel { get; set; }
+        public string TradeEditorialLabel { get; set; }
+        public DateTime? CreatedOn { get; set; }
+        public int? CreatedBy { get; set; }
+        public DateTime? LastUpdated { get; set; }
+        public int? Status { get; set; }
+    
+        //public virtual Benchmark Benchmark { get; set; }
+        //public virtual Currency Currency { get; set; }
+        //public virtual Length_Type Length_Type { get; set; }
+        //public virtual ICollection<Related_Trade> Related_Trade { get; set; }
+        //public virtual ICollection<Related_Trade> Related_Trade1 { get; set; }
+        //public virtual Relativity Relativity { get; set; }
+        //public virtual Service Service { get; set; }
+        //public virtual Status Status1 { get; set; }
+        //public virtual Structure_Type Structure_Type { get; set; }
+        //public virtual ICollection<Track_Record> Track_Record { get; set; }
+        //public virtual ICollection<Trade_Comment> Trade_Comment { get; set; }
+        //public virtual ICollection<Trade_Instruction> Trade_Instruction { get; set; }
+        //public virtual ICollection<Trade_Line> Trade_Line { get; set; }
+        //public virtual ICollection<Trade_Performance> Trade_Performance { get; set; }
+    }
+}

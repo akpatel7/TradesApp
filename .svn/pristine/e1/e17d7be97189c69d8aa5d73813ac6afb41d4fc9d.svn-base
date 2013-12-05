@@ -1,0 +1,18 @@
+using System;
+using System.Collections.Generic;
+
+namespace TradesDataModel
+{
+    public partial class Hedge_Type
+    {
+        public Hedge_Type()
+        {
+            this.Trade_Instruction = new HashSet<Trade_Instruction>();
+        }
+    
+        public int hedge_id { get; set; }
+        public string hedge_label { get; set; }
+    
+        public virtual ICollection<Trade_Instruction> Trade_Instruction { get; set; }
+    }
+}

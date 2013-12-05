@@ -1,0 +1,20 @@
+using System;
+using System.Collections.Generic;
+
+namespace TradesDataModel
+{
+    public class Service
+    {
+        public Service()
+        {
+            this.Trades = new HashSet<Trade>();
+        }
+    
+        public int service_id { get; set; }
+        public string service_uri { get; set; }
+        public string service_code { get; set; }
+        public string service_label { get; set; }
+    
+        public virtual ICollection<Trade> Trades { get; set; }
+    }
+}

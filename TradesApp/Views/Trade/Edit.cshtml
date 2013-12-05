@@ -1,0 +1,132 @@
+﻿@model TradesApp.Models.Trade
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+         <legend>Trade</legend>
+         @Html.HiddenFor(model => model.trade_id)
+        <table>
+            <tr>
+                <td> 
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.service_id, "Service:")
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.DropDownList("service_id", String.Empty)
+                        @Html.ValidationMessageFor(model => model.Service.service_id)
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td> 
+                    <div class="editor-label">
+                       @Html.LabelFor(model => model.length_type_id, "Trade Type:")
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                         @Html.DropDownList("length_type_id", String.Empty)
+                         @Html.ValidationMessageFor(model => model.length_type_id)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> 
+                    <div class="editor-label">
+                       @Html.LabelFor(model => model.benchmark_id, "Benchmark Selection:")
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.DropDownList("benchmark_id", String.Empty)
+                        @Html.ValidationMessageFor(model => model.benchmark_id)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> 
+                    <div class="editor-label">
+                       @Html.LabelFor(model => model.last_updated, "System Updated:")
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.last_updated)
+                        @Html.ValidationMessageFor(model => model.last_updated)
+                    </div>
+                </td>
+            </tr>            
+            <tr>
+                <td> 
+                    <div class="editor-label">
+                       @Html.LabelFor(model => model.trade_label, "Canonical Lable:")
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.trade_label)
+                        @Html.ValidationMessageFor(model => model.trade_label)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> 
+                    <div class="editor-label">
+                       @Html.LabelFor(model => model.trade_editorial_label, "Editorial Label:")
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.trade_editorial_label)
+                        @Html.ValidationMessageFor(model => model.trade_editorial_label)
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td> 
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.structure_type_id, "Trade Structure:")
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.DropDownList("structure_type_id", String.Empty)
+                        @Html.ValidationMessageFor(model => model.structure_type_id)
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+        
+       @foreach (var item in Model.Trade_Line)
+       {
+           @Html.DisplayFor(modelItem => item.trade_line_label)<br />
+       }
+        
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

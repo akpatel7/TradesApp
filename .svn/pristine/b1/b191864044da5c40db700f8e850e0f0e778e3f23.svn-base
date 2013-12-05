@@ -1,0 +1,18 @@
+using System;
+using System.Collections.Generic;
+
+namespace TradesDataModel
+{
+    public class Measure_Type
+    {
+        public Measure_Type()
+        {
+            this.Trade_Performance = new HashSet<Trade_Performance>();
+        }
+    
+        public int measure_type_id { get; set; }
+        public string measure_type_label { get; set; }
+    
+        public virtual ICollection<Trade_Performance> Trade_Performance { get; set; }
+    }
+}

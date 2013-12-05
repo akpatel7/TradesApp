@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace TradesApp.Models
+{
+    public class PositionDTO
+    {
+        public int position_id { get; set; }
+        public string position_label { get; set; }
+    }
+}

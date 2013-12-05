@@ -1,0 +1,20 @@
+using System;
+using System.Collections.Generic;
+
+namespace TradesDataModel
+{
+    public class Location
+    {
+        public Location()
+        {
+            this.Tradable_Thing = new HashSet<Tradable_Thing>();
+        }
+    
+        public int location_id { get; set; }
+        public string location_uri { get; set; }
+        public string location_code { get; set; }
+        public string location_label { get; set; }
+    
+        public virtual ICollection<Tradable_Thing> Tradable_Thing { get; set; }
+    }
+}

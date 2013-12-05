@@ -1,0 +1,7 @@
+﻿
+@{
+    ViewBag.Title = "TradeInquiry";
+}
+
+<h2>TradeInquiry</h2>
+

@@ -1,0 +1,197 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using TradesWebApplication.DAL.EFModels;
+using TradesWebApplication.DAL;
+
+namespace TradesWebApplication.Controllers
+{
+    public class TradeController : Controller
+    {
+        private TradesContext db = new TradesContext();
+
+        // GET: /Trade/
+        public ActionResult Index(string sortOrder, string searchString)
+        {
+            ViewBag.TradeIdSortParm = String.IsNullOrEmpty(sortOrder) ? "TradeId" : "";
+            ViewBag.StatusSortParm = String.IsNullOrEmpty(sortOrder) ? "Status" : "";
+            ViewBag.CreatedDateSortParm = sortOrder == "Date" ? "Date_desc" : "Date";
+            //var trades = from t in db.Trades
+            //               select t;
+
+            var trades = db.Trades
+                .Include(t => t.Benchmark)
+                .Include(t => t.Currency)
+                .Include(t => t.Length_Type)
+                .Include(t => t.Relativity)
+                .Include(t => t.Service)
+                .Include(t => t.Status1)
+                .Include(t => t.Structure_Type);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                int searchIndex = int.Parse(searchString);
+                trades = trades.Where(s => s.trade_id == searchIndex
+                                       || s.trade_label.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case "TradeId":
+                    trades = trades.OrderByDescending(s => s.trade_id);
+                    break;
+                case "Status":
+                    trades = trades.OrderBy(s => s.status);
+                    break;
+                case "Date":
+                    trades = trades.OrderBy(s => s.created_on);
+                    break;
+                case "Date_desc":
+                    trades = trades.OrderByDescending(s => s.created_on);
+                    break;
+                default:
+                    trades = trades.OrderBy(s => s.trade_id);
+                    break;
+            }
+
+            
+            return View(trades.ToList());
+        }
+
+        // GET: /Trade/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Trade trade = db.Trades.Find(id);
+            if (trade == null)
+            {
+                return HttpNotFound();
+            }
+            return View(trade);
+        }
+
+        // GET: /Trade/Create
+        public ActionResult Create()
+        {
+            ViewBag.benchmark_id = new SelectList(db.Benchmarks, "benchmark_id", "benchmark_uri");
+            ViewBag.currency_id = new SelectList(db.Currencies, "currency_id", "currency_uri");
+            ViewBag.length_type_id = new SelectList(db.LengthTypes, "length_type_id", "length_type_label");
+            ViewBag.relativity_id = new SelectList(db.Relativities, "relativity_id", "relativity_label");
+            ViewBag.service_id = new SelectList(db.Services, "service_id", "service_uri");
+            ViewBag.status = new SelectList(db.Statuses, "status_id", "status_label");
+            ViewBag.structure_type_id = new SelectList(db.StructureTypes, "structure_type_id", "structure_type_label");
+            return View();
+        }
+
+        // POST: /Trade/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include="trade_id,trade_uri,relativity_id,length_type_id,structure_type_id,service_id,currency_id,benchmark_id,trade_label,trade_editorial_label,created_on,created_by,last_updated,status")] Trade trade)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Trades.Add(trade);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.benchmark_id = new SelectList(db.Benchmarks, "benchmark_id", "benchmark_uri", trade.benchmark_id);
+            ViewBag.currency_id = new SelectList(db.Currencies, "currency_id", "currency_uri", trade.currency_id);
+            ViewBag.length_type_id = new SelectList(db.LengthTypes, "length_type_id", "length_type_label", trade.length_type_id);
+            ViewBag.relativity_id = new SelectList(db.Relativities, "relativity_id", "relativity_label", trade.relativity_id);
+            ViewBag.service_id = new SelectList(db.Services, "service_id", "service_uri", trade.service_id);
+            ViewBag.status = new SelectList(db.Statuses, "status_id", "status_label", trade.status);
+            ViewBag.structure_type_id = new SelectList(db.StructureTypes, "structure_type_id", "structure_type_label", trade.structure_type_id);
+            return View(trade);
+        }
+
+        // GET: /Trade/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Trade trade = db.Trades.Find(id);
+            if (trade == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.benchmark_id = new SelectList(db.Benchmarks, "benchmark_id", "benchmark_uri", trade.benchmark_id);
+            ViewBag.currency_id = new SelectList(db.Currencies, "currency_id", "currency_uri", trade.currency_id);
+            ViewBag.length_type_id = new SelectList(db.LengthTypes, "length_type_id", "length_type_label", trade.length_type_id);
+            ViewBag.relativity_id = new SelectList(db.Relativities, "relativity_id", "relativity_label", trade.relativity_id);
+            ViewBag.service_id = new SelectList(db.Services, "service_id", "service_uri", trade.service_id);
+            ViewBag.status = new SelectList(db.Statuses, "status_id", "status_label", trade.status);
+            ViewBag.structure_type_id = new SelectList(db.StructureTypes, "structure_type_id", "structure_type_label", trade.structure_type_id);
+            return View(trade);
+        }
+
+        // POST: /Trade/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include="trade_id,trade_uri,relativity_id,length_type_id,structure_type_id,service_id,currency_id,benchmark_id,trade_label,trade_editorial_label,created_on,created_by,last_updated,status")] Trade trade)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(trade).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.benchmark_id = new SelectList(db.Benchmarks, "benchmark_id", "benchmark_uri", trade.benchmark_id);
+            ViewBag.currency_id = new SelectList(db.Currencies, "currency_id", "currency_uri", trade.currency_id);
+            ViewBag.length_type_id = new SelectList(db.LengthTypes, "length_type_id", "length_type_label", trade.length_type_id);
+            ViewBag.relativity_id = new SelectList(db.Relativities, "relativity_id", "relativity_label", trade.relativity_id);
+            ViewBag.service_id = new SelectList(db.Services, "service_id", "service_uri", trade.service_id);
+            ViewBag.status = new SelectList(db.Statuses, "status_id", "status_label", trade.status);
+            ViewBag.structure_type_id = new SelectList(db.StructureTypes, "structure_type_id", "structure_type_label", trade.structure_type_id);
+            return View(trade);
+        }
+
+        // GET: /Trade/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Trade trade = db.Trades.Find(id);
+            if (trade == null)
+            {
+                return HttpNotFound();
+            }
+            return View(trade);
+        }
+
+        // POST: /Trade/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Trade trade = db.Trades.Find(id);
+            db.Trades.Remove(trade);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+}

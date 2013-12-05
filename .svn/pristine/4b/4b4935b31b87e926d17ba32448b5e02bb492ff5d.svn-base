@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Linq;
+using System.Web;
+using TradesWebApplication.DAL.EFModels;
+
+namespace TradesWebApplication.DAL
+{
+    public class TradesContext : DbContext
+    {
+        public TradesContext() : base("BCATradeEntities")
+        {
+        }
+
+        public DbSet<Trade> Trades { get; set; }
+        public DbSet<Benchmark> Benchmarks { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<Length_Type> LengthTypes { get; set; }
+        public DbSet<Related_Trade> RelatedTrades { get; set; }
+        public DbSet<Relativity> Relativities { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<Structure_Type> StructureTypes { get; set; }
+        public DbSet<Track_Record> TrackRecords { get; set; }
+        public DbSet<Trade_Comment> TradeComments { get; set; }
+        public DbSet<Trade_Instruction> TradeInstructions { get; set; }
+        public DbSet<Trade_Line> TradeLines { get; set; }
+        public DbSet<Trade_Performance> TradePerformances { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
+    }
+}

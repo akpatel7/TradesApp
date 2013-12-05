@@ -1,0 +1,137 @@
+﻿@model TradesWebApplication.DAL.EFModels.Trade
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Trade</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.trade_uri, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.trade_uri)
+                @Html.ValidationMessageFor(model => model.trade_uri)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.relativity_id, "relativity_id", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("relativity_id", String.Empty)
+                @Html.ValidationMessageFor(model => model.relativity_id)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.length_type_id, "length_type_id", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("length_type_id", String.Empty)
+                @Html.ValidationMessageFor(model => model.length_type_id)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.structure_type_id, "structure_type_id", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("structure_type_id", String.Empty)
+                @Html.ValidationMessageFor(model => model.structure_type_id)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.service_id, "service_id", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("service_id", String.Empty)
+                @Html.ValidationMessageFor(model => model.service_id)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.currency_id, "currency_id", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("currency_id", String.Empty)
+                @Html.ValidationMessageFor(model => model.currency_id)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.benchmark_id, "benchmark_id", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("benchmark_id", String.Empty)
+                @Html.ValidationMessageFor(model => model.benchmark_id)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.trade_label, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.trade_label)
+                @Html.ValidationMessageFor(model => model.trade_label)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.trade_editorial_label, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.trade_editorial_label)
+                @Html.ValidationMessageFor(model => model.trade_editorial_label)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.created_on, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.created_on)
+                @Html.ValidationMessageFor(model => model.created_on)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.created_by, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.created_by)
+                @Html.ValidationMessageFor(model => model.created_by)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.last_updated, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.last_updated)
+                @Html.ValidationMessageFor(model => model.last_updated)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.status, "status", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("status", String.Empty)
+                @Html.ValidationMessageFor(model => model.status)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

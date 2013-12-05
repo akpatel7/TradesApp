@@ -1,0 +1,103 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using TradesDataModel;
+
+namespace TradesViewModel
+{
+    public class TradeViewModel
+    {
+        // Trade
+        
+        // service
+        public int service_id { get; set; }
+        public List<Service> Services { get; set; }
+        
+        // trade type
+        public int length_type_id { get; set; }
+        public List<Length_Type> Length_Types { get; set; }
+        
+        // benchmark
+        public int relativity_id { get; set; }
+        public List<Relativity> Relativitys { get; set; }
+        
+        // benchmark selection
+        public int benchmark_id { get; set; }
+        public List<Benchmark> Benchmarks { get; set; }
+        
+        // update time
+        public string created_on { get; set; }
+        
+        // canonical label
+        public string trade_label { get; set; }
+        
+        // editorial label
+        public string trade_editorial_label { get; set; }
+        
+        // trade structure
+        public int structure_type_id { get; set; }
+        public List<Structure_Type> Structure_Types { get; set; }
+
+        // trade groups
+        public List<Trade_Line_Group> TradeGroups { get; set; }
+        
+        //------------------------------------
+        // entry level
+        public decimal instruction_entry { get; set; }
+        
+        // start date
+        public string instruction_entry_date { get; set; }
+        
+        // exit level
+        public Nullable<decimal> instruction_exit { get; set; }
+
+        // exit date
+        public string instruction_exit_date { get; set; }
+
+        // instruction
+        public Nullable<int> instruction_type_id { get; set; }
+        public List<Instruction_Type> Instruction_Types { get; set; }
+        public string instruction_label { get; set; }
+
+        // hedge instruction
+        public Nullable<int> hedge_id { get; set; }
+        public List<Hedge_Type> Hedge_Types { get; set; }
+
+        // curency
+        public Nullable<int> currency_id { get; set; }
+        public List<Currency> Currencies { get; set; }
+
+        // supplementary info
+        // linked trades
+        public Nullable<int> related_trade_id { get; set; }
+        public List<Trade> Releated_Trades { get; set; }
+
+        // APL function
+        [DisplayName("APL Function")]
+        public string apl_func { get; set; }
+
+        // mark to mark rate
+        public string mark_to_mark_rate { get; set; }
+        
+        // internset rate diff
+        [DisplayName("Interest Rate Differential")]
+        public string interest_rate_diff { get; set; }
+        
+        // abs performance
+        public List<Measure_Type> Measure_Types { get; set; }
+        public Nullable<int> abs_measure_type_id { get; set; }
+        public Nullable<int> abs_currency_id { get; set; }
+        // rel performance
+        public Nullable<int> rel_measure_type_id { get; set; }
+        public Nullable<int> rel_currency_id { get; set; }
+
+        public Nullable<int> return_benchmark_id { get; set; }
+        // return value
+        public string abs_return_value { get; set; }
+        public string rel_return_value { get; set; }
+
+        // comments
+        public string comments { get; set; }
+
+    }
+}

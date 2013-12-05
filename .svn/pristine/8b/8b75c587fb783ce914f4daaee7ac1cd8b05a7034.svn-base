@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - BCA Trades Application</title>
+    @Styles.Render("~/Content/Site.css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+<meta name="viewport" content="width=device-width">
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <div>
+                <p class="site-title">@Html.ActionLink("BCA Trades Application", "TradesList", "Trades")</p>
+            </div>
+            <div>
+                <nav>
+                    <ul id="menu">
+                        <li>@Html.ActionLink("Trades Creation", "TradesCreation", "Trades")</li>
+                        <li>@Html.ActionLink("Trades List", "TradesCreation", "Trades")</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer></footer>
+</body>
+</html>

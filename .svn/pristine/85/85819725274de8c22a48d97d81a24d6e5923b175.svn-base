@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <WebPublishMethod>MSDeploy</WebPublishMethod>
+    <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
+    <LastUsedPlatform>Any CPU</LastUsedPlatform>
+    <SiteUrlToLaunchAfterPublish />
+    <LaunchSiteAfterPublish>True</LaunchSiteAfterPublish>
+    <ExcludeApp_Data>False</ExcludeApp_Data>
+    <MSDeployServiceURL>localhost</MSDeployServiceURL>
+    <DeployIisAppPath>Default Web Site/trades</DeployIisAppPath>
+    <RemoteSitePhysicalPath />
+    <SkipExtraFilesOnServer>True</SkipExtraFilesOnServer>
+    <MSDeployPublishMethod>InProc</MSDeployPublishMethod>
+    <EnableMSDeployBackup>False</EnableMSDeployBackup>
+    <UserName />
+    <_SavePWD>False</_SavePWD>
+    <PublishDatabaseSettings>
+      <Objects xmlns="">
+        <ObjectGroup Name="BCATradeEntities" Order="1" Enabled="False">
+          <Destination Path="Data Source=SLX-DEV;Initial Catalog=BCATrade;User ID=isis_test;Password=isisTEST1111;Application Name=EntityFramework" Name="Data Source=SLX-DEV;Initial Catalog=BCATrade;User ID=isis_test;Password=isisTEST1111;MultipleActiveResultSets=True;Application Name=EntityFramework" />
+          <Object Type="DbCodeFirst">
+            <Source Path="DBContext" DbContext="TradesApp.Models.BCATradeEntities, TradesApp" Origin="Configuration" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <MSDeployParameterValue Include="$(DeployParameterPrefix)BCATradeEntities-Web.config Connection String">
+      <ParameterValue>metadata=res://*/Models.TradesModel.csdl|res://*/Models.TradesModel.ssdl|res://*/Models.TradesModel.msl;provider=System.Data.SqlClient;provider connection string="Data Source=SLX-DEV;Initial Catalog=BCATrade;User ID=isis_test;Password=isisTEST1111;MultipleActiveResultSets=True;Application Name=EntityFramework"</ParameterValue>
+    </MSDeployParameterValue>
+  </ItemGroup>
+</Project>

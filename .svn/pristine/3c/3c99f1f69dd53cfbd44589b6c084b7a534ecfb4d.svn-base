@@ -1,0 +1,2751 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BCATradeData.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Benchmark">
+          <Key>
+            <PropertyRef Name="benchmark_id" />
+          </Key>
+          <Property Name="benchmark_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="benchmark_uri" Type="varchar" MaxLength="255" />
+          <Property Name="benchmark_code" Type="varchar" MaxLength="50" />
+          <Property Name="benchmark_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="currency_id" />
+          </Key>
+          <Property Name="currency_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="currency_uri" Type="varchar" MaxLength="255" />
+          <Property Name="currency_code" Type="varchar" MaxLength="50" />
+          <Property Name="currency_symbol" Type="varchar" MaxLength="50" />
+          <Property Name="currency_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Hedge_Type">
+          <Key>
+            <PropertyRef Name="hedge_id" />
+          </Key>
+          <Property Name="hedge_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="hedge_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Instruction_Type">
+          <Key>
+            <PropertyRef Name="instruction_type_id" />
+          </Key>
+          <Property Name="instruction_type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="instruction_type_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Length_Type">
+          <Key>
+            <PropertyRef Name="length_type_id" />
+          </Key>
+          <Property Name="length_type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="length_type_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="location_id" />
+          </Key>
+          <Property Name="location_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="location_uri" Type="varchar" MaxLength="255" />
+          <Property Name="location_code" Type="varchar" MaxLength="255" />
+          <Property Name="location_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Measure_Type">
+          <Key>
+            <PropertyRef Name="measure_type_id" />
+          </Key>
+          <Property Name="measure_type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="measure_type_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="MSpeer_lsns">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="last_updated" Type="datetime" />
+          <Property Name="originator" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="originator_db" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="originator_publication" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="originator_publication_id" Type="int" />
+          <Property Name="originator_db_version" Type="int" />
+          <Property Name="originator_lsn" Type="varbinary" MaxLength="16" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BCATrade.dbo.MSpeer_request' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MSpeer_request">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="publication" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="publication" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="sent_date" Type="datetime" />
+          <Property Name="description" Type="nvarchar" MaxLength="4000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BCATrade.dbo.MSpeer_response' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MSpeer_response">
+          <Key>
+            <PropertyRef Name="peer" />
+            <PropertyRef Name="peer_db" />
+          </Key>
+          <Property Name="request_id" Type="int" />
+          <Property Name="peer" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="peer_db" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="received_date" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BCATrade.dbo.MSpub_identity_range' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MSpub_identity_range">
+          <Key>
+            <PropertyRef Name="objid" />
+            <PropertyRef Name="range" />
+            <PropertyRef Name="pub_range" />
+            <PropertyRef Name="current_pub_range" />
+            <PropertyRef Name="threshold" />
+          </Key>
+          <Property Name="objid" Type="int" Nullable="false" />
+          <Property Name="range" Type="bigint" Nullable="false" />
+          <Property Name="pub_range" Type="bigint" Nullable="false" />
+          <Property Name="current_pub_range" Type="bigint" Nullable="false" />
+          <Property Name="threshold" Type="int" Nullable="false" />
+          <Property Name="last_seed" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="position_id" />
+          </Key>
+          <Property Name="position_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="position_uri" Type="varchar" MaxLength="255" />
+          <Property Name="position_label" Type="varchar" MaxLength="255" />
+          <Property Name="position_relativity_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Related_Trade">
+          <Key>
+            <PropertyRef Name="trade_id" />
+            <PropertyRef Name="related_trade_id" />
+          </Key>
+          <Property Name="trade_id" Type="int" Nullable="false" />
+          <Property Name="related_trade_id" Type="int" Nullable="false" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="created_by" Type="int" />
+          <Property Name="last_updated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Relativity">
+          <Key>
+            <PropertyRef Name="relativity_id" />
+          </Key>
+          <Property Name="relativity_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="relativity_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="service_id" />
+          </Key>
+          <Property Name="service_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="service_uri" Type="varchar" MaxLength="255" />
+          <Property Name="service_code" Type="varchar" MaxLength="50" />
+          <Property Name="service_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="status_id" />
+          </Key>
+          <Property Name="status_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Structure_Type">
+          <Key>
+            <PropertyRef Name="structure_type_id" />
+          </Key>
+          <Property Name="structure_type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="structure_type_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BCATrade.dbo.sysarticlecolumns' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="sysarticlecolumns">
+          <Key>
+            <PropertyRef Name="artid" />
+            <PropertyRef Name="colid" />
+          </Key>
+          <Property Name="artid" Type="int" Nullable="false" />
+          <Property Name="colid" Type="smallint" Nullable="false" />
+          <Property Name="is_udt" Type="bit" />
+          <Property Name="is_xml" Type="bit" />
+          <Property Name="is_max" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BCATrade.dbo.sysarticles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="sysarticles">
+          <Key>
+            <PropertyRef Name="artid" />
+            <PropertyRef Name="dest_table" />
+            <PropertyRef Name="filter" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="objid" />
+            <PropertyRef Name="pubid" />
+            <PropertyRef Name="pre_creation_cmd" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="sync_objid" />
+            <PropertyRef Name="type" />
+            <PropertyRef Name="fire_triggers_on_snapshot" />
+          </Key>
+          <Property Name="artid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="creation_script" Type="nvarchar" MaxLength="255" />
+          <Property Name="del_cmd" Type="nvarchar" MaxLength="255" />
+          <Property Name="description" Type="nvarchar" MaxLength="255" />
+          <Property Name="dest_table" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="filter" Type="int" Nullable="false" />
+          <Property Name="filter_clause" Type="ntext" />
+          <Property Name="ins_cmd" Type="nvarchar" MaxLength="255" />
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="objid" Type="int" Nullable="false" />
+          <Property Name="pubid" Type="int" Nullable="false" />
+          <Property Name="pre_creation_cmd" Type="tinyint" Nullable="false" />
+          <Property Name="status" Type="tinyint" Nullable="false" />
+          <Property Name="sync_objid" Type="int" Nullable="false" />
+          <Property Name="type" Type="tinyint" Nullable="false" />
+          <Property Name="upd_cmd" Type="nvarchar" MaxLength="255" />
+          <Property Name="schema_option" Type="binary" MaxLength="8" />
+          <Property Name="dest_owner" Type="nvarchar" MaxLength="128" />
+          <Property Name="ins_scripting_proc" Type="int" />
+          <Property Name="del_scripting_proc" Type="int" />
+          <Property Name="upd_scripting_proc" Type="int" />
+          <Property Name="custom_script" Type="nvarchar" MaxLength="2048" />
+          <Property Name="fire_triggers_on_snapshot" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BCATrade.dbo.sysarticleupdates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="sysarticleupdates">
+          <Key>
+            <PropertyRef Name="artid" />
+            <PropertyRef Name="pubid" />
+            <PropertyRef Name="sync_ins_proc" />
+            <PropertyRef Name="sync_upd_proc" />
+            <PropertyRef Name="sync_del_proc" />
+            <PropertyRef Name="autogen" />
+            <PropertyRef Name="sync_upd_trig" />
+            <PropertyRef Name="identity_support" />
+          </Key>
+          <Property Name="artid" Type="int" Nullable="false" />
+          <Property Name="pubid" Type="int" Nullable="false" />
+          <Property Name="sync_ins_proc" Type="int" Nullable="false" />
+          <Property Name="sync_upd_proc" Type="int" Nullable="false" />
+          <Property Name="sync_del_proc" Type="int" Nullable="false" />
+          <Property Name="autogen" Type="bit" Nullable="false" />
+          <Property Name="sync_upd_trig" Type="int" Nullable="false" />
+          <Property Name="conflict_tableid" Type="int" />
+          <Property Name="ins_conflict_proc" Type="int" />
+          <Property Name="identity_support" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BCATrade.dbo.syspublications' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="syspublications">
+          <Key>
+            <PropertyRef Name="name" />
+            <PropertyRef Name="pubid" />
+            <PropertyRef Name="repl_freq" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="sync_method" />
+            <PropertyRef Name="independent_agent" />
+            <PropertyRef Name="immediate_sync" />
+            <PropertyRef Name="enabled_for_internet" />
+            <PropertyRef Name="allow_push" />
+            <PropertyRef Name="allow_pull" />
+            <PropertyRef Name="allow_anonymous" />
+            <PropertyRef Name="immediate_sync_ready" />
+            <PropertyRef Name="allow_sync_tran" />
+            <PropertyRef Name="autogen_sync_procs" />
+            <PropertyRef Name="allow_queued_tran" />
+            <PropertyRef Name="snapshot_in_defaultfolder" />
+            <PropertyRef Name="compress_snapshot" />
+            <PropertyRef Name="ftp_port" />
+            <PropertyRef Name="allow_dts" />
+            <PropertyRef Name="allow_subscription_copy" />
+            <PropertyRef Name="backward_comp_level" />
+            <PropertyRef Name="allow_initialize_from_backup" />
+            <PropertyRef Name="options" />
+          </Key>
+          <Property Name="description" Type="nvarchar" MaxLength="255" />
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="pubid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="repl_freq" Type="tinyint" Nullable="false" />
+          <Property Name="status" Type="tinyint" Nullable="false" />
+          <Property Name="sync_method" Type="tinyint" Nullable="false" />
+          <Property Name="snapshot_jobid" Type="binary" MaxLength="16" />
+          <Property Name="independent_agent" Type="bit" Nullable="false" />
+          <Property Name="immediate_sync" Type="bit" Nullable="false" />
+          <Property Name="enabled_for_internet" Type="bit" Nullable="false" />
+          <Property Name="allow_push" Type="bit" Nullable="false" />
+          <Property Name="allow_pull" Type="bit" Nullable="false" />
+          <Property Name="allow_anonymous" Type="bit" Nullable="false" />
+          <Property Name="immediate_sync_ready" Type="bit" Nullable="false" />
+          <Property Name="allow_sync_tran" Type="bit" Nullable="false" />
+          <Property Name="autogen_sync_procs" Type="bit" Nullable="false" />
+          <Property Name="retention" Type="int" />
+          <Property Name="allow_queued_tran" Type="bit" Nullable="false" />
+          <Property Name="snapshot_in_defaultfolder" Type="bit" Nullable="false" />
+          <Property Name="alt_snapshot_folder" Type="nvarchar" MaxLength="255" />
+          <Property Name="pre_snapshot_script" Type="nvarchar" MaxLength="255" />
+          <Property Name="post_snapshot_script" Type="nvarchar" MaxLength="255" />
+          <Property Name="compress_snapshot" Type="bit" Nullable="false" />
+          <Property Name="ftp_address" Type="nvarchar" MaxLength="128" />
+          <Property Name="ftp_port" Type="int" Nullable="false" />
+          <Property Name="ftp_subdirectory" Type="nvarchar" MaxLength="255" />
+          <Property Name="ftp_login" Type="nvarchar" MaxLength="128" />
+          <Property Name="ftp_password" Type="nvarchar" MaxLength="524" />
+          <Property Name="allow_dts" Type="bit" Nullable="false" />
+          <Property Name="allow_subscription_copy" Type="bit" Nullable="false" />
+          <Property Name="centralized_conflicts" Type="bit" />
+          <Property Name="conflict_retention" Type="int" />
+          <Property Name="conflict_policy" Type="int" />
+          <Property Name="queue_type" Type="int" />
+          <Property Name="ad_guidname" Type="nvarchar" MaxLength="128" />
+          <Property Name="backward_comp_level" Type="int" Nullable="false" />
+          <Property Name="allow_initialize_from_backup" Type="bit" Nullable="false" />
+          <Property Name="min_autonosync_lsn" Type="binary" MaxLength="10" />
+          <Property Name="replicate_ddl" Type="int" />
+          <Property Name="options" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysreplservers">
+          <Key>
+            <PropertyRef Name="srvname" />
+          </Key>
+          <Property Name="srvname" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="srvid" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BCATrade.dbo.sysschemaarticles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="sysschemaarticles">
+          <Key>
+            <PropertyRef Name="artid" />
+            <PropertyRef Name="dest_object" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="objid" />
+            <PropertyRef Name="pubid" />
+            <PropertyRef Name="pre_creation_cmd" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="type" />
+          </Key>
+          <Property Name="artid" Type="int" Nullable="false" />
+          <Property Name="creation_script" Type="nvarchar" MaxLength="255" />
+          <Property Name="description" Type="nvarchar" MaxLength="255" />
+          <Property Name="dest_object" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="objid" Type="int" Nullable="false" />
+          <Property Name="pubid" Type="int" Nullable="false" />
+          <Property Name="pre_creation_cmd" Type="tinyint" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="type" Type="tinyint" Nullable="false" />
+          <Property Name="schema_option" Type="binary" MaxLength="8" />
+          <Property Name="dest_owner" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BCATrade.dbo.syssubscriptions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="syssubscriptions">
+          <Key>
+            <PropertyRef Name="artid" />
+            <PropertyRef Name="srvid" />
+            <PropertyRef Name="dest_db" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="sync_type" />
+            <PropertyRef Name="login_name" />
+            <PropertyRef Name="subscription_type" />
+            <PropertyRef Name="timestamp" />
+            <PropertyRef Name="update_mode" />
+            <PropertyRef Name="loopback_detection" />
+            <PropertyRef Name="queued_reinit" />
+            <PropertyRef Name="nosync_type" />
+            <PropertyRef Name="srvname" />
+          </Key>
+          <Property Name="artid" Type="int" Nullable="false" />
+          <Property Name="srvid" Type="smallint" Nullable="false" />
+          <Property Name="dest_db" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="status" Type="tinyint" Nullable="false" />
+          <Property Name="sync_type" Type="tinyint" Nullable="false" />
+          <Property Name="login_name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="subscription_type" Type="int" Nullable="false" />
+          <Property Name="distribution_jobid" Type="binary" MaxLength="16" />
+          <Property Name="timestamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="update_mode" Type="tinyint" Nullable="false" />
+          <Property Name="loopback_detection" Type="bit" Nullable="false" />
+          <Property Name="queued_reinit" Type="bit" Nullable="false" />
+          <Property Name="nosync_type" Type="tinyint" Nullable="false" />
+          <Property Name="srvname" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BCATrade.dbo.systranschemas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="systranschemas">
+          <Key>
+            <PropertyRef Name="tabid" />
+            <PropertyRef Name="startlsn" />
+            <PropertyRef Name="endlsn" />
+            <PropertyRef Name="typeid" />
+          </Key>
+          <Property Name="tabid" Type="int" Nullable="false" />
+          <Property Name="startlsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="endlsn" Type="binary" MaxLength="10" Nullable="false" />
+          <Property Name="typeid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Track_Record">
+          <Key>
+            <PropertyRef Name="track_record_id" />
+          </Key>
+          <Property Name="track_record_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="trade_id" Type="int" />
+          <Property Name="track_record_type_id" Type="int" />
+          <Property Name="track_record_value" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="track_record_date" Type="datetime" />
+          <Property Name="created_by" Type="int" />
+          <Property Name="last_updated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Track_Record_Type">
+          <Key>
+            <PropertyRef Name="track_record_type_id" />
+          </Key>
+          <Property Name="track_record_type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="track_record_type_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Tradable_Thing">
+          <Key>
+            <PropertyRef Name="tradable_thing_id" />
+          </Key>
+          <Property Name="tradable_thing_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tradable_thing_uri" Type="varchar" MaxLength="255" />
+          <Property Name="tradable_thing_class_id" Type="int" />
+          <Property Name="location_id" Type="int" />
+          <Property Name="tradable_thing_code" Type="varchar" MaxLength="255" />
+          <Property Name="tradable_thing_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Tradable_Thing_Class">
+          <Key>
+            <PropertyRef Name="tradable_thing_class_id" />
+          </Key>
+          <Property Name="tradable_thing_class_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tradable_thing_class_uri" Type="varchar" MaxLength="255" />
+          <Property Name="tradable_thing_class_label" Type="varchar" MaxLength="255" />
+          <Property Name="tradable_thing_class_editorial_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Trade">
+          <Key>
+            <PropertyRef Name="trade_id" />
+          </Key>
+          <Property Name="trade_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="trade_uri" Type="varchar" MaxLength="255" />
+          <Property Name="relativity_id" Type="int" />
+          <Property Name="length_type_id" Type="int" />
+          <Property Name="structure_type_id" Type="int" />
+          <Property Name="service_id" Type="int" />
+          <Property Name="currency_id" Type="int" />
+          <Property Name="benchmark_id" Type="int" />
+          <Property Name="trade_label" Type="varchar" MaxLength="255" />
+          <Property Name="trade_editorial_label" Type="varchar" MaxLength="255" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="created_by" Type="int" />
+          <Property Name="last_updated" Type="datetime" />
+          <Property Name="status" Type="int" />
+        </EntityType>
+        <EntityType Name="Trade_Comment">
+          <Key>
+            <PropertyRef Name="comment_id" />
+          </Key>
+          <Property Name="comment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="trade_id" Type="int" />
+          <Property Name="comment_label" Type="varchar" MaxLength="255" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="created_by" Type="int" />
+          <Property Name="last_updated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Trade_Instruction">
+          <Key>
+            <PropertyRef Name="trade_instruction_id" />
+          </Key>
+          <Property Name="trade_instruction_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="trade_id" Type="int" />
+          <Property Name="relativity_id" Type="int" />
+          <Property Name="instruction_type_id" Type="int" />
+          <Property Name="hedge_id" Type="int" />
+          <Property Name="instruction_entry" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="instruction_entry_date" Type="datetime" />
+          <Property Name="instruction_exit" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="instruction_exit_date" Type="datetime" />
+          <Property Name="instruction_label" Type="varchar" MaxLength="255" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="created_by" Type="int" />
+          <Property Name="last_updated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Trade_Line">
+          <Key>
+            <PropertyRef Name="trade_line_id" />
+          </Key>
+          <Property Name="trade_line_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="trade_line_uri" Type="varchar" MaxLength="255" />
+          <Property Name="trade_id" Type="int" />
+          <Property Name="trade_line_group_id" Type="int" />
+          <Property Name="tradable_thing_id" Type="int" />
+          <Property Name="position_id" Type="int" />
+          <Property Name="trade_line_label" Type="varchar" MaxLength="255" />
+          <Property Name="trade_line_editorial_label" Type="varchar" MaxLength="255" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="created_by" Type="int" />
+          <Property Name="last_updated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Trade_Line_Group">
+          <Key>
+            <PropertyRef Name="trade_line_group_id" />
+          </Key>
+          <Property Name="trade_line_group_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="trade_line_group_type_id" Type="int" />
+          <Property Name="trade_line_group_uri" Type="varchar" MaxLength="255" />
+          <Property Name="trade_line_group_label" Type="varchar" MaxLength="255" />
+          <Property Name="trade_line_group_editorial_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Trade_Line_Group_Type">
+          <Key>
+            <PropertyRef Name="trade_line_group_type_id" />
+          </Key>
+          <Property Name="trade_line_group_type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="trade_line_group_type_uri" Type="varchar" MaxLength="255" />
+          <Property Name="trade_line_group_type_label" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Trade_Performance">
+          <Key>
+            <PropertyRef Name="trade_performance_id" />
+          </Key>
+          <Property Name="trade_performance_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="trade_id" Type="int" />
+          <Property Name="measure_type_id" Type="int" />
+          <Property Name="return_apl_function" Type="varchar" MaxLength="255" />
+          <Property Name="return_currency_id" Type="int" />
+          <Property Name="return_benchmark_id" Type="int" />
+          <Property Name="return_value" Type="varchar" MaxLength="255" />
+          <Property Name="return_date" Type="datetime" />
+          <Property Name="created_on" Type="datetime" />
+          <Property Name="created_by" Type="int" />
+          <Property Name="last_updated" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Position_Relativity">
+          <End Role="Relativity" Type="Self.Relativity" Multiplicity="0..1" />
+          <End Role="Position" Type="Self.Position" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Relativity">
+              <PropertyRef Name="relativity_id" />
+            </Principal>
+            <Dependent Role="Position">
+              <PropertyRef Name="position_relativity_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Related_Trade_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="1" />
+          <End Role="Related_Trade" Type="Self.Related_Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Related_Trade">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Related_Trade_Trade1">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="1" />
+          <End Role="Related_Trade" Type="Self.Related_Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Related_Trade">
+              <PropertyRef Name="related_trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Track_Record_Track_Record_Type">
+          <End Role="Track_Record_Type" Type="Self.Track_Record_Type" Multiplicity="0..1" />
+          <End Role="Track_Record" Type="Self.Track_Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Track_Record_Type">
+              <PropertyRef Name="track_record_type_id" />
+            </Principal>
+            <Dependent Role="Track_Record">
+              <PropertyRef Name="track_record_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Track_Record_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="0..1" />
+          <End Role="Track_Record" Type="Self.Track_Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Track_Record">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tradable_Thing_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Tradable_Thing" Type="Self.Tradable_Thing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="location_id" />
+            </Principal>
+            <Dependent Role="Tradable_Thing">
+              <PropertyRef Name="location_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tradable_Thing_Tradable_Thing_Class">
+          <End Role="Tradable_Thing_Class" Type="Self.Tradable_Thing_Class" Multiplicity="0..1" />
+          <End Role="Tradable_Thing" Type="Self.Tradable_Thing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tradable_Thing_Class">
+              <PropertyRef Name="tradable_thing_class_id" />
+            </Principal>
+            <Dependent Role="Tradable_Thing">
+              <PropertyRef Name="tradable_thing_class_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Benchmark">
+          <End Role="Benchmark" Type="Self.Benchmark" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Benchmark">
+              <PropertyRef Name="benchmark_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="benchmark_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Comment_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="0..1" />
+          <End Role="Trade_Comment" Type="Self.Trade_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Trade_Comment">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Currency">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="currency_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="currency_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Instruction_Hedge_Type">
+          <End Role="Hedge_Type" Type="Self.Hedge_Type" Multiplicity="0..1" />
+          <End Role="Trade_Instruction" Type="Self.Trade_Instruction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hedge_Type">
+              <PropertyRef Name="hedge_id" />
+            </Principal>
+            <Dependent Role="Trade_Instruction">
+              <PropertyRef Name="hedge_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Instruction_Instruction_Type">
+          <End Role="Instruction_Type" Type="Self.Instruction_Type" Multiplicity="0..1" />
+          <End Role="Trade_Instruction" Type="Self.Trade_Instruction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instruction_Type">
+              <PropertyRef Name="instruction_type_id" />
+            </Principal>
+            <Dependent Role="Trade_Instruction">
+              <PropertyRef Name="instruction_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Instruction_Relativity">
+          <End Role="Relativity" Type="Self.Relativity" Multiplicity="0..1" />
+          <End Role="Trade_Instruction" Type="Self.Trade_Instruction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Relativity">
+              <PropertyRef Name="relativity_id" />
+            </Principal>
+            <Dependent Role="Trade_Instruction">
+              <PropertyRef Name="relativity_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Instruction_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="0..1" />
+          <End Role="Trade_Instruction" Type="Self.Trade_Instruction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Trade_Instruction">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Length_Type">
+          <End Role="Length_Type" Type="Self.Length_Type" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Length_Type">
+              <PropertyRef Name="length_type_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="length_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Line_Group_Trade_Line_Group_Type">
+          <End Role="Trade_Line_Group_Type" Type="Self.Trade_Line_Group_Type" Multiplicity="0..1" />
+          <End Role="Trade_Line_Group" Type="Self.Trade_Line_Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade_Line_Group_Type">
+              <PropertyRef Name="trade_line_group_type_id" />
+            </Principal>
+            <Dependent Role="Trade_Line_Group">
+              <PropertyRef Name="trade_line_group_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Line_Position">
+          <End Role="Position" Type="Self.Position" Multiplicity="0..1" />
+          <End Role="Trade_Line" Type="Self.Trade_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="position_id" />
+            </Principal>
+            <Dependent Role="Trade_Line">
+              <PropertyRef Name="position_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Line_Tradable_Thing">
+          <End Role="Tradable_Thing" Type="Self.Tradable_Thing" Multiplicity="0..1" />
+          <End Role="Trade_Line" Type="Self.Trade_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tradable_Thing">
+              <PropertyRef Name="tradable_thing_id" />
+            </Principal>
+            <Dependent Role="Trade_Line">
+              <PropertyRef Name="tradable_thing_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Line_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="0..1" />
+          <End Role="Trade_Line" Type="Self.Trade_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Trade_Line">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Line_Trade_Line_Group">
+          <End Role="Trade_Line_Group" Type="Self.Trade_Line_Group" Multiplicity="0..1" />
+          <End Role="Trade_Line" Type="Self.Trade_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade_Line_Group">
+              <PropertyRef Name="trade_line_group_id" />
+            </Principal>
+            <Dependent Role="Trade_Line">
+              <PropertyRef Name="trade_line_group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Performance_Benchmark">
+          <End Role="Benchmark" Type="Self.Benchmark" Multiplicity="0..1" />
+          <End Role="Trade_Performance" Type="Self.Trade_Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Benchmark">
+              <PropertyRef Name="benchmark_id" />
+            </Principal>
+            <Dependent Role="Trade_Performance">
+              <PropertyRef Name="return_benchmark_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Performance_Currency">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="0..1" />
+          <End Role="Trade_Performance" Type="Self.Trade_Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="currency_id" />
+            </Principal>
+            <Dependent Role="Trade_Performance">
+              <PropertyRef Name="return_currency_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Performance_Measure_Type">
+          <End Role="Measure_Type" Type="Self.Measure_Type" Multiplicity="0..1" />
+          <End Role="Trade_Performance" Type="Self.Trade_Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Measure_Type">
+              <PropertyRef Name="measure_type_id" />
+            </Principal>
+            <Dependent Role="Trade_Performance">
+              <PropertyRef Name="measure_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Performance_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="0..1" />
+          <End Role="Trade_Performance" Type="Self.Trade_Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Trade_Performance">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Relativity">
+          <End Role="Relativity" Type="Self.Relativity" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Relativity">
+              <PropertyRef Name="relativity_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="relativity_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Service">
+          <End Role="Service" Type="Self.Service" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="service_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="service_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="status_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Structure_Type">
+          <End Role="Structure_Type" Type="Self.Structure_Type" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Structure_Type">
+              <PropertyRef Name="structure_type_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="structure_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BCATradeDataStoreContainer">
+          <EntitySet Name="Benchmark" EntityType="Self.Benchmark" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Currency" EntityType="Self.Currency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hedge_Type" EntityType="Self.Hedge_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Instruction_Type" EntityType="Self.Instruction_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Length_Type" EntityType="Self.Length_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Measure_Type" EntityType="Self.Measure_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MSpeer_lsns" EntityType="Self.MSpeer_lsns" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Related_Trade" EntityType="Self.Related_Trade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Relativity" EntityType="Self.Relativity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Service" EntityType="Self.Service" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Structure_Type" EntityType="Self.Structure_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysreplservers" EntityType="Self.sysreplservers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Track_Record" EntityType="Self.Track_Record" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Track_Record_Type" EntityType="Self.Track_Record_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tradable_Thing" EntityType="Self.Tradable_Thing" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tradable_Thing_Class" EntityType="Self.Tradable_Thing_Class" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trade" EntityType="Self.Trade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trade_Comment" EntityType="Self.Trade_Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trade_Instruction" EntityType="Self.Trade_Instruction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trade_Line" EntityType="Self.Trade_Line" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trade_Line_Group" EntityType="Self.Trade_Line_Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trade_Line_Group_Type" EntityType="Self.Trade_Line_Group_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trade_Performance" EntityType="Self.Trade_Performance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MSpeer_request" EntityType="Self.MSpeer_request" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MSpeer_request].[id] AS [id], 
+    [MSpeer_request].[publication] AS [publication], 
+    [MSpeer_request].[sent_date] AS [sent_date], 
+    [MSpeer_request].[description] AS [description]
+    FROM [dbo].[MSpeer_request] AS [MSpeer_request]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MSpeer_response" EntityType="Self.MSpeer_response" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MSpeer_response].[request_id] AS [request_id], 
+    [MSpeer_response].[peer] AS [peer], 
+    [MSpeer_response].[peer_db] AS [peer_db], 
+    [MSpeer_response].[received_date] AS [received_date]
+    FROM [dbo].[MSpeer_response] AS [MSpeer_response]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MSpub_identity_range" EntityType="Self.MSpub_identity_range" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MSpub_identity_range].[objid] AS [objid], 
+    [MSpub_identity_range].[range] AS [range], 
+    [MSpub_identity_range].[pub_range] AS [pub_range], 
+    [MSpub_identity_range].[current_pub_range] AS [current_pub_range], 
+    [MSpub_identity_range].[threshold] AS [threshold], 
+    [MSpub_identity_range].[last_seed] AS [last_seed]
+    FROM [dbo].[MSpub_identity_range] AS [MSpub_identity_range]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="sysarticlecolumns" EntityType="Self.sysarticlecolumns" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [sysarticlecolumns].[artid] AS [artid], 
+    [sysarticlecolumns].[colid] AS [colid], 
+    [sysarticlecolumns].[is_udt] AS [is_udt], 
+    [sysarticlecolumns].[is_xml] AS [is_xml], 
+    [sysarticlecolumns].[is_max] AS [is_max]
+    FROM [dbo].[sysarticlecolumns] AS [sysarticlecolumns]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="sysarticles" EntityType="Self.sysarticles" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [sysarticles].[artid] AS [artid], 
+    [sysarticles].[creation_script] AS [creation_script], 
+    [sysarticles].[del_cmd] AS [del_cmd], 
+    [sysarticles].[description] AS [description], 
+    [sysarticles].[dest_table] AS [dest_table], 
+    [sysarticles].[filter] AS [filter], 
+    [sysarticles].[filter_clause] AS [filter_clause], 
+    [sysarticles].[ins_cmd] AS [ins_cmd], 
+    [sysarticles].[name] AS [name], 
+    [sysarticles].[objid] AS [objid], 
+    [sysarticles].[pubid] AS [pubid], 
+    [sysarticles].[pre_creation_cmd] AS [pre_creation_cmd], 
+    [sysarticles].[status] AS [status], 
+    [sysarticles].[sync_objid] AS [sync_objid], 
+    [sysarticles].[type] AS [type], 
+    [sysarticles].[upd_cmd] AS [upd_cmd], 
+    [sysarticles].[schema_option] AS [schema_option], 
+    [sysarticles].[dest_owner] AS [dest_owner], 
+    [sysarticles].[ins_scripting_proc] AS [ins_scripting_proc], 
+    [sysarticles].[del_scripting_proc] AS [del_scripting_proc], 
+    [sysarticles].[upd_scripting_proc] AS [upd_scripting_proc], 
+    [sysarticles].[custom_script] AS [custom_script], 
+    [sysarticles].[fire_triggers_on_snapshot] AS [fire_triggers_on_snapshot]
+    FROM [dbo].[sysarticles] AS [sysarticles]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="sysarticleupdates" EntityType="Self.sysarticleupdates" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [sysarticleupdates].[artid] AS [artid], 
+    [sysarticleupdates].[pubid] AS [pubid], 
+    [sysarticleupdates].[sync_ins_proc] AS [sync_ins_proc], 
+    [sysarticleupdates].[sync_upd_proc] AS [sync_upd_proc], 
+    [sysarticleupdates].[sync_del_proc] AS [sync_del_proc], 
+    [sysarticleupdates].[autogen] AS [autogen], 
+    [sysarticleupdates].[sync_upd_trig] AS [sync_upd_trig], 
+    [sysarticleupdates].[conflict_tableid] AS [conflict_tableid], 
+    [sysarticleupdates].[ins_conflict_proc] AS [ins_conflict_proc], 
+    [sysarticleupdates].[identity_support] AS [identity_support]
+    FROM [dbo].[sysarticleupdates] AS [sysarticleupdates]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="syspublications" EntityType="Self.syspublications" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [syspublications].[description] AS [description], 
+    [syspublications].[name] AS [name], 
+    [syspublications].[pubid] AS [pubid], 
+    [syspublications].[repl_freq] AS [repl_freq], 
+    [syspublications].[status] AS [status], 
+    [syspublications].[sync_method] AS [sync_method], 
+    [syspublications].[snapshot_jobid] AS [snapshot_jobid], 
+    [syspublications].[independent_agent] AS [independent_agent], 
+    [syspublications].[immediate_sync] AS [immediate_sync], 
+    [syspublications].[enabled_for_internet] AS [enabled_for_internet], 
+    [syspublications].[allow_push] AS [allow_push], 
+    [syspublications].[allow_pull] AS [allow_pull], 
+    [syspublications].[allow_anonymous] AS [allow_anonymous], 
+    [syspublications].[immediate_sync_ready] AS [immediate_sync_ready], 
+    [syspublications].[allow_sync_tran] AS [allow_sync_tran], 
+    [syspublications].[autogen_sync_procs] AS [autogen_sync_procs], 
+    [syspublications].[retention] AS [retention], 
+    [syspublications].[allow_queued_tran] AS [allow_queued_tran], 
+    [syspublications].[snapshot_in_defaultfolder] AS [snapshot_in_defaultfolder], 
+    [syspublications].[alt_snapshot_folder] AS [alt_snapshot_folder], 
+    [syspublications].[pre_snapshot_script] AS [pre_snapshot_script], 
+    [syspublications].[post_snapshot_script] AS [post_snapshot_script], 
+    [syspublications].[compress_snapshot] AS [compress_snapshot], 
+    [syspublications].[ftp_address] AS [ftp_address], 
+    [syspublications].[ftp_port] AS [ftp_port], 
+    [syspublications].[ftp_subdirectory] AS [ftp_subdirectory], 
+    [syspublications].[ftp_login] AS [ftp_login], 
+    [syspublications].[ftp_password] AS [ftp_password], 
+    [syspublications].[allow_dts] AS [allow_dts], 
+    [syspublications].[allow_subscription_copy] AS [allow_subscription_copy], 
+    [syspublications].[centralized_conflicts] AS [centralized_conflicts], 
+    [syspublications].[conflict_retention] AS [conflict_retention], 
+    [syspublications].[conflict_policy] AS [conflict_policy], 
+    [syspublications].[queue_type] AS [queue_type], 
+    [syspublications].[ad_guidname] AS [ad_guidname], 
+    [syspublications].[backward_comp_level] AS [backward_comp_level], 
+    [syspublications].[allow_initialize_from_backup] AS [allow_initialize_from_backup], 
+    [syspublications].[min_autonosync_lsn] AS [min_autonosync_lsn], 
+    [syspublications].[replicate_ddl] AS [replicate_ddl], 
+    [syspublications].[options] AS [options]
+    FROM [dbo].[syspublications] AS [syspublications]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="sysschemaarticles" EntityType="Self.sysschemaarticles" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [sysschemaarticles].[artid] AS [artid], 
+    [sysschemaarticles].[creation_script] AS [creation_script], 
+    [sysschemaarticles].[description] AS [description], 
+    [sysschemaarticles].[dest_object] AS [dest_object], 
+    [sysschemaarticles].[name] AS [name], 
+    [sysschemaarticles].[objid] AS [objid], 
+    [sysschemaarticles].[pubid] AS [pubid], 
+    [sysschemaarticles].[pre_creation_cmd] AS [pre_creation_cmd], 
+    [sysschemaarticles].[status] AS [status], 
+    [sysschemaarticles].[type] AS [type], 
+    [sysschemaarticles].[schema_option] AS [schema_option], 
+    [sysschemaarticles].[dest_owner] AS [dest_owner]
+    FROM [dbo].[sysschemaarticles] AS [sysschemaarticles]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="syssubscriptions" EntityType="Self.syssubscriptions" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [syssubscriptions].[artid] AS [artid], 
+    [syssubscriptions].[srvid] AS [srvid], 
+    [syssubscriptions].[dest_db] AS [dest_db], 
+    [syssubscriptions].[status] AS [status], 
+    [syssubscriptions].[sync_type] AS [sync_type], 
+    [syssubscriptions].[login_name] AS [login_name], 
+    [syssubscriptions].[subscription_type] AS [subscription_type], 
+    [syssubscriptions].[distribution_jobid] AS [distribution_jobid], 
+    [syssubscriptions].[timestamp] AS [timestamp], 
+    [syssubscriptions].[update_mode] AS [update_mode], 
+    [syssubscriptions].[loopback_detection] AS [loopback_detection], 
+    [syssubscriptions].[queued_reinit] AS [queued_reinit], 
+    [syssubscriptions].[nosync_type] AS [nosync_type], 
+    [syssubscriptions].[srvname] AS [srvname]
+    FROM [dbo].[syssubscriptions] AS [syssubscriptions]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="systranschemas" EntityType="Self.systranschemas" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [systranschemas].[tabid] AS [tabid], 
+    [systranschemas].[startlsn] AS [startlsn], 
+    [systranschemas].[endlsn] AS [endlsn], 
+    [systranschemas].[typeid] AS [typeid]
+    FROM [dbo].[systranschemas] AS [systranschemas]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Position_Relativity" Association="Self.FK_Position_Relativity">
+            <End Role="Relativity" EntitySet="Relativity" />
+            <End Role="Position" EntitySet="Position" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Related_Trade_Trade" Association="Self.FK_Related_Trade_Trade">
+            <End Role="Trade" EntitySet="Trade" />
+            <End Role="Related_Trade" EntitySet="Related_Trade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Related_Trade_Trade1" Association="Self.FK_Related_Trade_Trade1">
+            <End Role="Trade" EntitySet="Trade" />
+            <End Role="Related_Trade" EntitySet="Related_Trade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Track_Record_Track_Record_Type" Association="Self.FK_Track_Record_Track_Record_Type">
+            <End Role="Track_Record_Type" EntitySet="Track_Record_Type" />
+            <End Role="Track_Record" EntitySet="Track_Record" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Track_Record_Trade" Association="Self.FK_Track_Record_Trade">
+            <End Role="Trade" EntitySet="Trade" />
+            <End Role="Track_Record" EntitySet="Track_Record" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tradable_Thing_Location" Association="Self.FK_Tradable_Thing_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Tradable_Thing" EntitySet="Tradable_Thing" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tradable_Thing_Tradable_Thing_Class" Association="Self.FK_Tradable_Thing_Tradable_Thing_Class">
+            <End Role="Tradable_Thing_Class" EntitySet="Tradable_Thing_Class" />
+            <End Role="Tradable_Thing" EntitySet="Tradable_Thing" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Benchmark" Association="Self.FK_Trade_Benchmark">
+            <End Role="Benchmark" EntitySet="Benchmark" />
+            <End Role="Trade" EntitySet="Trade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Comment_Trade" Association="Self.FK_Trade_Comment_Trade">
+            <End Role="Trade" EntitySet="Trade" />
+            <End Role="Trade_Comment" EntitySet="Trade_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Currency" Association="Self.FK_Trade_Currency">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="Trade" EntitySet="Trade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Instruction_Hedge_Type" Association="Self.FK_Trade_Instruction_Hedge_Type">
+            <End Role="Hedge_Type" EntitySet="Hedge_Type" />
+            <End Role="Trade_Instruction" EntitySet="Trade_Instruction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Instruction_Instruction_Type" Association="Self.FK_Trade_Instruction_Instruction_Type">
+            <End Role="Instruction_Type" EntitySet="Instruction_Type" />
+            <End Role="Trade_Instruction" EntitySet="Trade_Instruction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Instruction_Relativity" Association="Self.FK_Trade_Instruction_Relativity">
+            <End Role="Relativity" EntitySet="Relativity" />
+            <End Role="Trade_Instruction" EntitySet="Trade_Instruction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Instruction_Trade" Association="Self.FK_Trade_Instruction_Trade">
+            <End Role="Trade" EntitySet="Trade" />
+            <End Role="Trade_Instruction" EntitySet="Trade_Instruction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Length_Type" Association="Self.FK_Trade_Length_Type">
+            <End Role="Length_Type" EntitySet="Length_Type" />
+            <End Role="Trade" EntitySet="Trade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Line_Group_Trade_Line_Group_Type" Association="Self.FK_Trade_Line_Group_Trade_Line_Group_Type">
+            <End Role="Trade_Line_Group_Type" EntitySet="Trade_Line_Group_Type" />
+            <End Role="Trade_Line_Group" EntitySet="Trade_Line_Group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Line_Position" Association="Self.FK_Trade_Line_Position">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="Trade_Line" EntitySet="Trade_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Line_Tradable_Thing" Association="Self.FK_Trade_Line_Tradable_Thing">
+            <End Role="Tradable_Thing" EntitySet="Tradable_Thing" />
+            <End Role="Trade_Line" EntitySet="Trade_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Line_Trade" Association="Self.FK_Trade_Line_Trade">
+            <End Role="Trade" EntitySet="Trade" />
+            <End Role="Trade_Line" EntitySet="Trade_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Line_Trade_Line_Group" Association="Self.FK_Trade_Line_Trade_Line_Group">
+            <End Role="Trade_Line_Group" EntitySet="Trade_Line_Group" />
+            <End Role="Trade_Line" EntitySet="Trade_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Performance_Benchmark" Association="Self.FK_Trade_Performance_Benchmark">
+            <End Role="Benchmark" EntitySet="Benchmark" />
+            <End Role="Trade_Performance" EntitySet="Trade_Performance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Performance_Currency" Association="Self.FK_Trade_Performance_Currency">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="Trade_Performance" EntitySet="Trade_Performance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Performance_Measure_Type" Association="Self.FK_Trade_Performance_Measure_Type">
+            <End Role="Measure_Type" EntitySet="Measure_Type" />
+            <End Role="Trade_Performance" EntitySet="Trade_Performance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Performance_Trade" Association="Self.FK_Trade_Performance_Trade">
+            <End Role="Trade" EntitySet="Trade" />
+            <End Role="Trade_Performance" EntitySet="Trade_Performance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Relativity" Association="Self.FK_Trade_Relativity">
+            <End Role="Relativity" EntitySet="Relativity" />
+            <End Role="Trade" EntitySet="Trade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Service" Association="Self.FK_Trade_Service">
+            <End Role="Service" EntitySet="Service" />
+            <End Role="Trade" EntitySet="Trade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Status" Association="Self.FK_Trade_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Trade" EntitySet="Trade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Structure_Type" Association="Self.FK_Trade_Structure_Type">
+            <End Role="Structure_Type" EntitySet="Structure_Type" />
+            <End Role="Trade" EntitySet="Trade" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BCATradeData" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Benchmark">
+          <Key>
+            <PropertyRef Name="benchmark_id" />
+          </Key>
+          <Property Name="benchmark_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="benchmark_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="benchmark_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="benchmark_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK_Trade_Benchmark" FromRole="Benchmark" ToRole="Trade" />
+          <NavigationProperty Name="Trade_Performance" Relationship="Self.FK_Trade_Performance_Benchmark" FromRole="Benchmark" ToRole="Trade_Performance" />
+        </EntityType>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="currency_id" />
+          </Key>
+          <Property Name="currency_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="currency_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="currency_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="currency_symbol" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="currency_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK_Trade_Currency" FromRole="Currency" ToRole="Trade" />
+          <NavigationProperty Name="Trade_Performance" Relationship="Self.FK_Trade_Performance_Currency" FromRole="Currency" ToRole="Trade_Performance" />
+        </EntityType>
+        <EntityType Name="Hedge_Type">
+          <Key>
+            <PropertyRef Name="hedge_id" />
+          </Key>
+          <Property Name="hedge_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="hedge_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trade_Instruction" Relationship="Self.FK_Trade_Instruction_Hedge_Type" FromRole="Hedge_Type" ToRole="Trade_Instruction" />
+        </EntityType>
+        <EntityType Name="Instruction_Type">
+          <Key>
+            <PropertyRef Name="instruction_type_id" />
+          </Key>
+          <Property Name="instruction_type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="instruction_type_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trade_Instruction" Relationship="Self.FK_Trade_Instruction_Instruction_Type" FromRole="Instruction_Type" ToRole="Trade_Instruction" />
+        </EntityType>
+        <EntityType Name="Length_Type">
+          <Key>
+            <PropertyRef Name="length_type_id" />
+          </Key>
+          <Property Name="length_type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="length_type_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK_Trade_Length_Type" FromRole="Length_Type" ToRole="Trade" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="location_id" />
+          </Key>
+          <Property Name="location_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="location_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="location_code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="location_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tradable_Thing" Relationship="Self.FK_Tradable_Thing_Location" FromRole="Location" ToRole="Tradable_Thing" />
+        </EntityType>
+        <EntityType Name="Measure_Type">
+          <Key>
+            <PropertyRef Name="measure_type_id" />
+          </Key>
+          <Property Name="measure_type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="measure_type_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trade_Performance" Relationship="Self.FK_Trade_Performance_Measure_Type" FromRole="Measure_Type" ToRole="Trade_Performance" />
+        </EntityType>
+        <EntityType Name="MSpeer_lsns">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="last_updated" Type="DateTime" Precision="3" />
+          <Property Name="originator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="originator_db" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="originator_publication" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="originator_publication_id" Type="Int32" />
+          <Property Name="originator_db_version" Type="Int32" />
+          <Property Name="originator_lsn" Type="Binary" MaxLength="16" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="position_id" />
+          </Key>
+          <Property Name="position_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="position_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="position_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="position_relativity_id" Type="Int32" />
+          <NavigationProperty Name="Relativity" Relationship="Self.FK_Position_Relativity" FromRole="Position" ToRole="Relativity" />
+          <NavigationProperty Name="Trade_Line" Relationship="Self.FK_Trade_Line_Position" FromRole="Position" ToRole="Trade_Line" />
+        </EntityType>
+        <EntityType Name="Related_Trade">
+          <Key>
+            <PropertyRef Name="trade_id" />
+            <PropertyRef Name="related_trade_id" />
+          </Key>
+          <Property Name="trade_id" Type="Int32" Nullable="false" />
+          <Property Name="related_trade_id" Type="Int32" Nullable="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="last_updated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Trade" Relationship="Self.FK_Related_Trade_Trade" FromRole="Related_Trade" ToRole="Trade" />
+          <NavigationProperty Name="Trade1" Relationship="Self.FK_Related_Trade_Trade1" FromRole="Related_Trade" ToRole="Trade" />
+        </EntityType>
+        <EntityType Name="Relativity">
+          <Key>
+            <PropertyRef Name="relativity_id" />
+          </Key>
+          <Property Name="relativity_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="relativity_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Positions" Relationship="Self.FK_Position_Relativity" FromRole="Relativity" ToRole="Position" />
+          <NavigationProperty Name="Trade_Instruction" Relationship="Self.FK_Trade_Instruction_Relativity" FromRole="Relativity" ToRole="Trade_Instruction" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK_Trade_Relativity" FromRole="Relativity" ToRole="Trade" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="service_id" />
+          </Key>
+          <Property Name="service_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="service_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="service_code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="service_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK_Trade_Service" FromRole="Service" ToRole="Trade" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="status_id" />
+          </Key>
+          <Property Name="status_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="status_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK_Trade_Status" FromRole="Status" ToRole="Trade" />
+        </EntityType>
+        <EntityType Name="Structure_Type">
+          <Key>
+            <PropertyRef Name="structure_type_id" />
+          </Key>
+          <Property Name="structure_type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="structure_type_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK_Trade_Structure_Type" FromRole="Structure_Type" ToRole="Trade" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="sysreplserver">
+          <Key>
+            <PropertyRef Name="srvname" />
+          </Key>
+          <Property Name="srvname" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="srvid" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Track_Record">
+          <Key>
+            <PropertyRef Name="track_record_id" />
+          </Key>
+          <Property Name="track_record_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="trade_id" Type="Int32" />
+          <Property Name="track_record_type_id" Type="Int32" />
+          <Property Name="track_record_value" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="track_record_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="last_updated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Track_Record_Type" Relationship="Self.FK_Track_Record_Track_Record_Type" FromRole="Track_Record" ToRole="Track_Record_Type" />
+          <NavigationProperty Name="Trade" Relationship="Self.FK_Track_Record_Trade" FromRole="Track_Record" ToRole="Trade" />
+        </EntityType>
+        <EntityType Name="Track_Record_Type">
+          <Key>
+            <PropertyRef Name="track_record_type_id" />
+          </Key>
+          <Property Name="track_record_type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="track_record_type_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Track_Record" Relationship="Self.FK_Track_Record_Track_Record_Type" FromRole="Track_Record_Type" ToRole="Track_Record" />
+        </EntityType>
+        <EntityType Name="Tradable_Thing">
+          <Key>
+            <PropertyRef Name="tradable_thing_id" />
+          </Key>
+          <Property Name="tradable_thing_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tradable_thing_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tradable_thing_class_id" Type="Int32" />
+          <Property Name="location_id" Type="Int32" />
+          <Property Name="tradable_thing_code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tradable_thing_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_Tradable_Thing_Location" FromRole="Tradable_Thing" ToRole="Location" />
+          <NavigationProperty Name="Tradable_Thing_Class" Relationship="Self.FK_Tradable_Thing_Tradable_Thing_Class" FromRole="Tradable_Thing" ToRole="Tradable_Thing_Class" />
+          <NavigationProperty Name="Trade_Line" Relationship="Self.FK_Trade_Line_Tradable_Thing" FromRole="Tradable_Thing" ToRole="Trade_Line" />
+        </EntityType>
+        <EntityType Name="Tradable_Thing_Class">
+          <Key>
+            <PropertyRef Name="tradable_thing_class_id" />
+          </Key>
+          <Property Name="tradable_thing_class_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tradable_thing_class_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tradable_thing_class_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="tradable_thing_class_editorial_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tradable_Thing" Relationship="Self.FK_Tradable_Thing_Tradable_Thing_Class" FromRole="Tradable_Thing_Class" ToRole="Tradable_Thing" />
+        </EntityType>
+        <EntityType Name="Trade">
+          <Key>
+            <PropertyRef Name="trade_id" />
+          </Key>
+          <Property Name="trade_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="trade_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="relativity_id" Type="Int32" />
+          <Property Name="length_type_id" Type="Int32" />
+          <Property Name="structure_type_id" Type="Int32" />
+          <Property Name="service_id" Type="Int32" />
+          <Property Name="currency_id" Type="Int32" />
+          <Property Name="benchmark_id" Type="Int32" />
+          <Property Name="trade_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="trade_editorial_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="last_updated" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="Int32" />
+          <NavigationProperty Name="Benchmark" Relationship="Self.FK_Trade_Benchmark" FromRole="Trade" ToRole="Benchmark" />
+          <NavigationProperty Name="Currency" Relationship="Self.FK_Trade_Currency" FromRole="Trade" ToRole="Currency" />
+          <NavigationProperty Name="Length_Type" Relationship="Self.FK_Trade_Length_Type" FromRole="Trade" ToRole="Length_Type" />
+          <NavigationProperty Name="Related_Trade" Relationship="Self.FK_Related_Trade_Trade" FromRole="Trade" ToRole="Related_Trade" />
+          <NavigationProperty Name="Related_Trade1" Relationship="Self.FK_Related_Trade_Trade1" FromRole="Trade" ToRole="Related_Trade" />
+          <NavigationProperty Name="Relativity" Relationship="Self.FK_Trade_Relativity" FromRole="Trade" ToRole="Relativity" />
+          <NavigationProperty Name="Service" Relationship="Self.FK_Trade_Service" FromRole="Trade" ToRole="Service" />
+          <NavigationProperty Name="Status1" Relationship="Self.FK_Trade_Status" FromRole="Trade" ToRole="Status" />
+          <NavigationProperty Name="Structure_Type" Relationship="Self.FK_Trade_Structure_Type" FromRole="Trade" ToRole="Structure_Type" />
+          <NavigationProperty Name="Track_Record" Relationship="Self.FK_Track_Record_Trade" FromRole="Trade" ToRole="Track_Record" />
+          <NavigationProperty Name="Trade_Comment" Relationship="Self.FK_Trade_Comment_Trade" FromRole="Trade" ToRole="Trade_Comment" />
+          <NavigationProperty Name="Trade_Instruction" Relationship="Self.FK_Trade_Instruction_Trade" FromRole="Trade" ToRole="Trade_Instruction" />
+          <NavigationProperty Name="Trade_Line" Relationship="Self.FK_Trade_Line_Trade" FromRole="Trade" ToRole="Trade_Line" />
+          <NavigationProperty Name="Trade_Performance" Relationship="Self.FK_Trade_Performance_Trade" FromRole="Trade" ToRole="Trade_Performance" />
+        </EntityType>
+        <EntityType Name="Trade_Comment">
+          <Key>
+            <PropertyRef Name="comment_id" />
+          </Key>
+          <Property Name="comment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="trade_id" Type="Int32" />
+          <Property Name="comment_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="last_updated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Trade" Relationship="Self.FK_Trade_Comment_Trade" FromRole="Trade_Comment" ToRole="Trade" />
+        </EntityType>
+        <EntityType Name="Trade_Instruction">
+          <Key>
+            <PropertyRef Name="trade_instruction_id" />
+          </Key>
+          <Property Name="trade_instruction_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="trade_id" Type="Int32" />
+          <Property Name="relativity_id" Type="Int32" />
+          <Property Name="instruction_type_id" Type="Int32" />
+          <Property Name="hedge_id" Type="Int32" />
+          <Property Name="instruction_entry" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="instruction_entry_date" Type="DateTime" Precision="3" />
+          <Property Name="instruction_exit" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="instruction_exit_date" Type="DateTime" Precision="3" />
+          <Property Name="instruction_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="last_updated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Hedge_Type" Relationship="Self.FK_Trade_Instruction_Hedge_Type" FromRole="Trade_Instruction" ToRole="Hedge_Type" />
+          <NavigationProperty Name="Instruction_Type" Relationship="Self.FK_Trade_Instruction_Instruction_Type" FromRole="Trade_Instruction" ToRole="Instruction_Type" />
+          <NavigationProperty Name="Relativity" Relationship="Self.FK_Trade_Instruction_Relativity" FromRole="Trade_Instruction" ToRole="Relativity" />
+          <NavigationProperty Name="Trade" Relationship="Self.FK_Trade_Instruction_Trade" FromRole="Trade_Instruction" ToRole="Trade" />
+        </EntityType>
+        <EntityType Name="Trade_Line">
+          <Key>
+            <PropertyRef Name="trade_line_id" />
+          </Key>
+          <Property Name="trade_line_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="trade_line_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="trade_id" Type="Int32" />
+          <Property Name="trade_line_group_id" Type="Int32" />
+          <Property Name="tradable_thing_id" Type="Int32" />
+          <Property Name="position_id" Type="Int32" />
+          <Property Name="trade_line_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="trade_line_editorial_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="last_updated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Position" Relationship="Self.FK_Trade_Line_Position" FromRole="Trade_Line" ToRole="Position" />
+          <NavigationProperty Name="Tradable_Thing" Relationship="Self.FK_Trade_Line_Tradable_Thing" FromRole="Trade_Line" ToRole="Tradable_Thing" />
+          <NavigationProperty Name="Trade" Relationship="Self.FK_Trade_Line_Trade" FromRole="Trade_Line" ToRole="Trade" />
+          <NavigationProperty Name="Trade_Line_Group" Relationship="Self.FK_Trade_Line_Trade_Line_Group" FromRole="Trade_Line" ToRole="Trade_Line_Group" />
+        </EntityType>
+        <EntityType Name="Trade_Line_Group">
+          <Key>
+            <PropertyRef Name="trade_line_group_id" />
+          </Key>
+          <Property Name="trade_line_group_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="trade_line_group_type_id" Type="Int32" />
+          <Property Name="trade_line_group_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="trade_line_group_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="trade_line_group_editorial_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trade_Line" Relationship="Self.FK_Trade_Line_Trade_Line_Group" FromRole="Trade_Line_Group" ToRole="Trade_Line" />
+          <NavigationProperty Name="Trade_Line_Group_Type" Relationship="Self.FK_Trade_Line_Group_Trade_Line_Group_Type" FromRole="Trade_Line_Group" ToRole="Trade_Line_Group_Type" />
+        </EntityType>
+        <EntityType Name="Trade_Line_Group_Type">
+          <Key>
+            <PropertyRef Name="trade_line_group_type_id" />
+          </Key>
+          <Property Name="trade_line_group_type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="trade_line_group_type_uri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="trade_line_group_type_label" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trade_Line_Group" Relationship="Self.FK_Trade_Line_Group_Trade_Line_Group_Type" FromRole="Trade_Line_Group_Type" ToRole="Trade_Line_Group" />
+        </EntityType>
+        <EntityType Name="Trade_Performance">
+          <Key>
+            <PropertyRef Name="trade_performance_id" />
+          </Key>
+          <Property Name="trade_performance_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="trade_id" Type="Int32" />
+          <Property Name="measure_type_id" Type="Int32" />
+          <Property Name="return_apl_function" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="return_currency_id" Type="Int32" />
+          <Property Name="return_benchmark_id" Type="Int32" />
+          <Property Name="return_value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="return_date" Type="DateTime" Precision="3" />
+          <Property Name="created_on" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="Int32" />
+          <Property Name="last_updated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Benchmark" Relationship="Self.FK_Trade_Performance_Benchmark" FromRole="Trade_Performance" ToRole="Benchmark" />
+          <NavigationProperty Name="Currency" Relationship="Self.FK_Trade_Performance_Currency" FromRole="Trade_Performance" ToRole="Currency" />
+          <NavigationProperty Name="Measure_Type" Relationship="Self.FK_Trade_Performance_Measure_Type" FromRole="Trade_Performance" ToRole="Measure_Type" />
+          <NavigationProperty Name="Trade" Relationship="Self.FK_Trade_Performance_Trade" FromRole="Trade_Performance" ToRole="Trade" />
+        </EntityType>
+        <EntityType Name="MSpeer_request">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="publication" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="publication" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sent_date" Type="DateTime" Precision="3" />
+          <Property Name="description" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MSpeer_response">
+          <Key>
+            <PropertyRef Name="peer" />
+            <PropertyRef Name="peer_db" />
+          </Key>
+          <Property Name="request_id" Type="Int32" />
+          <Property Name="peer" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="peer_db" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="received_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="MSpub_identity_range">
+          <Key>
+            <PropertyRef Name="objid" />
+            <PropertyRef Name="range" />
+            <PropertyRef Name="pub_range" />
+            <PropertyRef Name="current_pub_range" />
+            <PropertyRef Name="threshold" />
+          </Key>
+          <Property Name="objid" Type="Int32" Nullable="false" />
+          <Property Name="range" Type="Int64" Nullable="false" />
+          <Property Name="pub_range" Type="Int64" Nullable="false" />
+          <Property Name="current_pub_range" Type="Int64" Nullable="false" />
+          <Property Name="threshold" Type="Int32" Nullable="false" />
+          <Property Name="last_seed" Type="Int64" />
+        </EntityType>
+        <EntityType Name="sysarticlecolumn">
+          <Key>
+            <PropertyRef Name="artid" />
+            <PropertyRef Name="colid" />
+          </Key>
+          <Property Name="artid" Type="Int32" Nullable="false" />
+          <Property Name="colid" Type="Int16" Nullable="false" />
+          <Property Name="is_udt" Type="Boolean" />
+          <Property Name="is_xml" Type="Boolean" />
+          <Property Name="is_max" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="sysarticle">
+          <Key>
+            <PropertyRef Name="artid" />
+            <PropertyRef Name="dest_table" />
+            <PropertyRef Name="filter" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="objid" />
+            <PropertyRef Name="pubid" />
+            <PropertyRef Name="pre_creation_cmd" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="sync_objid" />
+            <PropertyRef Name="type" />
+            <PropertyRef Name="fire_triggers_on_snapshot" />
+          </Key>
+          <Property Name="artid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="creation_script" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="del_cmd" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dest_table" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="filter" Type="Int32" Nullable="false" />
+          <Property Name="filter_clause" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ins_cmd" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="objid" Type="Int32" Nullable="false" />
+          <Property Name="pubid" Type="Int32" Nullable="false" />
+          <Property Name="pre_creation_cmd" Type="Byte" Nullable="false" />
+          <Property Name="status" Type="Byte" Nullable="false" />
+          <Property Name="sync_objid" Type="Int32" Nullable="false" />
+          <Property Name="type" Type="Byte" Nullable="false" />
+          <Property Name="upd_cmd" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="schema_option" Type="Binary" MaxLength="8" FixedLength="true" />
+          <Property Name="dest_owner" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ins_scripting_proc" Type="Int32" />
+          <Property Name="del_scripting_proc" Type="Int32" />
+          <Property Name="upd_scripting_proc" Type="Int32" />
+          <Property Name="custom_script" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="fire_triggers_on_snapshot" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysarticleupdate">
+          <Key>
+            <PropertyRef Name="artid" />
+            <PropertyRef Name="pubid" />
+            <PropertyRef Name="sync_ins_proc" />
+            <PropertyRef Name="sync_upd_proc" />
+            <PropertyRef Name="sync_del_proc" />
+            <PropertyRef Name="autogen" />
+            <PropertyRef Name="sync_upd_trig" />
+            <PropertyRef Name="identity_support" />
+          </Key>
+          <Property Name="artid" Type="Int32" Nullable="false" />
+          <Property Name="pubid" Type="Int32" Nullable="false" />
+          <Property Name="sync_ins_proc" Type="Int32" Nullable="false" />
+          <Property Name="sync_upd_proc" Type="Int32" Nullable="false" />
+          <Property Name="sync_del_proc" Type="Int32" Nullable="false" />
+          <Property Name="autogen" Type="Boolean" Nullable="false" />
+          <Property Name="sync_upd_trig" Type="Int32" Nullable="false" />
+          <Property Name="conflict_tableid" Type="Int32" />
+          <Property Name="ins_conflict_proc" Type="Int32" />
+          <Property Name="identity_support" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="syspublication">
+          <Key>
+            <PropertyRef Name="name" />
+            <PropertyRef Name="pubid" />
+            <PropertyRef Name="repl_freq" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="sync_method" />
+            <PropertyRef Name="independent_agent" />
+            <PropertyRef Name="immediate_sync" />
+            <PropertyRef Name="enabled_for_internet" />
+            <PropertyRef Name="allow_push" />
+            <PropertyRef Name="allow_pull" />
+            <PropertyRef Name="allow_anonymous" />
+            <PropertyRef Name="immediate_sync_ready" />
+            <PropertyRef Name="allow_sync_tran" />
+            <PropertyRef Name="autogen_sync_procs" />
+            <PropertyRef Name="allow_queued_tran" />
+            <PropertyRef Name="snapshot_in_defaultfolder" />
+            <PropertyRef Name="compress_snapshot" />
+            <PropertyRef Name="ftp_port" />
+            <PropertyRef Name="allow_dts" />
+            <PropertyRef Name="allow_subscription_copy" />
+            <PropertyRef Name="backward_comp_level" />
+            <PropertyRef Name="allow_initialize_from_backup" />
+            <PropertyRef Name="options" />
+          </Key>
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="pubid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="repl_freq" Type="Byte" Nullable="false" />
+          <Property Name="status" Type="Byte" Nullable="false" />
+          <Property Name="sync_method" Type="Byte" Nullable="false" />
+          <Property Name="snapshot_jobid" Type="Binary" MaxLength="16" FixedLength="true" />
+          <Property Name="independent_agent" Type="Boolean" Nullable="false" />
+          <Property Name="immediate_sync" Type="Boolean" Nullable="false" />
+          <Property Name="enabled_for_internet" Type="Boolean" Nullable="false" />
+          <Property Name="allow_push" Type="Boolean" Nullable="false" />
+          <Property Name="allow_pull" Type="Boolean" Nullable="false" />
+          <Property Name="allow_anonymous" Type="Boolean" Nullable="false" />
+          <Property Name="immediate_sync_ready" Type="Boolean" Nullable="false" />
+          <Property Name="allow_sync_tran" Type="Boolean" Nullable="false" />
+          <Property Name="autogen_sync_procs" Type="Boolean" Nullable="false" />
+          <Property Name="retention" Type="Int32" />
+          <Property Name="allow_queued_tran" Type="Boolean" Nullable="false" />
+          <Property Name="snapshot_in_defaultfolder" Type="Boolean" Nullable="false" />
+          <Property Name="alt_snapshot_folder" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="pre_snapshot_script" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="post_snapshot_script" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="compress_snapshot" Type="Boolean" Nullable="false" />
+          <Property Name="ftp_address" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ftp_port" Type="Int32" Nullable="false" />
+          <Property Name="ftp_subdirectory" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ftp_login" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ftp_password" Type="String" MaxLength="524" FixedLength="false" Unicode="true" />
+          <Property Name="allow_dts" Type="Boolean" Nullable="false" />
+          <Property Name="allow_subscription_copy" Type="Boolean" Nullable="false" />
+          <Property Name="centralized_conflicts" Type="Boolean" />
+          <Property Name="conflict_retention" Type="Int32" />
+          <Property Name="conflict_policy" Type="Int32" />
+          <Property Name="queue_type" Type="Int32" />
+          <Property Name="ad_guidname" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="backward_comp_level" Type="Int32" Nullable="false" />
+          <Property Name="allow_initialize_from_backup" Type="Boolean" Nullable="false" />
+          <Property Name="min_autonosync_lsn" Type="Binary" MaxLength="10" FixedLength="true" />
+          <Property Name="replicate_ddl" Type="Int32" />
+          <Property Name="options" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysschemaarticle">
+          <Key>
+            <PropertyRef Name="artid" />
+            <PropertyRef Name="dest_object" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="objid" />
+            <PropertyRef Name="pubid" />
+            <PropertyRef Name="pre_creation_cmd" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="type" />
+          </Key>
+          <Property Name="artid" Type="Int32" Nullable="false" />
+          <Property Name="creation_script" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dest_object" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="objid" Type="Int32" Nullable="false" />
+          <Property Name="pubid" Type="Int32" Nullable="false" />
+          <Property Name="pre_creation_cmd" Type="Byte" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="type" Type="Byte" Nullable="false" />
+          <Property Name="schema_option" Type="Binary" MaxLength="8" FixedLength="true" />
+          <Property Name="dest_owner" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="syssubscription">
+          <Key>
+            <PropertyRef Name="artid" />
+            <PropertyRef Name="srvid" />
+            <PropertyRef Name="dest_db" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="sync_type" />
+            <PropertyRef Name="login_name" />
+            <PropertyRef Name="subscription_type" />
+            <PropertyRef Name="timestamp" />
+            <PropertyRef Name="update_mode" />
+            <PropertyRef Name="loopback_detection" />
+            <PropertyRef Name="queued_reinit" />
+            <PropertyRef Name="nosync_type" />
+            <PropertyRef Name="srvname" />
+          </Key>
+          <Property Name="artid" Type="Int32" Nullable="false" />
+          <Property Name="srvid" Type="Int16" Nullable="false" />
+          <Property Name="dest_db" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="status" Type="Byte" Nullable="false" />
+          <Property Name="sync_type" Type="Byte" Nullable="false" />
+          <Property Name="login_name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="subscription_type" Type="Int32" Nullable="false" />
+          <Property Name="distribution_jobid" Type="Binary" MaxLength="16" FixedLength="true" />
+          <Property Name="timestamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="update_mode" Type="Byte" Nullable="false" />
+          <Property Name="loopback_detection" Type="Boolean" Nullable="false" />
+          <Property Name="queued_reinit" Type="Boolean" Nullable="false" />
+          <Property Name="nosync_type" Type="Byte" Nullable="false" />
+          <Property Name="srvname" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="systranschema">
+          <Key>
+            <PropertyRef Name="tabid" />
+            <PropertyRef Name="startlsn" />
+            <PropertyRef Name="endlsn" />
+            <PropertyRef Name="typeid" />
+          </Key>
+          <Property Name="tabid" Type="Int32" Nullable="false" />
+          <Property Name="startlsn" Type="Binary" MaxLength="10" FixedLength="true" Nullable="false" />
+          <Property Name="endlsn" Type="Binary" MaxLength="10" FixedLength="true" Nullable="false" />
+          <Property Name="typeid" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Trade_Benchmark">
+          <End Role="Benchmark" Type="Self.Benchmark" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Benchmark">
+              <PropertyRef Name="benchmark_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="benchmark_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Performance_Benchmark">
+          <End Role="Benchmark" Type="Self.Benchmark" Multiplicity="0..1" />
+          <End Role="Trade_Performance" Type="Self.Trade_Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Benchmark">
+              <PropertyRef Name="benchmark_id" />
+            </Principal>
+            <Dependent Role="Trade_Performance">
+              <PropertyRef Name="return_benchmark_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Currency">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="currency_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="currency_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Performance_Currency">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="0..1" />
+          <End Role="Trade_Performance" Type="Self.Trade_Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="currency_id" />
+            </Principal>
+            <Dependent Role="Trade_Performance">
+              <PropertyRef Name="return_currency_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Instruction_Hedge_Type">
+          <End Role="Hedge_Type" Type="Self.Hedge_Type" Multiplicity="0..1" />
+          <End Role="Trade_Instruction" Type="Self.Trade_Instruction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hedge_Type">
+              <PropertyRef Name="hedge_id" />
+            </Principal>
+            <Dependent Role="Trade_Instruction">
+              <PropertyRef Name="hedge_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Instruction_Instruction_Type">
+          <End Role="Instruction_Type" Type="Self.Instruction_Type" Multiplicity="0..1" />
+          <End Role="Trade_Instruction" Type="Self.Trade_Instruction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instruction_Type">
+              <PropertyRef Name="instruction_type_id" />
+            </Principal>
+            <Dependent Role="Trade_Instruction">
+              <PropertyRef Name="instruction_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Length_Type">
+          <End Role="Length_Type" Type="Self.Length_Type" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Length_Type">
+              <PropertyRef Name="length_type_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="length_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tradable_Thing_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Tradable_Thing" Type="Self.Tradable_Thing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="location_id" />
+            </Principal>
+            <Dependent Role="Tradable_Thing">
+              <PropertyRef Name="location_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Performance_Measure_Type">
+          <End Role="Measure_Type" Type="Self.Measure_Type" Multiplicity="0..1" />
+          <End Role="Trade_Performance" Type="Self.Trade_Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Measure_Type">
+              <PropertyRef Name="measure_type_id" />
+            </Principal>
+            <Dependent Role="Trade_Performance">
+              <PropertyRef Name="measure_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Position_Relativity">
+          <End Role="Relativity" Type="Self.Relativity" Multiplicity="0..1" />
+          <End Role="Position" Type="Self.Position" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Relativity">
+              <PropertyRef Name="relativity_id" />
+            </Principal>
+            <Dependent Role="Position">
+              <PropertyRef Name="position_relativity_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Line_Position">
+          <End Role="Position" Type="Self.Position" Multiplicity="0..1" />
+          <End Role="Trade_Line" Type="Self.Trade_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="position_id" />
+            </Principal>
+            <Dependent Role="Trade_Line">
+              <PropertyRef Name="position_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Related_Trade_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="1" />
+          <End Role="Related_Trade" Type="Self.Related_Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Related_Trade">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Related_Trade_Trade1">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="1" />
+          <End Role="Related_Trade" Type="Self.Related_Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Related_Trade">
+              <PropertyRef Name="related_trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Instruction_Relativity">
+          <End Role="Relativity" Type="Self.Relativity" Multiplicity="0..1" />
+          <End Role="Trade_Instruction" Type="Self.Trade_Instruction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Relativity">
+              <PropertyRef Name="relativity_id" />
+            </Principal>
+            <Dependent Role="Trade_Instruction">
+              <PropertyRef Name="relativity_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Relativity">
+          <End Role="Relativity" Type="Self.Relativity" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Relativity">
+              <PropertyRef Name="relativity_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="relativity_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Service">
+          <End Role="Service" Type="Self.Service" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="service_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="service_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="status_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Structure_Type">
+          <End Role="Structure_Type" Type="Self.Structure_Type" Multiplicity="0..1" />
+          <End Role="Trade" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Structure_Type">
+              <PropertyRef Name="structure_type_id" />
+            </Principal>
+            <Dependent Role="Trade">
+              <PropertyRef Name="structure_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Track_Record_Track_Record_Type">
+          <End Role="Track_Record_Type" Type="Self.Track_Record_Type" Multiplicity="0..1" />
+          <End Role="Track_Record" Type="Self.Track_Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Track_Record_Type">
+              <PropertyRef Name="track_record_type_id" />
+            </Principal>
+            <Dependent Role="Track_Record">
+              <PropertyRef Name="track_record_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Track_Record_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="0..1" />
+          <End Role="Track_Record" Type="Self.Track_Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Track_Record">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tradable_Thing_Tradable_Thing_Class">
+          <End Role="Tradable_Thing_Class" Type="Self.Tradable_Thing_Class" Multiplicity="0..1" />
+          <End Role="Tradable_Thing" Type="Self.Tradable_Thing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tradable_Thing_Class">
+              <PropertyRef Name="tradable_thing_class_id" />
+            </Principal>
+            <Dependent Role="Tradable_Thing">
+              <PropertyRef Name="tradable_thing_class_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Line_Tradable_Thing">
+          <End Role="Tradable_Thing" Type="Self.Tradable_Thing" Multiplicity="0..1" />
+          <End Role="Trade_Line" Type="Self.Trade_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tradable_Thing">
+              <PropertyRef Name="tradable_thing_id" />
+            </Principal>
+            <Dependent Role="Trade_Line">
+              <PropertyRef Name="tradable_thing_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Comment_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="0..1" />
+          <End Role="Trade_Comment" Type="Self.Trade_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Trade_Comment">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Instruction_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="0..1" />
+          <End Role="Trade_Instruction" Type="Self.Trade_Instruction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Trade_Instruction">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Line_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="0..1" />
+          <End Role="Trade_Line" Type="Self.Trade_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Trade_Line">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Performance_Trade">
+          <End Role="Trade" Type="Self.Trade" Multiplicity="0..1" />
+          <End Role="Trade_Performance" Type="Self.Trade_Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade">
+              <PropertyRef Name="trade_id" />
+            </Principal>
+            <Dependent Role="Trade_Performance">
+              <PropertyRef Name="trade_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Line_Trade_Line_Group">
+          <End Role="Trade_Line_Group" Type="Self.Trade_Line_Group" Multiplicity="0..1" />
+          <End Role="Trade_Line" Type="Self.Trade_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade_Line_Group">
+              <PropertyRef Name="trade_line_group_id" />
+            </Principal>
+            <Dependent Role="Trade_Line">
+              <PropertyRef Name="trade_line_group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trade_Line_Group_Trade_Line_Group_Type">
+          <End Role="Trade_Line_Group_Type" Type="Self.Trade_Line_Group_Type" Multiplicity="0..1" />
+          <End Role="Trade_Line_Group" Type="Self.Trade_Line_Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trade_Line_Group_Type">
+              <PropertyRef Name="trade_line_group_type_id" />
+            </Principal>
+            <Dependent Role="Trade_Line_Group">
+              <PropertyRef Name="trade_line_group_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BCATradeEntitiesConnection" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Benchmarks" EntityType="Self.Benchmark" />
+          <EntitySet Name="Currencies" EntityType="Self.Currency" />
+          <EntitySet Name="Hedge_Type" EntityType="Self.Hedge_Type" />
+          <EntitySet Name="Instruction_Type" EntityType="Self.Instruction_Type" />
+          <EntitySet Name="Length_Type" EntityType="Self.Length_Type" />
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="Measure_Type" EntityType="Self.Measure_Type" />
+          <EntitySet Name="MSpeer_lsns" EntityType="Self.MSpeer_lsns" />
+          <EntitySet Name="Positions" EntityType="Self.Position" />
+          <EntitySet Name="Related_Trade" EntityType="Self.Related_Trade" />
+          <EntitySet Name="Relativities" EntityType="Self.Relativity" />
+          <EntitySet Name="Services" EntityType="Self.Service" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
+          <EntitySet Name="Structure_Type" EntityType="Self.Structure_Type" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="sysreplservers" EntityType="Self.sysreplserver" />
+          <EntitySet Name="Track_Record" EntityType="Self.Track_Record" />
+          <EntitySet Name="Track_Record_Type" EntityType="Self.Track_Record_Type" />
+          <EntitySet Name="Tradable_Thing" EntityType="Self.Tradable_Thing" />
+          <EntitySet Name="Tradable_Thing_Class" EntityType="Self.Tradable_Thing_Class" />
+          <EntitySet Name="Trades" EntityType="Self.Trade" />
+          <EntitySet Name="Trade_Comment" EntityType="Self.Trade_Comment" />
+          <EntitySet Name="Trade_Instruction" EntityType="Self.Trade_Instruction" />
+          <EntitySet Name="Trade_Line" EntityType="Self.Trade_Line" />
+          <EntitySet Name="Trade_Line_Group" EntityType="Self.Trade_Line_Group" />
+          <EntitySet Name="Trade_Line_Group_Type" EntityType="Self.Trade_Line_Group_Type" />
+          <EntitySet Name="Trade_Performance" EntityType="Self.Trade_Performance" />
+          <EntitySet Name="MSpeer_request" EntityType="Self.MSpeer_request" />
+          <EntitySet Name="MSpeer_response" EntityType="Self.MSpeer_response" />
+          <EntitySet Name="MSpub_identity_range" EntityType="Self.MSpub_identity_range" />
+          <EntitySet Name="sysarticlecolumns" EntityType="Self.sysarticlecolumn" />
+          <EntitySet Name="sysarticles" EntityType="Self.sysarticle" />
+          <EntitySet Name="sysarticleupdates" EntityType="Self.sysarticleupdate" />
+          <EntitySet Name="syspublications" EntityType="Self.syspublication" />
+          <EntitySet Name="sysschemaarticles" EntityType="Self.sysschemaarticle" />
+          <EntitySet Name="syssubscriptions" EntityType="Self.syssubscription" />
+          <EntitySet Name="systranschemas" EntityType="Self.systranschema" />
+          <AssociationSet Name="FK_Trade_Benchmark" Association="Self.FK_Trade_Benchmark">
+            <End Role="Benchmark" EntitySet="Benchmarks" />
+            <End Role="Trade" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Performance_Benchmark" Association="Self.FK_Trade_Performance_Benchmark">
+            <End Role="Benchmark" EntitySet="Benchmarks" />
+            <End Role="Trade_Performance" EntitySet="Trade_Performance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Currency" Association="Self.FK_Trade_Currency">
+            <End Role="Currency" EntitySet="Currencies" />
+            <End Role="Trade" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Performance_Currency" Association="Self.FK_Trade_Performance_Currency">
+            <End Role="Currency" EntitySet="Currencies" />
+            <End Role="Trade_Performance" EntitySet="Trade_Performance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Instruction_Hedge_Type" Association="Self.FK_Trade_Instruction_Hedge_Type">
+            <End Role="Hedge_Type" EntitySet="Hedge_Type" />
+            <End Role="Trade_Instruction" EntitySet="Trade_Instruction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Instruction_Instruction_Type" Association="Self.FK_Trade_Instruction_Instruction_Type">
+            <End Role="Instruction_Type" EntitySet="Instruction_Type" />
+            <End Role="Trade_Instruction" EntitySet="Trade_Instruction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Length_Type" Association="Self.FK_Trade_Length_Type">
+            <End Role="Length_Type" EntitySet="Length_Type" />
+            <End Role="Trade" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tradable_Thing_Location" Association="Self.FK_Tradable_Thing_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Tradable_Thing" EntitySet="Tradable_Thing" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Performance_Measure_Type" Association="Self.FK_Trade_Performance_Measure_Type">
+            <End Role="Measure_Type" EntitySet="Measure_Type" />
+            <End Role="Trade_Performance" EntitySet="Trade_Performance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Position_Relativity" Association="Self.FK_Position_Relativity">
+            <End Role="Relativity" EntitySet="Relativities" />
+            <End Role="Position" EntitySet="Positions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Line_Position" Association="Self.FK_Trade_Line_Position">
+            <End Role="Position" EntitySet="Positions" />
+            <End Role="Trade_Line" EntitySet="Trade_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Related_Trade_Trade" Association="Self.FK_Related_Trade_Trade">
+            <End Role="Trade" EntitySet="Trades" />
+            <End Role="Related_Trade" EntitySet="Related_Trade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Related_Trade_Trade1" Association="Self.FK_Related_Trade_Trade1">
+            <End Role="Trade" EntitySet="Trades" />
+            <End Role="Related_Trade" EntitySet="Related_Trade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Instruction_Relativity" Association="Self.FK_Trade_Instruction_Relativity">
+            <End Role="Relativity" EntitySet="Relativities" />
+            <End Role="Trade_Instruction" EntitySet="Trade_Instruction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Relativity" Association="Self.FK_Trade_Relativity">
+            <End Role="Relativity" EntitySet="Relativities" />
+            <End Role="Trade" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Service" Association="Self.FK_Trade_Service">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="Trade" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Status" Association="Self.FK_Trade_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Trade" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Structure_Type" Association="Self.FK_Trade_Structure_Type">
+            <End Role="Structure_Type" EntitySet="Structure_Type" />
+            <End Role="Trade" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Track_Record_Track_Record_Type" Association="Self.FK_Track_Record_Track_Record_Type">
+            <End Role="Track_Record_Type" EntitySet="Track_Record_Type" />
+            <End Role="Track_Record" EntitySet="Track_Record" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Track_Record_Trade" Association="Self.FK_Track_Record_Trade">
+            <End Role="Trade" EntitySet="Trades" />
+            <End Role="Track_Record" EntitySet="Track_Record" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tradable_Thing_Tradable_Thing_Class" Association="Self.FK_Tradable_Thing_Tradable_Thing_Class">
+            <End Role="Tradable_Thing_Class" EntitySet="Tradable_Thing_Class" />
+            <End Role="Tradable_Thing" EntitySet="Tradable_Thing" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Line_Tradable_Thing" Association="Self.FK_Trade_Line_Tradable_Thing">
+            <End Role="Tradable_Thing" EntitySet="Tradable_Thing" />
+            <End Role="Trade_Line" EntitySet="Trade_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Comment_Trade" Association="Self.FK_Trade_Comment_Trade">
+            <End Role="Trade" EntitySet="Trades" />
+            <End Role="Trade_Comment" EntitySet="Trade_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Instruction_Trade" Association="Self.FK_Trade_Instruction_Trade">
+            <End Role="Trade" EntitySet="Trades" />
+            <End Role="Trade_Instruction" EntitySet="Trade_Instruction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Line_Trade" Association="Self.FK_Trade_Line_Trade">
+            <End Role="Trade" EntitySet="Trades" />
+            <End Role="Trade_Line" EntitySet="Trade_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Performance_Trade" Association="Self.FK_Trade_Performance_Trade">
+            <End Role="Trade" EntitySet="Trades" />
+            <End Role="Trade_Performance" EntitySet="Trade_Performance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Line_Trade_Line_Group" Association="Self.FK_Trade_Line_Trade_Line_Group">
+            <End Role="Trade_Line_Group" EntitySet="Trade_Line_Group" />
+            <End Role="Trade_Line" EntitySet="Trade_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trade_Line_Group_Trade_Line_Group_Type" Association="Self.FK_Trade_Line_Group_Trade_Line_Group_Type">
+            <End Role="Trade_Line_Group_Type" EntitySet="Trade_Line_Group_Type" />
+            <End Role="Trade_Line_Group" EntitySet="Trade_Line_Group" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BCATradeDataStoreContainer" CdmEntityContainer="BCATradeEntitiesConnection">
+          <EntitySetMapping Name="Benchmarks">
+            <EntityTypeMapping TypeName="BCATradeData.Benchmark">
+              <MappingFragment StoreEntitySet="Benchmark">
+                <ScalarProperty Name="benchmark_id" ColumnName="benchmark_id" />
+                <ScalarProperty Name="benchmark_uri" ColumnName="benchmark_uri" />
+                <ScalarProperty Name="benchmark_code" ColumnName="benchmark_code" />
+                <ScalarProperty Name="benchmark_label" ColumnName="benchmark_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Currencies">
+            <EntityTypeMapping TypeName="BCATradeData.Currency">
+              <MappingFragment StoreEntitySet="Currency">
+                <ScalarProperty Name="currency_id" ColumnName="currency_id" />
+                <ScalarProperty Name="currency_uri" ColumnName="currency_uri" />
+                <ScalarProperty Name="currency_code" ColumnName="currency_code" />
+                <ScalarProperty Name="currency_symbol" ColumnName="currency_symbol" />
+                <ScalarProperty Name="currency_label" ColumnName="currency_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hedge_Type">
+            <EntityTypeMapping TypeName="BCATradeData.Hedge_Type">
+              <MappingFragment StoreEntitySet="Hedge_Type">
+                <ScalarProperty Name="hedge_id" ColumnName="hedge_id" />
+                <ScalarProperty Name="hedge_label" ColumnName="hedge_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Instruction_Type">
+            <EntityTypeMapping TypeName="BCATradeData.Instruction_Type">
+              <MappingFragment StoreEntitySet="Instruction_Type">
+                <ScalarProperty Name="instruction_type_id" ColumnName="instruction_type_id" />
+                <ScalarProperty Name="instruction_type_label" ColumnName="instruction_type_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Length_Type">
+            <EntityTypeMapping TypeName="BCATradeData.Length_Type">
+              <MappingFragment StoreEntitySet="Length_Type">
+                <ScalarProperty Name="length_type_id" ColumnName="length_type_id" />
+                <ScalarProperty Name="length_type_label" ColumnName="length_type_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="BCATradeData.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="location_id" ColumnName="location_id" />
+                <ScalarProperty Name="location_uri" ColumnName="location_uri" />
+                <ScalarProperty Name="location_code" ColumnName="location_code" />
+                <ScalarProperty Name="location_label" ColumnName="location_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Measure_Type">
+            <EntityTypeMapping TypeName="BCATradeData.Measure_Type">
+              <MappingFragment StoreEntitySet="Measure_Type">
+                <ScalarProperty Name="measure_type_id" ColumnName="measure_type_id" />
+                <ScalarProperty Name="measure_type_label" ColumnName="measure_type_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MSpeer_lsns">
+            <EntityTypeMapping TypeName="BCATradeData.MSpeer_lsns">
+              <MappingFragment StoreEntitySet="MSpeer_lsns">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+                <ScalarProperty Name="originator" ColumnName="originator" />
+                <ScalarProperty Name="originator_db" ColumnName="originator_db" />
+                <ScalarProperty Name="originator_publication" ColumnName="originator_publication" />
+                <ScalarProperty Name="originator_publication_id" ColumnName="originator_publication_id" />
+                <ScalarProperty Name="originator_db_version" ColumnName="originator_db_version" />
+                <ScalarProperty Name="originator_lsn" ColumnName="originator_lsn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Positions">
+            <EntityTypeMapping TypeName="BCATradeData.Position">
+              <MappingFragment StoreEntitySet="Position">
+                <ScalarProperty Name="position_id" ColumnName="position_id" />
+                <ScalarProperty Name="position_uri" ColumnName="position_uri" />
+                <ScalarProperty Name="position_label" ColumnName="position_label" />
+                <ScalarProperty Name="position_relativity_id" ColumnName="position_relativity_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Related_Trade">
+            <EntityTypeMapping TypeName="BCATradeData.Related_Trade">
+              <MappingFragment StoreEntitySet="Related_Trade">
+                <ScalarProperty Name="trade_id" ColumnName="trade_id" />
+                <ScalarProperty Name="related_trade_id" ColumnName="related_trade_id" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Relativities">
+            <EntityTypeMapping TypeName="BCATradeData.Relativity">
+              <MappingFragment StoreEntitySet="Relativity">
+                <ScalarProperty Name="relativity_id" ColumnName="relativity_id" />
+                <ScalarProperty Name="relativity_label" ColumnName="relativity_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Services">
+            <EntityTypeMapping TypeName="BCATradeData.Service">
+              <MappingFragment StoreEntitySet="Service">
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="service_uri" ColumnName="service_uri" />
+                <ScalarProperty Name="service_code" ColumnName="service_code" />
+                <ScalarProperty Name="service_label" ColumnName="service_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="BCATradeData.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="status_label" ColumnName="status_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Structure_Type">
+            <EntityTypeMapping TypeName="BCATradeData.Structure_Type">
+              <MappingFragment StoreEntitySet="Structure_Type">
+                <ScalarProperty Name="structure_type_id" ColumnName="structure_type_id" />
+                <ScalarProperty Name="structure_type_label" ColumnName="structure_type_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BCATradeData.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysreplservers">
+            <EntityTypeMapping TypeName="BCATradeData.sysreplserver">
+              <MappingFragment StoreEntitySet="sysreplservers">
+                <ScalarProperty Name="srvname" ColumnName="srvname" />
+                <ScalarProperty Name="srvid" ColumnName="srvid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Track_Record">
+            <EntityTypeMapping TypeName="BCATradeData.Track_Record">
+              <MappingFragment StoreEntitySet="Track_Record">
+                <ScalarProperty Name="track_record_id" ColumnName="track_record_id" />
+                <ScalarProperty Name="trade_id" ColumnName="trade_id" />
+                <ScalarProperty Name="track_record_type_id" ColumnName="track_record_type_id" />
+                <ScalarProperty Name="track_record_value" ColumnName="track_record_value" />
+                <ScalarProperty Name="track_record_date" ColumnName="track_record_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Track_Record_Type">
+            <EntityTypeMapping TypeName="BCATradeData.Track_Record_Type">
+              <MappingFragment StoreEntitySet="Track_Record_Type">
+                <ScalarProperty Name="track_record_type_id" ColumnName="track_record_type_id" />
+                <ScalarProperty Name="track_record_type_label" ColumnName="track_record_type_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tradable_Thing">
+            <EntityTypeMapping TypeName="BCATradeData.Tradable_Thing">
+              <MappingFragment StoreEntitySet="Tradable_Thing">
+                <ScalarProperty Name="tradable_thing_id" ColumnName="tradable_thing_id" />
+                <ScalarProperty Name="tradable_thing_uri" ColumnName="tradable_thing_uri" />
+                <ScalarProperty Name="tradable_thing_class_id" ColumnName="tradable_thing_class_id" />
+                <ScalarProperty Name="location_id" ColumnName="location_id" />
+                <ScalarProperty Name="tradable_thing_code" ColumnName="tradable_thing_code" />
+                <ScalarProperty Name="tradable_thing_label" ColumnName="tradable_thing_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tradable_Thing_Class">
+            <EntityTypeMapping TypeName="BCATradeData.Tradable_Thing_Class">
+              <MappingFragment StoreEntitySet="Tradable_Thing_Class">
+                <ScalarProperty Name="tradable_thing_class_id" ColumnName="tradable_thing_class_id" />
+                <ScalarProperty Name="tradable_thing_class_uri" ColumnName="tradable_thing_class_uri" />
+                <ScalarProperty Name="tradable_thing_class_label" ColumnName="tradable_thing_class_label" />
+                <ScalarProperty Name="tradable_thing_class_editorial_label" ColumnName="tradable_thing_class_editorial_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trades">
+            <EntityTypeMapping TypeName="BCATradeData.Trade">
+              <MappingFragment StoreEntitySet="Trade">
+                <ScalarProperty Name="trade_id" ColumnName="trade_id" />
+                <ScalarProperty Name="trade_uri" ColumnName="trade_uri" />
+                <ScalarProperty Name="relativity_id" ColumnName="relativity_id" />
+                <ScalarProperty Name="length_type_id" ColumnName="length_type_id" />
+                <ScalarProperty Name="structure_type_id" ColumnName="structure_type_id" />
+                <ScalarProperty Name="service_id" ColumnName="service_id" />
+                <ScalarProperty Name="currency_id" ColumnName="currency_id" />
+                <ScalarProperty Name="benchmark_id" ColumnName="benchmark_id" />
+                <ScalarProperty Name="trade_label" ColumnName="trade_label" />
+                <ScalarProperty Name="trade_editorial_label" ColumnName="trade_editorial_label" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trade_Comment">
+            <EntityTypeMapping TypeName="BCATradeData.Trade_Comment">
+              <MappingFragment StoreEntitySet="Trade_Comment">
+                <ScalarProperty Name="comment_id" ColumnName="comment_id" />
+                <ScalarProperty Name="trade_id" ColumnName="trade_id" />
+                <ScalarProperty Name="comment_label" ColumnName="comment_label" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trade_Instruction">
+            <EntityTypeMapping TypeName="BCATradeData.Trade_Instruction">
+              <MappingFragment StoreEntitySet="Trade_Instruction">
+                <ScalarProperty Name="trade_instruction_id" ColumnName="trade_instruction_id" />
+                <ScalarProperty Name="trade_id" ColumnName="trade_id" />
+                <ScalarProperty Name="relativity_id" ColumnName="relativity_id" />
+                <ScalarProperty Name="instruction_type_id" ColumnName="instruction_type_id" />
+                <ScalarProperty Name="hedge_id" ColumnName="hedge_id" />
+                <ScalarProperty Name="instruction_entry" ColumnName="instruction_entry" />
+                <ScalarProperty Name="instruction_entry_date" ColumnName="instruction_entry_date" />
+                <ScalarProperty Name="instruction_exit" ColumnName="instruction_exit" />
+                <ScalarProperty Name="instruction_exit_date" ColumnName="instruction_exit_date" />
+                <ScalarProperty Name="instruction_label" ColumnName="instruction_label" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trade_Line">
+            <EntityTypeMapping TypeName="BCATradeData.Trade_Line">
+              <MappingFragment StoreEntitySet="Trade_Line">
+                <ScalarProperty Name="trade_line_id" ColumnName="trade_line_id" />
+                <ScalarProperty Name="trade_line_uri" ColumnName="trade_line_uri" />
+                <ScalarProperty Name="trade_id" ColumnName="trade_id" />
+                <ScalarProperty Name="trade_line_group_id" ColumnName="trade_line_group_id" />
+                <ScalarProperty Name="tradable_thing_id" ColumnName="tradable_thing_id" />
+                <ScalarProperty Name="position_id" ColumnName="position_id" />
+                <ScalarProperty Name="trade_line_label" ColumnName="trade_line_label" />
+                <ScalarProperty Name="trade_line_editorial_label" ColumnName="trade_line_editorial_label" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trade_Line_Group">
+            <EntityTypeMapping TypeName="BCATradeData.Trade_Line_Group">
+              <MappingFragment StoreEntitySet="Trade_Line_Group">
+                <ScalarProperty Name="trade_line_group_id" ColumnName="trade_line_group_id" />
+                <ScalarProperty Name="trade_line_group_type_id" ColumnName="trade_line_group_type_id" />
+                <ScalarProperty Name="trade_line_group_uri" ColumnName="trade_line_group_uri" />
+                <ScalarProperty Name="trade_line_group_label" ColumnName="trade_line_group_label" />
+                <ScalarProperty Name="trade_line_group_editorial_label" ColumnName="trade_line_group_editorial_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trade_Line_Group_Type">
+            <EntityTypeMapping TypeName="BCATradeData.Trade_Line_Group_Type">
+              <MappingFragment StoreEntitySet="Trade_Line_Group_Type">
+                <ScalarProperty Name="trade_line_group_type_id" ColumnName="trade_line_group_type_id" />
+                <ScalarProperty Name="trade_line_group_type_uri" ColumnName="trade_line_group_type_uri" />
+                <ScalarProperty Name="trade_line_group_type_label" ColumnName="trade_line_group_type_label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trade_Performance">
+            <EntityTypeMapping TypeName="BCATradeData.Trade_Performance">
+              <MappingFragment StoreEntitySet="Trade_Performance">
+                <ScalarProperty Name="trade_performance_id" ColumnName="trade_performance_id" />
+                <ScalarProperty Name="trade_id" ColumnName="trade_id" />
+                <ScalarProperty Name="measure_type_id" ColumnName="measure_type_id" />
+                <ScalarProperty Name="return_apl_function" ColumnName="return_apl_function" />
+                <ScalarProperty Name="return_currency_id" ColumnName="return_currency_id" />
+                <ScalarProperty Name="return_benchmark_id" ColumnName="return_benchmark_id" />
+                <ScalarProperty Name="return_value" ColumnName="return_value" />
+                <ScalarProperty Name="return_date" ColumnName="return_date" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="last_updated" ColumnName="last_updated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MSpeer_request">
+            <EntityTypeMapping TypeName="BCATradeData.MSpeer_request">
+              <MappingFragment StoreEntitySet="MSpeer_request">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="publication" ColumnName="publication" />
+                <ScalarProperty Name="sent_date" ColumnName="sent_date" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MSpeer_response">
+            <EntityTypeMapping TypeName="BCATradeData.MSpeer_response">
+              <MappingFragment StoreEntitySet="MSpeer_response">
+                <ScalarProperty Name="request_id" ColumnName="request_id" />
+                <ScalarProperty Name="peer" ColumnName="peer" />
+                <ScalarProperty Name="peer_db" ColumnName="peer_db" />
+                <ScalarProperty Name="received_date" ColumnName="received_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MSpub_identity_range">
+            <EntityTypeMapping TypeName="BCATradeData.MSpub_identity_range">
+              <MappingFragment StoreEntitySet="MSpub_identity_range">
+                <ScalarProperty Name="objid" ColumnName="objid" />
+                <ScalarProperty Name="range" ColumnName="range" />
+                <ScalarProperty Name="pub_range" ColumnName="pub_range" />
+                <ScalarProperty Name="current_pub_range" ColumnName="current_pub_range" />
+                <ScalarProperty Name="threshold" ColumnName="threshold" />
+                <ScalarProperty Name="last_seed" ColumnName="last_seed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysarticlecolumns">
+            <EntityTypeMapping TypeName="BCATradeData.sysarticlecolumn">
+              <MappingFragment StoreEntitySet="sysarticlecolumns">
+                <ScalarProperty Name="artid" ColumnName="artid" />
+                <ScalarProperty Name="colid" ColumnName="colid" />
+                <ScalarProperty Name="is_udt" ColumnName="is_udt" />
+                <ScalarProperty Name="is_xml" ColumnName="is_xml" />
+                <ScalarProperty Name="is_max" ColumnName="is_max" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysarticles">
+            <EntityTypeMapping TypeName="BCATradeData.sysarticle">
+              <MappingFragment StoreEntitySet="sysarticles">
+                <ScalarProperty Name="artid" ColumnName="artid" />
+                <ScalarProperty Name="creation_script" ColumnName="creation_script" />
+                <ScalarProperty Name="del_cmd" ColumnName="del_cmd" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="dest_table" ColumnName="dest_table" />
+                <ScalarProperty Name="filter" ColumnName="filter" />
+                <ScalarProperty Name="filter_clause" ColumnName="filter_clause" />
+                <ScalarProperty Name="ins_cmd" ColumnName="ins_cmd" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="objid" ColumnName="objid" />
+                <ScalarProperty Name="pubid" ColumnName="pubid" />
+                <ScalarProperty Name="pre_creation_cmd" ColumnName="pre_creation_cmd" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="sync_objid" ColumnName="sync_objid" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="upd_cmd" ColumnName="upd_cmd" />
+                <ScalarProperty Name="schema_option" ColumnName="schema_option" />
+                <ScalarProperty Name="dest_owner" ColumnName="dest_owner" />
+                <ScalarProperty Name="ins_scripting_proc" ColumnName="ins_scripting_proc" />
+                <ScalarProperty Name="del_scripting_proc" ColumnName="del_scripting_proc" />
+                <ScalarProperty Name="upd_scripting_proc" ColumnName="upd_scripting_proc" />
+                <ScalarProperty Name="custom_script" ColumnName="custom_script" />
+                <ScalarProperty Name="fire_triggers_on_snapshot" ColumnName="fire_triggers_on_snapshot" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysarticleupdates">
+            <EntityTypeMapping TypeName="BCATradeData.sysarticleupdate">
+              <MappingFragment StoreEntitySet="sysarticleupdates">
+                <ScalarProperty Name="artid" ColumnName="artid" />
+                <ScalarProperty Name="pubid" ColumnName="pubid" />
+                <ScalarProperty Name="sync_ins_proc" ColumnName="sync_ins_proc" />
+                <ScalarProperty Name="sync_upd_proc" ColumnName="sync_upd_proc" />
+                <ScalarProperty Name="sync_del_proc" ColumnName="sync_del_proc" />
+                <ScalarProperty Name="autogen" ColumnName="autogen" />
+                <ScalarProperty Name="sync_upd_trig" ColumnName="sync_upd_trig" />
+                <ScalarProperty Name="conflict_tableid" ColumnName="conflict_tableid" />
+                <ScalarProperty Name="ins_conflict_proc" ColumnName="ins_conflict_proc" />
+                <ScalarProperty Name="identity_support" ColumnName="identity_support" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="syspublications">
+            <EntityTypeMapping TypeName="BCATradeData.syspublication">
+              <MappingFragment StoreEntitySet="syspublications">
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="pubid" ColumnName="pubid" />
+                <ScalarProperty Name="repl_freq" ColumnName="repl_freq" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="sync_method" ColumnName="sync_method" />
+                <ScalarProperty Name="snapshot_jobid" ColumnName="snapshot_jobid" />
+                <ScalarProperty Name="independent_agent" ColumnName="independent_agent" />
+                <ScalarProperty Name="immediate_sync" ColumnName="immediate_sync" />
+                <ScalarProperty Name="enabled_for_internet" ColumnName="enabled_for_internet" />
+                <ScalarProperty Name="allow_push" ColumnName="allow_push" />
+                <ScalarProperty Name="allow_pull" ColumnName="allow_pull" />
+                <ScalarProperty Name="allow_anonymous" ColumnName="allow_anonymous" />
+                <ScalarProperty Name="immediate_sync_ready" ColumnName="immediate_sync_ready" />
+                <ScalarProperty Name="allow_sync_tran" ColumnName="allow_sync_tran" />
+                <ScalarProperty Name="autogen_sync_procs" ColumnName="autogen_sync_procs" />
+                <ScalarProperty Name="retention" ColumnName="retention" />
+                <ScalarProperty Name="allow_queued_tran" ColumnName="allow_queued_tran" />
+                <ScalarProperty Name="snapshot_in_defaultfolder" ColumnName="snapshot_in_defaultfolder" />
+                <ScalarProperty Name="alt_snapshot_folder" ColumnName="alt_snapshot_folder" />
+                <ScalarProperty Name="pre_snapshot_script" ColumnName="pre_snapshot_script" />
+                <ScalarProperty Name="post_snapshot_script" ColumnName="post_snapshot_script" />
+                <ScalarProperty Name="compress_snapshot" ColumnName="compress_snapshot" />
+                <ScalarProperty Name="ftp_address" ColumnName="ftp_address" />
+                <ScalarProperty Name="ftp_port" ColumnName="ftp_port" />
+                <ScalarProperty Name="ftp_subdirectory" ColumnName="ftp_subdirectory" />
+                <ScalarProperty Name="ftp_login" ColumnName="ftp_login" />
+                <ScalarProperty Name="ftp_password" ColumnName="ftp_password" />
+                <ScalarProperty Name="allow_dts" ColumnName="allow_dts" />
+                <ScalarProperty Name="allow_subscription_copy" ColumnName="allow_subscription_copy" />
+                <ScalarProperty Name="centralized_conflicts" ColumnName="centralized_conflicts" />
+                <ScalarProperty Name="conflict_retention" ColumnName="conflict_retention" />
+                <ScalarProperty Name="conflict_policy" ColumnName="conflict_policy" />
+                <ScalarProperty Name="queue_type" ColumnName="queue_type" />
+                <ScalarProperty Name="ad_guidname" ColumnName="ad_guidname" />
+                <ScalarProperty Name="backward_comp_level" ColumnName="backward_comp_level" />
+                <ScalarProperty Name="allow_initialize_from_backup" ColumnName="allow_initialize_from_backup" />
+                <ScalarProperty Name="min_autonosync_lsn" ColumnName="min_autonosync_lsn" />
+                <ScalarProperty Name="replicate_ddl" ColumnName="replicate_ddl" />
+                <ScalarProperty Name="options" ColumnName="options" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysschemaarticles">
+            <EntityTypeMapping TypeName="BCATradeData.sysschemaarticle">
+              <MappingFragment StoreEntitySet="sysschemaarticles">
+                <ScalarProperty Name="artid" ColumnName="artid" />
+                <ScalarProperty Name="creation_script" ColumnName="creation_script" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="dest_object" ColumnName="dest_object" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="objid" ColumnName="objid" />
+                <ScalarProperty Name="pubid" ColumnName="pubid" />
+                <ScalarProperty Name="pre_creation_cmd" ColumnName="pre_creation_cmd" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="schema_option" ColumnName="schema_option" />
+                <ScalarProperty Name="dest_owner" ColumnName="dest_owner" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="syssubscriptions">
+            <EntityTypeMapping TypeName="BCATradeData.syssubscription">
+              <MappingFragment StoreEntitySet="syssubscriptions">
+                <ScalarProperty Name="artid" ColumnName="artid" />
+                <ScalarProperty Name="srvid" ColumnName="srvid" />
+                <ScalarProperty Name="dest_db" ColumnName="dest_db" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="sync_type" ColumnName="sync_type" />
+                <ScalarProperty Name="login_name" ColumnName="login_name" />
+                <ScalarProperty Name="subscription_type" ColumnName="subscription_type" />
+                <ScalarProperty Name="distribution_jobid" ColumnName="distribution_jobid" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="update_mode" ColumnName="update_mode" />
+                <ScalarProperty Name="loopback_detection" ColumnName="loopback_detection" />
+                <ScalarProperty Name="queued_reinit" ColumnName="queued_reinit" />
+                <ScalarProperty Name="nosync_type" ColumnName="nosync_type" />
+                <ScalarProperty Name="srvname" ColumnName="srvname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="systranschemas">
+            <EntityTypeMapping TypeName="BCATradeData.systranschema">
+              <MappingFragment StoreEntitySet="systranschemas">
+                <ScalarProperty Name="tabid" ColumnName="tabid" />
+                <ScalarProperty Name="startlsn" ColumnName="startlsn" />
+                <ScalarProperty Name="endlsn" ColumnName="endlsn" />
+                <ScalarProperty Name="typeid" ColumnName="typeid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

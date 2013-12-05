@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "BCA Trades Application";
+}
+
+<h3>Welcome to BCA Trades App</h3>
+<ol class="round">
+    <li>
+        <h5></h5>
+        <a href="/trades/index">View trades list</a>
+    </li>
+
+    <li class="two">
+        <h5></h5>
+    </li>
+
+    <li class="three">
+        <h5></h5>
+    </li>
+</ol>

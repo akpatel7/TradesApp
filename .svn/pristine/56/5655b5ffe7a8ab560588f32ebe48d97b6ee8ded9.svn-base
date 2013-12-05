@@ -1,0 +1,23 @@
+using System;
+using System.Collections.Generic;
+
+namespace TradesDataModel
+{
+    public class Currency
+    {
+        public Currency()
+        {
+            this.Trades = new HashSet<Trade>();
+            this.Trade_Performance = new HashSet<Trade_Performance>();
+        }
+    
+        public int currency_id { get; set; }
+        public string currency_uri { get; set; }
+        public string currency_code { get; set; }
+        public string currency_symbol { get; set; }
+        public string currency_label { get; set; }
+    
+        public virtual ICollection<Trade> Trades { get; set; }
+        public virtual ICollection<Trade_Performance> Trade_Performance { get; set; }
+    }
+}

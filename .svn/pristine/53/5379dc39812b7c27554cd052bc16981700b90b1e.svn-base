@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+
+namespace TradesWebApplication.Data
+{
+    public class TradeEntitiesDataService: DbContext, ITradeEntitiesDataService
+    {
+        public TradeEntitiesDataService()
+            : base("name=BCATrade_devEntities")
+        {
+        }
+
+        IQueryable<T> ITradeEntitiesDataService.Query<T>() 
+        {
+            throw new NotImplementedException();
+        }
+
+        void ITradeEntitiesDataService.Add<T>(T entity)
+        {
+            Set<T>().Add(entity);
+        }
+
+        void ITradeEntitiesDataService.Update<T>(T entity)
+        {
+            Entry(entity).State = EntityState.Modified;
+        }
+
+        void ITradeEntitiesDataService.Remove<T>(T entity)
+        {
+            Set<T>().Remove(entity);
+        }
+
+        void ITradeEntitiesDataService.SaveChanges()
+        {
+            SaveChanges();
+        }
+        
+    }
+}

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<TradesViewModel.TradeViewModel>
+
+@*<p>
+    @Html.ActionLink("Create New", "TradesCreation")
+</p>*@
+<table>
+    <tr>
+        <th>
+            @*Html.DisplayNameFor(model => model.trade_id)*@
+            Id
+        </th>
+        <th>
+            Relativity
+        </th>
+        <th>
+            Length
+        </th>
+        <th>
+            Structure
+        </th>
+        <th>
+            Service
+        </th>
+        <th>
+            Currency
+        </th>
+        <th>
+            Label
+        </th>
+        <th>
+            Created On
+        </th>
+        <!-- <th>
+            @*Html.DisplayNameFor(model => model.created_by)*@
+        </th> -->
+        <th>
+            Last Updated
+        </th>
+        <th>
+            Status
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TradeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BenchmarkTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TradeTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StructureTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrencyId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanonicalLabel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <!--<td>
+                @*Html.DisplayFor(modelItem => item.created_by)*@
+            </td>-->
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusId)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.trade_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.trade_id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.trade_id })*@
+            </td>
+        </tr>
+    }
+
+</table>

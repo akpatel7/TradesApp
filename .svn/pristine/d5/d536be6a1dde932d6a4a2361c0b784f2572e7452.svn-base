@@ -1,0 +1,17 @@
+﻿using System.Collections.Generic;
+using TradesDataModel;
+
+namespace TradesViewModel
+{
+    public class TradeLineViewModel
+    {
+        // position
+        public int position_id { get; set; }
+
+        // financial insturment
+        public int tradable_thing_id { get; set; }
+
+        public List<Position> Positions { get; set; }
+        public List<Tradable_Thing> TradableThings { get; set; }
+    }
+}

@@ -1,0 +1,22 @@
+using System;
+using System.Collections.Generic;
+
+namespace TradesDataModel
+{
+    public class Trade_Line_Group
+    {
+        public Trade_Line_Group()
+        {
+            this.Trade_Line = new HashSet<Trade_Line>();
+        }
+    
+        public int trade_line_group_id { get; set; }
+        public Nullable<int> trade_line_group_type_id { get; set; }
+        public string trade_line_group_uri { get; set; }
+        public string trade_line_group_label { get; set; }
+        public string trade_line_group_editorial_label { get; set; }
+    
+        public virtual ICollection<Trade_Line> Trade_Line { get; set; }
+        public virtual Trade_Line_Group_Type Trade_Line_Group_Type { get; set; }
+    }
+}

@@ -1,0 +1,18 @@
+using System;
+using System.Collections.Generic;
+
+namespace TradesDataModel
+{ 
+    public  class Track_Record_Type
+    {
+        public Track_Record_Type()
+        {
+            this.Track_Record = new HashSet<Track_Record>();
+        }
+    
+        public int track_record_type_id { get; set; }
+        public string track_record_type_label { get; set; }
+    
+        public virtual ICollection<Track_Record> Track_Record { get; set; }
+    }
+}

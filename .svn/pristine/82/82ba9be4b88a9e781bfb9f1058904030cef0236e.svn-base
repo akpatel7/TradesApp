@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+
+namespace TradesDataModel
+{
+    public class Trade_Performance
+    {
+        public int trade_performance_id { get; set; }
+        public Nullable<int> trade_id { get; set; }
+        public Nullable<int> measure_type_id { get; set; }
+        public string return_apl_function { get; set; }
+        public Nullable<int> return_currency_id { get; set; }
+        public Nullable<int> return_benchmark_id { get; set; }
+        public string return_value { get; set; }
+        public Nullable<System.DateTime> return_date { get; set; }
+        public Nullable<System.DateTime> created_on { get; set; }
+        public Nullable<int> created_by { get; set; }
+        public Nullable<System.DateTime> last_updated { get; set; }
+    
+        public virtual Benchmark Benchmark { get; set; }
+        public virtual Currency Currency { get; set; }
+        public virtual Measure_Type Measure_Type { get; set; }
+        public virtual Trade Trade { get; set; }
+    }
+}

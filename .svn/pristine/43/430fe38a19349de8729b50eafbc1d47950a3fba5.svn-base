@@ -1,0 +1,86 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Mvc;
+//using TradesViewModel;
+
+
+namespace TradesApp.Controllers
+{
+
+    public class TradesController : Controller
+    {
+        //
+        // GET: /Trade/Create
+
+        public ActionResult Create()
+        {
+
+            string apiGroupUri = Url.HttpRouteUrl("DefaultApi", new { controller = "tradelinegroup", });
+            ViewBag.ApiGroupUrl = new Uri(Request.Url, apiGroupUri).AbsoluteUri.ToString();
+
+            string apiLineUri = Url.HttpRouteUrl("DefaultApi", new { controller = "tradeline", });
+            ViewBag.ApiLineUrl = new Uri(Request.Url, apiLineUri).AbsoluteUri.ToString();
+
+            //TradeViewModel trade = new TradeViewModel();
+            //trade.Services = db.Services.ToList();
+            //trade.Length_Types = db.Length_Type.ToList();
+            //trade.Benchmarks = db.Benchmarks.ToList();
+            //trade.Currencies = db.Currencies.ToList();
+            //trade.Structure_Types = db.Structure_Type.ToList();
+            //trade.Relativitys = db.Relativities.ToList();
+            //trade.created_on = System.DateTime.Now;//.ToString("yyyy-MM-dd HH:mm:ss");
+            ////tradeViewModel.Trade_Line_Group_Types = db.Trade_Line_Group_Type.ToList();
+            ////tradeViewModel.Positions = db.Positions.ToList();
+            ////tradeViewModel.Tradable_Things = db.Tradable_Thing.ToList();
+            //trade.Instruction_Types = db.Instruction_Type.ToList();
+            //trade.Hedge_Types = db.Hedge_Type.ToList();
+            //trade.Releated_Trades = db.Trades.ToList();
+            //trade.Measure_Types = db.Measure_Type.ToList();
+
+            //trade.length_type_id = 2;
+            //trade.relativity_id = 2;
+            //trade.structure_type_id = 4;
+            //trade.hedge_id = 2;
+            //trade.abs_measure_type_id = 1;
+            //trade.rel_measure_type_id = 2;
+
+            //return View(trade);
+
+            return View();
+        }
+
+
+        #region WebAPI
+        //// GET api/trades
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
+
+        //// GET api/trades/5
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
+
+        //// POST api/trades
+        //public void Post([FromBody]string value)
+        //{
+        //}
+
+        //// PUT api/trades/5
+        //public void Put(int id, [FromBody]string value)
+        //{
+        //}
+
+        //// DELETE api/trades/5
+        //public void Delete(int id)
+        //{
+        //}
+        #endregion
+    }
+}

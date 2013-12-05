@@ -1,0 +1,109 @@
+﻿using System.Collections.Generic;
+using TradesDataModel;
+
+namespace TradesViewModel
+{
+    public class TradeViewModel : ViewInformation
+    {
+        // Trade
+        public Trades Trade;
+        public List<Trades> Trades;
+ 
+        // Service
+        public int ServiceId { get; set; }
+        public List<Services> Services { get; set; }
+        
+        // Trade Type
+        public int TradeTypeId { get; set; }
+        public List<LengthTypes> TradeTypes { get; set; }
+        
+        // Benchmark
+        public int BenchmarkTypeId { get; set; }
+        public List<Relativities> BenchmarkType { get; set; }
+        
+        // Benchmark selection
+        // TODO: Typeahead Field
+        public int BenchmarkId { get; set; }
+        public List<Benchmarks> Benchmarks { get; set; }
+        
+        // canonical label
+        public string CanonicalLabel { get; set; }
+        
+        // editorial label
+        public string EditorialLabel { get; set; }
+
+        // update time - caluclated - hidden
+        public string CreatedOn { get; set; }
+        
+        ///***Groups
+        // trade structure
+        public int StructureTypeId { get; set; }
+        public List<StructureTypes> StructureTypes { get; set; }
+        //
+        // trade groups
+        public List<TradeLineGroups> TradeGroups { get; set; }
+        //
+        // trade line items
+        public List<TradeLines> TradeLines { get; set; } 
+        ///***
+        
+        ///***Instructions
+        // entry level
+        public decimal InstructionEntry { get; set; }
+        // start date
+        public string InstructionEntryDate { get; set; }
+        // exit level
+        public decimal? InstructionExit { get; set; }
+        // exit date
+        public string InstructionExitDate { get; set; }
+        // instruction
+        public int? InstructionTypeId { get; set; }
+        public List<InstructionTypes> InstructionTypes { get; set; }
+        public string InstructionLabel { get; set; }
+        // hedge instruction
+        public int? HedgeId { get; set; }
+        public List<HedgeTypes> HedgeInsructionTypes { get; set; }
+        // currency
+        // TODO: Typeahead Field
+        public int? CurrencyId { get; set; }
+        public List<Currencies> TradeExecutionCurrencies { get; set; }
+        ///***
+
+        ///*** supplementary info
+        // linked trades
+        // TODO: Typeahead Field
+        public int? RelatedTradeId { get; set; }
+        public List<Trades> ReleatedTrades { get; set; }
+        // APL function
+        public string AplFunction { get; set; }
+        ///
+
+        //***FX Spot and Carry
+        // mark to mark rate
+        public string MarkToMarketRate { get; set; }
+        // internset rate diff
+        public string InterestRateDifferential { get; set; }
+        //***
+        
+        ///*** absolute performance
+        public List<MeasureTypes> MeasureTypes { get; set; }
+        public int? AbsoluteMeasureTypeId { get; set; }
+        public int? AbsoluteCurrencyId { get; set; }
+        // return value
+        public string AbsoluteReturnValue { get; set; }
+        ///***
+        
+        ///*** rel performance
+        public int? RelativeMeasureTypeId { get; set; }
+        // TODO: Typeahead Field
+        public int? RelativeCurrencyId { get; set; }
+        // TODO: Typeahead Field
+        public int? ReturnBenchmarkId { get; set; }
+        // return value
+        public string RelativeReturnValue { get; set; }
+        ///***
+
+        //*** comments
+        public string TradeComments { get; set; }
+    }
+}

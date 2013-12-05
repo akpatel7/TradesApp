@@ -1,0 +1,89 @@
+﻿@model List<TradesWebApplication.DAL.EFModels.Trade>
+
+@*<p>
+    @Html.ActionLink("Create New", "TradesCreation")
+</p>*@
+<table>
+    <tr>
+        <th>
+            @*Html.DisplayNameFor(model => model.trade_id)*@
+            Id
+        </th>
+        <th>
+            Relativity
+        </th>
+        <th>
+            Length
+        </th>
+        <th>
+            Structure
+        </th>
+        <th>
+            Service
+        </th>
+        <th>
+            Currency
+        </th>
+        <th>
+            Label
+        </th>
+        <th>
+            Created On
+        </th>
+        <!-- <th>
+            @*Html.DisplayNameFor(model => model.created_by)*@
+        </th> -->
+        <th>
+            Last Updated
+        </th>
+        <th>
+            Status
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.trade_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Relativity.relativity_label)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Length_Type.length_type_label)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Structure_Type.structure_type_label)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Service.service_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Currency.currency_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.trade_label)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_on)
+            </td>
+            <!--<td>
+                @*Html.DisplayFor(modelItem => item.created_by)*@
+            </td>-->
+            <td>
+                @Html.DisplayFor(modelItem => item.last_updated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status1.status_label)
+            </td>
+            @*<td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.trade_id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.trade_id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.trade_id })
+            </td>*@
+        </tr>
+    }
+
+</table>

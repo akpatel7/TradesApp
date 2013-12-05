@@ -1,0 +1,18 @@
+using System;
+using System.Collections.Generic;
+
+namespace TradesDataModel
+{
+    
+    public class Trade_Comment
+    {
+        public int comment_id { get; set; }
+        public Nullable<int> trade_id { get; set; }
+        public string comment_label { get; set; }
+        public Nullable<System.DateTime> created_on { get; set; }
+        public Nullable<int> created_by { get; set; }
+        public Nullable<System.DateTime> last_updated { get; set; }
+    
+        public virtual Trade Trade { get; set; }
+    }
+}

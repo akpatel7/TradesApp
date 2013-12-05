@@ -1,0 +1,312 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using TradesAppApplicationServices;
+using TradesViewModel;
+
+namespace TradesWebApplication.Controllers
+{
+    public class TradesController : Controller
+    {
+        /// <summary>
+        /// Begin Trade Entry
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult TradesEntryList()
+        {
+            return View("TradeEntryList");
+        }
+
+        /// <summary>
+        /// Begin Trades Inquiry
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult BeginTradesInquiry()
+        {
+            return View("TradeInquiry");
+        }
+
+
+        /// <summary>
+        /// Start Trades Entry
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns></returns>
+        public ActionResult StartTradesEntry(string tradeID = "")
+        {
+            var tradesApplicationService = new TradeApplicationService();
+            var tradesViewModel = tradesApplicationService.BeginTradeEntry(tradeID);
+            return View("TradeEntryHeader", tradesViewModel);
+        }
+
+        /// <summary>
+        /// Create Trades
+        /// </summary>
+        /// <param name="postedFormData"></param>
+        /// <returns></returns>
+        public ActionResult TradeInquiry(FormCollection postedFormData)
+        {
+
+            var tradesViewModel = new TradeViewModel();
+
+            //TradesViewModel.Trades.CustomerID = Convert.ToString(postedFormData["CustomerID"]);
+            //TradesViewModel.Trades.ShipName = Convert.ToString(postedFormData["ShipName"]);
+            //TradesViewModel.Trades.ShipAddress = Convert.ToString(postedFormData["ShipAddress"]);
+            //TradesViewModel.Trades.ShipCity = Convert.ToString(postedFormData["ShipCity"]);
+            //TradesViewModel.Trades.ShipCountry = Convert.ToString(postedFormData["ShipCountry"]);
+            //TradesViewModel.Trades.ShipRegion = Convert.ToString(postedFormData["ShipRegion"]);
+
+            //if (NorthwindBusinessServices.Utilities.IsNumeric(postedFormData["Shipper"]) == true)
+            //    TradesViewModel.Trades.ShipVia = Convert.ToInt32(postedFormData["Shipper"]);
+
+            //TradesViewModel.Trades.ShipPostalCode = Convert.ToString(postedFormData["ShipPostalCode"]);
+
+            //if (NorthwindBusinessServices.Utilities.IsDate(postedFormData["RequiredDate"]) == true)
+            //    TradesViewModel.Trades.RequiredDate = Convert.ToDateTime(postedFormData["RequiredDate"]);
+
+            var tradesApplicationService = new TradeApplicationService();
+
+            tradesViewModel = tradesApplicationService.CreateTrade(tradesViewModel);
+
+            return Json(new
+            {
+                ReturnStatus = tradesViewModel.ReturnStatus,
+                ViewModel = tradesViewModel,
+                ValidationErrors = tradesViewModel.ValidationErrors,
+                MessageBoxView = Helpers.MvcHelpers.RenderPartialView(this, "_MessageBox", tradesViewModel),
+            });
+
+        }
+
+
+        /// <summary>
+        /// Create Trades
+        /// </summary>
+        /// <param name="postedFormData"></param>
+        /// <returns></returns>
+        public ActionResult UpdateTrades(FormCollection postedFormData)
+        {
+
+            var tradesViewModel = new TradeViewModel();
+
+            //TradesViewModel.Trades.TradesID = Convert.ToInt32(postedFormData["TradesID"]);
+            //TradesViewModel.Trades.CustomerID = Convert.ToString(postedFormData["CustomerID"]);
+            //TradesViewModel.Trades.ShipName = Convert.ToString(postedFormData["ShipName"]);
+            //TradesViewModel.Trades.ShipAddress = Convert.ToString(postedFormData["ShipAddress"]);
+            //TradesViewModel.Trades.ShipCity = Convert.ToString(postedFormData["ShipCity"]);
+            //TradesViewModel.Trades.ShipCountry = Convert.ToString(postedFormData["ShipCountry"]);
+            //TradesViewModel.Trades.ShipRegion = Convert.ToString(postedFormData["ShipRegion"]);
+
+            //if (NorthwindBusinessServices.Utilities.IsNumeric(postedFormData["Shipper"]) == true)
+            //    TradesViewModel.Trades.ShipVia = Convert.ToInt32(postedFormData["Shipper"]);
+
+            //TradesViewModel.Trades.ShipPostalCode = Convert.ToString(postedFormData["ShipPostalCode"]);
+
+            //if (NorthwindBusinessServices.Utilities.IsDate(postedFormData["RequiredDate"]) == true)
+            //    TradesViewModel.Trades.RequiredDate = Convert.ToDateTime(postedFormData["RequiredDate"]);
+
+            var tradesApplicationService = new TradeApplicationService();
+            tradesViewModel = tradesApplicationService.UpdateTrade(tradesViewModel);
+
+            return Json(new
+            {
+                ReturnStatus = tradesViewModel.ReturnStatus,
+                ViewModel = tradesViewModel,
+                ValidationErrors = tradesViewModel.ValidationErrors,
+                MessageBoxView = Helpers.MvcHelpers.RenderPartialView(this, "_MessageBox", tradesViewModel),
+            });
+
+        }
+
+        /// <summary>
+        /// Trades Entry Detail
+        /// </summary>
+        /// <param name="TradesID"></param>
+        /// <returns></returns>
+        public ActionResult TradesEntryDetail(int TradesID)
+        {
+            var tradesApplicationService = new TradeApplicationService();
+            var tradesViewModel = tradesApplicationService.GetTradeDetails(TradesID);
+
+            return View("TradeEntryDetail", tradesViewModel);
+        }
+
+        /// <summary>
+        /// Trades Edit
+        /// </summary>
+        /// <param name="postedFormData"></param>
+        /// <returns></returns>
+        public ActionResult TradesEdit(int TradesID)
+        {
+            var tradesApplicationService = new TradeApplicationService();
+            var tradesViewModel = tradesApplicationService.BeginTradeEdit(TradesID);
+            return View("TradeEntryHeader", tradesViewModel);
+        }
+
+        /// <summary>
+        /// Add Trades Detail Line Item
+        /// </summary>
+        /// <param name="postedFormData"></param>
+        /// <returns></returns>
+        public ActionResult AddTradesDetailLineItem(FormCollection postedFormData)
+        {
+            var tradesApplicationService = new TradeApplicationService();
+            var tradesViewModel = new TradeViewModel();
+
+            //TradeViewModel.TradeDetail.TradesID = Convert.ToInt32(postedFormData["TradesID"]);
+            //TradeViewModel.TradeDetail.ProductID = Convert.ToInt32(postedFormData["ProductID"]);
+
+            //if (NorthwindBusinessServices.Utilities.IsNumeric((postedFormData["Quantity"])) == true)
+            //    TradesViewModel.TradesDetail.Quantity = Convert.ToInt32(postedFormData["Quantity"]);
+
+            //if (NorthwindBusinessServices.Utilities.IsDouble((postedFormData["Discount"])) == true)
+            //    TradesViewModel.TradesDetail.Discount = Convert.ToDouble(postedFormData["Discount"]);
+
+            tradesViewModel = tradesApplicationService.AddTradeDetailLineItem(tradesViewModel);
+
+            return Json(new
+            {
+                ReturnStatus = tradesViewModel.ReturnStatus,
+                ViewModel = tradesViewModel,
+                ValidationErrors = tradesViewModel.ValidationErrors,
+                MessageBoxView = Helpers.MvcHelpers.RenderPartialView(this, "_MessageBox", tradesViewModel),
+            });
+
+
+        }
+
+        /// <summary>
+        /// Update Trades Detail Line Item
+        /// </summary>
+        /// <param name="postedFormData"></param>
+        /// <returns></returns>
+        public ActionResult UpdateTradesDetailLineItem(FormCollection postedFormData)
+        {
+            string rowIndex = Convert.ToString(postedFormData["RowIndex"]);
+
+            var tradesApplicationService = new TradeApplicationService();
+            var tradesViewModel = new TradeViewModel();
+
+            //TradesViewModel.TradesDetail.TradesID = Convert.ToInt32(postedFormData["TradesID"]);
+            //TradesViewModel.TradesDetail.ProductID = Convert.ToInt32(postedFormData["ProductID"]);
+
+            //if (NorthwindBusinessServices.Utilities.IsNumeric((postedFormData["Quantity"])) == true)
+            //    TradesViewModel.TradesDetail.Quantity = Convert.ToInt32(postedFormData["Quantity"]);
+
+            //if (NorthwindBusinessServices.Utilities.IsDouble((postedFormData["Discount"])) == true)
+            //    TradesViewModel.TradesDetail.Discount = Convert.ToDouble(postedFormData["Discount"]);
+
+            tradesViewModel = tradesApplicationService.UpdateTradeDetailLineItem(tradesViewModel);
+
+            return Json(new
+            {
+                ReturnStatus = tradesViewModel.ReturnStatus,
+                ViewModel = tradesViewModel,
+                RowIndex = rowIndex,
+                ValidationErrors = tradesViewModel.ValidationErrors,
+                MessageBoxView = Helpers.MvcHelpers.RenderPartialView(this, "_MessageBox", tradesViewModel),
+            });
+
+        }
+
+        /// <summary>
+        /// Update Trades Detail Line Item
+        /// </summary>
+        /// <param name="postedFormData"></param>
+        /// <returns></returns>
+        public ActionResult DeleteTradesDetailLineItem(FormCollection postedFormData)
+        {
+            string rowIndex = "";
+            //string rowIndex = Convert.ToString(postedFormData["RowIndex"]);
+            //string productName = Convert.ToString(postedFormData["ProductName"]);
+            //int TradesID = Convert.ToInt32(postedFormData["TradesID"]);
+            //int productID = Convert.ToInt32(postedFormData["ProductID"]);
+
+            var tradesApplicationService = new TradeApplicationService();
+
+            var tradesViewModel = new TradeViewModel();
+            //TradesViewModel.TradesLineItem.TradesDetails.TradesID = TradesID;
+            //TradesViewModel.TradesLineItem.TradesDetails.ProductID = productID;
+            //TradesViewModel.TradesLineItem.Products.ProductName = productName;
+
+            tradesViewModel = tradesApplicationService.DeleteTradeDetailLineItem(tradesViewModel);
+
+            return Json(new
+            {
+                ReturnStatus = tradesViewModel.ReturnStatus,
+                ViewModel = tradesViewModel,
+                RowIndex = rowIndex,
+                ValidationErrors = tradesViewModel.ValidationErrors,
+                MessageBoxView = Helpers.MvcHelpers.RenderPartialView(this, "_MessageBox", tradesViewModel),
+            });
+
+        }
+
+
+        ///// <summary>
+        ///// Customer Inquiry
+        ///// </summary>
+        ///// <param name="postedFormData"></param>
+        ///// <returns></returns>
+        //public ActionResult CustomerInquiry(FormCollection postedFormData)
+        //{
+
+        //    CustomerApplicationService customerApplicationService = new CustomerApplicationService();
+        //    CustomerViewModel customerViewModel = new CustomerViewModel();
+
+        //    customerViewModel.PageSize = Convert.ToInt32(postedFormData["PageSize"]);
+        //    customerViewModel.SortExpression = Convert.ToString(postedFormData["SortExpression"]);
+        //    customerViewModel.SortDirection = Convert.ToString(postedFormData["SortDirection"]);
+        //    customerViewModel.CurrentPageNumber = Convert.ToInt32(postedFormData["CurrentPageNumber"]);
+        //    customerViewModel.Customer.CustomerID = Convert.ToString(postedFormData["CustomerID"]);
+        //    customerViewModel.Customer.CompanyName = Convert.ToString(postedFormData["CompanyName"]);
+        //    customerViewModel.Customer.ContactName = Convert.ToString(postedFormData["ContactName"]);
+
+        //    customerViewModel = customerApplicationService.CustomerInquiry(customerViewModel);
+
+        //    return Json(new
+        //    {
+        //        ReturnStatus = customerViewModel.ReturnStatus,
+        //        ViewModel = customerViewModel,
+        //        MessageBoxView = Helpers.MvcHelpers.RenderPartialView(this, "_MessageBox", customerViewModel),
+        //        CustomerInquiryView = Helpers.MvcHelpers.RenderPartialView(this, "CustomerInquiryGrid", customerViewModel)
+        //    });
+
+        //}
+
+        /// <summary>
+        /// Trades Inquiry
+        /// </summary>
+        /// <param name="postedFormData"></param>
+        /// <returns></returns>
+        public ActionResult TradesInquiry(FormCollection postedFormData)
+        {
+
+            var tradesApplicationService = new TradeApplicationService();
+            var tradesViewModel = new TradeViewModel();
+
+            tradesViewModel.PageSize = Convert.ToInt32(postedFormData["PageSize"]);
+            tradesViewModel.SortExpression = Convert.ToString(postedFormData["SortExpression"]);
+            tradesViewModel.SortDirection = Convert.ToString(postedFormData["SortDirection"]);
+            tradesViewModel.CurrentPageNumber = Convert.ToInt32(postedFormData["CurrentPageNumber"]);
+            //TradesViewModel.Customer.CustomerID = Convert.ToString(postedFormData["CustomerID"]);
+            //TradesViewModel.Customer.CompanyName = Convert.ToString(postedFormData["CompanyName"]);
+
+            //if (NorthwindBusinessServices.Utilities.IsNumeric((postedFormData["TradesID"])) == true)
+            //    TradesViewModel.Trades.TradesID = Convert.ToInt32(postedFormData["TradesID"]);
+
+            tradesViewModel = tradesApplicationService.TradeInquiry(tradesViewModel);
+
+            return Json(new
+            {
+                ReturnStatus = tradesViewModel.ReturnStatus,
+                ViewModel = tradesViewModel,
+                MessageBoxView = Helpers.MvcHelpers.RenderPartialView(this, "_MessageBox", tradesViewModel),
+                TradesInquiryView = Helpers.MvcHelpers.RenderPartialView(this, "TradesInquiryGrid", tradesViewModel)
+            });
+
+        }
+	}
+}
