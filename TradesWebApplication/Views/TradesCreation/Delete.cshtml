@@ -1,0 +1,128 @@
+﻿@model TradesWebApplication.DAL.EFModels.Trade
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Trade</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.trade_uri)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.trade_uri)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.trade_label)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.trade_label)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.trade_editorial_label)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.trade_editorial_label)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.last_updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.last_updated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Benchmark.benchmark_uri)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Benchmark.benchmark_uri)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Currency.currency_uri)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Currency.currency_uri)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Length_Type.length_type_label)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Length_Type.length_type_label)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Relativity.relativity_label)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Relativity.relativity_label)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Service.service_uri)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Service.service_uri)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status1.status_label)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status1.status_label)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Structure_Type.structure_type_label)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Structure_Type.structure_type_label)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

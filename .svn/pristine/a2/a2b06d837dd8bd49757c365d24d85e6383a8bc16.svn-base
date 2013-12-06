@@ -14,8 +14,8 @@ namespace TradesWebApplication.Controllers
 {
     public class TradeController : Controller
     {
-
-        private UnitOfWork unitOfWork = new UnitOfWork();
+        //todo to delete when we have all repos
+        private TradesContext db = new TradesContext();
 
         public TradeController()
         {
@@ -48,9 +48,18 @@ namespace TradesWebApplication.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
+            //var trades = from t in db.Trades
+            //               select t;
 
             var trades = from t in tradeRepository.GetTrades() 
                          select t;
+                //.Include(t => t.Benchmark)
+                //.Include(t => t.Currency)
+                //.Include(t => t.Length_Type)
+                //.Include(t => t.Relativity)
+                //.Include(t => t.Service)
+                //.Include(t => t.Status1)
+                //.Include(t => t.Structure_Type);
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -101,7 +110,15 @@ namespace TradesWebApplication.Controllers
         // GET: /Trade/Create
         public ActionResult Create()
         {
-            PopulateTradesCreationDropDownLists();
+            ViewBag.benchmark_id = new SelectList(db.Benchmarks, "benchmark_id", "benchmark_uri");
+            ViewBag.currency_id = new SelectList(db.Currencies, "currency_id", "currency_uri");
+            ViewBag.length_type_id = new SelectList(db.LengthTypes, "length_type_id", "length_type_label");
+            ViewBag.relativity_id = new SelectList(db.Relativities, "relativity_id", "relativity_label");
+            ViewBag.service_id = new SelectList(db.Services, "service_id", "service_uri");
+            ViewBag.status = new SelectList(db.Statuses, "status_id", "status_label");
+            ViewBag.structure_type_id = new SelectList(db.StructureTypes, "structure_type_id", "structure_type_label");
+            
+            
             return View();
         }
 
@@ -127,7 +144,13 @@ namespace TradesWebApplication.Controllers
                 ModelState.AddModelError(string.Empty, "Unable to save changes. Try again, and if the problem persists contact your system administrator.");
             }
 
-            PopulateTradesCreationDropDownLists();
+            ViewBag.benchmark_id = new SelectList(db.Benchmarks, "benchmark_id", "benchmark_uri", trade.benchmark_id);
+            ViewBag.currency_id = new SelectList(db.Currencies, "currency_id", "currency_uri", trade.currency_id);
+            ViewBag.length_type_id = new SelectList(db.LengthTypes, "length_type_id", "length_type_label", trade.length_type_id);
+            ViewBag.relativity_id = new SelectList(db.Relativities, "relativity_id", "relativity_label", trade.relativity_id);
+            ViewBag.service_id = new SelectList(db.Services, "service_id", "service_uri", trade.service_id);
+            ViewBag.status = new SelectList(db.Statuses, "status_id", "status_label", trade.status);
+            ViewBag.structure_type_id = new SelectList(db.StructureTypes, "structure_type_id", "structure_type_label", trade.structure_type_id);
 
             return View(trade);
         }
@@ -144,7 +167,13 @@ namespace TradesWebApplication.Controllers
             {
                 return HttpNotFound();
             }
-            PopulateTradesCreationDropDownLists();
+            ViewBag.benchmark_id = new SelectList(db.Benchmarks, "benchmark_id", "benchmark_uri", trade.benchmark_id);
+            ViewBag.currency_id = new SelectList(db.Currencies, "currency_id", "currency_uri", trade.currency_id);
+            ViewBag.length_type_id = new SelectList(db.LengthTypes, "length_type_id", "length_type_label", trade.length_type_id);
+            ViewBag.relativity_id = new SelectList(db.Relativities, "relativity_id", "relativity_label", trade.relativity_id);
+            ViewBag.service_id = new SelectList(db.Services, "service_id", "service_uri", trade.service_id);
+            ViewBag.status = new SelectList(db.Statuses, "status_id", "status_label", trade.status);
+            ViewBag.structure_type_id = new SelectList(db.StructureTypes, "structure_type_id", "structure_type_label", trade.structure_type_id);
             return View(trade);
         }
 
@@ -170,7 +199,13 @@ namespace TradesWebApplication.Controllers
                 ModelState.AddModelError(string.Empty, "Unable to save changes. Try again, and if the problem persists contact your system administrator.");
             }
 
-            PopulateTradesCreationDropDownLists();
+            ViewBag.benchmark_id = new SelectList(db.Benchmarks, "benchmark_id", "benchmark_uri", trade.benchmark_id);
+            ViewBag.currency_id = new SelectList(db.Currencies, "currency_id", "currency_uri", trade.currency_id);
+            ViewBag.length_type_id = new SelectList(db.LengthTypes, "length_type_id", "length_type_label", trade.length_type_id);
+            ViewBag.relativity_id = new SelectList(db.Relativities, "relativity_id", "relativity_label", trade.relativity_id);
+            ViewBag.service_id = new SelectList(db.Services, "service_id", "service_uri", trade.service_id);
+            ViewBag.status = new SelectList(db.Statuses, "status_id", "status_label", trade.status);
+            ViewBag.structure_type_id = new SelectList(db.StructureTypes, "structure_type_id", "structure_type_label", trade.structure_type_id);
             return View(trade);
         }
 
@@ -204,23 +239,11 @@ namespace TradesWebApplication.Controllers
             return RedirectToAction("Index");
         }
 
-        private void PopulateTradesCreationDropDownLists(bool initialize = false)
-        {
-            ViewBag.benchmark_id = new SelectList(unitOfWork.BenchmarkRepository.Get(t => t.benchmark_id > 0), "benchmark_id", "benchmark_uri");
-            ViewBag.currency_id = new SelectList(unitOfWork.CurrencyRepository.Get(t => t.currency_id > 0), "currency_id", "currency_uri");
-            ViewBag.length_type_id = new SelectList(unitOfWork.LengthTypeRepository.Get(t => t.length_type_id > 0), "length_type_id", "length_type_label");
-            ViewBag.relativity_id = new SelectList(unitOfWork.RelativityRepository.Get(t => t.relativity_id > 0), "relativity_id", "relativity_label");
-            ViewBag.service_id = new SelectList(unitOfWork.ServiceRepository.Get(t => t.service_id > 0), "service_id", "service_uri");
-            ViewBag.status = new SelectList(unitOfWork.StatusRepository.Get(t => t.status_id > 0), "status_id", "status_label");
-            ViewBag.structure_type_id = new SelectList(unitOfWork.StructureTypeRepository.Get(t => t.structure_type_id > 0), "structure_type_id", "structure_type_label");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 tradeRepository.Dispose();
-                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }

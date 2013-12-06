@@ -204,7 +204,7 @@ namespace TradesWebApplication.Controllers
             return RedirectToAction("Index");
         }
 
-        private void PopulateTradesCreationDropDownLists(bool initialize = false)
+        private void PopulateTradesCreationDropDownLists()
         {
             ViewBag.benchmark_id = new SelectList(unitOfWork.BenchmarkRepository.Get(t => t.benchmark_id > 0), "benchmark_id", "benchmark_uri");
             ViewBag.currency_id = new SelectList(unitOfWork.CurrencyRepository.Get(t => t.currency_id > 0), "currency_id", "currency_uri");
@@ -220,7 +220,6 @@ namespace TradesWebApplication.Controllers
             if (disposing)
             {
                 tradeRepository.Dispose();
-                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }

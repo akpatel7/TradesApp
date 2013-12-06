@@ -197,7 +197,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TradeController.cs" />
     <Compile Include="Controllers\TradesController.cs" />
-    <Compile Include="Controllers\TradesCreationController.cs" />
     <Compile Include="DAL\EFModels\BCATradeEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -324,13 +323,11 @@
     <Compile Include="DAL\EFModels\Trade_Performance.cs">
       <DependentUpon>BCATradeEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="DAL\GenericRepository.cs" />
     <Compile Include="DAL\ITradeRepository.cs" />
     <Compile Include="DAL\TradeRepository.cs" />
     <Compile Include="DAL\TradesContext.cs" />
     <Compile Include="DAL\TradesInterceptorLogging.cs" />
     <Compile Include="DAL\TradesInterceptorTransientErrors.cs" />
-    <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -369,7 +366,6 @@
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\TradesCreationViewModel.cs" />
     <Compile Include="ViewModels\TradeViewModel.cs" />
     <Compile Include="ViewModels\ViewInformation.cs" />
   </ItemGroup>
@@ -501,9 +497,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -547,11 +541,6 @@
     <Content Include="Scripts\respond.min.js.map">
       <DependentUpon>respond.js</DependentUpon>
     </Content>
-    <Content Include="Views\TradesCreation\Create.cshtml" />
-    <Content Include="Views\TradesCreation\Delete.cshtml" />
-    <Content Include="Views\TradesCreation\Details.cshtml" />
-    <Content Include="Views\TradesCreation\Edit.cshtml" />
-    <Content Include="Views\TradesCreation\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

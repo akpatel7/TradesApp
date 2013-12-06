@@ -41,7 +41,7 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.DropDownList("length_type_id", String.Empty)
+                       @Html.DropDownList("length_type_id", String.Empty)
                         @*@Html.DropDownList("service_id", "service_code")*@
                         @Html.ValidationMessageFor(model => model.length_type_id)
                     </div>

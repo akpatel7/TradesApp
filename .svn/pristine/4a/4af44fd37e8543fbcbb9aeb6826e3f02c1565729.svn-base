@@ -27,7 +27,6 @@ namespace TradesWebApplication.DAL
         public DbSet<Track_Record> TrackRecords { get; set; }
         public DbSet<Trade_Comment> TradeComments { get; set; }
         public DbSet<Trade_Instruction> TradeInstructions { get; set; }
-        public DbSet<Hedge_Type> HedgeInstructions { get; set; }
         public DbSet<Trade_Performance> TradePerformances { get; set; }
         public DbSet<Trade_Line> TradeLines { get; set; }
         public DbSet<Trade_Line_Group> TradeGroups { get; set; }

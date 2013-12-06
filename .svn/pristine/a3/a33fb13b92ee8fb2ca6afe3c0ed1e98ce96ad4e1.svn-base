@@ -1,0 +1,81 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using TradesWebApplication.DAL.EFModels;
+
+namespace TradesWebApplication.DAL
+{
+    public class UnitOfWork : IDisposable
+    {
+        private TradesContext context = new TradesContext();
+
+        private GenericRepository<Trade_Line> tradeLineRepository;
+        private GenericRepository<Trade_Line_Group> tradeLineGroupRepository;
+        private GenericRepository<Trade_Line_Group_Type> tradeLineGroupTypeRepository;
+
+        public GenericRepository<Trade_Line> TradeLineRepository
+        {
+            get
+            {
+
+                if (this.tradeLineRepository == null)
+                {
+                    this.tradeLineRepository = new GenericRepository<Trade_Line>(context);
+                }
+                return tradeLineRepository;
+            }
+        }
+
+        public GenericRepository<Trade_Line_Group> TradeLineGroupRepository
+        {
+            get
+            {
+
+                if (this.tradeLineGroupRepository == null)
+                {
+                    this.tradeLineGroupRepository = new GenericRepository<Trade_Line_Group>(context);
+                }
+                return tradeLineGroupRepository;
+            }
+        }
+
+        public GenericRepository<Trade_Line_Group_Type> TradeLineGroupTypeRepository
+        {
+            get
+            {
+
+                if (this.tradeLineGroupTypeRepository == null)
+                {
+                    this.tradeLineGroupTypeRepository = new GenericRepository<Trade_Line_Group_Type>(context);
+                }
+                return tradeLineGroupTypeRepository;
+            }
+        }
+
+        public void Save()
+        {
+            context.SaveChanges();
+        }
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+    }
+}
