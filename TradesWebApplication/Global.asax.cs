@@ -27,6 +27,11 @@ namespace TradesWebApplication
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Trades", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
+            routes.MapRoute(
+               "Default", // Route name
+               "{controller}/{action}/{id}", // URL with parameters
+               new { controller = "TradesCreation", action = "Create", id = UrlParameter.Optional } // Parameter defaults
+           );
 
         }
 

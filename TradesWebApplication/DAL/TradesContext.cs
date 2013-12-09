@@ -26,15 +26,18 @@ namespace TradesWebApplication.DAL
         public DbSet<Structure_Type> StructureTypes { get; set; }
         public DbSet<Track_Record> TrackRecords { get; set; }
         public DbSet<Trade_Comment> TradeComments { get; set; }
-        public DbSet<Trade_Instruction> TradeInstructions { get; set; }
-        public DbSet<Hedge_Type> HedgeInstructions { get; set; }
         public DbSet<Trade_Performance> TradePerformances { get; set; }
         public DbSet<Trade_Line> TradeLines { get; set; }
-        public DbSet<Trade_Line_Group> TradeGroups { get; set; }
-        public DbSet<Trade_Line_Group_Type> TradeGroupsTypes { get; set; }
-        public DbSet<Tradable_Thing> TradeThings { get; set; }
-        public DbSet<Tradable_Thing_Class> TradeThingClasses { get; set; }
-        public DbSet<Position> Positions { get; set; }
+        public virtual DbSet<Hedge_Type> HedgeTypes { get; set; }
+        public virtual DbSet<Instruction_Type> InstructionTypes { get; set; }
+        public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<Measure_Type> MeasureTypes { get; set; }
+        public virtual DbSet<Position> Positions { get; set; }
+        public virtual DbSet<Track_Record_Type> TrackRecordTypes { get; set; }
+        public virtual DbSet<Tradable_Thing> TradableThings { get; set; }
+        public virtual DbSet<Tradable_Thing_Class> TradableThingClasses { get; set; }
+        public virtual DbSet<Trade_Line_Group> TradeLineGroups { get; set; }
+        public virtual DbSet<Trade_Line_Group_Type> TradeLineGroupTypes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

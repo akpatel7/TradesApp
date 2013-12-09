@@ -22,39 +22,39 @@ namespace TradesWebApplication.Controllers
             var viewModel = new TradesCreationViewModel();
             viewModel.Trades = db.Trades.Include(t => t.Benchmark).Include(t => t.Currency).Include(t => t.Length_Type).Include(t => t.Relativity).Include(t => t.Service).Include(t => t.Status1).Include(t => t.Structure_Type);
 
-            if (tradeid != null)
-            {
-                ViewBag.TradeID = tradeid.Value;
-                //Trade lines
-                viewModel.TradeLines = viewModel.TradeLines.Where(
-                    i => i.trade_id == tradeid.Value).ToList();
-                //TradeLine groups
-                if (viewModel.TradeLines.Any())
-                {
-                    foreach (var tradeLine in viewModel.TradeLines)
-                        viewModel.TradeLineGroups.ToList().Add(db.TradeGroups.Single(i => i.trade_line_group_id == tradeLine.trade_line_group_id)); 
-                }
-                //Instructions
-                //viewModel.TradeInstruction = viewModel.TradeInstruction.Where(
-                //    i => i.trade_id == tradeid.Value).ToList();
-                //if (viewModel.TradeInstruction.Any())
-                //{
-                //    var tradeInstruction = viewModel.TradeInstruction.Single();
-                //    viewModel.HedgeInstruction = viewModel.HedgeInstruction.Where(
-                //    i => i.hedge_id == tradeInstruction.hedge_id).ToList();
-                //}
+            //if (tradeid != null)
+            //{
+            //    ViewBag.TradeID = tradeid.Value;
+            //    //Trade lines
+            //    viewModel.TradeLines = viewModel.TradeLines.Where(
+            //        i => i.trade_id == tradeid.Value).ToList();
+            //    //TradeLine groups
+            //    if (viewModel.TradeLines.Any())
+            //    {
+            //        foreach (var tradeLine in viewModel.TradeLines)
+            //            viewModel.TradeLineGroups.ToList().Add(db.TradeGroups.Single(i => i.trade_line_group_id == tradeLine.trade_line_group_id)); 
+            //    }
+            //    //Instructions
+            //    //viewModel.TradeInstruction = viewModel.TradeInstruction.Where(
+            //    //    i => i.trade_id == tradeid.Value).ToList();
+            //    //if (viewModel.TradeInstruction.Any())
+            //    //{
+            //    //    var tradeInstruction = viewModel.TradeInstruction.Single();
+            //    //    viewModel.HedgeInstruction = viewModel.HedgeInstruction.Where(
+            //    //    i => i.hedge_id == tradeInstruction.hedge_id).ToList();
+            //    //}
 
-                //Supplementary Information
+            //    //Supplementary Information
 
-                //FX Spot and Carry
+            //    //FX Spot and Carry
 
-                //Absolute Performance
+            //    //Absolute Performance
 
-                //Relative Performance
+            //    //Relative Performance
 
-                //Trade Comments
+            //    //Trade Comments
 
-            }
+            //}
 
             return View(viewModel);
         }
@@ -77,8 +77,36 @@ namespace TradesWebApplication.Controllers
         // GET: /TradesCreation/Create
         public ActionResult Create()
         {
+            var viewModel = new TradesCreationViewModel();
+
+            viewModel.Trades = db.Trades.ToList();
+            viewModel.TradeLineGroups = db.TradeLineGroups.ToList();
+            viewModel.TradeLines = db.TradeLines.ToList();
+
+            viewModel.Services = db.Services.ToList();
+            viewModel.Length_Types = db.LengthTypes.ToList();
+            viewModel.Benchmarks = db.Benchmarks.ToList();
+            viewModel.Currencies = db.Currencies.ToList();
+            viewModel.Structure_Types = db.StructureTypes.ToList();
+            viewModel.Relativitys = db.Relativities.ToList();
+            viewModel.created_on = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
            
-            return View();
+            //viewModel = db.Positions.ToList();
+            //viewModel.TradableThings = db.Tradable_Thing.ToList();
+            //viewModel.Releated_Trades = db.RelatedTrades.ToList();
+
+            viewModel.Instruction_Types = db.InstructionTypes.ToList();
+            viewModel.Hedge_Types = db.HedgeTypes.ToList();
+            viewModel.Measure_Types = db.MeasureTypes.ToList();
+
+            viewModel.length_type_id = 2;
+            viewModel.relativity_id = 2;
+            viewModel.structure_type_id = 4;
+            viewModel.hedge_id = 2;
+            viewModel.abs_measure_type_id = 1;
+            viewModel.rel_measure_type_id = 2;
+
+            return View(viewModel);
         }
 
         // POST: /TradesCreation/Create
