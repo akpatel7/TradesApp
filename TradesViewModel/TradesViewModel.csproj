@@ -60,6 +60,12 @@
     <Compile Include="TradeViewModel.cs" />
     <Compile Include="ViewInformation.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TradesDataModel\TradesDataModel.csproj">
+      <Project>{cc052a0d-d03b-42c5-b073-658bf7393dd1}</Project>
+      <Name>TradesDataModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
