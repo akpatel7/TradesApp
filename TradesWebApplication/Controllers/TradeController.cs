@@ -14,15 +14,13 @@ namespace TradesWebApplication.Controllers
 {
     public class TradeController : Controller
     {
-
+        private ITradeRepository tradeRepository;
         private UnitOfWork unitOfWork = new UnitOfWork();
 
         public TradeController()
         {
             this.tradeRepository = new TradeRepository(new TradesContext());
         }
-
-        private ITradeRepository tradeRepository;
 
         public TradeController(ITradeRepository tradeRepository)
         {
@@ -49,8 +47,10 @@ namespace TradesWebApplication.Controllers
             ViewBag.CurrentFilter = searchString;
 
 
-            var trades = from t in tradeRepository.GetTrades() 
-                         select t;
+            var trades = unitOfWork.TradeRepository.GetTrades();
+
+            //var trades = from t in tradeRepository.GetTrades() 
+            //             select t;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -90,7 +90,7 @@ namespace TradesWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trade trade = tradeRepository.GetTradeByID(id);
+            Trade trade = tradeRepository.Get(id);
             if (trade == null)
             {
                 return HttpNotFound();
@@ -139,7 +139,7 @@ namespace TradesWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trade trade = tradeRepository.GetTradeByID(id);
+            Trade trade = tradeRepository.Get(id);
             if (trade == null)
             {
                 return HttpNotFound();
@@ -181,7 +181,7 @@ namespace TradesWebApplication.Controllers
             {
                 ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
             }
-            Trade trade = tradeRepository.GetTradeByID(id);
+            Trade trade = tradeRepository.Get(id);
             return View(trade);
         }
 
@@ -192,7 +192,7 @@ namespace TradesWebApplication.Controllers
         {
             try
             {
-                Trade trade = tradeRepository.GetTradeByID(id);
+                Trade trade = tradeRepository.Get(id);
                 tradeRepository.DeleteTrade(id);
                 tradeRepository.Save();
             }

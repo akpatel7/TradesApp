@@ -10,7 +10,7 @@ namespace TradesWebApplication.DAL
     public interface ITradeRepository : IDisposable
     {
         IEnumerable<Trade> GetTrades();
-        Trade GetTradeByID(int tradeId);
+        Trade Get(int tradeId);
         void InsertTrade(Trade trade);
         void DeleteTrade(int tradeID);
         void UpdateStudent(Trade trade);

@@ -21,7 +21,7 @@ namespace TradesWebApplication.DAL
             return context.Trades.ToList();
         }
 
-        public Trade GetTradeByID(int id)
+        public Trade Get(int id)
         {
             return context.Trades.Find(id);
         }

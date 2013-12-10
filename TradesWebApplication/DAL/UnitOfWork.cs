@@ -9,6 +9,10 @@ namespace TradesWebApplication.DAL
     public class UnitOfWork : IDisposable
     {
         private TradesContext context = new TradesContext();
+
+        //For trades
+        private ITradeRepository tradeRepository;
+
         //for view models
         private GenericRepository<Trade_Line> tradeLineRepository;
         private GenericRepository<Trade_Line_Group> tradeLineGroupRepository;
@@ -36,6 +40,20 @@ namespace TradesWebApplication.DAL
         private GenericRepository<Trade_Instruction> tradeInstructionRepository;
         //Related Trade
         private GenericRepository<Related_Trade> relatedTradeTypeRepository;
+
+
+        public ITradeRepository TradeRepository
+        {
+            get
+            {
+
+                if (this.tradeRepository == null)
+                {
+                    this.tradeRepository = new TradeRepository(context);
+                }
+                return tradeRepository;
+            }
+        }
 
         public GenericRepository<Trade_Line> TradeLineRepository
         {
