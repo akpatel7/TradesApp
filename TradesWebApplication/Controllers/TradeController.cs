@@ -148,7 +148,9 @@ namespace TradesWebApplication.Controllers
                     {
                         TradeLine = tradeline,
                         Position = unitOfWork.PositionRepository.GetByID(tradeline.position_id),
-                        TradeTradableThing = unitOfWork.TradableThingRepository.GetByID(tradeline.tradable_thing_id)
+                        TradeTradableThing = unitOfWork.TradableThingRepository.GetByID(tradeline.tradable_thing_id),
+                        Positions = unitOfWork.PositionRepository.GetAll().ToList(),
+                        TradeTradableThings = unitOfWork.TradableThingRepository.GetAll().ToList()
                     };
 
                     viewModel.TradeLines.Add(tradeLineVM); 

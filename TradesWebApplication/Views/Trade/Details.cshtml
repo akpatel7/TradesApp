@@ -171,8 +171,12 @@
                                                         <tr>
                                                             <td>@Html.Raw(j)</td>
                                                             <td>@Html.DisplayFor(modelItem => lineItem.TradeLine.trade_line_id)</td>
-                                                            <td>@Html.DisplayFor(modelItem => lineItem.Position.position_label)</td>
-                                                            <td>@Html.DisplayFor(modelItem => lineItem.TradeTradableThing.tradable_thing_label)</td>
+                                                            <td>@Html.DropDownListFor(modelItem => lineItem.Position.position_id, new SelectList(lineItem.Positions, "position_id", "position_label"), lineItem.Position.position_label)
+                                                                @Html.DisplayFor(modelItem => lineItem.Position.position_label)
+                                                            </td>
+                                                            <td>@Html.DropDownListFor(modelItem => lineItem.TradeTradableThing.tradable_thing_id, new SelectList(lineItem.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), lineItem.TradeTradableThing.tradable_thing_label)
+                                                                @Html.DisplayFor(modelItem => lineItem.TradeTradableThing.tradable_thing_label)
+                                                            </td>
                                                         </tr>
                                                         j++;
                                                     }
