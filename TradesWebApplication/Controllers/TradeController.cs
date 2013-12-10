@@ -46,8 +46,8 @@ namespace TradesWebApplication.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 int searchIndex = int.Parse(searchString);
-                trades = trades.Where(s => s.trade_id == searchIndex
-                                       || s.trade_label.ToUpper().Contains(searchString.ToUpper()));
+                trades = trades.Where(s => s.trade_id == searchIndex);
+                // || s.trade_label.ToUpper().Contains(searchString.ToUpper()));
             }
             switch (sortOrder)
             {
@@ -81,12 +81,19 @@ namespace TradesWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trade trade = unitOfWork.TradeRepository.Get(id);
-            if (trade == null)
+            var viewModel = new TradesCreationViewModel();
+
+            viewModel.Trade = unitOfWork.TradeRepository.Get(id);
+            viewModel.trade_id = id;
+
+            if (viewModel.Trade == null)
             {
                 return HttpNotFound();
             }
-            return View(trade);
+
+            PopulateDropDownEntities(viewModel, false);
+
+            return View(viewModel);
         }
 
         // GET: /Trade/Create
@@ -96,6 +103,14 @@ namespace TradesWebApplication.Controllers
 
             viewModel.Trade = new Trade();
 
+            PopulateDropDownEntities(viewModel, true);
+
+            return View(viewModel);
+     
+        }
+
+        private void PopulateDropDownEntities(TradesCreationViewModel viewModel, bool initialize)
+        {
             viewModel.TradeLineGroups = unitOfWork.TradeLineGroupRepository.GetAll();
             viewModel.TradeLines = unitOfWork.TradeLineRepository.GetAll();
 
@@ -116,15 +131,16 @@ namespace TradesWebApplication.Controllers
             viewModel.Measure_Types = unitOfWork.MeasureTypeRepository.GetAll().ToList();
 
             //default values for trade creation
-            viewModel.length_type_id = 2;
-            viewModel.relativity_id = 2;
-            viewModel.structure_type_id = 4;
-            viewModel.hedge_id = 2;
-            viewModel.abs_measure_type_id = 1;
-            viewModel.rel_measure_type_id = 2;
-
-            return View(viewModel);
-     
+            if (initialize)
+            {
+                viewModel.length_type_id = 2;
+                viewModel.relativity_id = 2;
+                viewModel.structure_type_id = 4;
+                viewModel.hedge_id = 2;
+                viewModel.abs_measure_type_id = 1;
+                viewModel.rel_measure_type_id = 2;
+            }
+           
         }
 
         // POST: /Trade/Create
@@ -151,8 +167,6 @@ namespace TradesWebApplication.Controllers
                 ModelState.AddModelError(string.Empty, "Unable to save changes. Try again, and if the problem persists contact your system administrator.");
             }
 
-            PopulateTradesCreationDropDownLists();
-
             return View(viewModel);
         }
 
@@ -168,7 +182,7 @@ namespace TradesWebApplication.Controllers
             {
                 return HttpNotFound();
             }
-            PopulateTradesCreationDropDownLists();
+
             return View(trade);
         }
 
@@ -194,7 +208,6 @@ namespace TradesWebApplication.Controllers
                 ModelState.AddModelError(string.Empty, "Unable to save changes. Try again, and if the problem persists contact your system administrator.");
             }
 
-            PopulateTradesCreationDropDownLists();
             return View(trade);
         }
 
@@ -228,16 +241,6 @@ namespace TradesWebApplication.Controllers
             return RedirectToAction("Index");
         }
 
-        private void PopulateTradesCreationDropDownLists(bool initialize = false)
-        {
-            ViewBag.benchmark_id = new SelectList(unitOfWork.BenchmarkRepository.Get(t => t.benchmark_id > 0), "benchmark_id", "benchmark_uri");
-            ViewBag.currency_id = new SelectList(unitOfWork.CurrencyRepository.Get(t => t.currency_id > 0), "currency_id", "currency_uri");
-            ViewBag.length_type_id = new SelectList(unitOfWork.LengthTypeRepository.Get(t => t.length_type_id > 0), "length_type_id", "length_type_label");
-            ViewBag.relativity_id = new SelectList(unitOfWork.RelativityRepository.Get(t => t.relativity_id > 0), "relativity_id", "relativity_label");
-            ViewBag.service_id = new SelectList(unitOfWork.ServiceRepository.Get(t => t.service_id > 0), "service_id", "service_uri");
-            ViewBag.status = new SelectList(unitOfWork.StatusRepository.Get(t => t.status_id > 0), "status_id", "status_label");
-            ViewBag.structure_type_id = new SelectList(unitOfWork.StructureTypeRepository.Get(t => t.structure_type_id > 0), "structure_type_id", "structure_type_label");
-        }
 
         protected override void Dispose(bool disposing)
         {

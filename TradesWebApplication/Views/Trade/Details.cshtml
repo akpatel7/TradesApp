@@ -1,121 +1,345 @@
-﻿@model TradesWebApplication.DAL.EFModels.Trade
+﻿@model TradesWebApplication.ViewModels.TradesCreationViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Trade Details";
 }
 
-<h2>Details</h2>
+<h2>Trade Details</h2>
 
 <div>
     <h4>Trade</h4>
-	<hr />
+    <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.trade_uri)
+            @Html.DisplayNameFor(model => model.Trade.trade_uri)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.trade_uri)
+            @Html.DisplayFor(model => model.Trade.trade_uri)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.trade_label)
+            @Html.DisplayNameFor(model => model.Trade.trade_label)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.trade_label)
+            @Html.DisplayFor(model => model.Trade.trade_label)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.trade_editorial_label)
+            @Html.DisplayNameFor(model => model.Trade.trade_editorial_label)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.trade_editorial_label)
+            @Html.DisplayFor(model => model.Trade.trade_editorial_label)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.created_on)
+            @Html.DisplayNameFor(model => model.Trade.created_on)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.created_on)
+            @Html.DisplayFor(model => model.Trade.created_on)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.created_by)
+            @Html.DisplayNameFor(model => model.Trade.created_by)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.created_by)
+            @Html.DisplayFor(model => model.Trade.created_by)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.last_updated)
+            @Html.DisplayNameFor(model => model.Trade.last_updated)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.last_updated)
+            @Html.DisplayFor(model => model.Trade.last_updated)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Benchmark.benchmark_uri)
+            @Html.DisplayNameFor(model => model.Trade.Benchmark.benchmark_uri)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Benchmark.benchmark_uri)
+            @Html.DisplayFor(model => model.Trade.Benchmark.benchmark_uri)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Currency.currency_uri)
+            @Html.DisplayNameFor(model => model.Trade.Currency.currency_uri)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Currency.currency_uri)
+            @Html.DisplayFor(model => model.Trade.Currency.currency_uri)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Length_Type.length_type_label)
+            @Html.DisplayNameFor(model => model.Trade.Length_Type.length_type_label)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Length_Type.length_type_label)
+            @Html.DisplayFor(model => model.Trade.Length_Type.length_type_label)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Relativity.relativity_label)
+            @Html.DisplayNameFor(model => model.Trade.Relativity.relativity_label)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Relativity.relativity_label)
+            @Html.DisplayFor(model => model.Trade.Relativity.relativity_label)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Service.service_uri)
+            @Html.DisplayNameFor(model => model.Trade.Service.service_uri)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Service.service_uri)
+            @Html.DisplayFor(model => model.Trade.Service.service_uri)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Status1.status_label)
+            @Html.DisplayNameFor(model => model.Trade.Status1.status_label)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Status1.status_label)
+            @Html.DisplayFor(model => model.Trade.Status1.status_label)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Structure_Type.structure_type_label)
+            @Html.DisplayNameFor(model => model.Trade.Structure_Type.structure_type_label)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Structure_Type.structure_type_label)
+            @Html.DisplayFor(model => model.Trade.Structure_Type.structure_type_label)
         </dd>
 
     </dl>
 </div>
+
+
+<div>
+    <h4>Testing Retrival</h4>
+    <table id="main_trade_table">
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.service_id)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+
+                    @Html.ValidationMessageFor(model => model.service_id)
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.length_type_id)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.length_type_id, new SelectList(Model.Length_Types, "length_type_id", "length_type_label"))
+                    @Html.ValidationMessageFor(model => model.length_type_id)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.relativity_id)
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"))
+                    @Html.ValidationMessageFor(model => model.relativity_id)
+                </div>
+            </td>
+        </tr>
+        <tr id="benchmark_selection">
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.benchmark_id)
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty)
+                    @Html.ValidationMessageFor(model => model.benchmark_id)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.created_on)
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.created_on)
+                    @Html.ValidationMessageFor(model => model.created_on)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.trade_label)
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.trade_label)
+                    @Html.ValidationMessageFor(model => model.trade_label)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.trade_editorial_label)
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.trade_editorial_label)
+                    @Html.ValidationMessageFor(model => model.trade_editorial_label)
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.structure_type_id)
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.Structure_Types, "structure_type_id", "structure_type_label"))
+                    @Html.ValidationMessageFor(model => model.structure_type_id)
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+    <table>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.instruction_entry)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.instruction_entry)
+                    @Html.ValidationMessageFor(model => model.instruction_entry)
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.instruction_entry_date)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.instruction_entry_date)
+                    @Html.ValidationMessageFor(model => model.instruction_entry_date)
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.instruction_exit)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.instruction_exit)
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.instruction_exit_date)
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.instruction_exit_date)
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.instruction_type_id)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.Instruction_Types, "instruction_type_id", "instruction_type_label"), "Instruction Type")
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.instruction_label)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.hedge_id)
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.Hedge_Types, "hedge_id", "hedge_label"))
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.currency_id)
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+    
+
+ 
+</div>
+
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.trade_id }) |
     @Html.ActionLink("Back to List", "Index")
