@@ -51,6 +51,11 @@ namespace TradesWebApplication.DAL
             return dbSet.Find(id);
         }
 
+        public virtual IQueryable<TEntity> GetAll()
+        {
+            return context.Set<TEntity>();
+        }
+
         public virtual void Insert(TEntity entity)
         {
             dbSet.Add(entity);

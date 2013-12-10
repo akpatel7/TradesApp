@@ -9,23 +9,14 @@ using System.Web.Mvc;
 using TradesWebApplication.DAL.EFModels;
 using TradesWebApplication.DAL;
 using PagedList;
+using TradesWebApplication.ViewModels;
 
 namespace TradesWebApplication.Controllers
 {
     public class TradeController : Controller
     {
-        private ITradeRepository tradeRepository;
+        
         private UnitOfWork unitOfWork = new UnitOfWork();
-
-        public TradeController()
-        {
-            this.tradeRepository = new TradeRepository(new TradesContext());
-        }
-
-        public TradeController(ITradeRepository tradeRepository)
-        {
-            this.tradeRepository = tradeRepository;
-        }
 
         // GET: /Trade/
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -90,7 +81,7 @@ namespace TradesWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trade trade = tradeRepository.Get(id);
+            Trade trade = unitOfWork.TradeRepository.Get(id);
             if (trade == null)
             {
                 return HttpNotFound();
@@ -101,8 +92,39 @@ namespace TradesWebApplication.Controllers
         // GET: /Trade/Create
         public ActionResult Create()
         {
-            PopulateTradesCreationDropDownLists();
-            return View();
+            var viewModel = new TradesCreationViewModel();
+
+            viewModel.Trade = new Trade();
+
+            viewModel.TradeLineGroups = unitOfWork.TradeLineGroupRepository.GetAll();
+            viewModel.TradeLines = unitOfWork.TradeLineRepository.GetAll();
+
+            viewModel.Services = unitOfWork.ServiceRepository.GetAll().ToList();
+            viewModel.Length_Types = unitOfWork.LengthTypeRepository.GetAll().ToList();
+            viewModel.Benchmarks = unitOfWork.BenchmarkRepository.GetAll().ToList();
+            viewModel.Currencies = unitOfWork.CurrencyRepository.GetAll().ToList();
+            viewModel.Structure_Types = unitOfWork.StructureTypeRepository.GetAll().ToList();
+            viewModel.Relativitys = unitOfWork.RelativityRepository.GetAll().ToList();
+            viewModel.created_on = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            //viewModel = db.Positions.ToList();
+            //viewModel.TradableThings = db.Tradable_Thing.ToList();
+            //viewModel.Releated_Trades = db.RelatedTrades.ToList();
+
+            viewModel.Instruction_Types = unitOfWork.InstructionTypeRepository.GetAll().ToList();
+            viewModel.Hedge_Types = unitOfWork.HedgeTypeRepository.GetAll().ToList();
+            viewModel.Measure_Types = unitOfWork.MeasureTypeRepository.GetAll().ToList();
+
+            //default values for trade creation
+            viewModel.length_type_id = 2;
+            viewModel.relativity_id = 2;
+            viewModel.structure_type_id = 4;
+            viewModel.hedge_id = 2;
+            viewModel.abs_measure_type_id = 1;
+            viewModel.rel_measure_type_id = 2;
+
+            return View(viewModel);
+     
         }
 
         // POST: /Trade/Create
@@ -112,12 +134,14 @@ namespace TradesWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="trade_id,trade_uri,relativity_id,length_type_id,structure_type_id,service_id,currency_id,benchmark_id,trade_label,trade_editorial_label,created_on,created_by,last_updated,status")] Trade trade)
         {
+            var viewModel = new TradesCreationViewModel();
+
             try
             {
                 if (ModelState.IsValid)
                 {
-                    tradeRepository.InsertTrade(trade);
-                    tradeRepository.Save();
+                    unitOfWork.TradeRepository.InsertTrade(trade);
+                    unitOfWork.TradeRepository.Save();
                     return RedirectToAction("Index");
                 }
             }
@@ -129,7 +153,7 @@ namespace TradesWebApplication.Controllers
 
             PopulateTradesCreationDropDownLists();
 
-            return View(trade);
+            return View(viewModel);
         }
 
         // GET: /Trade/Edit/5
@@ -139,7 +163,7 @@ namespace TradesWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trade trade = tradeRepository.Get(id);
+            Trade trade = unitOfWork.TradeRepository.Get(id);
             if (trade == null)
             {
                 return HttpNotFound();
@@ -159,8 +183,8 @@ namespace TradesWebApplication.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    tradeRepository.UpdateStudent(trade);
-                    tradeRepository.Save();
+                    unitOfWork.TradeRepository.UpdateStudent(trade);
+                    unitOfWork.TradeRepository.Save();
                     return RedirectToAction("Index");
                 }   
             }
@@ -181,7 +205,7 @@ namespace TradesWebApplication.Controllers
             {
                 ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
             }
-            Trade trade = tradeRepository.Get(id);
+            Trade trade = unitOfWork.TradeRepository.Get(id);
             return View(trade);
         }
 
@@ -192,9 +216,9 @@ namespace TradesWebApplication.Controllers
         {
             try
             {
-                Trade trade = tradeRepository.Get(id);
-                tradeRepository.DeleteTrade(id);
-                tradeRepository.Save();
+                Trade trade = unitOfWork.TradeRepository.Get(id);
+                unitOfWork.TradeRepository.DeleteTrade(id);
+                unitOfWork.TradeRepository.Save();
             }
             catch (DataException /* dex */)
             {
@@ -219,7 +243,7 @@ namespace TradesWebApplication.Controllers
         {
             if (disposing)
             {
-                tradeRepository.Dispose();
+                unitOfWork.TradeRepository.Dispose();
                 unitOfWork.Dispose();
             }
             base.Dispose(disposing);

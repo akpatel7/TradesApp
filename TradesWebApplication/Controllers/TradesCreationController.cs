@@ -20,7 +20,7 @@ namespace TradesWebApplication.Controllers
         public ActionResult Index(int? tradeid)
         {
             var viewModel = new TradesCreationViewModel();
-            viewModel.Trades = db.Trades.Include(t => t.Benchmark).Include(t => t.Currency).Include(t => t.Length_Type).Include(t => t.Relativity).Include(t => t.Service).Include(t => t.Status1).Include(t => t.Structure_Type);
+              //viewModel.Trades = db.Trades.Include(t => t.Benchmark).Include(t => t.Currency).Include(t => t.Length_Type).Include(t => t.Relativity).Include(t => t.Service).Include(t => t.Status1).Include(t => t.Structure_Type);
 
             //if (tradeid != null)
             //{
@@ -79,7 +79,7 @@ namespace TradesWebApplication.Controllers
         {
             var viewModel = new TradesCreationViewModel();
 
-            viewModel.Trades = db.Trades.ToList();
+            //viewModel.Trades = db.Trades.ToList();
             viewModel.TradeLineGroups = db.TradeLineGroups.ToList();
             viewModel.TradeLines = db.TradeLines.ToList();
 

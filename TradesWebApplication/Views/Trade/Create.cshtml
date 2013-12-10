@@ -1,4 +1,4 @@
-﻿@model TradesWebApplication.DAL.EFModels.Trade
+﻿@model TradesWebApplication.ViewModels.TradesCreationViewModel
 
 @{
     ViewBag.Title = "Trade Creation";
@@ -7,17 +7,16 @@
 <h2>Trade Creation</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-     @Html.ValidationSummary(true)
+    @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Trade Creation</legend>
+        <legend>Trade</legend>
         <table id="main_trade_table">
             <tr>
-                <td> 
+                <td>
                     <div class="editor-label">
                         @Html.LabelFor(model => model.service_id)
                     </div>
@@ -25,59 +24,56 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.DropDownList("service_id", String.Empty)
-                       @* @Html.DropDownList("service_id", "service_code")*@
+                        @Html.DropDownListFor(model => model.service_id, new SelectList(Model.Services, "service_id", "service_code"), String.Empty)
                         @Html.ValidationMessageFor(model => model.service_id)
                     </div>
                 </td>
             </tr>
 
             <tr>
-                <td> 
+                <td>
                     <div class="editor-label">
-                       @Html.LabelFor(model => model.length_type_id)
+                        @Html.LabelFor(model => model.length_type_id)
                     </div>
 
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.DropDownList("length_type_id", String.Empty)
-                        @*@Html.DropDownList("service_id", "service_code")*@
+                        @Html.DropDownListFor(model => model.length_type_id, new SelectList(Model.Length_Types, "length_type_id", "length_type_label"))
                         @Html.ValidationMessageFor(model => model.length_type_id)
                     </div>
                 </td>
             </tr>
             <tr>
-                <td> 
+                <td>
                     <div class="editor-label">
-                       @Html.LabelFor(model => model.relativity_id)
+                        @Html.LabelFor(model => model.relativity_id)
                     </div>
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.DropDownList("relativity_id", String.Empty)
+                        @Html.DropDownListFor(model => model.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"))
                         @Html.ValidationMessageFor(model => model.relativity_id)
                     </div>
                 </td>
             </tr>
             <tr id="benchmark_selection">
-                <td> 
+                <td>
                     <div class="editor-label">
-                       @Html.LabelFor(model => model.benchmark_id)
+                        @Html.LabelFor(model => model.benchmark_id)
                     </div>
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.DropDownList("benchmark_id", String.Empty)
-                        @*@Html.DropDownList("service_id", "service_code")*@
+                        @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty)
                         @Html.ValidationMessageFor(model => model.benchmark_id)
                     </div>
                 </td>
             </tr>
             <tr>
-                <td> 
+                <td>
                     <div class="editor-label">
-                       @Html.LabelFor(model => model.created_on)
+                        @Html.LabelFor(model => model.created_on)
                     </div>
                 </td>
                 <td>
@@ -86,11 +82,11 @@
                         @Html.ValidationMessageFor(model => model.created_on)
                     </div>
                 </td>
-            </tr>            
+            </tr>
             <tr>
-                <td> 
+                <td>
                     <div class="editor-label">
-                       @Html.LabelFor(model => model.trade_label)
+                        @Html.LabelFor(model => model.trade_label)
                     </div>
                 </td>
                 <td>
@@ -101,9 +97,9 @@
                 </td>
             </tr>
             <tr>
-                <td> 
+                <td>
                     <div class="editor-label">
-                       @Html.LabelFor(model => model.trade_editorial_label)
+                        @Html.LabelFor(model => model.trade_editorial_label)
                     </div>
                 </td>
                 <td>
@@ -115,73 +111,73 @@
             </tr>
 
             <tr>
-                <td> 
+                <td>
                     <div class="editor-label">
                         @Html.LabelFor(model => model.structure_type_id)
                     </div>
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.DropDownList("structure_type_id", String.Empty)     
+                        @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.Structure_Types, "structure_type_id", "structure_type_label"))
                         @Html.ValidationMessageFor(model => model.structure_type_id)
                     </div>
                 </td>
             </tr>
         </table>
-        
+
         <!-- Trade Line Groups ------------------------------------------------- -->
         <div id="update-tradeLineGroups" data-bind="foreach: tradeLineGroups">
             <input type="hidden" name="line_group_count" data-bind="value: $index()" />
             <fieldset class="tgroup">
-            <legend class="trade_group">Group <span data-bind="text: ($index() + 1)"></span></legend>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Group Information</th>
-                        <th>Trade Line(s)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <div class="editor-label">Group Structure</div> 
-                        <select data-bind="attr: { name: 'trade_line_group_type_id_' + $index() }, options: $data.TradeLineGroupTypes, optionsValue: 'trade_line_group_type_id', optionsText: 'trade_line_group_type_label', optionsCaption: '[Please select]'"></select>
-                        <div class="editor-label">Editorial Label</div> 
-                        <input type="text" name="" data-bind="attr: { name: 'trade_line_group_editorial_label_' + $index() }, value: $data.trade_line_group_editorial_label"/>
-                        <div class="editor-label">Canonical Label</div> 
-                        <input type="text" name="" data-bind="attr: { name: 'trade_line_group_type_label_' + $index() }, value: $data.trade_line_group_type_label"/>
-                    </td>
-                    <td>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Order</th>
-                                    <th>Position</th>
-                                    <th>Financial Instrument</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody data-bind="foreach: tradeLines">
-                                <tr>
-                                    <td><span data-bind="text: ($index() + 1)"></span><input type="hidden" name="line_count" data-bind="value: $index()" /></td>
-                                    <td><select data-bind="attr: { name: 'position_id_' + $index() }, options: $data.Positions, optionsValue: 'position_id', optionsText: 'position_label', optionsCaption: '[Please select]'"></select></td>
-                                    <td><select data-bind="attr: { name: 'tradable_thing_id_' + $index() }, options: $data.TradableThings, optionsValue: 'tradable_thing_id', optionsText: 'tradable_thing_label', optionsCaption: '[Please select]'"></select></td>
-                                    <td><input type="button" value="delete Line" data-bind="click: removeLine"/></td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td><input type="button" value="Delete Group" data-bind="click: $root.removeLineGroup"/></td>
-                                    <td><input type="button" value="Add Line" data-bind="click: addLine"/></td>
-                                    <td></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </td>
-                </tr>
-               </tbody>                
-            </table>
+                <legend class="trade_group">Group <span data-bind="text: ($index() + 1)"></span></legend>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Group Information</th>
+                            <th>Trade Line(s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="editor-label">Group Structure</div>
+                                <select data-bind="attr: { name: 'trade_line_group_type_id_' + $index() }, options: $data.TradeLineGroupTypes, optionsValue: 'trade_line_group_type_id', optionsText: 'trade_line_group_type_label', optionsCaption: '[Please select]'"></select>
+                                <div class="editor-label">Editorial Label</div>
+                                <input type="text" name="" data-bind="attr: { name: 'trade_line_group_editorial_label_' + $index() }, value: $data.trade_line_group_editorial_label" />
+                                <div class="editor-label">Canonical Label</div>
+                                <input type="text" name="" data-bind="attr: { name: 'trade_line_group_type_label_' + $index() }, value: $data.trade_line_group_type_label" />
+                            </td>
+                            <td>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Order</th>
+                                            <th>Position</th>
+                                            <th>Financial Instrument</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="foreach: tradeLines">
+                                        <tr>
+                                            <td><span data-bind="text: ($index() + 1)"></span><input type="hidden" name="line_count" data-bind="value: $index()" /></td>
+                                            <td><select data-bind="attr: { name: 'position_id_' + $index() }, options: $data.Positions, optionsValue: 'position_id', optionsText: 'position_label', optionsCaption: '[Please select]'"></select></td>
+                                            <td><select data-bind="attr: { name: 'tradable_thing_id_' + $index() }, options: $data.TradableThings, optionsValue: 'tradable_thing_id', optionsText: 'tradable_thing_label', optionsCaption: '[Please select]'"></select></td>
+                                            <td><input type="button" value="delete Line" data-bind="click: removeLine" /></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td></td>
+                                            <td><input type="button" value="Delete Group" data-bind="click: $root.removeLineGroup" /></td>
+                                            <td><input type="button" value="Add Line" data-bind="click: addLine" /></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </fieldset>
         </div>
         <p>
@@ -192,105 +188,102 @@
             <legend class="trade_group">Instructions</legend>
             <table>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.Trade_Instruction)
+                            @Html.LabelFor(model => model.instruction_entry)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.EditorFor(model => model.instruction_entry)
-                            @Html.ValidationMessageFor(model => model.instruction_entry)*@
+                            @Html.EditorFor(model => model.instruction_entry)
+                            @Html.ValidationMessageFor(model => model.instruction_entry)
                         </div>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                            @*@Html.LabelFor(model => model.instruction_entry_date)*@
+                            @Html.LabelFor(model => model.instruction_entry_date)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.EditorFor(model => model.instruction_entry_date)*@
-                            @*@Html.ValidationMessageFor(model => model.instruction_entry_date)*@
+                            @Html.EditorFor(model => model.instruction_entry_date)
+                            @Html.ValidationMessageFor(model => model.instruction_entry_date)
                         </div>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                            @*@Html.LabelFor(model => model.instruction_exit)*@
+                            @Html.LabelFor(model => model.instruction_exit)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.EditorFor(model => model.instruction_exit)*@
+                            @Html.EditorFor(model => model.instruction_exit)
                         </div>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                           @* @Html.LabelFor(model => model.instruction_exit_date)*@
+                            @Html.LabelFor(model => model.instruction_exit_date)
                         </div>
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.EditorFor(model => model.instruction_exit_date)*@
+                            @Html.EditorFor(model => model.instruction_exit_date)
                         </div>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                            @*@Html.LabelFor(model => model.instruction_type_id)*@
+                            @Html.LabelFor(model => model.instruction_type_id)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.Instruction_Types, "instruction_type_id","instruction_type_label"), "Instruction Type")*@
-                            @Html.DropDownList("service_id", "service_code")
+                            @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.Instruction_Types, "instruction_type_id", "instruction_type_label"), "Instruction Type")
                         </div>
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.EditorFor(model => model.instruction_label)*@
+                            @Html.EditorFor(model => model.instruction_label)
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                            @*@Html.LabelFor(model => model.hedge_id)*@
+                            @Html.LabelFor(model => model.hedge_id)
                         </div>
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.Hedge_Types, "hedge_id", "hedge_label") )*@
-                            @Html.DropDownList("service_id", "service_code")
+                            @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.Hedge_Types, "hedge_id", "hedge_label"))
                         </div>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
                             @Html.LabelFor(model => model.currency_id)
                         </div>
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id","currency_label"), String.Empty)*@
-                            @Html.DropDownList("service_id", "service_code")
+                            @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
                         </div>
                     </td>
                     <td></td>
@@ -303,30 +296,29 @@
             <legend class="trade_group">Supplementary Information</legend>
             <table>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.Related_Trade)
+                            @Html.LabelFor(model => model.related_trade_id)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
                             @*@Html.DropDownListFor(model => model.related_trade_id, new SelectList(Model.Releated_Trades, "trade_id","trade_label"), String.Empty)*@
-                            @Html.DropDownList("service_id", "service_code")
                         </div>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                           @* @Html.LabelFor(model => model.apl_func)*@
+                            @Html.LabelFor(model => model.apl_func)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.EditorFor(model => model.apl_func)*@
+                            @Html.EditorFor(model => model.apl_func)
                         </div>
                     </td>
                     <td></td>
@@ -339,29 +331,29 @@
             <legend class="trade_group">FX Spot and Carry</legend>
             <table>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                           @* @Html.LabelFor(model => model.mark_to_mark_rate)*@
+                            @Html.LabelFor(model => model.mark_to_mark_rate)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.EditorFor(model => model.mark_to_mark_rate)*@
+                            @Html.EditorFor(model => model.mark_to_mark_rate)
                         </div>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                            @*@Html.LabelFor(model => model.interest_rate_diff)*@
+                            @Html.LabelFor(model => model.interest_rate_diff)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.EditorFor(model => model.interest_rate_diff)*@
+                            @Html.EditorFor(model => model.interest_rate_diff)
                         </div>
                     </td>
                     <td></td>
@@ -374,19 +366,17 @@
             <legend class="trade_group">Absolute Performance</legend>
             <table>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                            @*@Html.LabelFor(model => model.abs_measure_type_id)*@
+                            @Html.LabelFor(model => model.abs_measure_type_id)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                            @*@Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.Measure_Types, "measure_type_id","measure_type_label"))*@
-                            @Html.DropDownList("service_id", "service_code")
-                            @*@Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id","currency_label"), String.Empty)*@
-                            @Html.DropDownList("service_id", "service_code")
-                            @*@Html.EditorFor(model => model.abs_return_value)*@
+                            @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.Measure_Types, "measure_type_id", "measure_type_label"))
+                            @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
+                            @Html.EditorFor(model => model.abs_return_value)
                         </div>
                     </td>
                 </tr>
@@ -398,34 +388,31 @@
             <legend class="trade_group">Relative Performance</legend>
             <table>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                            @*@Html.LabelFor(model => model.rel_measure_type_id)*@
+                            @Html.LabelFor(model => model.rel_measure_type_id)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                           @* @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.Measure_Types, "measure_type_id","measure_type_label"))*@
-                            @Html.DropDownList("service_id", "service_code")
-                            @*@Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id","currency_label"), String.Empty)*@
-                            @Html.DropDownList("service_id", "service_code")
-                            @*@Html.EditorFor(model => model.rel_return_value)*@
+                            @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.Measure_Types, "measure_type_id", "measure_type_label"))
+                            @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
+                            @Html.EditorFor(model => model.rel_return_value)
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td> 
+                    <td>
                         <div class="editor-label">
-                           @* @Html.LabelFor(model => model.return_benchmark_id)*@
+                            @Html.LabelFor(model => model.return_benchmark_id)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                           @* @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id","benchmark_label"), String.Empty)*@
-                            @Html.DropDownList("service_id", "service_code")
-                            
+                            @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty)
+
                         </div>
                     </td>
                 </tr>
@@ -437,15 +424,15 @@
             <legend class="trade_group">Trade Comments</legend>
             <table>
                 <tr>
-                    <td> 
-                        <div class="editor-label">
-                           @* @Html.LabelFor(model => model.comments)*@
+                    <td>
+                        <div class="editor-label" align="top">
+                            @Html.LabelFor(model => model.comments)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                            @Html.TextArea("comments", new { rows=5, columns=50 })
+                            @Html.TextArea("comments", new { rows = 5, columns = 50 })
                         </div>
                     </td>
                 </tr>
@@ -456,6 +443,7 @@
             <input type="submit" value="Create" />
         </p>
     </fieldset>
+
 }
 
 <div>
@@ -464,11 +452,12 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript" src="@Url.Content("~/Scripts/knockout-3.0.0.js")"></script> 
+    <script type="text/javascript" src="@Url.Content("~/Scripts/knockout-3.0.0.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/knockout.mapping-latest.js")"></script>
     <script type="text/javascript">
 
-        
-        
+
+
         function TradeLineGroupsVM() {
             var self = this;
             self.tradeLineGroups = ko.observableArray();
@@ -543,7 +532,6 @@
             }
 
         });
-        
+
     </script>
 }
-
