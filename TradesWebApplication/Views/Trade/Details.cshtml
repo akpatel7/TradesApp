@@ -6,118 +6,6 @@
 
 <h2>Trade Details</h2>
 
-@*<div>
-    <h4>Trade</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.trade_uri)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.trade_uri)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.trade_label)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.trade_label)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.trade_editorial_label)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.trade_editorial_label)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.created_on)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.created_on)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.created_by)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.created_by)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.last_updated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.last_updated)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.Benchmark.benchmark_uri)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.Benchmark.benchmark_uri)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.Currency.currency_uri)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.Currency.currency_uri)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.Length_Type.length_type_label)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.Length_Type.length_type_label)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.Relativity.relativity_label)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.Relativity.relativity_label)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.Service.service_uri)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.Service.service_uri)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.Status1.status_label)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.Status1.status_label)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trade.Structure_Type.structure_type_label)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trade.Structure_Type.structure_type_label)
-        </dd>
-
-    </dl>
-</div>*@
-
-
 <div>
     <h4>Testing Retrival</h4>
     <table id="main_trade_table">
@@ -145,7 +33,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.length_type_id, new SelectList(Model.Length_Types, "length_type_id", "length_type_label"))
+                    @Html.DropDownListFor(model => model.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"))
                     @Html.ValidationMessageFor(model => model.length_type_id)
                 </div>
             </td>
@@ -171,7 +59,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty)
+                    @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"))
                     @Html.ValidationMessageFor(model => model.benchmark_id)
                 </div>
             </td>
@@ -197,7 +85,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.trade_label)
+                    @Html.EditorFor(model => model.Trade.trade_label)
                     @Html.ValidationMessageFor(model => model.trade_label)
                 </div>
             </td>
@@ -205,12 +93,12 @@
         <tr>
             <td>
                 <div class="editor-label">
-                    @Html.LabelFor(model => model.trade_editorial_label)
+                    @Html.LabelFor(model => model.Trade.trade_editorial_label)
                 </div>
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.trade_editorial_label)
+                    @Html.EditorFor(model => model.Trade.trade_editorial_label)
                     @Html.ValidationMessageFor(model => model.trade_editorial_label)
                 </div>
             </td>
@@ -224,7 +112,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.Structure_Types, "structure_type_id", "structure_type_label"))
+                    @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"))
                     @Html.ValidationMessageFor(model => model.structure_type_id)
                 </div>
             </td>
@@ -238,7 +126,7 @@
                     @foreach (var itemGroup in Model.TradeLineGroups)
                     {
                         <fieldset class="tgroup">
-                            <legend class="trade_group">Group @Html.Raw(i) - @Html.Raw(itemGroup.trade_line_group_id) @*Group <span data-bind="text: ($index() + 1)"></span>*@</legend>
+                            <legend class="trade_group">Group @Html.Raw(i) - @Html.Raw(itemGroup.TradeLineGroup.trade_line_group_id) @*Group <span data-bind="text: ($index() + 1)"></span>*@</legend>
                             <table>
                                 <thead>
                                     <tr>
@@ -250,19 +138,20 @@
                                     <tr>
                                         <td>
                                             <div class="editor-label">Group Structure</div>
-                                            @Html.DisplayFor(modelItem => itemGroup.trade_line_group_type_id)
+                                            @Html.DisplayFor(modelItem => itemGroup.TradeLineGroupType.trade_line_group_type_label)
                               
                                             <div class="editor-label">Editorial Label</div>
-                                            @Html.DisplayFor(modelItem => itemGroup.trade_line_group_editorial_label)
+                                            @Html.DisplayFor(modelItem => itemGroup.EditorialLabel)
                               
                                             <div class="editor-label">Canonical Label</div>
-                                            @Html.DisplayFor(modelItem => itemGroup.trade_line_group_label)
+                                            @Html.DisplayFor(modelItem => itemGroup.CanonicalLabel)
                               
                                         </td>
                                         <td>
                                             <table>
                                                 <thead>
                                                     <tr>
+                                                        <th>Order</th>
                                                         <th>LineID</th>
                                                         <th>Position</th>
                                                         <th>Financial Instrument</th>
@@ -270,13 +159,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var item in Model.TradeLines.Where(item=> item.trade_line_group_id == itemGroup.trade_line_group_id))
+                                                    @{ int j = 1;
+                                                    }
+                                                    @foreach (var lineItem in Model.TradeLines.Where(item=> item.TradeLine.trade_line_group_id == itemGroup.TradeLineGroup.trade_line_group_id))
                                                     {
                                                         <tr>
-                                                            <td>@Html.DisplayFor(modelItem => item.trade_line_id)</td>
-                                                            <td>@Html.DisplayFor(modelItem => item.position_id)</td>
-                                                            <td>@Html.DisplayFor(modelItem => item.tradable_thing_id)</td>
+                                                            <td>@Html.Raw(j)</td>
+                                                            <td>@Html.DisplayFor(modelItem => lineItem.TradeLine.trade_line_id)</td>
+                                                            <td>@Html.DisplayFor(modelItem => lineItem.Position.position_label)</td>
+                                                            <td>@Html.DisplayFor(modelItem => lineItem.TradeTradableThing.tradable_thing_label)</td>
                                                         </tr>
+                                                        j++;
                                                     }
                                                 </tbody>                                   
                                             </table>
@@ -289,7 +182,9 @@
                         i++;
                     }
     </div>
-    
+    <!-- instructions ------------------------------------- -->
+    <fieldset class="tgroup">
+        <legend class="trade_group">Instructions</legend>
     <table>
         <tr>
             <td>
@@ -357,7 +252,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.Instruction_Types, "instruction_type_id", "instruction_type_label"), "Instruction Type")
+                    @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"))
                 </div>
             </td>
             <td>
@@ -374,7 +269,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.Hedge_Types, "hedge_id", "hedge_label"))
+                    @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"))
                 </div>
             </td>
             <td></td>
@@ -393,10 +288,7 @@
             <td></td>
         </tr>
     </table>
-    
-    
-
- 
+ </fieldset>
 </div>
 
 

@@ -39,7 +39,7 @@ namespace TradesWebApplication.DAL
         private GenericRepository<Trade_Performance> tradePerformanceRepository;
         private GenericRepository<Trade_Instruction> tradeInstructionRepository;
         //Related Trade
-        private GenericRepository<Related_Trade> relatedTradeTypeRepository;
+        private GenericRepository<Related_Trade> relatedTradeRepository;
 
 
         public ITradeRepository TradeRepository
@@ -344,16 +344,16 @@ namespace TradesWebApplication.DAL
         }
 
         //Related Trade
-        public GenericRepository<Related_Trade> RelatedTradeTypeRepository
+        public GenericRepository<Related_Trade> RelatedTradeRepository
         {
             get
             {
 
-                if (this.relatedTradeTypeRepository == null)
+                if (this.relatedTradeRepository == null)
                 {
-                    this.relatedTradeTypeRepository = new GenericRepository<Related_Trade>(context);
+                    this.relatedTradeRepository = new GenericRepository<Related_Trade>(context);
                 }
-                return relatedTradeTypeRepository;
+                return relatedTradeRepository;
             }
         }
 

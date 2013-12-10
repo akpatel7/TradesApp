@@ -80,14 +80,14 @@ namespace TradesWebApplication.Controllers
             var viewModel = new TradesCreationViewModel();
 
             //viewModel.Trades = db.Trades.ToList();
-            viewModel.TradeLineGroups = db.TradeLineGroups.ToList();
-            viewModel.TradeLines = db.TradeLines.ToList();
+            //viewModel.TradeLineGroups = db.TradeLineGroups.ToList();
+            //viewModel.TradeLines = db.TradeLines.ToList();
 
             viewModel.Services = db.Services.ToList();
-            viewModel.Length_Types = db.LengthTypes.ToList();
+            viewModel.LengthTypes = db.LengthTypes.ToList();
             viewModel.Benchmarks = db.Benchmarks.ToList();
             viewModel.Currencies = db.Currencies.ToList();
-            viewModel.Structure_Types = db.StructureTypes.ToList();
+            viewModel.StructureTypes = db.StructureTypes.ToList();
             viewModel.Relativitys = db.Relativities.ToList();
             viewModel.created_on = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
            
@@ -95,9 +95,9 @@ namespace TradesWebApplication.Controllers
             //viewModel.TradableThings = db.Tradable_Thing.ToList();
             //viewModel.Releated_Trades = db.RelatedTrades.ToList();
 
-            viewModel.Instruction_Types = db.InstructionTypes.ToList();
-            viewModel.Hedge_Types = db.HedgeTypes.ToList();
-            viewModel.Measure_Types = db.MeasureTypes.ToList();
+            viewModel.InstructionTypes = db.InstructionTypes.ToList();
+            viewModel.HedgeTypes = db.HedgeTypes.ToList();
+            viewModel.MeasureTypes = db.MeasureTypes.ToList();
 
             viewModel.length_type_id = 2;
             viewModel.relativity_id = 2;
@@ -123,8 +123,10 @@ namespace TradesWebApplication.Controllers
                 return RedirectToAction("Index");
             }
 
-          
-            return View(trade);
+            var
+            vm = new TradesCreationViewModel();
+
+            return View(vm);
         }
 
         // GET: /TradesCreation/Edit/5

@@ -12,8 +12,8 @@ namespace TradesWebApplication.ViewModels
     {
         // Trade
         public Trade Trade { get; set; }
-        public List<Trade_Line_Group> TradeLineGroups { get; set; }
-        public List<Trade_Line> TradeLines { get; set; }
+        public List<TradeLineGroupViewModel> TradeLineGroups { get; set; }
+        public List<TradeLineViewModel> TradeLines { get; set; }
 
         public int trade_id { get; set; }
 
@@ -27,7 +27,7 @@ namespace TradesWebApplication.ViewModels
         [Required(ErrorMessage = "required")]
         [DisplayName("Trade Type")]
         public int length_type_id { get; set; }
-        public virtual ICollection<Length_Type> Length_Types { get; set; }
+        public virtual ICollection<Length_Type> LengthTypes { get; set; }
         
         // benchmark
         [Required(ErrorMessage = "required")]
@@ -57,7 +57,7 @@ namespace TradesWebApplication.ViewModels
         [Required(ErrorMessage = "required")]
         [DisplayName("Trade Structure")]
         public int structure_type_id { get; set; }
-        public virtual ICollection<Structure_Type> Structure_Types { get; set; }
+        public virtual ICollection<Structure_Type> StructureTypes { get; set; }
 
         
         //------------------------------------
@@ -82,13 +82,13 @@ namespace TradesWebApplication.ViewModels
         // instruction
         [DisplayName("Instruction")]
         public Nullable<int> instruction_type_id { get; set; }
-        public virtual ICollection<Instruction_Type> Instruction_Types { get; set; }
+        public virtual ICollection<Instruction_Type> InstructionTypes { get; set; }
         public string instruction_label { get; set; }
 
         // hedge instruction
         [DisplayName("Hedge Instructions")]
         public Nullable<int> hedge_id { get; set; }
-        public virtual ICollection<Hedge_Type> Hedge_Types { get; set; }
+        public virtual ICollection<Hedge_Type> HedgeTypes { get; set; }
 
         // curency
         [DisplayName("Trade Execution Currency")]
@@ -99,7 +99,7 @@ namespace TradesWebApplication.ViewModels
         // linked trades
         [DisplayName("Linked Trades")]
         public Nullable<int> related_trade_id { get; set; }
-        public virtual ICollection<Trade> Releated_Trades { get; set; }
+        public virtual ICollection<Related_Trade> ReleatedTrades { get; set; }
 
         // APL function
         [DisplayName("APL Function")]
@@ -114,7 +114,7 @@ namespace TradesWebApplication.ViewModels
         public string interest_rate_diff { get; set; }
         
         // abs performance
-        public virtual ICollection<Measure_Type> Measure_Types { get; set; }
+        public virtual ICollection<Measure_Type> MeasureTypes { get; set; }
         [DisplayName("Return")]
         public Nullable<int> abs_measure_type_id { get; set; }
         public Nullable<int> abs_currency_id { get; set; }
@@ -130,7 +130,7 @@ namespace TradesWebApplication.ViewModels
 
         // comments
         [DisplayName("Comments")]
-        public string comments { get; set; }
+        public string Comments { get; set; }
 
     }
 }

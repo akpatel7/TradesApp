@@ -93,29 +93,79 @@ namespace TradesWebApplication.Controllers
                 return HttpNotFound();
             }
 
+            viewModel.currency_id = viewModel.Trade.currency_id;
             PopulateDropDownEntities(viewModel, false);
             PopulateRelatedTradeLinesAndGroups(viewModel);
+            PopulateInstructions(viewModel);
 
             return View(viewModel);
         }
 
+        private void PopulateInstructions(TradesCreationViewModel viewModel)
+        {
+            var instructionTypes = unitOfWork.TradeInstructionRepository.GetAll().ToList();
+            var instructionType = instructionTypes.FindAll(i => i.trade_id == viewModel.Trade.trade_id).First();
+
+            if (instructionType == null) return;
+            viewModel.instruction_type_id = instructionType.instruction_type_id;
+            viewModel.hedge_id = instructionType.hedge_id;
+            if (instructionType.instruction_entry != null)
+            {
+                viewModel.instruction_entry = (decimal)instructionType.instruction_entry;
+            }
+            if (instructionType.instruction_exit != null)
+            {
+                viewModel.instruction_exit = (decimal)instructionType.instruction_exit;
+            }
+            if (instructionType.instruction_entry_date != null)
+            {
+                viewModel.instruction_entry_date = ((DateTime)instructionType.instruction_entry_date).ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            if (instructionType.instruction_exit_date != null)
+            {
+                viewModel.instruction_exit_date =((DateTime) instructionType.instruction_exit_date).ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            if (!String.IsNullOrEmpty(instructionType.instruction_label))
+            {
+                viewModel.instruction_label = instructionType.instruction_label;
+            }
+            
+        }
+
         private void PopulateRelatedTradeLinesAndGroups(TradesCreationViewModel viewModel)
         {
-            viewModel.TradeLines = new List<Trade_Line>();
-            viewModel.TradeLineGroups = new List<Trade_Line_Group>();
+            viewModel.TradeLines = new List<TradeLineViewModel>();
+            viewModel.TradeLineGroups = new List<TradeLineGroupViewModel>();
 
             var tradeLines = unitOfWork.TradeLineRepository.GetAll().Where(t => t.trade_id == viewModel.trade_id).ToList();
 
             if (tradeLines.Any())
             {
-                viewModel.TradeLines = tradeLines;
-
                 foreach (var tradeline in tradeLines)
                 {
+
+                    var tradeLineVM = new TradeLineViewModel
+                    {
+                        TradeLine = tradeline,
+                        Position = unitOfWork.PositionRepository.GetByID(tradeline.position_id),
+                        TradeTradableThing = unitOfWork.TradableThingRepository.GetByID(tradeline.tradable_thing_id)
+                    };
+
+                    viewModel.TradeLines.Add(tradeLineVM); 
+
                     var tradeLineGroup = unitOfWork.TradeLineGroupRepository.GetByID(tradeline.trade_line_group_id);
                     if (tradeLineGroup != null)
                     {
-                        viewModel.TradeLineGroups.Add(tradeLineGroup);
+                        var tradeLineGroupVM = new TradeLineGroupViewModel
+                        {
+                            TradeLineGroup = tradeLineGroup,
+                            TradeLineGroupType =
+                                unitOfWork.TradeLineGroupTypeRepository.GetByID(tradeLineGroup.trade_line_group_type_id),
+                            EditorialLabel = tradeLineGroup.trade_line_group_editorial_label,
+                            CanonicalLabel = tradeLineGroup.trade_line_group_label
+                        };
+
+                        viewModel.TradeLineGroups.Add(tradeLineGroupVM);
                     }
                 }     
             }
@@ -142,20 +192,18 @@ namespace TradesWebApplication.Controllers
             //viewModel.TradeLines = unitOfWork.TradeLineRepository.GetAll().ToList();
 
             viewModel.Services = unitOfWork.ServiceRepository.GetAll().ToList();
-            viewModel.Length_Types = unitOfWork.LengthTypeRepository.GetAll().ToList();
+            viewModel.LengthTypes = unitOfWork.LengthTypeRepository.GetAll().ToList();
             viewModel.Benchmarks = unitOfWork.BenchmarkRepository.GetAll().ToList();
             viewModel.Currencies = unitOfWork.CurrencyRepository.GetAll().ToList();
-            viewModel.Structure_Types = unitOfWork.StructureTypeRepository.GetAll().ToList();
+            viewModel.StructureTypes = unitOfWork.StructureTypeRepository.GetAll().ToList();
             viewModel.Relativitys = unitOfWork.RelativityRepository.GetAll().ToList();
             viewModel.created_on = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+         
+            viewModel.ReleatedTrades = unitOfWork.RelatedTradeRepository.GetAll().ToList();
 
-            //viewModel = db.Positions.ToList();
-            //viewModel.TradableThings = db.Tradable_Thing.ToList();
-            //viewModel.Releated_Trades = db.RelatedTrades.ToList();
-
-            viewModel.Instruction_Types = unitOfWork.InstructionTypeRepository.GetAll().ToList();
-            viewModel.Hedge_Types = unitOfWork.HedgeTypeRepository.GetAll().ToList();
-            viewModel.Measure_Types = unitOfWork.MeasureTypeRepository.GetAll().ToList();
+            viewModel.InstructionTypes = unitOfWork.InstructionTypeRepository.GetAll().ToList();
+            viewModel.HedgeTypes = unitOfWork.HedgeTypeRepository.GetAll().ToList();
+            viewModel.MeasureTypes = unitOfWork.MeasureTypeRepository.GetAll().ToList();
 
             //default values for trade creation
             if (initialize)
