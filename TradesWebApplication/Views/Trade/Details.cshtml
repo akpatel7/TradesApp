@@ -126,7 +126,7 @@
                     @foreach (var itemGroup in Model.TradeLineGroups)
                     {
                         <fieldset class="tgroup">
-                            <legend class="trade_group">Group @Html.Raw(i) - @Html.Raw(itemGroup.TradeLineGroup.trade_line_group_id) @*Group <span data-bind="text: ($index() + 1)"></span>*@</legend>
+                            <legend class="trade_group">Group @Html.Raw(i) - @Html.Raw(itemGroup.TradeLineGroup.trade_line_group_id) </legend>
                             <table>
                                 <thead>
                                     <tr>
@@ -172,10 +172,10 @@
                                                             <td>@Html.Raw(j)</td>
                                                             <td>@Html.DisplayFor(modelItem => lineItem.TradeLine.trade_line_id)</td>
                                                             <td>@Html.DropDownListFor(modelItem => lineItem.Position.position_id, new SelectList(lineItem.Positions, "position_id", "position_label"), lineItem.Position.position_label)
-                                                                @Html.DisplayFor(modelItem => lineItem.Position.position_label)
+                                                                @*@Html.DisplayFor(modelItem => lineItem.Position.position_label)*@
                                                             </td>
                                                             <td>@Html.DropDownListFor(modelItem => lineItem.TradeTradableThing.tradable_thing_id, new SelectList(lineItem.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), lineItem.TradeTradableThing.tradable_thing_label)
-                                                                @Html.DisplayFor(modelItem => lineItem.TradeTradableThing.tradable_thing_label)
+                                                                @*@Html.DisplayFor(modelItem => lineItem.TradeTradableThing.tradable_thing_label)*@
                                                             </td>
                                                         </tr>
                                                         j++;
@@ -299,9 +299,154 @@
     </table>
  </fieldset>
 </div>
+ <!-- supplementary info ------------------------------------- -->
+<fieldset class="tgroup">
+    <legend class="trade_group">Supplementary Information</legend>
+    <table>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.related_trade_id)
+                </div>
 
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.related_trade_id, new SelectList(Model.Trades, "trade_id", "trade_label"), String.Empty )
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.apl_func)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.apl_func)
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+</fieldset>
+<!-- FX Spot and Carry ------------------------------------- -->
+<fieldset class="tgroup">
+    <legend class="trade_group">FX Spot and Carry</legend>
+    <table>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.mark_to_mark_rate)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.mark_to_mark_rate)
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.interest_rate_diff)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.interest_rate_diff)
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+</fieldset>
+
+<!-- Abs performance ------------------------------------- -->
+<fieldset class="tgroup">
+    <legend class="trade_group">Absolute Performance</legend>
+    <table>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.abs_measure_type_id)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"))
+                    @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
+                    @Html.EditorFor(model => model.abs_return_value)
+                </div>
+            </td>
+        </tr>
+    </table>
+</fieldset>
+
+<!-- Rel performance ------------------------------------- -->
+<fieldset class="tgroup">
+    <legend class="trade_group">Relative Performance</legend>
+    <table>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.rel_measure_type_id)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"))
+                    @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
+                    @Html.EditorFor(model => model.rel_return_value)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.return_benchmark_id)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty)
+
+                </div>
+            </td>
+        </tr>
+    </table>
+</fieldset>
+
+<!-- Comments ------------------------------------- -->
+<fieldset class="tgroup">
+    <legend class="trade_group">Trade Comments</legend>
+    <table>
+        <tr>
+            <td>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Comments)
+                </div>
+
+            </td>
+            <td>
+                <div class="editor-field">
+                    @Html.TextArea("comments", new { rows = 5, columns = 50 })
+                </div>
+            </td>
+        </tr>
+    </table>
+</fieldset>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.trade_id }) |
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.trade_id }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>

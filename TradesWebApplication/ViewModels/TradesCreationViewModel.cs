@@ -12,6 +12,7 @@ namespace TradesWebApplication.ViewModels
     {
         // Trade
         public Trade Trade { get; set; }
+        public List<Trade> Trades { get; set; }
         public List<TradeLineGroupViewModel> TradeLineGroups { get; set; }
         public List<TradeLineViewModel> TradeLines { get; set; }
 
@@ -99,8 +100,11 @@ namespace TradesWebApplication.ViewModels
         // linked trades
         [DisplayName("Linked Trades")]
         public Nullable<int> related_trade_id { get; set; }
-        public virtual ICollection<Related_Trade> ReleatedTrades { get; set; }
+        public virtual ICollection<Related_Trade> RelatedTrades { get; set; }
 
+
+
+        public Trade_Performance TradePerformance { get; set; }
         // APL function
         [DisplayName("APL Function")]
         public string apl_func { get; set; }
@@ -131,6 +135,7 @@ namespace TradesWebApplication.ViewModels
         // comments
         [DisplayName("Comments")]
         public string Comments { get; set; }
+        public Trade_Comment Comment { get; set; }
 
     }
 }

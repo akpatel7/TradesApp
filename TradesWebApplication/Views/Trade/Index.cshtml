@@ -29,50 +29,51 @@
             @Html.ActionLink("Id", "Index", new { sortOrder = ViewBag.TradeIdSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => (model as Trade).trade_label)
+            Trade Uri
         </th>
         <th>
-            @Html.DisplayNameFor(model => (model as Trade).trade_editorial_label)
+            Trade Label
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.created_on)*@
-            @Html.ActionLink("Created Date", "Index", new { sortOrder = ViewBag.CreatedDateSortParm, currentFilter = ViewBag.CurrentFilter })
+            Editorial Label
         </th>
         <th>
-            @Html.DisplayNameFor(model => (model as Trade).created_by)
+            Created On
         </th>
         <th>
-            @Html.DisplayNameFor(model => (model as Trade).last_updated)
+            Created By
         </th>
         <th>
-            @Html.DisplayNameFor(model => (model as Trade).Benchmark.benchmark_uri)
+           Last Updated
         </th>
         <th>
-            @Html.DisplayNameFor(model => (model as Trade).Currency.currency_uri)
+            Benchmark Uri
         </th>
         <th>
-            @Html.DisplayNameFor(model => (model as Trade).Length_Type.length_type_label)
+            Currency Uri
         </th>
         <th>
-            @Html.DisplayNameFor(model => (model as Trade).Relativity.relativity_label)
+            Length Type
         </th>
         <th>
-            @Html.DisplayNameFor(model => (model as Trade).Service.service_uri)
+            Relativity
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Status1.status_label)*@
-            @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusSortParm, currentFilter = ViewBag.CurrentFilter })
+            Service Uri
         </th>
         <th>
-            @Html.DisplayNameFor(model => (model as Trade).Structure_Type.structure_type_label)
+            Status
+        </th>
+        <th>
+            Structure Type
         </th>
     </tr>
 
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.trade_id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.trade_id }) |
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.trade_id }) |*@
+                @Html.ActionLink("Details", "Details", new { id = item.trade_id }) @*|*@
                 @*@Html.ActionLink("Delete", "Delete", new { id = item.trade_id })*@
             </td>
             <td>

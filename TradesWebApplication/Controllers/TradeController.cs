@@ -97,8 +97,47 @@ namespace TradesWebApplication.Controllers
             PopulateDropDownEntities(viewModel, false);
             PopulateRelatedTradeLinesAndGroups(viewModel);
             PopulateInstructions(viewModel);
+            PopulateAbsoluteAndRelativePerformance(viewModel);
+            //PopulateRelatedTrades(viewModel);
+            PopulateComment(viewModel);
 
             return View(viewModel);
+        }
+
+        private void PopulateAbsoluteAndRelativePerformance(TradesCreationViewModel viewModel)
+        {
+            //TODO check logic
+            //absolute
+
+            //related
+            viewModel.MeasureTypes = unitOfWork.MeasureTypeRepository.GetAll().ToList();
+            var relatedTradePerformances =
+                unitOfWork.TradePerformanceRepository.GetAll()
+                    .Where(t => t.trade_id == viewModel.Trade.trade_id)
+                    .ToList();
+            if (relatedTradePerformances.Any())
+            {
+                var latestPerformance = relatedTradePerformances.Last();
+                viewModel.rel_measure_type_id = latestPerformance.measure_type_id;
+                viewModel.rel_currency_id = latestPerformance.return_currency_id;
+                viewModel.rel_return_value = latestPerformance.return_value;
+                viewModel.return_benchmark_id = latestPerformance.return_benchmark_id;
+                //apl
+                viewModel.apl_func = latestPerformance.return_apl_function;
+            }
+
+
+        }
+
+        private void PopulateComment(TradesCreationViewModel viewModel)
+        {
+            viewModel.Comment =
+                unitOfWork.TradeCommentRepository.Get(c => c.trade_id == viewModel.Trade.trade_id).LastOrDefault();
+        }
+
+        private void PopulateRelatedTrades(TradesCreationViewModel viewModel)
+        {
+            viewModel.RelatedTrades = unitOfWork.RelatedTradeRepository.GetAll().Where(i => i.related_trade_id == viewModel.Trade.trade_id).ToList();
         }
 
         private void PopulateInstructions(TradesCreationViewModel viewModel)
@@ -191,8 +230,6 @@ namespace TradesWebApplication.Controllers
 
         private void PopulateDropDownEntities(TradesCreationViewModel viewModel, bool initialize)
         {
-            //viewModel.TradeLineGroups = unitOfWork.TradeLineGroupRepository.GetAll().ToList();
-            //viewModel.TradeLines = unitOfWork.TradeLineRepository.GetAll().ToList();
 
             viewModel.Services = unitOfWork.ServiceRepository.GetAll().ToList();
             viewModel.LengthTypes = unitOfWork.LengthTypeRepository.GetAll().ToList();
@@ -202,7 +239,7 @@ namespace TradesWebApplication.Controllers
             viewModel.Relativitys = unitOfWork.RelativityRepository.GetAll().ToList();
             viewModel.created_on = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
          
-            viewModel.ReleatedTrades = unitOfWork.RelatedTradeRepository.GetAll().ToList();
+           
 
             viewModel.InstructionTypes = unitOfWork.InstructionTypeRepository.GetAll().ToList();
             viewModel.HedgeTypes = unitOfWork.HedgeTypeRepository.GetAll().ToList();
@@ -218,7 +255,10 @@ namespace TradesWebApplication.Controllers
                 viewModel.abs_measure_type_id = 1;
                 viewModel.rel_measure_type_id = 2;
             }
-           
+
+            //TODO for related trades
+            viewModel.Trades = unitOfWork.TradeRepository.GetTrades().ToList();
+
         }
 
         // POST: /Trade/Create
