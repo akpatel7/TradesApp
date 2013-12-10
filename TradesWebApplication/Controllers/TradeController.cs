@@ -154,13 +154,14 @@ namespace TradesWebApplication.Controllers
                     viewModel.TradeLines.Add(tradeLineVM); 
 
                     var tradeLineGroup = unitOfWork.TradeLineGroupRepository.GetByID(tradeline.trade_line_group_id);
+
                     if (tradeLineGroup != null)
                     {
                         var tradeLineGroupVM = new TradeLineGroupViewModel
                         {
                             TradeLineGroup = tradeLineGroup,
-                            TradeLineGroupType =
-                                unitOfWork.TradeLineGroupTypeRepository.GetByID(tradeLineGroup.trade_line_group_type_id),
+                            TradeLineGroupTypes = unitOfWork.TradeLineGroupTypeRepository.GetAll().ToList(),
+                            TradeLineGroupType = unitOfWork.TradeLineGroupTypeRepository.GetByID(tradeLineGroup.trade_line_group_type_id),
                             EditorialLabel = tradeLineGroup.trade_line_group_editorial_label,
                             CanonicalLabel = tradeLineGroup.trade_line_group_label
                         };
