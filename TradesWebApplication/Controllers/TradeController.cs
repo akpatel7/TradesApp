@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Antlr.Runtime.Misc;
 using TradesWebApplication.DAL.EFModels;
 using TradesWebApplication.DAL;
 using PagedList;
@@ -92,8 +94,32 @@ namespace TradesWebApplication.Controllers
             }
 
             PopulateDropDownEntities(viewModel, false);
+            PopulateRelatedTradeLinesAndGroups(viewModel);
 
             return View(viewModel);
+        }
+
+        private void PopulateRelatedTradeLinesAndGroups(TradesCreationViewModel viewModel)
+        {
+            viewModel.TradeLines = new List<Trade_Line>();
+            viewModel.TradeLineGroups = new List<Trade_Line_Group>();
+
+            var tradeLines = unitOfWork.TradeLineRepository.GetAll().Where(t => t.trade_id == viewModel.trade_id).ToList();
+
+            if (tradeLines.Any())
+            {
+                viewModel.TradeLines = tradeLines;
+
+                foreach (var tradeline in tradeLines)
+                {
+                    var tradeLineGroup = unitOfWork.TradeLineGroupRepository.GetByID(tradeline.trade_line_group_id);
+                    if (tradeLineGroup != null)
+                    {
+                        viewModel.TradeLineGroups.Add(tradeLineGroup);
+                    }
+                }     
+            }
+       
         }
 
         // GET: /Trade/Create
@@ -104,6 +130,7 @@ namespace TradesWebApplication.Controllers
             viewModel.Trade = new Trade();
 
             PopulateDropDownEntities(viewModel, true);
+            //PopulateRelatedTradeLinesAndGroups(viewModel);
 
             return View(viewModel);
      
@@ -111,8 +138,8 @@ namespace TradesWebApplication.Controllers
 
         private void PopulateDropDownEntities(TradesCreationViewModel viewModel, bool initialize)
         {
-            viewModel.TradeLineGroups = unitOfWork.TradeLineGroupRepository.GetAll();
-            viewModel.TradeLines = unitOfWork.TradeLineRepository.GetAll();
+            //viewModel.TradeLineGroups = unitOfWork.TradeLineGroupRepository.GetAll().ToList();
+            //viewModel.TradeLines = unitOfWork.TradeLineRepository.GetAll().ToList();
 
             viewModel.Services = unitOfWork.ServiceRepository.GetAll().ToList();
             viewModel.Length_Types = unitOfWork.LengthTypeRepository.GetAll().ToList();

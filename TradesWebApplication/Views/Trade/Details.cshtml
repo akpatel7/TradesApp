@@ -6,7 +6,7 @@
 
 <h2>Trade Details</h2>
 
-<div>
+@*<div>
     <h4>Trade</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -115,7 +115,7 @@
         </dd>
 
     </dl>
-</div>
+</div>*@
 
 
 <div>
@@ -231,6 +231,65 @@
         </tr>
     </table>
     
+    <div id="update-tradeLineGroups">
+        @*data-bind="foreach: tradeLineGroups">*@
+        @*<input type="hidden" name="line_group_count" data-bind="value: $index()" />*@
+                    @{int i = 1;}
+                    @foreach (var itemGroup in Model.TradeLineGroups)
+                    {
+                        <fieldset class="tgroup">
+                            <legend class="trade_group">Group @Html.Raw(i) - @Html.Raw(itemGroup.trade_line_group_id) @*Group <span data-bind="text: ($index() + 1)"></span>*@</legend>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Group Information</th>
+                                        <th>Trade Line(s)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="editor-label">Group Structure</div>
+                                            @Html.DisplayFor(modelItem => itemGroup.trade_line_group_type_id)
+                              
+                                            <div class="editor-label">Editorial Label</div>
+                                            @Html.DisplayFor(modelItem => itemGroup.trade_line_group_editorial_label)
+                              
+                                            <div class="editor-label">Canonical Label</div>
+                                            @Html.DisplayFor(modelItem => itemGroup.trade_line_group_label)
+                              
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>LineID</th>
+                                                        <th>Position</th>
+                                                        <th>Financial Instrument</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.TradeLines.Where(item=> item.trade_line_group_id == itemGroup.trade_line_group_id))
+                                                    {
+                                                        <tr>
+                                                            <td>@Html.DisplayFor(modelItem => item.trade_line_id)</td>
+                                                            <td>@Html.DisplayFor(modelItem => item.position_id)</td>
+                                                            <td>@Html.DisplayFor(modelItem => item.tradable_thing_id)</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>                                   
+                                            </table>
+                                        </td>
+                                    </tr>
+                   
+                                </tbody>
+                            </table>
+                        </fieldset>
+                        i++;
+                    }
+    </div>
+    
     <table>
         <tr>
             <td>
@@ -334,6 +393,7 @@
             <td></td>
         </tr>
     </table>
+    
     
 
  

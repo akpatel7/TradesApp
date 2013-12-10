@@ -12,8 +12,8 @@ namespace TradesWebApplication.ViewModels
     {
         // Trade
         public Trade Trade { get; set; }
-        public IEnumerable<Trade_Line_Group> TradeLineGroups { get; set; }
-        public IEnumerable<Trade_Line> TradeLines { get; set; }
+        public List<Trade_Line_Group> TradeLineGroups { get; set; }
+        public List<Trade_Line> TradeLines { get; set; }
 
         public int trade_id { get; set; }
 
