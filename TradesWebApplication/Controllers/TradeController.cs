@@ -242,8 +242,12 @@ namespace TradesWebApplication.Controllers
             viewModel.StructureTypes = unitOfWork.StructureTypeRepository.GetAll().ToList();
             viewModel.Relativitys = unitOfWork.RelativityRepository.GetAll().ToList();
             viewModel.created_on = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-         
-           
+
+
+            viewModel.TradeLineGroupTypes = unitOfWork.TradeLineGroupTypeRepository.GetAll().ToList();
+            viewModel.Positions = unitOfWork.PositionRepository.GetAll().ToList();
+            viewModel.TradeTradableThings = unitOfWork.TradableThingRepository.GetAll().ToList();
+
 
             viewModel.InstructionTypes = unitOfWork.InstructionTypeRepository.GetAll().ToList();
             viewModel.HedgeTypes = unitOfWork.HedgeTypeRepository.GetAll().ToList();

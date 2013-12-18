@@ -136,7 +136,7 @@
                   <td>
                     <div class="editor-label">Group Structure</div>
                     <span data-bind='text: groupStructureId'></span>
-                    <select data-bind=""></select>
+                    @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"))
                     <div class="editor-label">Editorial Label</div>
                     <input type="text" name="" data-bind="text: groupCanonicalLabel" />
                     <div class="editor-label">Canonical Label</div>
@@ -160,11 +160,10 @@
                           <td><span data-bind='text: $index'></span>
                           </td>
                           <td> <span data-bind="text: $data.positionId"></span>
-                            <select></select>
+@Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"))
                           </td>
                           <td><span data-bind="text: $data.financialInstrumentId"></span>
-                            <select></select>
-
+                            @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"))
                           </td>
                           <td>
                             <button data-bind='click: function() { $parent.removeLine($data); }'>Remove Line</button>
@@ -441,47 +440,50 @@
     </table>
 </fieldset>
 
-
-<script src="~/Scripts/knockout-3.0.0.js"></script>
-<script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
-<script type="text/javascript">
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/knockout-3.0.0.js"></script> 
+    <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
     
-
-    
-    $(document).ready(function () {
-        var model = @Html.Raw(jsModel);
-        console.dir(model);
-        ko.applyBindings(vm);
-        $("#abs_currency_id").hide();
-    })
-
-    // show/hid benchmark selection
-    $("#relativity_id").change(function () {
-        if ($("#relativity_id").val() == 2) {
-            $("#main_trade_table tr#benchmark_selection").show();
-        } else {
-            $("#main_trade_table tr#benchmark_selection").hide();
-        }
-
-    });
-
-    // show hide absolute currency dropdown
-    $("#abs_measure_type_id").change(function () {
-        if ($("#abs_measure_type_id").val() == 2) {
-            $("#abs_currency_id").show();
-        } else {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ko.applyBindings(vm);
             $("#abs_currency_id").hide();
-        }
+        })
 
-    });
 
-    // show hide relative currency dropdown
-    $("#rel_measure_type_id").change(function () {
-        if ($("#rel_measure_type_id").val() == 2) {
-            $("#rel_currency_id").show();
-        } else {
-            $("#rel_currency_id").hide();
-        }
+        // show/hid benchmark selection
+        $("#relativity_id").change(function () {
+            if ($("#relativity_id").val() == 2) {
+                $("#main_trade_table tr#benchmark_selection").show();
+            }
+            else {
+                $("#main_trade_table tr#benchmark_selection").hide();
+            }
 
-    });
-</script>
+        });
+
+        // show hide absolute currency dropdown
+        $("#abs_measure_type_id").change(function () {
+            if ($("#abs_measure_type_id").val() == 2) {
+                $("#abs_currency_id").show();
+            }
+            else {
+                $("#abs_currency_id").hide();
+            }
+
+        });
+
+        // show hide relative currency dropdown
+        $("#rel_measure_type_id").change(function () {
+            if ($("#rel_measure_type_id").val() == 2) {
+                $("#rel_currency_id").show();
+            }
+            else {
+                $("#rel_currency_id").hide();
+            }
+
+        });
+
+    </script>
+}

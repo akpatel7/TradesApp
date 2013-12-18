@@ -16,8 +16,6 @@ namespace TradesWebApplication.ViewModels
         public List<TradeLineGroupViewModel> TradeLineGroups { get; set; }
         public List<TradeLineViewModel> TradeLines { get; set; }
 
-        
-
         // service
         [Required(ErrorMessage = "required")]
         [DisplayName("Service")]
@@ -136,6 +134,17 @@ namespace TradesWebApplication.ViewModels
         [DisplayName("Comments")]
         public string Comments { get; set; }
         public Trade_Comment Comment { get; set; }
+
+        //dropdowns for tradegroups
+        public int trade_line_group_type_id { get; set; }
+        public List<Trade_Line_Group_Type> TradeLineGroupTypes { get; set; } 
+        
+        //dropdowns for tradelines
+        public int position_id { get; set; }
+        public List<Position> Positions
+        { get; set; }
+        public int tradable_thing_id { get; set; }
+        public List<Tradable_Thing> TradeTradableThings { get; set; }
 
     }
 }
