@@ -33,6 +33,7 @@ function TradeGroup(id, groupStructureId, groupCanonicalLabel, groupEditorialLab
 
     this.addLine = function (id) {
         self.tradeLines.push(new TradeLine(id));
+        ko.applyBindings(vm);
     };
 
     this.removeLine = function (item) {
@@ -99,11 +100,7 @@ function TradeViewModel(
     this.tradeStructureId = ko.observable(tradeStructureId);
 
     //tradegroups
-    this.tradegroups = ko.observableArray([
-      new TradeGroup(),
-      new TradeGroup(),
-      new TradeGroup(),
-    ]);
+    this.tradegroups = ko.observableArray([]);
 
     this.addGroup = function () {
         self.tradegroups.push(new TradeGroup());
@@ -168,7 +165,21 @@ function TradeViewModel(
 
 }
 
+function SubmitCreatedTrade()
+{
+    var jsonData = ko.toJSON(vm);
+    $.post("/Trade/Create", jsonData, function (returnedData) {
+        // This callback is executed if the post was successful    
+    })
+}
+
+
+function RefreshVM() {
+    alert('Trying to refresh!');
+    ko.applyBindings(vm);
+}
+
 var vm = new TradeViewModel();
-vm.tradegroups.push(new TradeGroup(2, 2, "canon", "edit", [new TradeLine(), new TradeLine()]));
+    vm.tradegroups.push(new TradeGroup(0, 0, "", "", [new TradeLine()]));
 
 ko.applyBindings(vm);

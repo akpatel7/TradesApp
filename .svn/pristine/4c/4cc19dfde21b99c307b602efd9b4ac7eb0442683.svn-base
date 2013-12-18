@@ -9,6 +9,7 @@
 
  <h2>Trade Creation</h2>
 
+
     <table id="main_trade_table">
         <tr>
             <td>
@@ -19,7 +20,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.service_id, new SelectList(Model.Services, "service_id", "service_code"), new { @data_bind = "value: serviceId" })
+                    @Html.DropDownListFor(model => model.Trade.service_id, new SelectList(Model.Services, "service_id", "service_code"))
                     @Html.ValidationMessageFor(model => model.service_id)
                 </div>
             </td>
@@ -99,7 +100,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.Trade.trade_editorial_label, new {@class = "doesthiswork", @data_bind = "value: tradeEditorialLabel" })
+                    @Html.EditorFor(model => model.Trade.trade_editorial_label)
                     @Html.ValidationMessageFor(model => model.trade_editorial_label)
                 </div>
             </td>
@@ -165,7 +166,7 @@
                             @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"))
                           </td>
                           <td>
-                            <button data-bind='click: function () { $parent.removeLine($data);  }'>Remove Line</button>
+                            <button data-bind='click: function() { $parent.removeLine($data); }'>Remove Line</button>
                           </td>
                         </tr>
                       </tbody>
@@ -439,9 +440,6 @@
     </table>
 </fieldset>
 
-<pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
-
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/knockout-3.0.0.js"></script> 
@@ -449,6 +447,7 @@
     
     <script type="text/javascript">
         $(document).ready(function () {
+            ko.applyBindings(vm);
             $("#abs_currency_id").hide();
         })
 
