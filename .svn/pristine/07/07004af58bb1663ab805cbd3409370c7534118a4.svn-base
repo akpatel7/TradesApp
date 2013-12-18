@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Mvc;
 
 namespace TradesWebApplication.Api
 {
@@ -39,14 +38,11 @@ namespace TradesWebApplication.Api
 
 
         // GET api/<controller>/<action>
-        [System.Web.Http.HttpGet]
-         public IEnumerable<string> Test()
+        [HttpGet]
+        public IEnumerable<string> Test()
         {
-            var values = new[] { "John", "Pete", "Ben" };
-
-            return values;
-   
-       }
+            return new string[] { "value11", "value22" };
+        }
 
 
     }

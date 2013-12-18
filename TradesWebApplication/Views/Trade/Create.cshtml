@@ -1,8 +1,9 @@
 ﻿@model TradesWebApplication.ViewModels.TradesCreationViewModel
-@using Newtonsoft.Json@
-{
+@using Newtonsoft.Json
+
+@{
     ViewBag.Title = "Trade Creation";
-     var jsModel = JsonConvert.SerializeObject(Model, Formatting.Indented,
+    var jsModel = JsonConvert.SerializeObject(Model, Formatting.Indented,
         new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
 }
 
@@ -292,7 +293,7 @@
         </tr>
     </table>
  </fieldset>
-</div>
+
  <!-- supplementary info ------------------------------------- -->
 <fieldset class="tgroup">
     <legend class="trade_group">Supplementary Information</legend>
@@ -440,6 +441,7 @@
     </table>
 </fieldset>
 
+
 <script src="~/Scripts/knockout-3.0.0.js"></script>
 <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
 <script type="text/javascript">
@@ -447,7 +449,8 @@
 
     
     $(document).ready(function () {
-        console.dir(jsModel);
+        var model = @Html.Raw(jsModel);
+        console.dir(model);
         ko.applyBindings(vm);
         $("#abs_currency_id").hide();
     })

@@ -5,7 +5,17 @@ class WebApiConfig
 {
     public static void Register(HttpConfiguration configuration)
     {
+
+       
+
+        configuration.Routes.MapHttpRoute(
+            name: "ActionApi",
+            routeTemplate: "api/{controller}/{action}/{id}",
+            defaults: new { controller = "Values", action = RouteParameter.Optional, id = RouteParameter.Optional });
+
         configuration.Routes.MapHttpRoute("API Default", "api/{controller}/{id}",
-            new { id = RouteParameter.Optional });
+           new { id = RouteParameter.Optional });
+
+        
     }
 }
