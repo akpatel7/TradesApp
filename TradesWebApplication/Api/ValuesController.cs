@@ -44,8 +44,9 @@ namespace TradesWebApplication.Api
                 vm = JsonConvert.DeserializeObject<TradesCreationViewModel>(value);
 
                 PersistToDb(vm);
+
                 //return new HttpResponseMessage(HttpStatusCode.NoContent);
-                return new HttpResponseMessage(HttpStatusCode.Accepted)
+                return new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new JsonContent(new
                     {
