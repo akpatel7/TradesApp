@@ -9,6 +9,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TradesWebApplication.DAL;
 using TradesWebApplication.ViewModels;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace TradesWebApplication.Api
 {
@@ -29,15 +32,36 @@ namespace TradesWebApplication.Api
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Post([FromBody]string value)
         {
-            var vm = new TradesCreationViewModel();
 
-            string jsonData = value;
-          
-            vm = JsonConvert.DeserializeObject<TradesCreationViewModel>(value);
+            if (ModelState.IsValid)
+            {
+                var vm = new TradesCreationViewModel();
 
-            PersistToDb(vm);
+                string jsonData = value;
+
+                vm = JsonConvert.DeserializeObject<TradesCreationViewModel>(value);
+
+                PersistToDb(vm);
+                //return new HttpResponseMessage(HttpStatusCode.NoContent);
+                return new HttpResponseMessage(HttpStatusCode.Accepted)
+                {
+                    Content = new JsonContent(new
+                    {
+                        Success = true, //error
+                        Message = "Success" //return exception
+                    })
+                };
+            }
+            return new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new JsonContent(new
+                {
+                    Success = false, //error
+                    Message = "Fail" //return exception
+                })
+            };
         }
 
         private void PersistToDb(TradesCreationViewModel vm)
@@ -65,6 +89,30 @@ namespace TradesWebApplication.Api
             return values;
    
        }
+
+       public class JsonContent : HttpContent {
+
+    private readonly MemoryStream _Stream = new MemoryStream();
+    public JsonContent(object value) {
+
+        Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        var jw = new JsonTextWriter( new StreamWriter(_Stream));
+        jw.Formatting = Formatting.Indented;
+        var serializer = new JsonSerializer();
+        serializer.Serialize(jw, value);
+        jw.Flush();
+        _Stream.Position = 0;
+
+    }
+    protected override Task SerializeToStreamAsync(Stream stream, TransportContext context) {
+        return _Stream.CopyToAsync(stream);
+    }
+
+    protected override bool TryComputeLength(out long length) {
+        length = _Stream.Length;
+        return true;
+    }
+}
 
 
     }
