@@ -3,8 +3,8 @@
 
 @{
     ViewBag.Title = "Trade Creation";
-    var jsModel = JsonConvert.SerializeObject(Model, Formatting.Indented,
-        new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
+    @*var jsModel = JsonConvert.SerializeObject(Model, Formatting.Indented,
+        new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });*@
 }
 
  <h2>Trade Creation</h2>
@@ -19,7 +19,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.service_id, new SelectList(Model.Services, "service_id", "service_code"), new { @data_bind = "value: serviceId" })
+                    @Html.DropDownListFor(model => model.Trade.service_id, new SelectList(Model.Services, "service_id", "service_code"), new { @data_bind = "value: service_id" })
                     @Html.ValidationMessageFor(model => model.service_id)
                 </div>
             </td>
@@ -34,7 +34,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"))
+                    @Html.DropDownListFor(model => model.Trade.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"), new { @data_bind = "value: length_type_id" })
                     @Html.ValidationMessageFor(model => model.length_type_id)
                 </div>
             </td>
@@ -47,7 +47,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"))
+                    @Html.DropDownListFor(model => model.Trade.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"), new { @data_bind = "value: relativity_id" })
                     @Html.ValidationMessageFor(model => model.relativity_id)
                 </div>
             </td>
@@ -60,7 +60,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"))
+                    @Html.DropDownListFor(model => model.Trade.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), new { @data_bind = "value: benchmark_id" })
                     @Html.ValidationMessageFor(model => model.benchmark_id)
                 </div>
             </td>
@@ -73,7 +73,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.Trade.created_on)
+                    @Html.TextBoxFor(model => model.Trade.created_on, new { @data_bind = "value: created_on" })
                     @Html.ValidationMessageFor(model => model.created_on)
                 </div>
             </td>
@@ -86,7 +86,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.Trade.trade_label)
+                    @Html.TextBoxFor(model => model.Trade.trade_label, new { @data_bind = "value: trade_label" })
                     @Html.ValidationMessageFor(model => model.trade_label)
                 </div>
             </td>
@@ -99,7 +99,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.Trade.trade_editorial_label, new {@class = "doesthiswork", @data_bind = "value: tradeEditorialLabel" })
+                    @Html.TextBoxFor(model => model.Trade.trade_editorial_label, new { @data_bind = "value: trade_editorial_label" })
                     @Html.ValidationMessageFor(model => model.trade_editorial_label)
                 </div>
             </td>
@@ -113,7 +113,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"))
+                    @Html.DropDownListFor(model => model.Trade.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), new { @data_bind = "value: structure_type_id" })
                     @Html.ValidationMessageFor(model => model.structure_type_id)
                 </div>
             </td>
@@ -134,12 +134,15 @@
                 <tr>
                   <td>
                     <div class="editor-label">Group Structure</div>
-                    <span data-bind='text: groupStructureId'></span>
-                    @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"))
+                    @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), new { @data_bind = "value: trade_line_group_type_id" })
                     <div class="editor-label">Editorial Label</div>
-                    <input type="text" name="" data-bind="text: groupCanonicalLabel" />
+                    <div class="editor-field">
+                    <input type="text" data-bind = "value: trade_line_group_editorial_label" />                 
+                </div>
                     <div class="editor-label">Canonical Label</div>
-                    <input type="text" name="" data-bind="text: groupEditorialLabel" />
+                     <div class="editor-field">
+                     <input type="text" data-bind = "value: trade_line_group_label" />                   
+                </div>
                   </td>
 
                   <td>
@@ -158,11 +161,11 @@
                         <tr>
                           <td><span data-bind='text: $index'></span>
                           </td>
-                          <td> <span data-bind="text: $data.positionId"></span>
-@Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"))
+                          <td>
+@Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), new { @data_bind = "value: position_id" })
                           </td>
-                          <td><span data-bind="text: $data.financialInstrumentId"></span>
-                            @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"))
+                          <td>
+                            @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), new { @data_bind = "value: tradable_thing_id" })
                           </td>
                           <td>
                             <button data-bind='click: function () { $parent.removeLine($data);  }'>Remove Line</button>
@@ -197,7 +200,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.instruction_entry)
+                    @Html.TextBoxFor(model => model.instruction_entry, new { @data_bind = "value: instruction_entry" })
                     @Html.ValidationMessageFor(model => model.instruction_entry)
                 </div>
             </td>
@@ -212,7 +215,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.instruction_entry_date)
+                    @Html.TextBoxFor(model => model.instruction_entry_date, new { @data_bind = "value: instruction_entry_date" })
                     @Html.ValidationMessageFor(model => model.instruction_entry_date)
                 </div>
             </td>
@@ -227,7 +230,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.instruction_exit)
+                    @Html.TextBoxFor(model => model.instruction_exit, new { @data_bind = "value: instruction_exit" })
                 </div>
             </td>
             <td></td>
@@ -240,7 +243,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.instruction_exit_date)
+                    @Html.TextBoxFor(model => model.instruction_exit_date, new { @data_bind = "value: instruction_exit_date" })
                 </div>
             </td>
             <td></td>
@@ -254,12 +257,12 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"))
+                    @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: instruction_type_id" })
                 </div>
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.instruction_label)
+                    @Html.TextBoxFor(model => model.instruction_label, new { @data_bind = "value: hedge_id" })
                 </div>
             </td>
         </tr>
@@ -271,7 +274,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"))
+                    @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: hedge_id" })
                 </div>
             </td>
             <td></td>
@@ -284,7 +287,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
+                    @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: currency_id" })
                 </div>
             </td>
             <td></td>
@@ -305,7 +308,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), String.Empty )
+                    @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), String.Empty, new { @data_bind = "value: related_trade_ids" } )
                 </div>
             </td>
             <td></td>
@@ -319,7 +322,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.apl_func)
+                    @Html.TextBoxFor(model => model.apl_func, new { @data_bind = "value: apl_func" })
                 </div>
             </td>
             <td></td>
@@ -339,7 +342,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.mark_to_mark_rate)
+                    @Html.TextBoxFor(model => model.mark_to_mark_rate, new { @data_bind = "value: mark_to_mark_rate" })
                 </div>
             </td>
             <td></td>
@@ -353,7 +356,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.interest_rate_diff)
+                    @Html.TextBoxFor(model => model.interest_rate_diff, new { @data_bind = "value: interest_rate_diff" })
                 </div>
             </td>
             <td></td>
@@ -374,9 +377,9 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"))
-                    @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
-                    @Html.EditorFor(model => model.abs_return_value)
+                    @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id" })
+                    @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: abs_return_value" })
+                    @Html.TextBoxFor(model => model.abs_return_value)
                 </div>
             </td>
         </tr>
@@ -396,9 +399,9 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"))
-                    @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
-                    @Html.EditorFor(model => model.rel_return_value)
+                    @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: rel_measure_type_id" })
+                    @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: rel_currency_id" })
+                    @Html.TextBoxFor(model => model.rel_return_value, new { @data_bind = "value: rel_return_value" })
                 </div>
             </td>
         </tr>
@@ -411,7 +414,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty)
+                    @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty, new { @data_bind = "value: return_benchmark_id" })
 
                 </div>
             </td>
@@ -432,7 +435,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.TextArea("comments", new { rows = 5, columns = 50 })
+                    @Html.TextAreaFor(model => model.Comments, new { @data_bind = "value: comments", @rows = "5", @columns = "50 "})
                 </div>
             </td>
         </tr>

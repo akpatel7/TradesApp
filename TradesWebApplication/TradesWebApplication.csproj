@@ -454,6 +454,8 @@
     <Content Include="Content\Images\icon-pencil.gif" />
     <Content Include="Content\Images\Search3.gif" />
     <Content Include="Content\Images\UpArrow.gif" />
+    <Content Include="Images\accent.png" />
+    <Content Include="Images\heroAccent.png" />
     <Content Include="Scripts\app\viewmodels\tradeViewModel.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
