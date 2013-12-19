@@ -1,4 +1,5 @@
 ﻿
+var baseApiUri = '@ViewBag.ApiGroupUrl';
 
 function TradeLine(trade_line_id, position_id, tradable_thing_id) {
     var self = this;
@@ -175,9 +176,11 @@ function TradeViewModel(
     comments = typeof (comments) !== 'undefined' ? comments : "";
     this.comments = ko.observable(comments);
 
-    self.saveTradeData = function () {
+    self.saveTradeData = function (baseApiUrl) {
+        var apiURL = baseUrl;
+        apiURL += "api/values/post";
         $.ajax({
-            url: "Create",
+            url: apiURL,
             type: 'post',
             data: JSON.stringify(ko.toJSON(this)),
             contentType: 'application/json',

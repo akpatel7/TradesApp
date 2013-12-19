@@ -63,7 +63,7 @@ namespace TradesWebApplication.ViewModels
         // entry level
         [Required(ErrorMessage = "required")]
         [DisplayName("Entry Level")]
-        public decimal instruction_entry { get; set; }
+        public decimal? instruction_entry { get; set; }
         
         // start date
         [Required(ErrorMessage = "required")]
@@ -146,5 +146,8 @@ namespace TradesWebApplication.ViewModels
         public int tradable_thing_id { get; set; }
         public List<Tradable_Thing> TradeTradableThings { get; set; }
 
+        //for ko json response
+        public List<TradeLineGroupViewModel> tradegroups { get; set; }
+        public List<TradeLineViewModel> tradeLines { get; set; }
     }
 }

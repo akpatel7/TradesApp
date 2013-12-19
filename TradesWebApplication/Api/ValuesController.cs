@@ -5,11 +5,17 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using TradesWebApplication.DAL;
+using TradesWebApplication.ViewModels;
 
 namespace TradesWebApplication.Api
 {
     public class ValuesController : ApiController
     {
+        private UnitOfWork unitOfWork = new UnitOfWork();
+
         // GET api/<controller>
         public IEnumerable<string> Get()
         {
@@ -25,6 +31,18 @@ namespace TradesWebApplication.Api
         // POST api/<controller>
         public void Post([FromBody]string value)
         {
+            var vm = new TradesCreationViewModel();
+
+            string jsonData = value;
+          
+            vm = JsonConvert.DeserializeObject<TradesCreationViewModel>(value);
+
+            PersistToDb(vm);
+        }
+
+        private void PersistToDb(TradesCreationViewModel vm)
+        {
+            return;
         }
 
         // PUT api/<controller>/5

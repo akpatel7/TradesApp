@@ -372,7 +372,6 @@
     <Compile Include="ViewModels\TradeLineGroupViewModel.cs" />
     <Compile Include="ViewModels\TradeLineViewModel.cs" />
     <Compile Include="ViewModels\TradesCreationViewModel.cs" />
-    <Compile Include="ViewModels\TradeViewModel.cs" />
     <Compile Include="ViewModels\ViewInformation.cs" />
   </ItemGroup>
   <ItemGroup>

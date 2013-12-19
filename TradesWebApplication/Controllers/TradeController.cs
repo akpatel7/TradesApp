@@ -219,6 +219,8 @@ namespace TradesWebApplication.Controllers
         // GET: /Trade/Create
         public ActionResult Create()
         {
+           
+
             var viewModel = new TradesCreationViewModel();
 
             viewModel.Trade = new Trade();

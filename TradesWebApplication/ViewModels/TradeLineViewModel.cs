@@ -12,5 +12,11 @@ namespace TradesWebApplication.ViewModels
         { get; set; }
         public Tradable_Thing TradeTradableThing { get; set; }
         public virtual ICollection<Tradable_Thing> TradeTradableThings { get; set; }
+
+        //for json
+        public int trade_line_id { get; set; }
+        public int position_id { get; set; }
+        public int tradable_thing_id { get; set; }
+        
     }
 }
