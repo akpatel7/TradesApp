@@ -8,7 +8,6 @@
 }
 
  <h2>Trade Creation</h2>
-
     <table id="main_trade_table">
         <tr>
             <td>
@@ -440,7 +439,13 @@
             </td>
         </tr>
     </table>
+        
 </fieldset>
+
+<p>
+    <button>Cancel</button>
+    <button data-bind="click: $root.saveTradeData">Create</button>
+</p>
 
 <pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
 

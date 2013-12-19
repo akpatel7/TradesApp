@@ -175,6 +175,19 @@ function TradeViewModel(
     comments = typeof (comments) !== 'undefined' ? comments : "";
     this.comments = ko.observable(comments);
 
+    self.saveTradeData = function () {
+        $.ajax({
+            url: "Create",
+            type: 'post',
+            data: JSON.stringify(ko.toJSON(this)),
+            contentType: 'application/json',
+            success: function (result) {
+
+                $('#message').html(result);
+            }
+        });
+    }
+
 }
 
 var vm = new TradeViewModel();

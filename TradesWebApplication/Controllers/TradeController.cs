@@ -12,6 +12,8 @@ using TradesWebApplication.DAL.EFModels;
 using TradesWebApplication.DAL;
 using PagedList;
 using TradesWebApplication.ViewModels;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace TradesWebApplication.Controllers
 {
@@ -269,28 +271,40 @@ namespace TradesWebApplication.Controllers
         // POST: /Trade/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create()
+        //{
+        //    var viewModel = new TradesCreationViewModel();
+
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            unitOfWork.TradeRepository.InsertTrade(trade);
+        //            unitOfWork.TradeRepository.Save();
+        //            return RedirectToAction("Index");
+        //        }
+        //    }
+        //    catch (DataException /* dex */)
+        //    {
+        //        //Log the error (uncomment dex variable name after DataException and add a line here to write a log.
+        //        ModelState.AddModelError(string.Empty, "Unable to save changes. Try again, and if the problem persists contact your system administrator.");
+        //    }
+
+        //    return View(viewModel);
+        //}
+
+        // POST: /Trade/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="trade_id,trade_uri,relativity_id,length_type_id,structure_type_id,service_id,currency_id,benchmark_id,trade_label,trade_editorial_label,created_on,created_by,last_updated,status")] Trade trade)
+        public JsonResult Create(string json)
         {
-            var viewModel = new TradesCreationViewModel();
+            Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
 
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    unitOfWork.TradeRepository.InsertTrade(trade);
-                    unitOfWork.TradeRepository.Save();
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (DataException /* dex */)
-            {
-                //Log the error (uncomment dex variable name after DataException and add a line here to write a log.
-                ModelState.AddModelError(string.Empty, "Unable to save changes. Try again, and if the problem persists contact your system administrator.");
-            }
+            return Json(values);
 
-            return View(viewModel);
         }
 
         // GET: /Trade/Edit/5
