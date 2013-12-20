@@ -9,3 +9,6 @@
 /// <reference path="knockout-3.0.0.js" />
 /// <reference path="knockout.mapping-latest.js" />
 /// <reference path="knockout.validation.js" />
+/// <reference path="app/viewmodels/tradeviewmodel.js" />
+/// <reference path="moment-with-langs.js" />
+/// <reference path="moment.js" />

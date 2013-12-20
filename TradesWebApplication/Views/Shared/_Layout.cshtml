@@ -3,20 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title - BCA Trades Application</title>
-    @Styles.Render("~/Content/Site.css")
-    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/css")
 
-<script type="text/javascript">
-    var baseUrl = "@Url.Content("~")";
-</script>
+    <script type="text/javascript">
+        var baseUrl = "@Url.Content("~")";
+    </script>
 
-<meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width">
 </head>
 <body>
     <header>
         <div class="content-wrapper">
             <div>
-                <p class="site-title">@Html.ActionLink("BCA Trades Application", "TradesList", "Trades")</p>
+                <p class="site-title">@Html.ActionLink("BCA Trades Application", "Index", "Trade")</p>
             </div>
             <div>
                 <nav>
@@ -29,7 +29,6 @@
         </div>
     </header>
     <div id="body">
-        @RenderSection("featured", required: false)
         <section class="content-wrapper main-content clear-fix">
             @RenderBody()
         </section>
@@ -42,7 +41,13 @@
         </div>
     </footer>
 
+
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/knockout")
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -443,18 +443,16 @@
 </fieldset>
 
 <p>
-    <button>Cancel</button>
-    <button data-bind="click: $root.saveTradeData">Create</button>
+    <button class="btn btn-primary" >Cancel</button>
+    <button class="btn btn-primary" data-bind="click: $root.saveTradeData">Create</button>
 </p>
 
 <pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
 
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/knockout-3.0.0.js"></script> 
-
+@section scripts{
     <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
+    
     
     <script type="text/javascript">
         $(document).ready(function () {
