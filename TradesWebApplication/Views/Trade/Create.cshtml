@@ -213,11 +213,19 @@
 
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.instruction_entry_date, new { @data_bind = "value: instruction_entry_date" })
+                
+                 
+                    <div class="well">
+                        <div id="datetimepicker1" class="input-append date">
+                            <input data-format="dd/MM/yyyy hh:mm:ss" type="text" data-bind="value: instruction_entry_date"></input>
+                            <span class="add-on">
+                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+                                </i>
+                            </span>
+                        </div>
+                    </div>
                     @Html.ValidationMessageFor(model => model.instruction_entry_date)
-                </div>
-            </td>
+           </td>
             <td></td>
         </tr>
         <tr>
@@ -229,7 +237,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.instruction_exit, new { @data_bind = "value: instruction_exit" })
+                    @Html.TextBoxFor(model => model.instruction_exit, new { @data_bind = "value: instruction_exit" })  
                 </div>
             </td>
             <td></td>
@@ -241,9 +249,16 @@
                 </div>
             </td>
             <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.instruction_exit_date, new { @data_bind = "value: instruction_exit_date" })
-                </div>
+
+                    <div class="well">
+                        <div id="datetimepicker2" class="input-append date">
+                            <input data-format="yyyy MM dd hh:mm:ss" type="text" data-bind="value: instruction_exit"></input>
+                            <span class="add-on">
+                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+                                </i>
+                            </span>
+                        </div>
+                    </div>                
             </td>
             <td></td>
         </tr>
@@ -455,9 +470,25 @@
     
     
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#abs_currency_id").hide();
-        })
+            
+            $('#datetimepicker1').datetimepicker({
+                format: 'yyyy MM dd hh:mm:ss',
+                language: 'en',
+                pick12HourFormat: true,
+                pickDate: true,
+                pickTime: true
+            });
+            
+            $('#datetimepicker2').datetimepicker({
+                format: 'yyyy MM dd hh:mm:ss',
+                language: 'en',
+                pick12HourFormat: true,
+                pickDate: true,
+                pickTime: true
+            });
+        });
 
 
         // show/hid benchmark selection
@@ -492,6 +523,8 @@
             }
 
         });
-
-    </script>
+        
+        
+        
+       </script>
 }
