@@ -21,13 +21,9 @@
 
         </td>
         <td>
-            @Html.DropDownListFor(model => model.Trade.service_id, new SelectList(Model.Services, "service_id", "service_code"), new { @data_bind = "value: service_id", @class = "form-control" })
+            @Html.DropDownListFor(model => model.service_id, new SelectList(Model.Services, "service_id", "service_code"), "{Service}", new { @data_bind = "value: service_id", @class = "form-control"})
             @Html.ValidationMessageFor(model => model.service_id)
         </td>
-
-
-
-
         <tr>
             <td>
                 <div class="editor-label">
@@ -37,7 +33,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"), new { @data_bind = "value: length_type_id", @class = "form-control" })
+                    @Html.DropDownListFor(model => model.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"),  "{Trade Type}", new { @data_bind = "value: length_type_id", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.length_type_id)
                 </div>
             </td>
@@ -50,12 +46,12 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"), new { @data_bind = "value: relativity_id", @class = "form-control" })
+                    @Html.DropDownListFor(model => model.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"), "{Benchmark}", new { @data_bind = "value: relativity_id", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.relativity_id)
                 </div>
             </td>
         </tr>
-        <tr id="benchmark_selection">
+        <tr>
             <td>
                 <div class="editor-label">
                     @Html.LabelFor(model => model.benchmark_id)
@@ -63,12 +59,12 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), new { @data_bind = "value: benchmark_id", @class = "form-control" })
+                    @Html.DropDownListFor(model => model.Trade.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"),"{Bechmark Selection}", new { @data_bind = "value: benchmark_id, visible: relativity_id() == 2", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.benchmark_id)
                 </div>
             </td>
         </tr>
-        <tr>
+       @* <tr>
             <td>
                 <div class="editor-label">
                     @Html.LabelFor(model => model.created_on)
@@ -80,7 +76,7 @@
                     @Html.ValidationMessageFor(model => model.created_on)
                 </div>
             </td>
-        </tr>
+        </tr>*@
         <tr>
             <td>
                 <div class="editor-label">
@@ -228,12 +224,11 @@
 
                     <div id="datetimepicker1" class="input-append date">
                         @Html.TextBoxFor(model => model.instruction_entry_date, new {@data_format="yyyy-MM-dd", @data_bind = "value: instruction_entry_date", @class = "form-control" })
-                       
                         <span class="add-on">
                             <i data-date-icon="icon-calendar">
                             </i>
+<span class="field-validator-error">@Html.ValidationMessageFor(model => model.instruction_entry_date)</span>
                         </span>
-                        @Html.ValidationMessageFor(model => model.instruction_entry_date)
 
                     </div>
 
