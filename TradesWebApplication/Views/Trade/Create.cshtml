@@ -7,523 +7,530 @@
         new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });*@
 }
 
- <h2>Trade Creation</h2>
-    <table id="main_trade_table">
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.service_id)
-                </div>
+<h2><span>Trade Creation</span></h2>
+<table id="main_trade_table">
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.service_id)
+            </div>
 
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.service_id, new SelectList(Model.Services, "service_id", "service_code"), new { @data_bind = "value: service_id" })
-                    @Html.ValidationMessageFor(model => model.service_id)
-                </div>
-            </td>
-        </tr>
+        </td>
+        <td>
+            @Html.DropDownListFor(model => model.Trade.service_id, new SelectList(Model.Services, "service_id", "service_code"), new { @data_bind = "value: service_id", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.service_id)
+        </td>
 
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.length_type_id)
-                </div>
 
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"), new { @data_bind = "value: length_type_id" })
-                    @Html.ValidationMessageFor(model => model.length_type_id)
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.relativity_id)
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"), new { @data_bind = "value: relativity_id" })
-                    @Html.ValidationMessageFor(model => model.relativity_id)
-                </div>
-            </td>
-        </tr>
-        <tr id="benchmark_selection">
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.benchmark_id)
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), new { @data_bind = "value: benchmark_id" })
-                    @Html.ValidationMessageFor(model => model.benchmark_id)
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.created_on)
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.Trade.created_on, new { @data_bind = "value: created_on" })
-                    @Html.ValidationMessageFor(model => model.created_on)
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.trade_label)
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.Trade.trade_label, new { @data_bind = "value: trade_label" })
-                    @Html.ValidationMessageFor(model => model.trade_label)
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.trade_editorial_label)
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.Trade.trade_editorial_label, new { @data_bind = "value: trade_editorial_label" })
-                    @Html.ValidationMessageFor(model => model.trade_editorial_label)
-                </div>
-            </td>
-        </tr>
 
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.structure_type_id)
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), new { @data_bind = "value: structure_type_id" })
-                    @Html.ValidationMessageFor(model => model.structure_type_id)
-                </div>
-            </td>
-        </tr>
-    </table>
-    
-      <!-- trade groups ------------------------------------->
+
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.length_type_id)
+            </div>
+
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Trade.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"), new { @data_bind = "value: length_type_id", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.length_type_id)
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.relativity_id)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Trade.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"), new { @data_bind = "value: relativity_id", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.relativity_id)
+            </div>
+        </td>
+    </tr>
+    <tr id="benchmark_selection">
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.benchmark_id)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Trade.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), new { @data_bind = "value: benchmark_id", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.benchmark_id)
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.created_on)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Trade.created_on, new { @data_bind = "value: created_on", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.created_on)
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.trade_label)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Trade.trade_label, new { @data_bind = "value: trade_label", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.trade_label)
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.trade_editorial_label)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Trade.trade_editorial_label, new { @data_bind = "value: trade_editorial_label", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.trade_editorial_label)
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.structure_type_id)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.Trade.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), new { @data_bind = "value: structure_type_id", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.structure_type_id)
+            </div>
+        </td>
+    </tr>
+</table>
+
+    <!-- trade groups ------------------------------------->
+    <div class="list-group">
         <table>
-          <tr>
-            <table data-bind='foreach: tradegroups'>
-              <thead>
-                <tr>
-                  <th>Group <span data-bind='text: $index'></span> Information</th>
-                  <th>Trade Line(s)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="editor-label">Group Structure</div>
-                    @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), new { @data_bind = "value: trade_line_group_type_id" })
-                    <div class="editor-label">Editorial Label</div>
-                    <div class="editor-field">
-                    <input type="text" data-bind = "value: trade_line_group_editorial_label" />                 
-                </div>
-                    <div class="editor-label">Canonical Label</div>
-                     <div class="editor-field">
-                     <input type="text" data-bind = "value: trade_line_group_label" />                   
-                </div>
-                  </td>
-
-                  <td>
-                    <!-- Add a list of trade lines. -->
-                    <table data-bind='foreach: tradeLines'>
-                      <thead>
+            <tr>
+                <table data-bind='foreach: tradegroups'>
+                    <thead>
                         <tr>
-                          <th>Order</th>
-
-                          <th>Position</th>
-                          <th>Financial Instrument</th>
-                          <th></th>
+                            <th>Group <span data-bind='text: ($index() + 1)'></span> Information</th>
+                            <th>Trade Line(s)</th>
                         </tr>
-                      </thead>
-                      <tbody>
+                    </thead>
+                    <tbody>
                         <tr>
-                          <td><span data-bind='text: $index'></span>
-                          </td>
-                          <td>
-@Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), new { @data_bind = "value: position_id" })
-                          </td>
-                          <td>
-                            @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), new { @data_bind = "value: tradable_thing_id" })
-                          </td>
-                          <td>
-                            <button data-bind='click: function () { $parent.removeLine($data);  }'>Remove Line</button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button data-bind='click: $root.removeGroup'>Delete trade group</button>
-                    <button data-bind='click: addLine'>Add new trade line</button>
-                </tr>
-              </tbody>
-            </table>
+                            <td>
+                                <div class="editor-label">Group Structure</div>
+                                @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), new { @data_bind = "value: trade_line_group_type_id", @class = "form-control" })
+                                <div class="editor-label">Editorial Label</div>
+                                <div class="editor-field">
+                                    <input type="text" data-bind="value: trade_line_group_editorial_label" class="form-control" />
+                                </div>
+                                <div class="editor-label">Canonical Label</div>
+                                <div class="editor-field">
+                                    <input type="text" data-bind="value: trade_line_group_label" class="form-control" />
+                                </div>
+                            </td>
 
-          </tr>
-          <tr>
-            <button data-bind='click: addGroup'>Add new group</button>
-          </tr>
+                            <td>
+                                <!-- Add a list of trade lines. -->
+                                <table data-bind='foreach: tradeLines'>
+                                    <thead>
+                                        <tr>
+                                            <th>Order&#160;&#160;&#160;</th>
+                                            <th>Position</th>
+                                            <th>Financial Instrument</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span data-bind='text: ($index() + 1)'></span>
+                                            </td>
+                                            <td>
+                                                @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), new { @data_bind = "value: position_id", @class = "form-control" })
+                                            </td>
+                                            <td>
+                                                @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), new { @data_bind = "value: tradable_thing_id", @class = "form-control" })
+                                            </td>
+                                            <td>
+
+                                                <button type="button" class="btn btn-small" data-bind='click: function () { $parent.removeLine($data);  }'>
+                                                    <span class="glyphicon glyphicon-remove-circle"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button data-bind='click: $root.removeGroup' class='btn btn-small'>Delete trade group</button>
+                                <button data-bind='click: addLine' class="btn" btn-small">Add new trade line</button>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </tr>
+            <tr>
+                <button data-bind='click: addGroup' class="btn btn-small">Add new group</button>
+            </tr>
         </table>
-
+    </div>
 
 
     <!-- instructions ------------------------------------- -->
     <fieldset class="tgroup">
         <legend class="trade_group">Instructions</legend>
-    <table>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.instruction_entry)
-                </div>
-
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.instruction_entry, new { @data_bind = "value: instruction_entry" })
-                    @Html.ValidationMessageFor(model => model.instruction_entry)
-                </div>
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.instruction_entry_date)
-                </div>
-
-            </td>
-            <td>
-                
-                 
-                    <div class="well">
-                        <div id="datetimepicker1" class="input-append date">
-                            <input data-format="dd/MM/yyyy hh:mm:ss" type="text" data-bind="value: instruction_entry_date"></input>
-                            <span class="add-on">
-                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-                                </i>
-                            </span>
-                        </div>
+        <table>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.instruction_entry)
                     </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.instruction_entry, new { @data_bind = "value: instruction_entry", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.instruction_entry)
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.instruction_entry_date)
+                    </div>
+
+                </td>
+                <td>
+
+
+
+                    <div id="datetimepicker1" class="input-append date">
+                        <input data-format="yyyy-MM-dd" type="text" data-bind="value: instruction_entry_date"></input>
+                        <span class="add-on">
+                            <i data-date-icon="icon-calendar">
+                            </i>
+                        </span>
+                    </div>
+
                     @Html.ValidationMessageFor(model => model.instruction_entry_date)
-           </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.instruction_exit)
-                </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.instruction_exit)
+                    </div>
 
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.instruction_exit, new { @data_bind = "value: instruction_exit" })  
-                </div>
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.instruction_exit_date)
-                </div>
-            </td>
-            <td>
-
-   
-                        <div id="datetimepicker2" class="input-append date">
-                            <input data-format="yyyy MM dd hh:mm:ss" type="text" data-bind="value: instruction_exit"></input>
-                            <span class="add-on">
-                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-                                </i>
-                            </span>
-                        </div>               
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.instruction_type_id)
-                </div>
-
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: instruction_type_id" })
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.instruction_label, new { @data_bind = "value: hedge_id" })
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.hedge_id)
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: hedge_id" })
-                </div>
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.currency_id)
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: currency_id" })
-                </div>
-            </td>
-            <td></td>
-        </tr>
-    </table>
- </fieldset>
-
- <!-- supplementary info ------------------------------------- -->
-<fieldset class="tgroup">
-    <legend class="trade_group">Supplementary Information</legend>
-    <table>
-        <tr>
-           <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.related_trade_ids)
-                </div>
-
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), String.Empty, new { @data_bind = "value: related_trade_ids" } )
-                </div>
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.apl_func)
-                </div>
-
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.apl_func, new { @data_bind = "value: apl_func" })
-                </div>
-            </td>
-            <td></td>
-        </tr>
-    </table>
-</fieldset>
-<!-- FX Spot and Carry ------------------------------------- -->
-<fieldset class="tgroup">
-    <legend class="trade_group">FX Spot and Carry</legend>
-    <table>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.mark_to_mark_rate)
-                </div>
-
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.mark_to_mark_rate, new { @data_bind = "value: mark_to_mark_rate" })
-                </div>
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.interest_rate_diff)
-                </div>
-
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.interest_rate_diff, new { @data_bind = "value: interest_rate_diff" })
-                </div>
-            </td>
-            <td></td>
-        </tr>
-    </table>
-</fieldset>
-
-<!-- Abs performance ------------------------------------- -->
-<fieldset class="tgroup">
-    <legend class="trade_group">Absolute Performance</legend>
-    <table>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.abs_measure_type_id)
-                </div>
-
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id" })
-                    @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: abs_return_value" })
-                    @Html.TextBoxFor(model => model.abs_return_value)
-                </div>
-            </td>
-        </tr>
-    </table>
-</fieldset>
-
-<!-- Rel performance ------------------------------------- -->
-<fieldset class="tgroup">
-    <legend class="trade_group">Relative Performance</legend>
-    <table>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.rel_measure_type_id)
-                </div>
-
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: rel_measure_type_id" })
-                    @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: rel_currency_id" })
-                    @Html.TextBoxFor(model => model.rel_return_value, new { @data_bind = "value: rel_return_value" })
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.return_benchmark_id)
-                </div>
-
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty, new { @data_bind = "value: return_benchmark_id" })
-
-                </div>
-            </td>
-        </tr>
-    </table>
-</fieldset>
-
-<!-- Comments ------------------------------------- -->
-<fieldset class="tgroup">
-    <legend class="trade_group">Trade Comments</legend>
-    <table>
-        <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Comments)
-                </div>
-
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextAreaFor(model => model.Comments, new { @data_bind = "value: comments", @rows = "5", @columns = "50 "})
-                </div>
-            </td>
-        </tr>
-    </table>
-        
-</fieldset>
-
-<p>
-    <button class="btn btn-primary" >Cancel</button>
-    <button class="btn btn-primary" data-bind="click: $root.saveTradeData">Create</button>
-</p>
-
-<pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.instruction_exit, new { @data_bind = "value: instruction_exit", @class = "form-control" })
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.instruction_exit_date)
+                    </div>
+                </td>
+                <td>
 
 
-@section scripts{
-    <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
-    
-    
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#abs_currency_id").hide();
-            
-            $('#datetimepicker1').datetimepicker({
-                format: 'yyyy MM dd hh:mm:ss',
-                language: 'en',
-                pick12HourFormat: true,
-                pickDate: true,
-                pickTime: true
-            });
-            
-            $('#datetimepicker2').datetimepicker({
-                format: 'yyyy MM dd hh:mm:ss',
-                language: 'en',
-                pick12HourFormat: true,
-                pickDate: true,
-                pickTime: true
-            });
-        });
+                    <div id="datetimepicker2" class="input-append date">
+                        <input data-format="yyyy-MM-dd" type="text" data-bind="value: instruction_exit"></input>
+                        <span class="add-on">
+                            <i data-date-icon="icon-calendar">
+                            </i>
+                        </span>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.instruction_type_id)
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: instruction_type_id", @class = "form-control" })
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.instruction_label, new { @data_bind = "value: hedge_id", @class = "form-control" })
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.hedge_id)
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: hedge_id" })
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.currency_id)
+                    </div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: currency_id", @class = "form-control" })
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- supplementary info ------------------------------------- -->
+    <fieldset class="tgroup">
+        <legend class="trade_group">Supplementary Information</legend>
+        <table>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.related_trade_ids)
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), String.Empty, new { @data_bind = "value: related_trade_ids", @class = "form-control" })
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.apl_func)
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.apl_func, new { @data_bind = "value: apl_func", @class = "form-control" })
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+    <!-- FX Spot and Carry ------------------------------------- -->
+    <fieldset class="tgroup">
+        <legend class="trade_group">FX Spot and Carry</legend>
+        <table>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.mark_to_mark_rate)
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.mark_to_mark_rate, new { @data_bind = "value: mark_to_mark_rate", @class = "form-control" })
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.interest_rate_diff)
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.interest_rate_diff, new { @data_bind = "value: interest_rate_diff", @class = "form-control" })
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- Abs performance ------------------------------------- -->
+    <fieldset class="tgroup">
+        <legend class="trade_group">Absolute Performance</legend>
+        <table>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.abs_measure_type_id)
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" })
+                        @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: abs_return_value", @class = "form-control" })
+                        @Html.TextBoxFor(model => model.abs_return_value)
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- Rel performance ------------------------------------- -->
+    <fieldset class="tgroup">
+        <legend class="trade_group">Relative Performance</legend>
+        <table>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.rel_measure_type_id)
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: rel_measure_type_id", @class = "form-control" })
+                        @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: rel_currency_id", @class = "form-control" })
+                        @Html.TextBoxFor(model => model.rel_return_value, new { @data_bind = "value: rel_return_value" })
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.return_benchmark_id)
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty, new { @data_bind = "value: return_benchmark_id", @class = "form-control" })
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- Comments ------------------------------------- -->
+    <fieldset class="tgroup">
+        <legend class="trade_group">Trade Comments</legend>
+        <table>
+            <tr>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Comments)
+                    </div>
+
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Comments, new { @data_bind = "value: comments", @rows = "5", @columns = "500 ", @class = "form-control" })
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+
+    <p>
+        <button class="btn btn-primary">Cancel</button>
+        <button class="btn btn-primary" data-bind="click: $root.saveTradeData">Create</button>
+    </p>
+
+<pre data-bind='text: ko.toJSON($root, null, 2)'></pre>");
 
 
-        // show/hid benchmark selection
-        $("#relativity_id").change(function () {
-            if ($("#relativity_id").val() == 2) {
-                $("#main_trade_table tr#benchmark_selection").show();
-            }
-            else {
-                $("#main_trade_table tr#benchmark_selection").hide();
-            }
 
-        });
+    @section scripts{
+        <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
 
-        // show hide absolute currency dropdown
-        $("#abs_measure_type_id").change(function () {
-            if ($("#abs_measure_type_id").val() == 2) {
-                $("#abs_currency_id").show();
-            }
-            else {
+
+        <script type="text/javascript">
+            $(document).ready(function () {
                 $("#abs_currency_id").hide();
-            }
 
-        });
+                $('#datetimepicker1').datetimepicker({
+                    format: 'yyyy-MM-dd',
+                    language: 'en',
+                    pick12HourFormat: true,
+                    pickDate: true,
+                    pickTime: false,
 
-        // show hide relative currency dropdown
-        $("#rel_measure_type_id").change(function () {
-            if ($("#rel_measure_type_id").val() == 2) {
-                $("#rel_currency_id").show();
-            }
-            else {
-                $("#rel_currency_id").hide();
-            }
+                });
 
-        });
-        
-        
-        
-       </script>
-}
+                $('#datetimepicker2').datetimepicker({
+                    format: 'yyyy-MM-dd',
+                    language: 'en',
+                    pick12HourFormat: true,
+                    pickDate: true,
+                    pickTime: false,
+
+                });
+            });
+
+
+            // show/hid benchmark selection
+            $("#relativity_id").change(function () {
+                if ($("#relativity_id").val() == 2) {
+                    $("#main_trade_table tr#benchmark_selection").show();
+                }
+                else {
+                    $("#main_trade_table tr#benchmark_selection").hide();
+                }
+
+            });
+
+            // show hide absolute currency dropdown
+            $("#abs_measure_type_id").change(function () {
+                if ($("#abs_measure_type_id").val() == 2) {
+                    $("#abs_currency_id").show();
+                }
+                else {
+                    $("#abs_currency_id").hide();
+                }
+
+            });
+
+            // show hide relative currency dropdown
+            $("#rel_measure_type_id").change(function () {
+                if ($("#rel_measure_type_id").val() == 2) {
+                    $("#rel_currency_id").show();
+                }
+                else {
+                    $("#rel_currency_id").hide();
+                }
+
+            });
+
+
+
+        </script>
+    }
