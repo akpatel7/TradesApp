@@ -7,8 +7,11 @@
         new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });*@
 }
 
-<h2><span>Trade Creation</span></h2>
+
 <form>
+<fieldset class="tgroup">
+<legend class="trade_group"><h2><span>Trade Creation</span></h2></legend>
+    
     <table id="main_trade_table">
         <tr>
         <td>
@@ -121,6 +124,8 @@
     </table>
 
     <!-- trade groups ------------------------------------->
+ <fieldset class="tgroup">
+        <legend class="trade_group">Group Infromation</legend>
     <div class="list-group">
         <table>
             <tr>
@@ -178,7 +183,7 @@
                                 </tbody>
                             </table>
                             <button data-bind='click: $root.removeGroup' class='btn btn-small'>Delete trade group</button>
-                            <button data-bind='click: addLine' class="btn" btn-small">Add new trade line</button>
+                            <button data-bind='click: addLine' class="btn btn-small">Add new trade line</button>
                         </tr>
                     </tbody>
                 </table>
@@ -190,7 +195,7 @@
         </table>
     </div>
 
-
+</fieldset>
     <!-- instructions ------------------------------------- -->
     <fieldset class="tgroup">
         <legend class="trade_group">Instructions</legend>
@@ -228,7 +233,7 @@
                             <i data-date-icon="icon-calendar">
                             </i>
                         </span>
- @Html.ValidationMessageFor(model => model.instruction_entry_date)
+                        @Html.ValidationMessageFor(model => model.instruction_entry_date)
 
                     </div>
 
@@ -470,6 +475,7 @@
         <input type="submit" value="Test Vailidation"/>    
 
     </p>
+</fieldset>
 </form>
 <pre data-bind='text: ko.toJSON($root, null, 2)'></pre>");
 
