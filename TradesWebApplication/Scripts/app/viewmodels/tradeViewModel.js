@@ -245,29 +245,33 @@ function TradeViewModel(
         return tradeGroupParts;
     });
 
-    self.saveTradeData = function(baseApiUrl) {
-        var apiURL = baseUrl;
-        apiURL += "api/values/post";
-        $.ajax({
-            url: apiURL,
-            type: 'post',
-            data: JSON.stringify(ko.toJSON(this)),
-            contentType: 'application/json',
-            success: function(result) {
+    self.saveTradeData = function (baseApiUrl) {
+        if(this.validate())
+        {
+            var apiURL = baseUrl;
+            apiURL += "api/values/post";
+            $.ajax({
+                url: apiURL,
+                type: 'post',
+                data: JSON.stringify(ko.toJSON(this)),
+                contentType: 'application/json',
+                success: function (result) {
 
-                $('#message').html(result);
-            }
-        });
+                    $('#message').html(result);
+                }
+            });
+        }   
     };
     
     self.validate = function () {
+        
         if (!self.isValid()) {
             self.errors.showAllMessages();
 
             return false;
         }
 
-        return true;
+        return $(form).valid();
     };
 
 }

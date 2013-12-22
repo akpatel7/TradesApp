@@ -51,7 +51,8 @@ namespace TradesWebApplication.Api
                     Content = new JsonContent(new
                     {
                         Success = true, //error
-                        Message = "Success" //return exception
+                        Message = "Success", //return exception
+                        result = "Trade sucessfully created"
                     })
                 };
             }
@@ -60,7 +61,8 @@ namespace TradesWebApplication.Api
                 Content = new JsonContent(new
                 {
                     Success = false, //error
-                    Message = "Fail" //return exception
+                    Message = "Fail", //return exception
+                    result = "Trade creation failed"
                 })
             };
         }
