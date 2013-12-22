@@ -159,16 +159,16 @@ function TradeViewModel(
 
     //form values - bottom
     instruction_entry = typeof (instruction_entry) !== 'undefined' ? instruction_entry : "";
-    this.instruction_entry = ko.observable(instruction_entry).extend({ required: true },{ number: true });
+    this.instruction_entry = ko.observable(instruction_entry);
 
     instruction_entry_date = typeof (instruction_entry_date) !== 'undefined' ? instruction_entry_date : "";
-    this.instruction_entry_date = ko.observable(instruction_entry_date).extend({ required: true, date: true });
+    this.instruction_entry_date = ko.observable(instruction_entry_date);
 
     instruction_exit = typeof (instruction_exit) !== 'undefined' ? instruction_exit : "";
     this.instruction_exit = ko.observable(instruction_exit).extend({ number: true });
 
     instruction_exit_date = typeof (instruction_exit_date) !== 'undefined' ? instruction_exit_date : "";
-    this.instruction_exit_date = ko.observable(instruction_exit_date).extend({ date: true });
+    this.instruction_exit_date = ko.observable(instruction_exit_date);
 
     instruction_type_id = typeof (instruction_type_id) !== 'undefined' ? instruction_type_id : 0;
     this.instruction_type_id = ko.observable(instruction_type_id);
