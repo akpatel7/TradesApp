@@ -99,7 +99,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.Trade.trade_editorial_label, new { @data_bind = "value: trade_editorial_label", @class = "form-control" })
+                    @Html.TextBoxFor(model => model.trade_editorial_label, new { @data_bind = "value: trade_editorial_label", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.trade_editorial_label)
                 </div>
             </td>
@@ -107,13 +107,14 @@
 
         <tr>
             <td>
+                
                 <div class="editor-label">
                     @Html.LabelFor(model => model.structure_type_id)
                 </div>
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), new { @data_bind = "value: structure_type_id", @class = "form-control" })
+                    @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), new { @data_bind = "value: structure_type_id", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.structure_type_id)
                 </div>
             </td>
@@ -137,7 +138,7 @@
                         <tr>
                             <td>
                                 <div class="editor-label">Group Structure</div>
-                                @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), new { @data_bind = "value: trade_line_group_type_id", @class = "form-control" })
+                                @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), new { @data_bind = "value: trade_line_group_type_id, selectedText: trade_line_group_type_string", @class = "form-control" })
                                 <div class="editor-label">Editorial Label</div>
                                 <div class="editor-field">
                                     <input type="text" data-bind="value: trade_line_group_editorial_label" class="form-control" />
@@ -165,13 +166,13 @@
                                             <span data-bind='text: ($index() + 1)'></span>
                                         </td>
                                         <td>
-                                            @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id", @class = "form-control" })
+                                            @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })
                                         </td>
                                         <td>
-                                            @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), "{Financial Instrument}", new { @data_bind = "value: tradable_thing_id", @class = "form-control" })
+                                            @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), "{Financial Instrument}", new { @data_bind = "value: tradable_thing_id, selectedText: tradableThingString", @class = "form-control" })
                                         </td>
                                         <td>
-
+                                            <div data-bind="text: canonicalLabelPart"></div>
                                             <button type="button" class="btn btn-small" data-bind='click: function () { $parent.removeLine($data);  }'>
                                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                             </button>
@@ -261,7 +262,7 @@
 
 
                     <div id="datetimepicker2" class="input-append date">
-                        <input data-format="yyyy-MM-dd" type="text" data-bind="value: instruction_exit"></input>
+                        <input data-format="yyyy-MM-dd" type="text" data-bind="datepicker: instruction_exit"></input>
                         <span class="add-on">
                             <i data-date-icon="icon-calendar">
                             </i>
@@ -473,7 +474,7 @@
     </p>
 </fieldset>
 </form>
-<pre data-bind='text: ko.toJSON($root, null, 2)'></pre>");
+<pre data-bind='text: ko.toJSON($root, null, 2)'></pre>
 
 
 
@@ -503,7 +504,6 @@
 
                 });
                 
-                ko.applyBindings(vm);
             });
 
 
@@ -540,7 +540,38 @@
 
             });
 
+            ko.bindingHandlers.datepicker = {
+                init: function (element, valueAccessor, allBindingsAccessor) {
+                    //initialize datepicker with some optional options
+                    var options = allBindingsAccessor().datepickerOptions || {};
+                    $(element).datepicker(options);
 
+                    //handle the field changing
+                    ko.utils.registerEventHandler(element, "change", function () {
+                        var observable = valueAccessor();
+                        observable($(element).datepicker("getDate"));
+                    });
+
+                    //handle disposal (if KO removes by the template binding)
+                    ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+                        $(element).datepicker("destroy");
+                    });
+
+                },
+                update: function (element, valueAccessor) {
+                    var value = ko.utils.unwrapObservable(valueAccessor());
+
+                    if (String(value).indexOf('/Date(') == 0) {
+                        value = new Date(parseInt(value.replace(/\/Date\((.*?)\)\//gi, "$1")));
+                    }
+
+                    var current = $(element).datepicker("getDate");
+
+                    if (value - current !== 0) {
+                        $(element).datepicker("setDate", value);
+                    }
+                }
+            };
 
         </script>
     }

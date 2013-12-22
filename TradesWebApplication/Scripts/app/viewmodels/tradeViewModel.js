@@ -1,4 +1,19 @@
-﻿
+﻿ko.bindingHandlers.selectedText = {
+    init: function (element, valueAccessor) {
+        var value = valueAccessor();
+        value($("option:selected", element).text());
+
+        $(element).change(function () {
+            value($("option:selected", this).text());
+        });
+    },
+    update: function (element, valueAccessor) {
+        var value = ko.utils.unwrapObservable(valueAccessor());
+        $("option", element).filter(function (el) { return $(el).text() === value; }).prop("selected", "selected");
+    }
+};
+
+
 var baseApiUri = '@ViewBag.ApiGroupUrl';
 
 function TradeLine(trade_line_id, position_id, tradable_thing_id) {
@@ -12,6 +27,13 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
     tradable_thing_id = typeof (tradable_thing_id) !== 'undefined' ? tradable_thing_id : 0;
     this.tradable_thing_id = ko.observable(tradable_thing_id).extend({ required: true });
 
+    this.positionString = ko.observable("");
+    this.tradableThingString = ko.observable("");
+
+    this.canonicalLabelPart = ko.computed(function () {
+        return self.positionString() + ", " + self.tradableThingString();
+    });
+
 }
 
 function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_group_label, trade_line_group_editorial_label, tradeLines) {
@@ -22,6 +44,8 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
 
     trade_line_group_type_id = typeof (trade_line_group_type_id) !== 'undefined' ? trade_line_group_type_id : 0;
     this.trade_line_group_type_id = ko.observable(trade_line_group_type_id);
+    
+    this.trade_line_group_type_string = ko.observable();
 
     trade_line_group_label = typeof (trade_line_group_label) !== 'undefined' ? trade_line_group_label : "";
     this.trade_line_group_label = ko.observable(trade_line_group_label);
@@ -40,6 +64,19 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
     this.removeLine = function (item) {
         self.tradeLines.remove(item);
     };
+    
+    //canonical label
+    trade_line_group_label = typeof (trade_line_group_label) !== 'undefined' ? trade_line_group_label : "";
+    this.trade_line_group_label = ko.computed(function () {
+        var tradeLineParts = "";
+        for (var i = 0; i < self.tradeLines().length; i++) {
+            tradeLineParts += self.tradeLines()[i].canonicalLabelPart();
+            if (i + 1 != self.tradeLines().length) {
+                tradeLineParts += ", ";
+            }
+        }
+        return self.trade_line_group_type_string() + ": " + tradeLineParts;
+    });
 }
 
 function TradeViewModel(
@@ -102,14 +139,13 @@ function TradeViewModel(
     this.created_on = ko.observable(created_on);
 
 
-    trade_label = typeof (trade_label) !== 'undefined' ? trade_label : "";
-    this.trade_label = ko.observable(trade_label);
 
     trade_editorial_label = typeof (trade_editorial_label) !== 'undefined' ? trade_editorial_label : "";
     this.trade_editorial_label = ko.observable(trade_editorial_label);
 
     structure_type_id = typeof (structure_type_id) !== 'undefined' ? structure_type_id : 4; //default value
     this.structure_type_id = ko.observable(4);
+
 
     //tradegroups
     this.tradegroups = ko.observableArray([]);
@@ -186,7 +222,7 @@ function TradeViewModel(
     comments = typeof (comments) !== 'undefined' ? comments : "";
     this.comments = ko.observable(comments);
 
-    self.saveTradeData = function (baseApiUrl) {
+    self.saveTradeData = function(baseApiUrl) {
         var apiURL = baseUrl;
         apiURL += "api/values/post";
         $.ajax({
@@ -194,12 +230,12 @@ function TradeViewModel(
             type: 'post',
             data: JSON.stringify(ko.toJSON(this)),
             contentType: 'application/json',
-            success: function (result) {
+            success: function(result) {
 
                 $('#message').html(result);
             }
         });
-    }
+    };
 
 }
 
