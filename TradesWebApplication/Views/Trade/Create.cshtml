@@ -61,7 +61,7 @@
             <td>
                 <div class="editor-field">
                     @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"),"{Benchmark Selection}", new { @data_bind = "value: benchmark_id, visible: relativity_id() == 2", @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.benchmark_id)
+                   @* @Html.ValidationMessageFor(model => model.benchmark_id)*@
                 </div>
             </td>
         </tr>
@@ -86,7 +86,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.trade_label, new { @data_bind = "value: trade_label", @class = "form-control" })
+                    @Html.TextBoxFor(model => model.trade_label, new { @data_bind = "value: trade_label", @class = "form-control", disabled="disabled" })
                     @Html.ValidationMessageFor(model => model.trade_label)
                 </div>
             </td>
@@ -114,7 +114,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), new { @data_bind = "value: structure_type_id", @class = "form-control" })
+                    @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), "{Structure}", new { @data_bind = "value: structure_type_id", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.structure_type_id)
                 </div>
             </td>
@@ -138,14 +138,14 @@
                         <tr>
                             <td>
                                 <div class="editor-label">Group Structure</div>
-                                @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), new { @data_bind = "value: trade_line_group_type_id, selectedText: trade_line_group_type_string", @class = "form-control" })
+                                @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), "{Structure}", new { @data_bind = "value: trade_line_group_type_id, selectedText: trade_line_group_type_string", @class = "form-control" })
                                 <div class="editor-label">Editorial Label</div>
                                 <div class="editor-field">
                                     <input type="text" data-bind="value: trade_line_group_editorial_label" class="form-control" />
                                 </div>
                                 <div class="editor-label">Canonical Label</div>
                                 <div class="editor-field">
-                                    <input type="text" data-bind="value: trade_line_group_label" class="form-control" />
+                                    <input type="text" data-bind="value: trade_line_group_label" class="form-control" disabled="disabled"/>
                                 </div>
                             </td>
 
@@ -206,10 +206,11 @@
 
                 </td>
                 <td>
-                    <div class="editor-field">
+         <div class="editor-field">
                         @Html.TextBoxFor(model => model.instruction_entry, new { @data_bind = "value: instruction_entry", @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.instruction_entry)
                     </div>
+                  
                 </td>
                 <td></td>
             </tr>
@@ -217,6 +218,7 @@
                 <td>
                     <div class="editor-label">
                         @Html.LabelFor(model => model.instruction_entry_date)
+ @Html.ValidationMessageFor(model => model.instruction_entry_date)
                     </div>
 
                 </td>
@@ -229,7 +231,7 @@
                         <span class="add-on">
                             <i data-date-icon="icon-calendar">
                             </i>
-<span class="field-validator-error">@Html.ValidationMessageFor(model => model.instruction_entry_date)</span>
+                           
                         </span>
 
                     </div>
@@ -469,7 +471,7 @@
     <p>
         <button class="btn btn-primary">Cancel</button>
         <button type="submit" class="btn btn-primary" data-bind="click: $root.saveTradeData">Create</button>
-        <input type="submit" value="Test Vailidation"/>    
+        <button type="submit" class="btn btn-primary">Test Valid</button>  
 
     </p>
 </fieldset>

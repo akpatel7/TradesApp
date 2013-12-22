@@ -13,6 +13,15 @@
     }
 };
 
+ko.validation.configure({
+    decorateElement: true
+});
+
+// enable validation
+ko.validation.init({ grouping: { deep: true, observable: true } });
+
+
+
 
 var baseApiUri = '@ViewBag.ApiGroupUrl';
 
@@ -43,7 +52,9 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
     this.trade_line_group_id = ko.observable(trade_line_group_id);
 
     trade_line_group_type_id = typeof (trade_line_group_type_id) !== 'undefined' ? trade_line_group_type_id : 0;
-    this.trade_line_group_type_id = ko.observable(trade_line_group_type_id);
+    this.trade_line_group_type_id = ko.observable(trade_line_group_type_id).extend({
+        required: true
+    });
     
     this.trade_line_group_type_string = ko.observable();
 
@@ -121,7 +132,7 @@ function TradeViewModel(
 
     length_type_id = typeof (length_type_id) !== 'undefined' ? length_type_id : 2; //default value
     this.length_type_id = ko.observable(2);
-    relativity_id
+
 
     relativity_id = typeof (relativity_id) !== 'undefined' ? relativity_id : 2; //default value
     this.relativity_id = ko.observable(2);
@@ -146,33 +157,18 @@ function TradeViewModel(
     structure_type_id = typeof (structure_type_id) !== 'undefined' ? structure_type_id : 4; //default value
     this.structure_type_id = ko.observable(4);
 
-
-    //tradegroups
-    this.tradegroups = ko.observableArray([]);
-
-    this.addGroup = function () {
-        var nextIndex = this.tradegroups().length;
-        var newGroup = new TradeGroup(nextIndex,1,"","",[new TradeLine()]);
-        self.tradegroups.push(newGroup);
-    };
-
-    this.removeGroup = function (item) {
-        self.tradegroups.remove(item);
-    };
-    //end tradegroups
-
     //form values - bottom
     instruction_entry = typeof (instruction_entry) !== 'undefined' ? instruction_entry : "";
-    this.instruction_entry = ko.observable(instruction_entry);
+    this.instruction_entry = ko.observable(instruction_entry).extend({ required: true },{ number: true });
 
     instruction_entry_date = typeof (instruction_entry_date) !== 'undefined' ? instruction_entry_date : "";
-    this.instruction_entry_date = ko.observable(instruction_entry_date);
+    this.instruction_entry_date = ko.observable(instruction_entry_date).extend({ required: true, date: true });
 
     instruction_exit = typeof (instruction_exit) !== 'undefined' ? instruction_exit : "";
-    this.instruction_exit = ko.observable(instruction_exit);
+    this.instruction_exit = ko.observable(instruction_exit).extend({ number: true });
 
     instruction_exit_date = typeof (instruction_exit_date) !== 'undefined' ? instruction_exit_date : "";
-    this.instruction_exit_date = ko.observable(instruction_exit_date);
+    this.instruction_exit_date = ko.observable(instruction_exit_date).extend({ date: true });
 
     instruction_type_id = typeof (instruction_type_id) !== 'undefined' ? instruction_type_id : 0;
     this.instruction_type_id = ko.observable(instruction_type_id);
@@ -221,6 +217,33 @@ function TradeViewModel(
 
     comments = typeof (comments) !== 'undefined' ? comments : "";
     this.comments = ko.observable(comments);
+    
+    //tradegroups
+    this.tradegroups = ko.observableArray([]);
+
+    this.addGroup = function () {
+        var nextIndex = this.tradegroups().length;
+        var newGroup = new TradeGroup(nextIndex, 1, "", "", [new TradeLine()]);
+        self.tradegroups.push(newGroup);
+    };
+
+    this.removeGroup = function (item) {
+        self.tradegroups.remove(item);
+    };
+    //end tradegroups
+    
+    //canonical label
+    trade_label = typeof (trade_label) !== 'undefined' ? trade_label : "";
+    this.trade_label = ko.computed(function () {
+        var tradeGroupParts = "";
+        for (var i = 0; i < self.tradegroups().length; i++) {
+            tradeGroupParts += self.tradegroups()[i].trade_line_group_label();
+            if (i + 1 != self.tradegroups().length) {
+                tradeGroupParts += " - ";
+            }
+        }
+        return tradeGroupParts;
+    });
 
     self.saveTradeData = function(baseApiUrl) {
         var apiURL = baseUrl;
@@ -236,10 +259,34 @@ function TradeViewModel(
             }
         });
     };
+    
+    self.validate = function () {
+        if (!self.isValid()) {
+            self.errors.showAllMessages();
+
+            return false;
+        }
+
+        return true;
+    };
 
 }
 
 var vm = new TradeViewModel();
     vm.tradegroups.push(new TradeGroup(0, 0, "", "", [new TradeLine()]));
 
-ko.applyBindings(vm);
+    ko.applyBindings(ko.validatedObservable(vm));
+    
+    ko.validatedObservable = function (initialValue) {
+        if (!exports.utils.isObject(initialValue)) {
+            return ko.observable(initialValue).extend({ validatable: true });
+        }
+
+        var obsv = ko.observable(initialValue);
+        obsv.errors = exports.group(initialValue);
+        obsv.isValid = ko.computed(function () {
+            return obsv.errors().length === 0;
+        });
+
+        return obsv;
+    };

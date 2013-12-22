@@ -17,21 +17,21 @@ namespace TradesWebApplication.ViewModels
         public List<TradeLineViewModel> TradeLines { get; set; }
 
         // service
-        [Required(ErrorMessage = "Required")]
+        [Required(ErrorMessage = "This field is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Please make a selection")]
         [DisplayName("Service;")]
         public int service_id { get; set; }
         public List<Service> Services { get; set; }
         
         // trade type
-        [Required(ErrorMessage = "Required")]
+        [Required(ErrorMessage = "This field is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Please make a selection")]
         [DisplayName("Trade Type:")]
         public int length_type_id { get; set; }
         public List<Length_Type> LengthTypes { get; set; }
         
         // benchmark
-        [Required(ErrorMessage = "Required")]
+        [Required(ErrorMessage = "This field is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Please make a selection")]
         [DisplayName("Benchmark:")]
         public int relativity_id { get; set; }
@@ -44,7 +44,7 @@ namespace TradesWebApplication.ViewModels
         public List<Benchmark> Benchmarks { get; set; }
         
         // update time
-        [Required(ErrorMessage = "Required")]
+        [Required(ErrorMessage = "This field is required.")]
         [DisplayName("System Updated/Created Date;")]
         public string created_on { get; set; }
         
@@ -57,7 +57,7 @@ namespace TradesWebApplication.ViewModels
         public string trade_editorial_label { get; set; }
         
         // trade structure
-        [Required(ErrorMessage = "Required")]
+        [Required(ErrorMessage = "This field is required.")]
         [DisplayName("Trade Structure:")]
         public int structure_type_id { get; set; }
         public List<Structure_Type> StructureTypes { get; set; }
@@ -65,13 +65,13 @@ namespace TradesWebApplication.ViewModels
         
         //------------------------------------
         // entry level
-        [Required(ErrorMessage = "Required")]
+        [Required(ErrorMessage = "This field is required.")]
         [Range(0d, double.MaxValue, ErrorMessage = "Please enter a value")]
         [DisplayName("Entry Level:")]
         public decimal? instruction_entry { get; set; }
         
         // start date
-        [Required(ErrorMessage = "Required")]
+        [Required(ErrorMessage = "This field is required.")]
         [DisplayName("Start Date:")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public string instruction_entry_date { get; set; }

@@ -512,7 +512,6 @@ textarea {
 /* styles for validation helpers */
 .field-validation-error {
     color: #e80c4d;
-    font-weight: bold;
 }
 
 .field-validation-valid {
@@ -535,6 +534,10 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-valid {
     display: none;
+}
+
+.validationMessage {
+     color: #e80c4d;
 }
 
 
@@ -767,4 +770,9 @@ tr.pager td {
         footer p {
             margin: 0;
         }
+
+
+     /* errors */
+
+     
 }
