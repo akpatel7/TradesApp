@@ -1,5 +1,6 @@
 ﻿@model TradesWebApplication.ViewModels.TradesCreationViewModel
 @using Newtonsoft.Json
+@using TradesWebApplication.DAL.EFModels
 
 @{
     ViewBag.Title = "Trade Creation";
@@ -59,7 +60,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"),"{Bechmark Selection}", new { @data_bind = "value: benchmark_id, visible: relativity_id() == 2", @class = "form-control" })
+                    @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"),"{Bechmark Selection}", new { @data_bind = "value: benchmark_id, visible: relativity_id() == 2", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.benchmark_id)
                 </div>
             </td>
@@ -72,7 +73,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.Trade.created_on, new { @data_bind = "value: created_on", @class = "form-control" })
+                    @Html.TextBoxFor(model => model.created_on, new { @data_bind = "value: created_on", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.created_on)
                 </div>
             </td>
@@ -85,7 +86,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.Trade.trade_label, new { @data_bind = "value: trade_label", @class = "form-control" })
+                    @Html.TextBoxFor(model => model.trade_label, new { @data_bind = "value: trade_label", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.trade_label)
                 </div>
             </td>
@@ -164,10 +165,10 @@
                                             <span data-bind='text: ($index() + 1)'></span>
                                         </td>
                                         <td>
-                                            @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), new { @data_bind = "value: position_id", @class = "form-control" })
+                                            @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id", @class = "form-control" })
                                         </td>
                                         <td>
-                                            @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), new { @data_bind = "value: tradable_thing_id", @class = "form-control" })
+                                            @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), "{Financial Instrument}", new { @data_bind = "value: tradable_thing_id", @class = "form-control" })
                                         </td>
                                         <td>
 

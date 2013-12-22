@@ -81,12 +81,12 @@ function TradeViewModel(
     service_id = typeof (serviceId) !== 'undefined' ? service_id : 0;
     this.service_id = ko.observable(service_id);
 
-    length_type_id = typeof (length_type_id) !== 'undefined' ? length_type_id : 0;
-    this.length_type_id = ko.observable(length_type_id);
+    length_type_id = typeof (length_type_id) !== 'undefined' ? length_type_id : 2; //default value
+    this.length_type_id = ko.observable(2);
     relativity_id
 
-    relativity_id = typeof (relativity_id) !== 'undefined' ? relativity_id : 0;
-    this.relativity_id = ko.observable(relativity_id);
+    relativity_id = typeof (relativity_id) !== 'undefined' ? relativity_id : 2; //default value
+    this.relativity_id = ko.observable(2);
 
     benchmark_id = typeof (benchmark_id) !== 'undefined' ? benchmark_id : 0;
     this.benchmark_id = ko.observable(benchmark_id);
@@ -101,8 +101,8 @@ function TradeViewModel(
     trade_editorial_label = typeof (trade_editorial_label) !== 'undefined' ? trade_editorial_label : "";
     this.trade_editorial_label = ko.observable(trade_editorial_label);
 
-    structure_type_id = typeof (structure_type_id) !== 'undefined' ? structure_type_id : 0;
-    this.structure_type_id = ko.observable(structure_type_id);
+    structure_type_id = typeof (structure_type_id) !== 'undefined' ? structure_type_id : 4; //default value
+    this.structure_type_id = ko.observable(4);
 
     //tradegroups
     this.tradegroups = ko.observableArray([]);
@@ -134,8 +134,8 @@ function TradeViewModel(
     instruction_type_id = typeof (instruction_type_id) !== 'undefined' ? instruction_type_id : 0;
     this.instruction_type_id = ko.observable(instruction_type_id);
 
-    hedge_id = typeof (hedge_id) !== 'undefined' ? hedge_id : 0;
-    this.hedge_id = ko.observable(hedge_id);
+    hedge_id = typeof (hedge_id) !== 'undefined' ? hedge_id : 2; //default value
+    this.hedge_id = ko.observable(2);
 
     currency_id = typeof (currency_id) !== 'undefined' ? currency_id : 0;
     this.currency_id = ko.observable(currency_id);
@@ -152,17 +152,17 @@ function TradeViewModel(
     interest_rate_diff = typeof (interest_rate_diff) !== 'undefined' ? interest_rate_diff : "";
     this.interest_rate_diff = ko.observable(interest_rate_diff);
 
-    abs_measure_type_id = typeof (abs_measure_type_id) !== 'undefined' ? abs_measure_type_id : 0;
-    this.abs_measure_type_id = ko.observable(abs_measure_type_id);
+    abs_measure_type_id = typeof (abs_measure_type_id) !== 'undefined' ? abs_measure_type_id : 1; //default value
+    this.abs_measure_type_id = ko.observable(1);
 
-    abs_currency_id = typeof (abs_currency_id) !== 'undefined' ? abs_currency_id : 0;
+    abs_currency_id = typeof(abs_currency_id) !== 'undefined' ? abs_currency_id : 1;
     this.abs_currency_id = ko.observable(abs_currency_id);
 
     abs_return_value = typeof (abs_return_value) !== 'undefined' ? abs_return_value : "";
     this.abs_return_value = ko.observable(abs_return_value);
 
-    rel_measure_type_id = typeof (rel_measure_type_id) !== 'undefined' ? rel_measure_type_id : 0;
-    this.rel_measure_type_id = ko.observable(rel_measure_type_id);
+    rel_measure_type_id = typeof (rel_measure_type_id) !== 'undefined' ? rel_measure_type_id : 2; //default value
+    this.rel_measure_type_id = ko.observable(2); 
 
     rel_currency_id = typeof (rel_currency_id) !== 'undefined' ? rel_currency_id : 0;
     this.rel_currency_id = ko.observable(rel_currency_id);
