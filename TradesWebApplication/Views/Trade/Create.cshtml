@@ -60,7 +60,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"),"{Bechmark Selection}", new { @data_bind = "value: benchmark_id, visible: relativity_id() == 2", @class = "form-control" })
+                    @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"),"{Benchmark Selection}", new { @data_bind = "value: benchmark_id, visible: relativity_id() == 2", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.benchmark_id)
                 </div>
             </td>
@@ -284,7 +284,7 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.TextBoxFor(model => model.instruction_label, new { @data_bind = "value: hedge_id", @class = "form-control" })
+                        @Html.TextBoxFor(model => model.instruction_label, new { @data_bind = "value: instruction_label", @class = "form-control" })
                     </div>
                 </td>
             </tr>
@@ -477,7 +477,7 @@
 
 
 
-    @section scripts{
+@section scripts{
         <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
 
 
@@ -502,6 +502,8 @@
                     pickTime: false,
 
                 });
+                
+                ko.applyBindings(vm);
             });
 
 

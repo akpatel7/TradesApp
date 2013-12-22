@@ -7,10 +7,10 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
     this.trade_line_id = ko.observable(trade_line_id);
 
     position_id = typeof (position_id) !== 'undefined' ? position_id : 0;
-    this.positionId = ko.observable(position_id);
+    this.position_id = ko.observable(position_id).extend({ required: true});
 
     tradable_thing_id = typeof (tradable_thing_id) !== 'undefined' ? tradable_thing_id : 0;
-    this.tradable_thing_id = ko.observable(tradable_thing_id);
+    this.tradable_thing_id = ko.observable(tradable_thing_id).extend({ required: true });
 
 }
 
@@ -57,6 +57,7 @@ function TradeViewModel(
   instruction_exit,
   instruction_exit_date,
   instruction_type_id,
+  instruction_label,
   hedge_id,
   currency_id,
   related_trade_ids,
@@ -133,6 +134,9 @@ function TradeViewModel(
 
     instruction_type_id = typeof (instruction_type_id) !== 'undefined' ? instruction_type_id : 0;
     this.instruction_type_id = ko.observable(instruction_type_id);
+    
+    instruction_label = typeof (instruction_label) !== 'undefined' ? instruction_label : "";
+    this.instruction_label = ko.observable(instruction_label);
 
     hedge_id = typeof (hedge_id) !== 'undefined' ? hedge_id : 2; //default value
     this.hedge_id = ko.observable(2);

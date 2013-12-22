@@ -38,7 +38,7 @@ namespace TradesWebApplication.ViewModels
         public List<Relativity> Relativitys { get; set; }
         
         // benchmark selection
-         [DisplayName("Benchmark Selection:")]
+        [DisplayName("Benchmark Selection:")]
         //[Range(1, int.MaxValue, ErrorMessage = "Please make a selection")]
         public int benchmark_id { get; set; }
         public List<Benchmark> Benchmarks { get; set; }
