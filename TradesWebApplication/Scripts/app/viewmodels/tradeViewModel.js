@@ -90,7 +90,13 @@ function TradeViewModel(
     this.relativity_id = ko.observable(2);
 
     benchmark_id = typeof (benchmark_id) !== 'undefined' ? benchmark_id : 0;
-    this.benchmark_id = ko.observable(benchmark_id);
+    this.benchmark_id = ko.observable(benchmark_id).extend({
+        required: {
+            onlyIf: function () {
+                return self.relativity_id() == 2;
+            }
+        }
+    });;
 
     created_on = typeof (created_on) !== 'undefined' ? created_on : "";
     this.created_on = ko.observable(created_on);
