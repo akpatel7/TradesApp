@@ -246,8 +246,8 @@ function TradeViewModel(
     });
 
     self.saveTradeData = function (baseApiUrl) {
-        if(this.validate())
-        {
+        alert('Trying to save data!');
+        //if(this.validate()) {
             var apiURL = baseUrl;
             apiURL += "api/values/post";
             $.ajax({
@@ -257,10 +257,10 @@ function TradeViewModel(
                 contentType: 'application/json',
                 success: function (result) {
 
-                    $('#message').html(result);
+                    $('#result').html(result);
                 }
             });
-        }   
+        //}   
     };
     
     self.validate = function () {
