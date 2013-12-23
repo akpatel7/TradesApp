@@ -189,10 +189,10 @@ function TradeViewModel(
     this.apl_func = ko.observable(apl_func);
 
     mark_to_mark_rate = typeof (mark_to_mark_rate) !== 'undefined' ? mark_to_mark_rate : "";
-    this.mark_to_mark_rate = ko.observable(mark_to_mark_rate);
+    this.mark_to_mark_rate = ko.observable(mark_to_mark_rate).extend({ number: true });
 
     interest_rate_diff = typeof (interest_rate_diff) !== 'undefined' ? interest_rate_diff : "";
-    this.interest_rate_diff = ko.observable(interest_rate_diff);
+    this.interest_rate_diff = ko.observable(interest_rate_diff).extend({ number: true });
 
     abs_measure_type_id = typeof (abs_measure_type_id) !== 'undefined' ? abs_measure_type_id : 1; //default value
     this.abs_measure_type_id = ko.observable(1);
@@ -246,8 +246,9 @@ function TradeViewModel(
     });
 
     self.saveTradeData = function (baseApiUrl) {
-        alert('Trying to save data!');
-        //if(this.validate()) {
+       
+        if (this.validate()) {
+            alert('Trying to save data!');
             var apiURL = baseUrl;
             apiURL += "api/values/post";
             $.ajax({
@@ -259,18 +260,17 @@ function TradeViewModel(
                     alert(data.result);
                 }
             });
-        //}   
+        }   
     };
     
     self.validate = function () {
         
         if (!self.isValid()) {
             self.errors.showAllMessages();
-
             return false;
         }
 
-        return $(form).valid();
+        return true;
     };
 
 }

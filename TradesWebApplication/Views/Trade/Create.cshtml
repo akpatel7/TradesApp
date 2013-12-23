@@ -454,13 +454,13 @@
                 <tr>
                     <td>
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.Comments)
+                            @Html.LabelFor(model => model.comments)
                         </div>
 
                     </td>
                     <td>
                         <div class="editor-field">
-                            @Html.TextAreaFor(model => model.Comments, new { @data_bind = "value: comments", @rows = "5", @columns = "500 ", @class = "form-control" })
+                            @Html.TextAreaFor(model => model.comments, new { @data_bind = "value: comments", @rows = "5", @columns = "500 ", @class = "form-control" })
                         </div>
                     </td>
                 </tr>
@@ -584,7 +584,7 @@
                 $('form').submit(function () {
                     if (!$(this).valid()) {
                         // standard client validation failed => prevent submission
-                        //alert('Validation failed!');
+                        alert('Validation failed: Please check form for errors');
                         return false;    
                     }
                     //alert('Can create Trade!');

@@ -139,7 +139,7 @@ namespace TradesWebApplication.ViewModels
 
         // comments
         [DisplayName("Comments:")]
-        public string Comments { get; set; }
+        public string comments { get; set; }
         public Trade_Comment Comment { get; set; }
 
         //dropdowns for tradegroups
