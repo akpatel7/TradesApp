@@ -377,6 +377,15 @@ namespace TradesWebApplication.Controllers
         }
 
 
+        public JsonResult AutoCompleteCurrency(string term)
+        {
+            var list = unitOfWork.CurrencyRepository.GetAll();
+            var result = (from r in list
+                          where r.currency_label.ToLower().Contains(term.ToLower())
+                          select new { r.currency_label, r.currency_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
