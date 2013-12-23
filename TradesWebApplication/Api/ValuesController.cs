@@ -55,9 +55,9 @@ namespace TradesWebApplication.Api
                     {
                         Content = new JsonContent(new
                         {
-                            Success = false, //error
+                            Success = true, //error
                             Message = "Fail", //return exception
-                            result = "Database Exception occured: " + ex.ToString()
+                            result = "Database Exception occured: " + ex.InnerException.ToString()
                         })
                     };
                 }
@@ -91,7 +91,15 @@ namespace TradesWebApplication.Api
             trade.service_id = vm.service_id;
             trade.length_type_id = vm.length_type_id;
             trade.relativity_id = vm.relativity_id;
-            trade.benchmark_id = vm.benchmark_id;
+            //only for related trades
+            if (trade.relativity_id == 2) //2: benchmark is relative
+            {
+                if (vm.benchmark_id > 0)
+                {
+                    trade.benchmark_id = vm.benchmark_id;
+                }
+                
+            }            
             trade.created_on = trade.last_updated = DateTime.Now;
             trade.trade_label = vm.trade_label;
             trade.trade_editorial_label = vm.trade_editorial_label;
@@ -143,6 +151,7 @@ namespace TradesWebApplication.Api
             // trade instructions
             var tradeInstruction = new Trade_Instruction
             {
+                trade_id = newTradeId,
                 instruction_entry = vm.instruction_entry,
                 instruction_entry_date = DateTime.Parse(vm.instruction_entry_date),
                 instruction_exit = vm.instruction_exit
@@ -172,21 +181,25 @@ namespace TradesWebApplication.Api
                
             //TODO: where does this go, which tradePerfomance
             string apl_func = vm.apl_func;
+            bool isTradePerfomanceCreated = false;
 
             if (!String.IsNullOrEmpty(vm.mark_to_mark_rate))
             {
                 var markTR = new Track_Record
                 {
+                    trade_id = newTradeId,
                     track_record_type_id = 1,
                     track_record_value = decimal.Parse(vm.mark_to_mark_rate)
                 };
                 unitOfWork.TrackRecordRepository.Insert(markTR);
+
             }
             
             if (!String.IsNullOrEmpty(vm.interest_rate_diff))
             {
                 var interestTR = new Track_Record
                 {
+                    trade_id = newTradeId,
                     track_record_type_id = 2,
                     track_record_value = decimal.Parse(vm.interest_rate_diff)
                 };
@@ -199,6 +212,7 @@ namespace TradesWebApplication.Api
             if (abs_measure_id != null)
             {
                 var absPerformance = new Trade_Performance();
+                absPerformance.trade_id = newTradeId;
                 var abs_measure_type_id = (int)abs_measure_id;
                 absPerformance.measure_type_id = abs_measure_type_id;
                 if (abs_measure_type_id == 2)
@@ -206,7 +220,11 @@ namespace TradesWebApplication.Api
                     absPerformance.return_currency_id = vm.abs_currency_id;
                 }
                 absPerformance.return_value = vm.abs_return_value;
-
+                isTradePerfomanceCreated = true;
+                if(!String.IsNullOrEmpty(apl_func))
+                {
+                    absPerformance.return_apl_function = apl_func;
+                }
                 unitOfWork.TradePerformanceRepository.Insert(absPerformance);
             }
 
@@ -215,6 +233,7 @@ namespace TradesWebApplication.Api
             if (rel_measure_id != null)
             {
                 var relPerformance = new Trade_Performance();
+                relPerformance.trade_id = newTradeId;
                 var rel_measure_type_id = (int)rel_measure_id;
                 relPerformance.measure_type_id = rel_measure_type_id;
                 if (rel_measure_type_id == 2)
@@ -222,9 +241,27 @@ namespace TradesWebApplication.Api
                     relPerformance.return_currency_id = vm.rel_currency_id;
                 }
                 relPerformance.return_value = vm.rel_return_value;
-                relPerformance.return_benchmark_id = vm.return_benchmark_id;
-
+                if (vm.return_benchmark_id != null && vm.return_benchmark_id > 0)
+                {
+                    relPerformance.return_benchmark_id = vm.return_benchmark_id;
+                }               
+                isTradePerfomanceCreated = true;
+                if (!String.IsNullOrEmpty(apl_func))
+                {
+                    relPerformance.return_apl_function = apl_func;
+                }
                 unitOfWork.TradePerformanceRepository.Insert(relPerformance);
+            }
+
+            //TODO: Verify if creating empty trade performacne for apl_func
+            isTradePerfomanceCreated = true;
+            if (!String.IsNullOrEmpty(apl_func) && 
+                !isTradePerfomanceCreated)
+            {
+                var tradePerformance = new Trade_Performance();
+                tradePerformance.trade_id = newTradeId;
+                tradePerformance.return_apl_function = apl_func;
+                unitOfWork.TradePerformanceRepository.Insert(tradePerformance);
             }
 
             if (!String.IsNullOrEmpty(vm.comments))
@@ -233,8 +270,8 @@ namespace TradesWebApplication.Api
                 {
                     trade_id = newTradeId, 
                     comment_label = vm.comments, 
-                    created_on = DateTime.Now
                 };
+                comment.created_on = comment.last_updated = DateTime.Now;
                 unitOfWork.TradeCommentRepository.Insert(comment);
             }
             unitOfWork.Save();

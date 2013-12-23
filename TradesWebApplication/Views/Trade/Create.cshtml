@@ -60,8 +60,8 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"),"{Benchmark Selection}", new { @data_bind = "value: benchmark_id, visible: relativity_id() == 2", @class = "form-control" })
-                        @* @Html.ValidationMessageFor(model => model.benchmark_id)*@
+               <input type="hidden" id="BenchmarkTypeAheadValue" data-bind="value: benchmark_id, valueUpdate: 'blur', visible: benchmark_id.isValid() == false"/>
+                           <input id="BenchmarkTypeAhead" />
                     </div>
                 </td>
             </tr>
@@ -227,7 +227,7 @@
 
 
                         <div id="datetimepicker1" class="input-append date">
-                            @Html.TextBoxFor(model => model.instruction_entry_date, new {@data_format="yyyy-MM-dd", @data_bind = "value: instruction_entry_date", @class = "form-control" })
+                            @Html.TextBoxFor(model => model.instruction_entry_date, new {@data_format="yyyy-MM-dd", @data_bind = "value: instruction_entry_date, valueUpdate: 'blur' ", @class = "form-control" })
                             <span class="add-on">
                                 <i data-date-icon="icon-calendar">
                                 </i>
@@ -404,8 +404,10 @@
                     <td>
                         <div class="editor-field">
                             @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" })
-                            @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: abs_return_value", @class = "form-control" })
-                            @Html.TextBoxFor(model => model.abs_return_value)
+ 
+  <input type="hidden" id="absCurrencyTypeAheadValue" data-bind="value: abs_currency_id, valueUpdate: 'blur'"/>
+                           <input id="absCurrencyTypeAhead"/>
+                            @Html.TextBoxFor(model => model.abs_return_value, new { @data_bind = "value: abs_return_value", @class = "form-control" })
                         </div>
                     </td>
                 </tr>
@@ -426,7 +428,8 @@
                     <td>
                         <div class="editor-field">
                             @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: rel_measure_type_id", @class = "form-control" })
-                            @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: rel_currency_id", @class = "form-control" })
+                           <input type="hidden" id="relCurrencyTypeAheadValue" data-bind="value: rel_currency_id, valueUpdate: 'blur'"/>
+                           <input id="relCurrencyTypeAhead"/>
                             @Html.TextBoxFor(model => model.rel_return_value, new { @data_bind = "value: rel_return_value" })
                         </div>
                     </td>
@@ -440,7 +443,8 @@
                     </td>
                     <td>
                         <div class="editor-field">
-                            @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty, new { @data_bind = "value: return_benchmark_id", @class = "form-control" })
+                          <input type="hidden" id="relBenchmarkTypeAheadValue" data-bind="value: return_benchmark_id, valueUpdate: 'blur'"/>
+                           <input id="relBenchmarkTypeAhead"/>
 
                         </div>
                     </td>
@@ -510,6 +514,9 @@
                     pickTime: false,
 
                 });
+
+                //init
+                $("#absCurrencyTypeAhead").hide();
                 
             });
 
@@ -517,10 +524,10 @@
             // show/hid benchmark selection
             $("#relativity_id").change(function () {
                 if ($("#relativity_id").val() == 2) {
-                    $("#main_trade_table tr#benchmark_selection").show();
+                    $("#BenchmarkTypeAhead").show();
                 }
                 else {
-                    $("#main_trade_table tr#benchmark_selection").hide();
+                    $("#BenchmarkTypeAhead").hide();
                 }
 
             });
@@ -528,10 +535,10 @@
             // show hide absolute currency dropdown
             $("#abs_measure_type_id").change(function () {
                 if ($("#abs_measure_type_id").val() == 2) {
-                    $("#abs_currency_id").show();
+                    $("#absCurrencyTypeAhead").show();
                 }
                 else {
-                    $("#abs_currency_id").hide();
+                    $("#absCurrencyTypeAhead").hide();
                 }
 
             });
@@ -539,10 +546,10 @@
             // show hide relative currency dropdown
             $("#rel_measure_type_id").change(function () {
                 if ($("#rel_measure_type_id").val() == 2) {
-                    $("#rel_currency_id").show();
+                    $("#relCurrencyTypeAhead").show();
                 }
                 else {
-                    $("#rel_currency_id").hide();
+                    $("#relCurrencyTypeAhead").hide();
                 }
 
             });
@@ -563,6 +570,97 @@
                 });
             });
 
+
+            //main Benchmark Selection typeahead
+            $(function () {
+                $("#BenchmarkTypeAhead").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/Trade/AutoCompleteBenchmark",
+                            type: "POST",
+                            dataType: "json",
+                            data: { term: request.term },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.currency_label, value: item.currency_id };
+                                }));
+                            }
+                        });
+                    },
+
+                    focus: function (event, ui) {
+                        $("#BenchmarkTypeAhead").val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#BenchmarkTypeAhead").val(ui.item.label);
+                        $("#BenchmarkTypeAheadValue").val(ui.item.value);
+                        $("#BenchmarkTypeAheadValue").blur();
+                        return false;
+                    }
+                });
+            });
+
+            //main Benchmark Selection typeahead
+            $(function () {
+                $("#BenchmarkTypeAhead").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/Trade/AutoCompleteBenchmark",
+                            type: "POST",
+                            dataType: "json",
+                            data: { term: request.term },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.benchmark_label, value: item.benchmark_id };
+                                }));
+                            }
+                        });
+                    },
+
+                    focus: function (event, ui) {
+                        $("#BenchmarkTypeAhead").val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#BenchmarkTypeAhead").val(ui.item.label);
+                        $("#BenchmarkTypeAheadValue").val(ui.item.value);
+                        $("#BenchmarkTypeAheadValue").blur();
+                        return false;
+                    }
+                });
+            });
+            //rel Benchmark Selection typeahead
+            $(function () {
+                $("#relBenchmarkTypeAhead").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/Trade/AutoCompleteBenchmark",
+                            type: "POST",
+                            dataType: "json",
+                            data: { term: request.term },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.benchmark_label, value: item.benchmark_id };
+                                }));
+                            }
+                        });
+                    },
+
+                    focus: function (event, ui) {
+                        $("#relBenchmarkTypeAhead").val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#relBenchmarkTypeAhead").val(ui.item.label);
+                        $("#relBenchmarkTypeAheadValue").val(ui.item.value);
+                        $("#relBenchmarkTypeAheadValue").blur();
+                        return false;
+                    }
+                });
+            });
+
+            //TradeExecution Currency typeahead
             $(function () {
                 $("#CurrencyTypeAhead").autocomplete({
                     source: function (request, response) {
@@ -592,5 +690,64 @@
                 });
             });
 
+            //abs perf Currency typeahead
+            $(function () {
+                $("#absCurrencyTypeAhead").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/Trade/AutoCompleteCurrency",
+                            type: "POST",
+                            dataType: "json",
+                            data: { term: request.term },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.currency_label, value: item.currency_id };
+                                }));
+                            }
+                        });
+                    },
+
+                    focus: function (event, ui) {
+                        $("#absCurrencyTypeAhead").val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#absCurrencyTypeAhead").val(ui.item.label);
+                        $("#absCurrencyTypeAheadValue").val(ui.item.value);
+                        $("#absCurrencyTypeAheadValue").blur();
+                        return false;
+                    }
+                });
+            });
+
+            //rel Currency typeahead
+            $(function () {
+                $("#relCurrencyTypeAhead").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/Trade/AutoCompleteCurrency",
+                            type: "POST",
+                            dataType: "json",
+                            data: { term: request.term },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.currency_label, value: item.currency_id };
+                                }));
+                            }
+                        });
+                    },
+
+                    focus: function (event, ui) {
+                        $("#relCurrencyTypeAhead").val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#relCurrencyTypeAhead").val(ui.item.label);
+                        $("#relCurrencyTypeAheadValue").val(ui.item.value);
+                        $("#relCurrencyTypeAheadValue").blur();
+                        return false;
+                    }
+                });
+            });
         </script>
     }

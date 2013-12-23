@@ -40,7 +40,7 @@ namespace TradesWebApplication.ViewModels
         // benchmark selection
         [DisplayName("Benchmark Selection:")]
         //[Range(1, int.MaxValue, ErrorMessage = "Please make a selection")]
-        public int benchmark_id { get; set; }
+        public int? benchmark_id { get; set; }
         public List<Benchmark> Benchmarks { get; set; }
         
         // update time

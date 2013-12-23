@@ -376,7 +376,38 @@ namespace TradesWebApplication.Controllers
             return RedirectToAction("Index");
         }
 
+        //Benchmark typeahead
+        public JsonResult AutoCompleteBenchmark(string term)
+        {
+            var list = unitOfWork.BenchmarkRepository.GetAll();
+            var result = (from r in list
+                          where r.benchmark_label.ToLower().Contains(term.ToLower())
+                          select new { r.benchmark_label, r.benchmark_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
+        //TradeableThing (Financial Instrument) typeahead
+        public JsonResult AutoCompleteTradableThing(string term)
+        {
+            var list = unitOfWork.TradableThingRepository.GetAll();
+            var result = (from r in list
+                          where r.tradable_thing_label.ToLower().Contains(term.ToLower())
+                          select new { r.tradable_thing_label, r.tradable_thing_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        //Linked Trades typeahead
+        public JsonResult AutoCompleteLinkedTrades(string term)
+        {
+            var list = unitOfWork.TradeRepository.GetTrades();
+            var result = (from r in list
+                          where r.trade_label.ToLower().Contains(term.ToLower())
+                          select new { r.trade_label, r.trade_id }); //TODO: Verify will retrieve duplicate editorial labels
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        
+        //Currency typeahead
         public JsonResult AutoCompleteCurrency(string term)
         {
             var list = unitOfWork.CurrencyRepository.GetAll();

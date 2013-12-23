@@ -13,6 +13,39 @@
     }
 };
 
+ko.bindingHandlers.datepicker = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        //initialize datepicker with some optional options
+        var options = allBindingsAccessor().datepickerOptions || {};
+        $(element).datepicker(options);
+
+        //when a user changes the date, update the view model
+        ko.utils.registerEventHandler(element, "changeDate", function (event) {
+            var value = valueAccessor();
+            if (ko.isObservable(value)) {
+                value(event.date);
+            }
+        });
+    },
+    update: function (element, valueAccessor) {
+        var widget = $(element).data("datepicker");
+        //when the view model is updated, update the widget
+        if (widget) {
+            widget.date = ko.utils.unwrapObservable(valueAccessor());
+
+            if (!widget.date) {
+                return;
+            }
+
+            if (_.isString(widget.date)) {
+                widget.date = new Date(widget.date);
+            }
+
+            widget.setValue();
+        }
+    }
+};
+
 ko.validation.configure({
     decorateElement: true
 });
@@ -137,14 +170,14 @@ function TradeViewModel(
     relativity_id = typeof (relativity_id) !== 'undefined' ? relativity_id : 2; //default value
     this.relativity_id = ko.observable(2);
 
-    benchmark_id = typeof (benchmark_id) !== 'undefined' ? benchmark_id : 0;
-    this.benchmark_id = ko.observable(benchmark_id).extend({
+    benchmark_id = typeof (benchmark_id) !== 'undefined' ? benchmark_id : 0; //hack to avoid null in json
+    this.benchmark_id = ko.observable("0").extend({
         required: {
             onlyIf: function () {
-                return self.relativity_id() == 2;
-            }
-        }
-    });;
+                return self.relativity_id() == 2 && self.benchmark_id > 0;
+            },
+        }, 
+    });
 
     created_on = typeof (created_on) !== 'undefined' ? created_on : "";
     this.created_on = ko.observable(created_on);
@@ -197,11 +230,11 @@ function TradeViewModel(
     abs_measure_type_id = typeof (abs_measure_type_id) !== 'undefined' ? abs_measure_type_id : 1; //default value
     this.abs_measure_type_id = ko.observable(1);
 
-    abs_currency_id = typeof(abs_currency_id) !== 'undefined' ? abs_currency_id : 1;
-    this.abs_currency_id = ko.observable(abs_currency_id);
+    abs_currency_id = typeof (abs_currency_id) !== 'undefined' ? abs_currency_id : 1; //default value
+    this.abs_currency_id = ko.observable(1);
 
     abs_return_value = typeof (abs_return_value) !== 'undefined' ? abs_return_value : "";
-    this.abs_return_value = ko.observable(abs_return_value);
+    this.abs_return_value = ko.observable(abs_return_value).extend({ number: true });
 
     rel_measure_type_id = typeof (rel_measure_type_id) !== 'undefined' ? rel_measure_type_id : 2; //default value
     this.rel_measure_type_id = ko.observable(2); 
@@ -210,10 +243,10 @@ function TradeViewModel(
     this.rel_currency_id = ko.observable(rel_currency_id);
 
     rel_return_value = typeof (rel_return_value) !== 'undefined' ? rel_return_value : "";
-    this.rel_return_value = ko.observable(rel_return_value);
+    this.rel_return_value = ko.observable(rel_return_value).extend({ number: true });
 
     return_benchmark_id = typeof (return_benchmark_id) !== 'undefined' ? return_benchmark_id : 0;
-    this.return_benchmark_id = ko.observable(return_benchmark_id);
+    this.return_benchmark_id = ko.observable(0); //Hack to avoid null in json
 
     comments = typeof (comments) !== 'undefined' ? comments : "";
     this.comments = ko.observable(comments);
