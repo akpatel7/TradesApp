@@ -255,9 +255,8 @@ function TradeViewModel(
                 type: 'post',
                 data: JSON.stringify(ko.toJSON(this)),
                 contentType: 'application/json',
-                success: function (result) {
-
-                    $('#result').html(result);
+                success: function (data) {
+                    alert(data.result);
                 }
             });
         //}   

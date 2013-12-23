@@ -301,11 +301,9 @@ namespace TradesWebApplication.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public JsonResult Create(string json)
+        public ActionResult Create(object data)
         {
-            Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-
-            return Json(values);
+            return View(new TradesCreationViewModel());
 
         }
 

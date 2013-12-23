@@ -8,7 +8,7 @@
         new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });*@
 }
 
-<form>
+<form action="Create" method="GET">
     @Html.ValidationSummary(true)
     <fieldset class="tgroup">
         <legend class="trade_group"><h2><span>Trade Creation</span></h2></legend>
@@ -470,17 +470,19 @@
 
         <p>
             <button id="create" type="submit" class="btn btn-primary">Create</button>  
+<button name="Reset Form" class="btn btn-primary" onclick=" document.location.href = $('#createUrl').attr('href');">Reset</button>
+            <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
             <button name="ClientCancel" class="btn btn-primary" onclick=" document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
             <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Home"))" style="display:none;"></a>
 
         </p>
     
-        <label id="result"></label>
+       
     </fieldset>
 </form>
 <pre data-bind='text: ko.toJSON($root, null, 2)'></pre>
 
-
+ <label id="result"></label>
 
 @section scripts{
         <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
@@ -577,15 +579,15 @@
                 }
             };
 
-            
-            $(function CreateTrade() {
+//to block traditonal posting, and divert to API            
+            $(function () {
                 $('form').submit(function () {
                     if (!$(this).valid()) {
                         // standard client validation failed => prevent submission
-                        alert('Validation failed!');
+                        //alert('Validation failed!');
                         return false;    
                     }
-                    alert('Can create Trade!');
+                    //alert('Can create Trade!');
                     vm.saveTradeData();
                     return false;
 
