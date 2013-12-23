@@ -70,7 +70,7 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
     this.tradable_thing_id = ko.observable(tradable_thing_id).extend({ required: true });
 
     this.positionString = ko.observable("");
-    this.tradableThingString = ko.observable("");
+    this.tradableThingString = ko.observable(null).extend({ required: true });;
 
     this.canonicalLabelPart = ko.computed(function () {
         return self.positionString() + ", " + self.tradableThingString();
@@ -174,9 +174,17 @@ function TradeViewModel(
     this.benchmark_id = ko.observable("0").extend({
         required: {
             onlyIf: function () {
-                return self.relativity_id() == 2 && self.benchmark_id > 0;
+                return self.relativity_id() == 2;
             },
         }, 
+    });
+
+    this.benchmark_label = ko.observable(null).extend({
+        required: {
+            onlyIf: function () {
+                return self.relativity_id() == 2;
+            },
+        },
     });
 
     created_on = typeof (created_on) !== 'undefined' ? created_on : "";

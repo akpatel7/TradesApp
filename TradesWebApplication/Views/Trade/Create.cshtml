@@ -60,8 +60,8 @@
                 </td>
                 <td>
                     <div class="editor-field">
-               <input type="hidden" id="BenchmarkTypeAheadValue" data-bind="value: benchmark_id, valueUpdate: 'blur', visible: benchmark_id.isValid() == false"/>
-                           <input id="BenchmarkTypeAhead" />
+               <input type="hidden" id="BenchmarkTypeAheadValue" data-bind="value: benchmark_id, valueUpdate: 'blur'"/>
+                           <input id="BenchmarkTypeAhead" data-bind="value: benchmark_label, valueUpdate: 'blur'" />
                     </div>
                 </td>
             </tr>
@@ -169,10 +169,13 @@
                                                     @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })
                                                 </td>
                                                 <td>
-                                                    @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), "{Financial Instrument}", new { @data_bind = "value: tradable_thing_id, selectedText: tradableThingString", @class = "form-control" })
+                                                   @* @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), "{Financial Instrument}", new { @data_bind = "value: tradable_thing_id, @class = "form-control" })*@
+
+ <input type="hidden" class="TradableThingTypeAheadValue" data-bind="value: tradable_thing_id, valueUpdate: 'blur'"/>
+<input type="hidden" class="TradableThingTypeAheadValueText" data-bind="value: tradable_thing_id, valueUpdate: 'blur'"/>
+                           <input class="TradableThingTypeAhead"  data-bind="value: tradableThingString, valueUpdate: 'blur'"/>
                                                 </td>
                                                 <td>
-                                                    <div data-bind="text: canonicalLabelPart"></div>
                                                     <button type="button" class="btn btn-small" data-bind='click: function () { $parent.removeLine($data);  }'>
                                                         <span class="glyphicon glyphicon-remove-circle"></span>
                                                     </button>
@@ -517,6 +520,8 @@
 
                 //init
                 $("#absCurrencyTypeAhead").hide();
+                $("#BenchmarkTypeAhead").blur();
+                $(".TradableThingTypeAhead").blur();
                 
             });
 
@@ -624,6 +629,7 @@
                     },
                     select: function (event, ui) {
                         $("#BenchmarkTypeAhead").val(ui.item.label);
+                        $("#BenchmarkTypeAhead").blur();
                         $("#BenchmarkTypeAheadValue").val(ui.item.value);
                         $("#BenchmarkTypeAheadValue").blur();
                         return false;
@@ -747,6 +753,37 @@
                         $("#relCurrencyTypeAheadValue").blur();
                         return false;
                     }
+                });
+                
+                //TradeExecution Currency typeahead
+                $(function () {
+                    $(".#TradableThingTypeAhead").autocomplete({
+                        source: function (request, response) {
+                            $.ajax({
+                                url: "/Trade/AutoCompleteTradableThing",
+                                type: "POST",
+                                dataType: "json",
+                                data: { term: request.term },
+                                success: function (data) {
+                                    response($.map(data, function (item) {
+                                        return { label: item.tradable_thing_label, value: item.tradable_thing_id };
+                                    }));
+                                }
+                            });
+                        },
+
+                        focus: function (event, ui) {
+                            $(".TradableThingTypeAhead").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $(".TradableThingTypeAhead").val(ui.item.label);
+                            $(".TradableThingTypeAhead").blur();
+                            $(".TradableThingTypeAheadValue").val(ui.item.value);
+                            $(".TradableThingTypeAheadValue").blur();
+                            return false;
+                        }
+                    });
                 });
             });
         </script>
