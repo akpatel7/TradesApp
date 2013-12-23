@@ -337,7 +337,10 @@
                     </td>
                     <td>
                         <div class="editor-field">
-                            @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), String.Empty, new { @data_bind = "value: related_trade_ids", @class = "form-control" })
+                           @* @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), String.Empty, new { @data_bind = "value: related_trade_ids", @class = "form-control" })
+relatedTrades*@
+<input type="text" id="relatedTradesValues"/>
+                           <input id="relatedTrades"/>
                         </div>
                     </td>
                     <td></td>
@@ -757,7 +760,7 @@
                 
                 //TradeExecution Currency typeahead
                 $(function () {
-                    $(".#TradableThingTypeAhead").autocomplete({
+                    $(".TradableThingTypeAhead").autocomplete({
                         source: function (request, response) {
                             $.ajax({
                                 url: "/Trade/AutoCompleteTradableThing",
@@ -785,6 +788,99 @@
                         }
                     });
                 });
+                
+               
+                //source: function (request, response) {
+                //    $.ajax({
+                //        url: "/Trade/AutoCompleteLinkedTrades",
+                //        type: "POST",
+                //        dataType: "json",
+                //        data: { term: request.term },
+                //        success: function (data) {
+                //            response($.map(data, function (item) {
+                //                return { label: item.trade_label, value: item.trade_id };
+                //            }));
+                //        }
+                //    });
+                //},
+
+
+                $('#relatedTrades').autocomplete({
+                    minLength: 1,
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/Trade/AutoCompleteLinkedTrades",
+                            type: "POST",
+                            dataType: "json",
+                            data: { term: request.term },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.trade_label, value: item.trade_id };
+                                }));
+                            }
+                        });
+                    },
+                    focus: function () {
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        var terms = split(this.value);
+                        terms.pop();
+                        terms.push(ui.item.label);
+                        terms.push('');
+                        this.value = terms.join(', ');
+                        return false;
+                    }
+                });
+
+                $("#relatedTrades")
+                  // don't navigate away from the field on tab when selecting an item
+                  .bind("keydown", function (event) {
+                      if (event.keyCode === $.ui.keyCode.TAB &&
+                          $(this).data("ui-autocomplete").menu.active) {
+                          event.preventDefault();
+                      }
+                  })
+                  .autocomplete({
+                      minLength: 0,
+                      source: function (request, response) {
+                          $.ajax({
+                              url: "/Trade/AutoCompleteLinkedTrades",
+                              type: "POST",
+                              dataType: "json",
+                              data: { term: request.term },
+                              success: function (data) {
+                                  response($.map(data, function (item) {
+                                      return { label: item.trade_label, value: item.trade_id };
+                                  }));
+                              }
+                          });
+                      },
+                      focus: function () {
+                          // prevent value inserted on focus
+                          return false;
+                      },
+                      select: function (event, ui) {
+                          var terms = split(this.value);
+                          // remove the current input
+                          terms.pop();
+                          // add the selected item
+                          terms.push(ui.item.value);
+                          // add placeholder to get the comma-and-space at the end
+                          terms.push("");
+                          this.value = terms.join(", ");
+                          return false;
+                      }
+                  });
+
+                function split(val) {
+                    return val.split(/,\s*/);
+                }
+
+                function extractLast(term) {
+                    return split(term).pop();
+                }
+
             });
         </script>
     }
