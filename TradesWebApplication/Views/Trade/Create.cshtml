@@ -112,7 +112,7 @@
                 <td>
                     <div class="editor-field">
                         @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), "{Structure}", new { @data_bind = "value: structure_type_id", @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.structure_type_id)
+                        @*@Html.ValidationMessageFor(model => model.structure_type_id)*@
                     </div>
                 </td>
             </tr>

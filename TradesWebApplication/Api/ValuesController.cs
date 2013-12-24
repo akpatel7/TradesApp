@@ -103,6 +103,7 @@ namespace TradesWebApplication.Api
             trade.created_on = trade.last_updated = DateTime.Now;
             trade.trade_label = vm.trade_label;
             trade.trade_editorial_label = vm.trade_editorial_label;
+            trade.structure_type_id = vm.structure_type_id;
             trade.currency_id = vm.currency_id;
             //TODO: createdby
             //STATUS Always Visible on create
@@ -214,7 +215,7 @@ namespace TradesWebApplication.Api
             // absolute performance
             
             var abs_measure_id = vm.abs_measure_type_id;
-            if (abs_measure_id != null)
+            if (abs_measure_id != null && !String.IsNullOrEmpty(vm.abs_return_value))
             {
                 var absPerformance = new Trade_Performance();
                 absPerformance.trade_id = newTradeId;
@@ -236,7 +237,7 @@ namespace TradesWebApplication.Api
 
             // relative performance
             var rel_measure_id = vm.rel_measure_type_id;
-            if (rel_measure_id != null)
+            if (rel_measure_id != null && !String.IsNullOrEmpty(vm.rel_return_value))
             {
                 var relPerformance = new Trade_Performance();
                 relPerformance.trade_id = newTradeId;
@@ -261,7 +262,6 @@ namespace TradesWebApplication.Api
             }
 
             //TODO: Verify if creating empty trade performacne for apl_func
-            isTradePerfomanceCreated = true;
             if (!String.IsNullOrEmpty(apl_func) && 
                 !isTradePerfomanceCreated)
             {
