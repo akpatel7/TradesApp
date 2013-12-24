@@ -389,9 +389,13 @@
                     <td>
                         <div class="editor-field">
                             @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" })
+</div>
+<div class="editor-field" data-bind="visible: abs_measure_type_id() == 2">
                             @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: abs_currency_id", @class = "form-control", @id="absCurrencyTypeAhead" })
+</div>
+<div class="editor-field">
                             @Html.TextBoxFor(model => model.abs_return_value, new { @data_bind = "value: abs_return_value", @class = "form-control" })
-                        </div>
+</div>
                     </td>
                 </tr>
             </table>
@@ -411,8 +415,13 @@
                     <td>
                         <div class="editor-field">
                             @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: rel_measure_type_id", @class = "form-control" })
-                            @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: rel_currency_id", @class = "form-control", @id="relCurrencyTypeAhead"  })   
+</div>
+<div class="editor-field" data-bind="visible: rel_measure_type_id() == 2">
+                            @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: rel_currency_id", @class = "form-control", @id="relCurrencyTypeAhead"  })
+</div>
+<div class="editor-field">
                             @Html.TextBoxFor(model => model.rel_return_value, new { @data_bind = "value: rel_return_value"})
+</div>
                         </div>
                     </td>
                 </tr>
@@ -474,28 +483,8 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
-                $("#abs_currency_id").hide();
-
-                //$('#datetimepicker1').datetimepicker({
-                //    format: 'yyyy-MM-dd',
-                //    language: 'en',
-                //    pick12HourFormat: true,
-                //    pickDate: true,
-                //    pickTime: false,
-
-                //});
-
-                //$('#datetimepicker2').datetimepicker({
-                //    format: 'yyyy-MM-dd',
-                //    language: 'en',
-                //    pick12HourFormat: true,
-                //    pickDate: true,
-                //    pickTime: false,
-
-                //});
 
                 //init form custom controls
-                $("#absCurrencyTypeAhead").hide();
                 $("#BenchmarkTypeAhead").select2({ placeholder: "{Benckmark Selection}" });
                 $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benckmark Selection}" });
                 $(".tradableThingList").select2({ placeholder: "{Financial Instrument}" });
@@ -506,42 +495,8 @@
                 $('#dpInstructionEntry').datepicker();
                 $('#dpInstructionExit').datepicker();
             });
-
-
-            // show/hid benchmark selection
-            $("#relativity_id").change(function () {
-                if ($("#relativity_id").val() == 2) {
-                    $("#BenchmarkTypeAhead").show();
-                }
-                else {
-                    $("#BenchmarkTypeAhead").hide();
-                }
-
-            });
-
-            // show hide absolute currency dropdown
-            $("#abs_measure_type_id").change(function () {
-                if ($("#abs_measure_type_id").val() == 2) {
-                    $("#absCurrencyTypeAhead").show();
-                }
-                else {
-                    $("#absCurrencyTypeAhead").hide();
-                }
-
-            });
-
-            // show hide relative currency dropdown
-            $("#rel_measure_type_id").change(function () {
-                if ($("#rel_measure_type_id").val() == 2) {
-                    $("#relCurrencyTypeAhead").show();
-                }
-                else {
-                    $("#relCurrencyTypeAhead").hide();
-                }
-
-            });
             
-//to invoke validation on razor
+            //to invoke validation on razor - Not working
             $('#dpInstructionEntry').datepicker()
                 .on('changeDate', function(ev) {
                     $('#dpInstructionEntryText').keyup();
@@ -564,156 +519,5 @@
                 });
             });
 
-
-            ////main Benchmark Selection typeahead
-            //$(function () {
-            //    $("#BenchmarkTypeAhead").autocomplete({
-            //        source: function (request, response) {
-            //            $.ajax({
-            //                url: "/Trade/AutoCompleteBenchmark",
-            //                type: "POST",
-            //                dataType: "json",
-            //                data: { term: request.term },
-            //                success: function (data) {
-            //                    response($.map(data, function (item) {
-            //                        return { label: item.currency_label, value: item.currency_id };
-            //                    }));
-            //                }
-            //            });
-            //        },
-
-            //        focus: function (event, ui) {
-            //            $("#BenchmarkTypeAhead").val(ui.item.label);
-            //            return false;
-            //        },
-            //        select: function (event, ui) {
-            //            $("#BenchmarkTypeAhead").val(ui.item.label);
-            //            $("#BenchmarkTypeAheadValue").val(ui.item.value);
-            //            $("#BenchmarkTypeAheadValue").blur();
-            //            return false;
-            //        }
-            //    });
-            //});
-
-            
-            ////rel Benchmark Selection typeahead
-            //$(function () {
-            //    $("#relBenchmarkTypeAhead").autocomplete({
-            //        source: function (request, response) {
-            //            $.ajax({
-            //                url: "/Trade/AutoCompleteBenchmark",
-            //                type: "POST",
-            //                dataType: "json",
-            //                data: { term: request.term },
-            //                success: function (data) {
-            //                    response($.map(data, function (item) {
-            //                        return { label: item.benchmark_label, value: item.benchmark_id };
-            //                    }));
-            //                }
-            //            });
-            //        },
-
-            //        focus: function (event, ui) {
-            //            $("#relBenchmarkTypeAhead").val(ui.item.label);
-            //            return false;
-            //        },
-            //        select: function (event, ui) {
-            //            $("#relBenchmarkTypeAhead").val(ui.item.label);
-            //            $("#relBenchmarkTypeAheadValue").val(ui.item.value);
-            //            $("#relBenchmarkTypeAheadValue").blur();
-            //            return false;
-            //        }
-            //    });
-            //});
-
-            ////TradeExecution Currency typeahead
-            //$(function () {
-            //    $("#CurrencyTypeAhead").autocomplete({
-            //        source: function (request, response) {
-            //            $.ajax({
-            //                url: "/Trade/AutoCompleteCurrency",
-            //                type: "POST",
-            //                dataType: "json",
-            //                data: { term: request.term },
-            //                success: function (data) {
-            //                    response($.map(data, function (item) {
-            //                        return { label: item.currency_label, value: item.currency_id };
-            //                    }));
-            //                }
-            //            });
-            //        },
-
-            //        focus: function (event, ui) {
-            //            $("#CurrencyTypeAhead").val(ui.item.label);
-            //            return false;
-            //        },
-            //        select: function (event, ui) {
-            //            $("#CurrencyTypeAhead").val(ui.item.label);
-            //            $("#CurrencyTypeAheadValue").val(ui.item.value);
-            //            $("#CurrencyTypeAheadValue").blur();
-            //            return false;
-            //        }
-            //    });
-            //});
-
-            //abs perf Currency typeahead
-            //$(function () {
-            //    $("#absCurrencyTypeAhead").autocomplete({
-            //        source: function (request, response) {
-            //            $.ajax({
-            //                url: "/Trade/AutoCompleteCurrency",
-            //                type: "POST",
-            //                dataType: "json",
-            //                data: { term: request.term },
-            //                success: function (data) {
-            //                    response($.map(data, function (item) {
-            //                        return { label: item.currency_label, value: item.currency_id };
-            //                    }));
-            //                }
-            //            });
-            //        },
-
-            //        focus: function (event, ui) {
-            //            $("#absCurrencyTypeAhead").val(ui.item.label);
-            //            return false;
-            //        },
-            //        select: function (event, ui) {
-            //            $("#absCurrencyTypeAhead").val(ui.item.label);
-            //            $("#absCurrencyTypeAheadValue").val(ui.item.value);
-            //            $("#absCurrencyTypeAheadValue").blur();
-            //            return false;
-            //        }
-            //    });
-            //});
-
-            //rel Currency typeahead
-            //$(function () {
-            //    $("#relCurrencyTypeAhead").autocomplete({
-            //        source: function (request, response) {
-            //            $.ajax({
-            //                url: "/Trade/AutoCompleteCurrency",
-            //                type: "POST",
-            //                dataType: "json",
-            //                data: { term: request.term },
-            //                success: function (data) {
-            //                    response($.map(data, function (item) {
-            //                        return { label: item.currency_label, value: item.currency_id };
-            //                    }));
-            //                }
-            //            });
-            //        },
-
-            //        focus: function (event, ui) {
-            //            $("#relCurrencyTypeAhead").val(ui.item.label);
-            //            return false;
-            //        },
-            //        select: function (event, ui) {
-            //            $("#relCurrencyTypeAhead").val(ui.item.label);
-            //            $("#relCurrencyTypeAheadValue").val(ui.item.value);
-            //            $("#relCurrencyTypeAheadValue").blur();
-            //            return false;
-            //        }
-            //    });
-                
         </script>
     }
