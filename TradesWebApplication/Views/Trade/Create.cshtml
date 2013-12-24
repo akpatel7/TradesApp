@@ -23,7 +23,7 @@
             </td>
             <td>
                 @Html.DropDownListFor(model => model.service_id, new SelectList(Model.Services, "service_id", "service_code"), "{Service}", new { @data_bind = "value: service_id", @class = "form-control"})
-                @Html.ValidationMessageFor(model => model.service_id)
+                @*@Html.ValidationMessageFor(model => model.service_id)*@
             </td>
             <tr>
                 <td>
@@ -35,7 +35,7 @@
                 <td>
                     <div class="editor-field">
                         @Html.DropDownListFor(model => model.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"),  "{Trade Type}", new { @data_bind = "value: length_type_id", @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.length_type_id)
+                       @* @Html.ValidationMessageFor(model => model.length_type_id)*@
                     </div>
                 </td>
             </tr>
@@ -59,12 +59,12 @@
                     </div>
                 </td>
                 <td>
-                    <div class="editor-field">
-                        @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"),"{Benchmark Selection}", new { @data_bind = "value: benchmark_id, visible: relativity_id() == 2", @id="BenchmarkTypeAhead" })
+                    <div class="editor-field" data-bind="visible: relativity_id() == 2">
+                        @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"),"{Benchmark Selection}", new { @data_bind = "value: benchmark_id", @id="BenchmarkTypeAhead" })
                     </div>
                 </td>
             </tr>
-            @* <tr>
+            @* !!!Removed from form<tr>
             <td>
                 <div class="editor-label">
                     @Html.LabelFor(model => model.created_on)
@@ -86,7 +86,6 @@
                 <td>
                     <div class="editor-field">
                         @Html.TextBoxFor(model => model.trade_label, new { @data_bind = "value: trade_label", @class = "form-control", disabled="disabled" })
-                        @Html.ValidationMessageFor(model => model.trade_label)
                     </div>
                 </td>
             </tr>
@@ -99,7 +98,6 @@
                 <td>
                     <div class="editor-field">
                         @Html.TextBoxFor(model => model.trade_editorial_label, new { @data_bind = "value: trade_editorial_label", @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.trade_editorial_label)
                     </div>
                 </td>
             </tr>
@@ -205,8 +203,9 @@
                     </td>
                     <td>
                         <div class="editor-field">
-                            @Html.TextBoxFor(model => model.instruction_entry, new { @data_bind = "value: instruction_entry", @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.instruction_entry)
+@*                            <input type="text" data-bind="value: instruction_entry"/>*@
+ @Html.TextBoxFor(model => model.instruction_entry, new { @data_bind = "value: instruction_entry", @class = "form-control" })
+ @Html.ValidationMessageFor(model => model.instruction_entry)
                         </div>
                   
                     </td>
@@ -216,15 +215,17 @@
                     <td>
                         <div class="editor-label">
                             @Html.LabelFor(model => model.instruction_entry_date)
-                            @Html.ValidationMessageFor(model => model.instruction_entry_date)
                         </div>
 
                     </td>
                     <td>
-  <div class="input-append date" id="dpInstructionEntry" data-date="" data-datepicker-format="YYYY-MM-DD">
-                            <input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">
+                        <div class="input-append date" id="dpInstructionEntry" data-date="" data-datepicker-format="YYYY-MM-DD">
+
+                            @*<input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">*@
+                            @Html.TextBoxFor(model => model.instruction_entry_date, new { @data_bind = "value: instruction_entry_date", @class = "span2", @size=16, @id="dpInstructionEntryText"})
                             <span class="add-on"><i class="icon-th"></i></span>
                         </div>
+@Html.ValidationMessageFor(model => model.instruction_entry_date)
                     </td>
                     <td></td>
                 </tr>
@@ -250,7 +251,9 @@
                     </td>
                     <td>
                         <div class="input-append date" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
-                            <input class="span2" size="16" type="text" value=""  data-bind="value: instruction_exit_date">
+
+<input class="span2" size="16" type="text" value=""  data-bind="value: instruction_exit_date">
+
                             <span class="add-on"><i class="icon-th"></i></span>
                         </div>
                     </td>
@@ -537,6 +540,13 @@
                 }
 
             });
+            
+//to invoke validation on razor
+            $('#dpInstructionEntry').datepicker()
+                .on('changeDate', function(ev) {
+                    $('#dpInstructionEntryText').keyup();
+                    $('#dpInstructionEntryText').click();
+                });
 
             
             //to block traditonal posting, and divert to API            

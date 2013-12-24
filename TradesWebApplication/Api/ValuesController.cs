@@ -162,7 +162,8 @@ namespace TradesWebApplication.Api
             }
             tradeInstruction.instruction_type_id = vm.instruction_type_id;
             tradeInstruction.instruction_label = vm.instruction_label;
-            tradeInstruction.hedge_id = vm.hedge_id; 
+            tradeInstruction.hedge_id = vm.hedge_id;
+            tradeInstruction.created_on = tradeInstruction.last_updated = DateTime.Now;
             unitOfWork.TradeInstructionRepository.Insert(tradeInstruction);
 
             // related trades, TODO:
@@ -191,6 +192,8 @@ namespace TradesWebApplication.Api
                     track_record_type_id = 1,
                     track_record_value = decimal.Parse(vm.mark_to_mark_rate)
                 };
+                //TODO: NO field exists!! interestTR.created_on = 
+                markTR.last_updated = DateTime.Now;
                 unitOfWork.TrackRecordRepository.Insert(markTR);
 
             }
@@ -203,6 +206,8 @@ namespace TradesWebApplication.Api
                     track_record_type_id = 2,
                     track_record_value = decimal.Parse(vm.interest_rate_diff)
                 };
+                //TODO: NO field exists!! interestTR.created_on = 
+                interestTR.last_updated = DateTime.Now;
                 unitOfWork.TrackRecordRepository.Insert(interestTR);
             }
 
@@ -225,6 +230,7 @@ namespace TradesWebApplication.Api
                 {
                     absPerformance.return_apl_function = apl_func;
                 }
+                absPerformance.created_on = absPerformance.last_updated = DateTime.Now;
                 unitOfWork.TradePerformanceRepository.Insert(absPerformance);
             }
 
@@ -250,6 +256,7 @@ namespace TradesWebApplication.Api
                 {
                     relPerformance.return_apl_function = apl_func;
                 }
+                relPerformance.created_on = relPerformance.last_updated = DateTime.Now;
                 unitOfWork.TradePerformanceRepository.Insert(relPerformance);
             }
 

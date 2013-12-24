@@ -20,9 +20,6 @@ ko.validation.configure({
 // enable validation
 ko.validation.init({ grouping: { deep: true, observable: true } });
 
-
-
-
 var baseApiUri = '@ViewBag.ApiGroupUrl';
 
 function TradeLine(trade_line_id, position_id, tradable_thing_id) {
@@ -128,49 +125,39 @@ function TradeViewModel(
 
     //form values - top
     service_id = typeof (serviceId) !== 'undefined' ? service_id : 0;
-    this.service_id = ko.observable(service_id);
+    this.service_id = ko.observable(service_id).extend({ required: true });
 
     length_type_id = typeof (length_type_id) !== 'undefined' ? length_type_id : 2; //default value
-    this.length_type_id = ko.observable(2);
+    this.length_type_id = ko.observable(2).extend({ required: true });
 
 
     relativity_id = typeof (relativity_id) !== 'undefined' ? relativity_id : 2; //default value
-    this.relativity_id = ko.observable(2);
+    this.relativity_id = ko.observable(2).extend({ required: true });
 
-    benchmark_id = typeof (benchmark_id) !== 'undefined' ? benchmark_id : 0; //hack to avoid null in json
-    this.benchmark_id = ko.observable("0").extend({
+    benchmark_id = typeof (benchmark_id) !== 'undefined' ? benchmark_id : ""; 
+    this.benchmark_id = ko.observable(null).extend({
         required: {
             onlyIf: function () {
                 return self.relativity_id() == 2;
             },
         }, 
     });
-
-    this.benchmark_label = ko.observable(null).extend({
-        required: {
-            onlyIf: function () {
-                return self.relativity_id() == 2;
-            },
-        },
-    });
-
+    
     created_on = typeof (created_on) !== 'undefined' ? created_on : "";
     this.created_on = ko.observable(created_on);
-
-
 
     trade_editorial_label = typeof (trade_editorial_label) !== 'undefined' ? trade_editorial_label : "";
     this.trade_editorial_label = ko.observable(trade_editorial_label);
 
     structure_type_id = typeof (structure_type_id) !== 'undefined' ? structure_type_id : 4; //default value
-    this.structure_type_id = ko.observable(4);
+    this.structure_type_id = ko.observable(4).extend({ required: true });
 
     //form values - bottom
     instruction_entry = typeof (instruction_entry) !== 'undefined' ? instruction_entry : "";
-    this.instruction_entry = ko.observable(instruction_entry);
+    this.instruction_entry = ko.validatedObservable(null).extend({ required: true }).extend({ number: true });
 
     instruction_entry_date = typeof (instruction_entry_date) !== 'undefined' ? instruction_entry_date : "";
-    this.instruction_entry_date = ko.observable(instruction_entry_date);
+    this.instruction_entry_date = ko.validatedObservable(instruction_entry_date).extend({ required: true });
 
     instruction_exit = typeof (instruction_exit) !== 'undefined' ? instruction_exit : "";
     this.instruction_exit = ko.observable(instruction_exit).extend({ number: true });
