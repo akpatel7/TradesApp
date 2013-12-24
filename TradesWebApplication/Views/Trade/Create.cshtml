@@ -221,20 +221,10 @@
 
                     </td>
                     <td>
-
-
-
-                        <div id="datetimepicker1" class="input-append date">
-                            @Html.TextBoxFor(model => model.instruction_entry_date, new {@data_format="yyyy-MM-dd", @data_bind = "value: instruction_entry_date, valueUpdate: 'blur' ", @class = "form-control" })
-                            <span class="add-on">
-                                <i data-date-icon="icon-calendar">
-                                </i>
-                           
-                            </span>
-
+  <div class="input-append date" id="dpInstructionEntry" data-date="" data-datepicker-format="YYYY-MM-DD">
+                            <input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">
+                            <span class="add-on"><i class="icon-th"></i></span>
                         </div>
-
-                   
                     </td>
                     <td></td>
                 </tr>
@@ -259,14 +249,9 @@
                         </div>
                     </td>
                     <td>
-
-
-                        <div id="datetimepicker2" class="input-append date">
-                            <input data-format="yyyy-MM-dd" type="text" data-bind="datepicker: instruction_exit"></input>
-                            <span class="add-on">
-                                <i data-date-icon="icon-calendar">
-                                </i>
-                            </span>
+                        <div class="input-append date" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
+                            <input class="span2" size="16" type="text" value=""  data-bind="value: instruction_exit_date">
+                            <span class="add-on"><i class="icon-th"></i></span>
                         </div>
                     </td>
                     <td></td>
@@ -310,7 +295,7 @@
                     </td>
                     <td>
                         <div class="editor-field">
-
+ @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: currency_id", @class = "form-control", @id="CurrencyTypeAhead"  })   
                         </div>
                     </td>
                     <td></td>
@@ -488,25 +473,25 @@
             $(document).ready(function () {
                 $("#abs_currency_id").hide();
 
-                $('#datetimepicker1').datetimepicker({
-                    format: 'yyyy-MM-dd',
-                    language: 'en',
-                    pick12HourFormat: true,
-                    pickDate: true,
-                    pickTime: false,
+                //$('#datetimepicker1').datetimepicker({
+                //    format: 'yyyy-MM-dd',
+                //    language: 'en',
+                //    pick12HourFormat: true,
+                //    pickDate: true,
+                //    pickTime: false,
 
-                });
+                //});
 
-                $('#datetimepicker2').datetimepicker({
-                    format: 'yyyy-MM-dd',
-                    language: 'en',
-                    pick12HourFormat: true,
-                    pickDate: true,
-                    pickTime: false,
+                //$('#datetimepicker2').datetimepicker({
+                //    format: 'yyyy-MM-dd',
+                //    language: 'en',
+                //    pick12HourFormat: true,
+                //    pickDate: true,
+                //    pickTime: false,
 
-                });
+                //});
 
-                //init
+                //init form custom controls
                 $("#absCurrencyTypeAhead").hide();
                 $("#BenchmarkTypeAhead").select2({ placeholder: "{Benckmark Selection}" });
                 $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benckmark Selection}" });
@@ -515,6 +500,8 @@
                 $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}" });
                 $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
                 $("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
+                $('#dpInstructionEntry').datepicker();
+                $('#dpInstructionExit').datepicker();
             });
 
 
