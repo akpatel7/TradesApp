@@ -13,6 +13,58 @@
     }
 };
 
+ko.bindingHandlers.datePicker = {
+	    init: function (element, valueAccessor, allBindingsAccessor) {       
+	        //initialize datepicker with some optional options
+	        var options = allBindingsAccessor().datepickerOptions || { format: 'dd/mm/yyyy', autoclose: true };
+	        $(element).datepicker(options);
+	        
+	        //when a user changes the date, update the view model
+	        ko.utils.registerEventHandler(element, "changeDate", function (event) {
+	            var value = valueAccessor();
+	            if (ko.isObservable(value)) {
+	                value(event.date);
+	            }
+	        });
+	         
+	        ko.utils.registerEventHandler(element, "change", function () {
+	            var widget = $(element).data("datepicker");
+	             
+	            var value = valueAccessor();           
+	            if (ko.isObservable(value)) {
+	                if (element.value) {
+	                    var date = widget.getUTCDate();                                       
+	                    value(date);
+	                } else {                   
+	                    value(null);
+	                }
+	 
+	            }
+	        });
+	    },
+	    update: function (element, valueAccessor) {
+	             
+	        var widget = $(element).data("datepicker");
+	 
+	        //when the view model is updated, update the widget
+	        if (widget) {
+	            widget.date = ko.utils.unwrapObservable(valueAccessor());
+	 
+	            if (!widget.date) {
+	                return;
+	            }
+	 
+	            if (_.isString(widget.date)) {
+	                widget.setDate(moment(widget.date).toDate());
+	                return;
+	            }
+	 
+	            widget.setValue();
+	        }       
+	    }
+	};
+
+
 ko.validation.configure({
     decorateElement: true
 });
@@ -28,10 +80,10 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
     this.trade_line_id = ko.observable(trade_line_id);
 
     position_id = typeof (position_id) !== 'undefined' ? position_id : 0;
-    this.position_id = ko.observable(position_id).extend({ required: true});
+    this.position_id = ko.validatedObservable(position_id).extend({ required: true});
 
     tradable_thing_id = typeof (tradable_thing_id) !== 'undefined' ? tradable_thing_id : 0;
-    this.tradable_thing_id = ko.observable(tradable_thing_id).extend({ required: true });
+    this.tradable_thing_id = ko.validatedObservable(tradable_thing_id).extend({ required: true });
 
     this.positionString = ko.observable("");
     this.tradableThingString = ko.observable(null).extend({ required: true });;
@@ -242,7 +294,7 @@ function TradeViewModel(
 
     self.saveTradeData = function (baseApiUrl) {
        
-        if (this.validate()) {
+        if (this.isValid()) {
             alert('Trying to save data!');
             var apiURL = baseUrl;
             apiURL += "api/values/post";
@@ -255,36 +307,25 @@ function TradeViewModel(
                     alert(data.result);
                 }
             });
-        }   
+            return true;
+        }
+        return false;
     };
     
-    self.validate = function () {
-        
-        if (!self.isValid()) {
-            self.errors.showAllMessages();
-            return false;
-        }
-
-        return true;
-    };
+    self.isValid = ko.computed(function () {
+        return ko.validation.group(
+            self,
+            {
+                observable: true,
+                deep: true
+            }).showAllMessages(true);
+    }, self);
 
 }
 
 var vm = new TradeViewModel();
-    vm.tradegroups.push(new TradeGroup(0, 0, "", "", [new TradeLine()]));
 
-    ko.applyBindings(ko.validatedObservable(vm));
+vm.tradegroups.push(new TradeGroup(0, 0, "", "", [new TradeLine()]));
+
+ko.applyBindings(ko.validatedObservable(vm));
     
-    ko.validatedObservable = function (initialValue) {
-        if (!exports.utils.isObject(initialValue)) {
-            return ko.observable(initialValue).extend({ validatable: true });
-        }
-
-        var obsv = ko.observable(initialValue);
-        obsv.errors = exports.group(initialValue);
-        obsv.isValid = ko.computed(function () {
-            return obsv.errors().length === 0;
-        });
-
-        return obsv;
-    };

@@ -8,23 +8,23 @@
         new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });*@
 }
 
-<form action="Create" method="GET">
+<form data-bind="submit: $root.saveTradeData">
     @Html.ValidationSummary(true)
     <fieldset class="tgroup">
         <legend class="trade_group"><h2><span>Trade Creation</span></h2></legend>
-    
+
         <table id="main_trade_table">
             <tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.service_id)
-                </div>
+                <td>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.service_id)
+                    </div>
 
-            </td>
-            <td>
-                @Html.DropDownListFor(model => model.service_id, new SelectList(Model.Services, "service_id", "service_code"), "{Service}", new { @data_bind = "value: service_id", @class = "form-control"})
-                @*@Html.ValidationMessageFor(model => model.service_id)*@
-            </td>
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.service_id, new SelectList(Model.Services, "service_id", "service_code"), "{Service}", new { @data_bind = "value: service_id", @class = "form-control" })
+                    @*@Html.ValidationMessageFor(model => model.service_id)*@
+                </td>
             <tr>
                 <td>
                     <div class="editor-label">
@@ -34,8 +34,8 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.DropDownListFor(model => model.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"),  "{Trade Type}", new { @data_bind = "value: length_type_id", @class = "form-control" })
-                       @* @Html.ValidationMessageFor(model => model.length_type_id)*@
+                        @Html.DropDownListFor(model => model.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"), "{Trade Type}", new { @data_bind = "value: length_type_id", @class = "form-control" })
+                        @* @Html.ValidationMessageFor(model => model.length_type_id)*@
                     </div>
                 </td>
             </tr>
@@ -60,23 +60,23 @@
                 </td>
                 <td>
                     <div class="editor-field" data-bind="visible: relativity_id() == 2">
-                        @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"),"{Benchmark Selection}", new { @data_bind = "value: benchmark_id", @id="BenchmarkTypeAhead" })
+                        @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), "{Benchmark Selection}", new { @data_bind = "value: benchmark_id", @id = "BenchmarkTypeAhead" })
                     </div>
                 </td>
             </tr>
             @* !!!Removed from form<tr>
-            <td>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.created_on)
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.created_on, new { @data_bind = "value: created_on", @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.created_on)
-                </div>
-            </td>
-        </tr>*@
+                    <td>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.created_on)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.created_on, new { @data_bind = "value: created_on", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.created_on)
+                        </div>
+                    </td>
+                </tr>*@
             <tr>
                 <td>
                     <div class="editor-label">
@@ -85,7 +85,7 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.TextBoxFor(model => model.trade_label, new { @data_bind = "value: trade_label", @class = "form-control", disabled="disabled" })
+                        @Html.TextBoxFor(model => model.trade_label, new { @data_bind = "value: trade_label", @class = "form-control", disabled = "disabled" })
                     </div>
                 </td>
             </tr>
@@ -104,7 +104,7 @@
 
             <tr>
                 <td>
-                
+
                     <div class="editor-label">
                         @Html.LabelFor(model => model.structure_type_id)
                     </div>
@@ -142,42 +142,42 @@
                                         </div>
                                         <div class="editor-label">Canonical Label</div>
                                         <div class="editor-field">
-                                            <input type="text" data-bind="value: trade_line_group_label" class="form-control" disabled="disabled"/>
+                                            <input type="text" data-bind="value: trade_line_group_label" class="form-control" disabled="disabled" />
                                         </div>
                                     </td>
 
                                     <td>
-                                    <!-- Add a list of trade lines. -->
-                                    <table data-bind='foreach: tradeLines'>
-                                        <thead>
-                                            <tr>
-                                                <th>Order&#160;&#160;&#160;</th>
-                                                <th>Position</th>
-                                                <th>Financial Instrument</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <span data-bind='text: ($index() + 1)'></span>
-                                                </td>
-                                                <td>
-                                                    @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })
-                                                </td>
-                                                <td>
-                                                   @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), "{Financial Instrument}", new { @data_bind = "value: tradable_thing_id, selectedText: tradableThingString", @class = "form-control tradableThingList"})
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-small" data-bind='click: function () { $parent.removeLine($data);  }'>
-                                                        <span class="glyphicon glyphicon-remove-circle"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <button data-bind='click: $root.removeGroup' class='btn btn-small'>Delete trade group</button>
-                                    <button data-bind='click: addLine' class="btn btn-small">Add new trade line</button>
+                                        <!-- Add a list of trade lines. -->
+                                        <table data-bind='foreach: tradeLines'>
+                                            <thead>
+                                                <tr>
+                                                    <th>Order&#160;&#160;&#160;</th>
+                                                    <th>Position</th>
+                                                    <th>Financial Instrument</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span data-bind='text: ($index() + 1)'></span>
+                                                    </td>
+                                                    <td>
+                                                        @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), "{Financial Instrument}", new { @data_bind = "value: tradable_thing_id, selectedText: tradableThingString", @class = "form-control tradableThingList" })
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-small" data-bind='click: function () { $parent.removeLine($data);  }'>
+                                                            <span class="glyphicon glyphicon-remove-circle"></span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button data-bind='click: $root.removeGroup' class='btn btn-small'>Delete trade group</button>
+                                        <button data-bind='click: addLine' class="btn btn-small">Add new trade line</button>
                                 </tr>
                             </tbody>
                         </table>
@@ -203,11 +203,11 @@
                     </td>
                     <td>
                         <div class="editor-field">
-@*                            <input type="text" data-bind="value: instruction_entry"/>*@
- @Html.TextBoxFor(model => model.instruction_entry, new { @data_bind = "value: instruction_entry", @class = "form-control" })
- @Html.ValidationMessageFor(model => model.instruction_entry)
+                            <input type="text" data-bind="value: instruction_entry"/>
+                            @*Html.TextBoxFor(model => model.instruction_entry, new { @data_bind = "value: instruction_entry", @class = "form-control" })*@
+                            @*@Html.ValidationMessageFor(model => model.instruction_entry)*@
                         </div>
-                  
+
                     </td>
                     <td></td>
                 </tr>
@@ -221,11 +221,11 @@
                     <td>
                         <div class="input-append date" id="dpInstructionEntry" data-date="" data-datepicker-format="YYYY-MM-DD">
 
-                            @*<input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">*@
-                            @Html.TextBoxFor(model => model.instruction_entry_date, new { @data_bind = "value: instruction_entry_date", @class = "span2", @size=16, @id="dpInstructionEntryText"})
+                           <input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">
+                            @*Html.TextBoxFor(model => model.instruction_entry_date, new { @data_bind = "value: instruction_entry_date", @class = "span2", @size = 16, @id = "dpInstructionEntryText" })*@
                             <span class="add-on"><i class="icon-th"></i></span>
                         </div>
-@Html.ValidationMessageFor(model => model.instruction_entry_date)
+                        @Html.ValidationMessageFor(model => model.instruction_entry_date)
                     </td>
                     <td></td>
                 </tr>
@@ -252,7 +252,7 @@
                     <td>
                         <div class="input-append date" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
 
-<input class="span2" size="16" type="text" value=""  data-bind="value: instruction_exit_date">
+                            <input class="span2" size="16" type="text" value="" data-bind="value: instruction_exit_date">
 
                             <span class="add-on"><i class="icon-th"></i></span>
                         </div>
@@ -298,7 +298,7 @@
                     </td>
                     <td>
                         <div class="editor-field">
- @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: currency_id", @class = "form-control", @id="CurrencyTypeAhead"  })   
+                            @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: currency_id", @class = "form-control", @id = "CurrencyTypeAhead" })
                         </div>
                     </td>
                     <td></td>
@@ -319,7 +319,7 @@
                     </td>
                     <td>
                         <div class="editor-field">
-                           @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), String.Empty, new { @data_bind = "selectedOptions: related_trade_ids", @class = "form-control", @id="selectRelatedTrades", @multiple="true" })
+                            @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), String.Empty, new { @data_bind = "selectedOptions: related_trade_ids", @class = "form-control", @id = "selectRelatedTrades", @multiple = "true" })
                         </div>
                     </td>
                     <td></td>
@@ -389,13 +389,13 @@
                     <td>
                         <div class="editor-field">
                             @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" })
-</div>
-<div class="editor-field" data-bind="visible: abs_measure_type_id() == 2">
-                            @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: abs_currency_id", @class = "form-control", @id="absCurrencyTypeAhead" })
-</div>
-<div class="editor-field">
+                        </div>
+                        <div class="editor-field" data-bind="visible: abs_measure_type_id() == 2">
+                            @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: abs_currency_id", @class = "form-control", @id = "absCurrencyTypeAhead" })
+                        </div>
+                        <div class="editor-field">
                             @Html.TextBoxFor(model => model.abs_return_value, new { @data_bind = "value: abs_return_value", @class = "form-control" })
-</div>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -415,13 +415,13 @@
                     <td>
                         <div class="editor-field">
                             @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: rel_measure_type_id", @class = "form-control" })
-</div>
-<div class="editor-field" data-bind="visible: rel_measure_type_id() == 2">
-                            @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: rel_currency_id", @class = "form-control", @id="relCurrencyTypeAhead"  })
-</div>
-<div class="editor-field">
-                            @Html.TextBoxFor(model => model.rel_return_value, new { @data_bind = "value: rel_return_value"})
-</div>
+                        </div>
+                        <div class="editor-field" data-bind="visible: rel_measure_type_id() == 2">
+                            @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: rel_currency_id", @class = "form-control", @id = "relCurrencyTypeAhead" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.rel_return_value, new { @data_bind = "value: rel_return_value" })
+                        </div>
                         </div>
                     </td>
                 </tr>
@@ -434,7 +434,7 @@
                     </td>
                     <td>
                         <div class="editor-field">
-                                                      @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty, new { @data_bind = "value: return_benchmark_id", @class = "form-control", @id="relBenchmarkTypeAhead" })
+                            @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty, new { @data_bind = "value: return_benchmark_id", @class = "form-control", @id = "relBenchmarkTypeAhead" })
                         </div>
                     </td>
                 </tr>
@@ -463,14 +463,14 @@
         </fieldset>
 
         <p>
-            <button id="create" type="submit" class="btn btn-primary">Create</button>  
-<button name="Reset Form" class="btn btn-primary" onclick=" document.location.href = $('#createUrl').attr('href');">Reset</button>
+            <button id="create" type="submit" class="btn btn-primary">Create</button>
+            <button name="Reset Form" class="btn btn-primary" onclick=" document.location.href = $('#createUrl').attr('href');">Reset</button>
             <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
             <button name="ClientCancel" class="btn btn-primary" onclick=" document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
             <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Home"))" style="display:none;"></a>
 
         </p>
-      
+
     </fieldset>
 </form>
 <pre data-bind='text: ko.toJSON($root, null, 2)'></pre>
@@ -478,46 +478,50 @@
  <label id="result"></label>
 
 @section scripts{
-        <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
+    <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
 
 
-        <script type="text/javascript">
-            $(document).ready(function () {
+    <script type="text/javascript">
+        $(document).ready(function() {
 
-                //init form custom controls
-                $("#BenchmarkTypeAhead").select2({ placeholder: "{Benckmark Selection}" });
-                $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benckmark Selection}" });
-                $(".tradableThingList").select2({ placeholder: "{Financial Instrument}" });
-                $("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
-                $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}" });
-                $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
-                $("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
-                $('#dpInstructionEntry').datepicker();
-                $('#dpInstructionExit').datepicker();
-            });
-            
-            //to invoke validation on razor - Not working
-            $('#dpInstructionEntry').datepicker()
-                .on('changeDate', function(ev) {
-                    $('#dpInstructionEntryText').keyup();
-                    $('#dpInstructionEntryText').click();
-                });
+            //init form custom controls
+            $("#BenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}" });
+            $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}" });
+            $(".tradableThingList").select2({ placeholder: "{Financial Instrument}" });
+            $("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
+            $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}" });
+            $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
+            $("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
+            $('#dpInstructionEntry').datepicker();
+            $('#dpInstructionExit').datepicker();
+        });
 
-            
-            //to block traditonal posting, and divert to API            
-            $(function () {
-                $('form').submit(function () {
-                    if (!$(this).valid()) {
-                        // standard client validation failed => prevent submission
-                        alert('Validation failed: Please check form for errors');
-                        return false;    
-                    }
-                    //alert('Can create Trade!');
-                    vm.saveTradeData();
-                    return false;
-
-                });
+        //to invoke validation on razor - Not working
+        $('#dpInstructionEntry').datepicker()
+            .on('changeDate', function(ev) {
+                $('#dpInstructionEntryText').keyup();
+                $('#dpInstructionEntryText').click();
             });
 
-        </script>
-    }
+
+        //to block traditional posting, and divert to API            
+        //$(function saveTrade() {
+        //    $('form').submit(function() {
+        //        if (!$(this).valid()) {
+        //            // standard client validation failed => prevent submission
+        //            alert('Validation failed: Please check form for errors');
+        //            return false;
+        //        }
+        //        alert('Validation passed: Can create Trade!');
+        //        if (vm.saveTradeData()) {
+        //            alert('Trade successfully created');
+        //           // return true;
+        //        }
+
+        //        return false;
+
+        //    });
+        //});
+
+    </script>
+}
