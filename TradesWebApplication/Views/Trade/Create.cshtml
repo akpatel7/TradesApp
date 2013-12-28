@@ -220,12 +220,10 @@
                     </td>
                     <td>
                         <div class="input-append date" id="dpInstructionEntry" data-date="" data-datepicker-format="YYYY-MM-DD">
-
                            <input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">
-                            @*Html.TextBoxFor(model => model.instruction_entry_date, new { @data_bind = "value: instruction_entry_date", @class = "span2", @size = 16, @id = "dpInstructionEntryText" })*@
-                            <span class="add-on"><i class="icon-th"></i></span>
+                            <span class="add-on"><i class="icon-th"></i></span>    
                         </div>
-                        @Html.ValidationMessageFor(model => model.instruction_entry_date)
+                        <span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</span>
                     </td>
                     <td></td>
                 </tr>
@@ -421,7 +419,6 @@
                         </div>
                         <div class="editor-field">
                             @Html.TextBoxFor(model => model.rel_return_value, new { @data_bind = "value: rel_return_value" })
-                        </div>
                         </div>
                     </td>
                 </tr>
