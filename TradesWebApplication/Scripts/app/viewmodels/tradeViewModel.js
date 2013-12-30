@@ -306,7 +306,7 @@ function TradeViewModel(
                 data: JSON.stringify(ko.toJSON(this)),
                 contentType: 'application/json',
                 success: function (data) {
-                    alert(data.result);
+                    //alert(data.result);
                 }
             });
             return true;

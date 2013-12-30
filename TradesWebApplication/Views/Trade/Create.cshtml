@@ -8,7 +8,7 @@
         new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });*@
 }
 
-<form data-bind="submit: $root.saveTradeData">
+<form data-bind="submit: function (){ saveTrade(); }">
     @Html.ValidationSummary(true)
     <fieldset class="tgroup">
         <legend class="trade_group"><h2><span>Trade Creation</span></h2></legend>
@@ -203,7 +203,7 @@
                     </td>
                     <td>
                         <div class="editor-field">
-                            <input type="text" data-bind="value: instruction_entry"/>
+                            <input type="text" data-bind="value: instruction_entry" />
                             @*Html.TextBoxFor(model => model.instruction_entry, new { @data_bind = "value: instruction_entry", @class = "form-control" })*@
                             @*@Html.ValidationMessageFor(model => model.instruction_entry)*@
                         </div>
@@ -220,8 +220,8 @@
                     </td>
                     <td>
                         <div class="input-append date" id="dpInstructionEntry" data-date="" data-datepicker-format="YYYY-MM-DD">
-                           <input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">
-                            <span class="add-on"><i class="icon-th"></i></span>    
+                            <input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">
+                            <span class="add-on"><i class="icon-th"></i></span>
                         </div>
                         <span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</span>
                     </td>
@@ -317,7 +317,7 @@
                     </td>
                     <td>
                         <div class="editor-field">
-                            @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), String.Empty, new { @data_bind = "selectedOptions: related_trade_ids", @class = "form-control", @id = "selectRelatedTrades", @multiple = "true" })
+                            @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), "{ Linked Trades }", new { @data_bind = "selectedOptions: related_trade_ids", @class = "form-control", @id = "selectRelatedTrades", @multiple = "true" })
                         </div>
                     </td>
                     <td></td>
@@ -484,7 +484,7 @@
             //init form custom controls
             $("#BenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}" });
             $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}" });
-            $(".tradableThingList").select2({ placeholder: "{Financial Instrument}" });
+            //$(".tradableThingList").select2({ placeholder: "{Financial Instrument}" });
             $("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
             $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}" });
             $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
@@ -501,24 +501,12 @@
             });
 
 
-        //to block traditional posting, and divert to API            
-        //$(function saveTrade() {
-        //    $('form').submit(function() {
-        //        if (!$(this).valid()) {
-        //            // standard client validation failed => prevent submission
-        //            alert('Validation failed: Please check form for errors');
-        //            return false;
-        //        }
-        //        alert('Validation passed: Can create Trade!');
-        //        if (vm.saveTradeData()) {
-        //            alert('Trade successfully created');
-        //           // return true;
-        //        }
-
-        //        return false;
-
-        //    });
-        //});
+        //send save request to API            
+        function saveTrade() {
+            if (vm.saveTradeData()) {
+                alert('Trade successfully created');
+            }
+        };
 
     </script>
 }
