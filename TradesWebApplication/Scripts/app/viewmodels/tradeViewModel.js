@@ -312,19 +312,19 @@ function TradeViewModel(
                 success: function (data) {
                     if (data.Success) {
                         console.log(data.Message);
-                        self.vmMessages(data.Message); //display success 
-                        return true;
+                        self.vmMessages(data.Message); //display success
+                        bootbox.alert(self.vmMessages());
                     }
                     else {
                         console.log(data.Message);
                         self.vmMessages(data.Message); //display exception
-                        return false;
+                        bootbox.alert(self.vmMessages());
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log("error: " + XMLHttpRequest.responseText);
                     self.vmMessages("error: " + XMLHttpRequest.responseText);
-                    return false;
+                    bootbox.alert(self.vmMessages());
                 }
             });
         }
@@ -332,9 +332,8 @@ function TradeViewModel(
         {
             console.log('Validation errors found, please check form.');
             self.vmMessages("Validation errors found, please check form.");
-            return false;
+            bootbox.alert(self.vmMessages());
         }
-        return false;
     };
     
     self.isValid = ko.computed(function () {

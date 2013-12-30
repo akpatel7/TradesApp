@@ -465,11 +465,12 @@
             <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
             <button name="ClientCancel" class="btn btn-primary" onclick=" document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
             <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Home"))" style="display:none;"></a>
-
         </p>
 
     </fieldset>
+<input id="hdnVmMessage" type="hidden" data-bind="attr: { value: vmMessages }" />
 </form>
+
 <pre data-bind='text: ko.toJSON($root, null, 2)'></pre>
 
 @section scripts{
@@ -499,12 +500,34 @@
                 $('#dpInstructionEntryText').click();
             });
 
+        
+        var Example = (function () {
+            "use strict";
+
+            var elem,
+                hideHandler,
+                that = {};
+
+            that.init = function (options) {
+                elem = $(options.selector);
+            };
+
+            that.show = function (text) {
+                clearTimeout(hideHandler);
+
+                elem.find("span").html(text);
+                elem.delay(200).fadeIn().delay(4000).fadeOut();
+            };
+
+            return that;
+        }());
 
         //send save request to API            
         function saveTrade() {
-            if (vm.saveTradeData()) {
-                alert('Trade successfully created');
+            if (vm.saveTradeData() == true) {
+                //alert('Trade successfully created');  
             }
+            
         };
 
     </script>
