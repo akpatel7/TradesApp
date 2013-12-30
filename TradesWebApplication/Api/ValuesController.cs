@@ -55,8 +55,8 @@ namespace TradesWebApplication.Api
                     {
                         Content = new JsonContent(new
                         {
-                            Success = true, //error
-                            Message = "Fail", //return exception
+                            Success = false,
+                            Message = "Database Exception occured: " + ex.InnerException.ToString(), //return exception
                             result = "Database Exception occured: " + ex.InnerException.ToString()
                         })
                     };
@@ -68,8 +68,8 @@ namespace TradesWebApplication.Api
                     Content = new JsonContent(new
                     {
                         Success = true, //error
-                        Message = "Success", //return exception
-                        result = "Trade sucessfully created"
+                        Message = "Trade: " + vm.trade_id + " sucessfully created", //return exception
+                        result = "Trade: " + vm.trade_id +" sucessfully created"
                     })
                 };
             }
@@ -121,6 +121,7 @@ namespace TradesWebApplication.Api
             unitOfWork.TradeRepository.InsertTrade(trade);
             unitOfWork.Save();
             var newTradeId = trade.trade_id;
+            vm.trade_id = newTradeId;
             //TODO: verify uri
             trade.trade_uri = @"http://data.emii.com/bca/trades/" + newTradeId + ">";
 

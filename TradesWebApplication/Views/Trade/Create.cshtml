@@ -459,7 +459,6 @@
             </table>
 
         </fieldset>
-
         <p>
             <button id="create" type="submit" class="btn btn-primary">Create</button>
             <button name="Reset Form" class="btn btn-primary" onclick=" document.location.href = $('#createUrl').attr('href');">Reset</button>
@@ -472,8 +471,6 @@
     </fieldset>
 </form>
 <pre data-bind='text: ko.toJSON($root, null, 2)'></pre>
-
- <label id="result"></label>
 
 @section scripts{
     <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
@@ -492,6 +489,7 @@
             $("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
             $('#dpInstructionEntry').datepicker();
             $('#dpInstructionExit').datepicker();
+            $('.warnTest').alert('close');
         });
 
         //to invoke validation on razor - Not working

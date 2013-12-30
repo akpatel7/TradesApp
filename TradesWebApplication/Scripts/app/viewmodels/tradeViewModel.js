@@ -1,4 +1,6 @@
-﻿ko.bindingHandlers.selectedText = {
+﻿
+
+ko.bindingHandlers.selectedText = {
     init: function (element, valueAccessor) {
         var value = valueAccessor();
         value($("option:selected", element).text());
@@ -213,9 +215,7 @@ function TradeViewModel(
 
     instruction_exit = typeof (instruction_exit) !== 'undefined' ? instruction_exit : "";
     this.instruction_exit = ko.observable(instruction_exit).extend({ number: true });
-    
-   
-
+ 
     instruction_exit_date = typeof (instruction_exit_date) !== 'undefined' ? instruction_exit_date : "";
     this.instruction_exit_date = ko.observable(instruction_exit_date);
 
@@ -294,10 +294,13 @@ function TradeViewModel(
         return tradeGroupParts;
     });
 
+    this.vmMessages = ko.observable(""); //used for bootstrap UI alerts
+
     self.saveTradeData = function (baseApiUrl) {
        
         if (this.isValid()) {
-            alert('Trying to save data!');
+            console.log('Posting Trade to server to save.');
+            self.vmMessages("Posting Trade to server to save.");
             var apiURL = baseUrl;
             apiURL += "api/values/post";
             $.ajax({
@@ -305,11 +308,31 @@ function TradeViewModel(
                 type: 'post',
                 data: JSON.stringify(ko.toJSON(this)),
                 contentType: 'application/json',
+                timeout: 5000,
                 success: function (data) {
-                    //alert(data.result);
+                    if (data.Success) {
+                        console.log(data.Message);
+                        self.vmMessages(data.Message); //display success 
+                        return true;
+                    }
+                    else {
+                        console.log(data.Message);
+                        self.vmMessages(data.Message); //display exception
+                        return false;
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log("error: " + XMLHttpRequest.responseText);
+                    self.vmMessages("error: " + XMLHttpRequest.responseText);
+                    return false;
                 }
             });
-            return true;
+        }
+        else
+        {
+            console.log('Validation errors found, please check form.');
+            self.vmMessages("Validation errors found, please check form.");
+            return false;
         }
         return false;
     };
@@ -326,6 +349,7 @@ function TradeViewModel(
     this.instructionDateCheck = ko.computed(function () {
         if (self.instruction_exit_date() == "")
         {
+            self.instruction_exit_date.__valid__(true);
             return true;
         }
 
@@ -333,12 +357,11 @@ function TradeViewModel(
         {
             var startDate = moment(self.instruction_entry_date());
             var endDate = moment(self.instruction_exit_date());
-            console.log(startDate);
-            console.log(endDate);
-            console.log(moment(startDate).isBefore(endDate));
+            self.instruction_exit_date.__valid__(moment(startDate).isBefore(endDate));
             return moment(startDate).isBefore(endDate);
         }
 
+        self.instruction_exit_date.__valid__(true);
         return true;
 
     }, self);
