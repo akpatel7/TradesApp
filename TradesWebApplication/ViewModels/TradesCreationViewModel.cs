@@ -19,7 +19,7 @@ namespace TradesWebApplication.ViewModels
         // service
         [Required(ErrorMessage = "This field is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Please make a selection")]
-        [DisplayName("Service;")]
+        [DisplayName("Service:")]
         public int service_id { get; set; }
         public List<Service> Services { get; set; }
         

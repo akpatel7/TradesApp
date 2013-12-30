@@ -62,7 +62,7 @@ namespace TradesWebApplication.Api
                     };
                 }
 
-               
+
                 return new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new JsonContent(new
@@ -101,8 +101,18 @@ namespace TradesWebApplication.Api
                 
             }            
             trade.created_on = trade.last_updated = DateTime.Now;
-            trade.trade_label = vm.trade_label;
-            trade.trade_editorial_label = vm.trade_editorial_label;
+            //TODO: Verify if db was changed to varmax
+            if (!String.IsNullOrEmpty(vm.trade_label) && vm.trade_label.Length > 255)
+            {
+                trade.trade_label = vm.trade_label.Substring(0, 255);
+            }
+            
+            //TODO: Verify if db was changed to varmax
+            if (!String.IsNullOrEmpty(vm.trade_editorial_label) && vm.trade_editorial_label.Length > 255)
+            {
+                trade.trade_editorial_label = vm.trade_editorial_label.Substring(0, 255);
+            }
+           
             trade.structure_type_id = vm.structure_type_id;
             trade.currency_id = vm.currency_id;
             //TODO: createdby
@@ -298,38 +308,47 @@ namespace TradesWebApplication.Api
 
         // GET api/<controller>/<action>
         [System.Web.Http.HttpGet]
-         public IEnumerable<string> Test()
+        public IEnumerable<string> Test()
         {
             var values = new[] { "John", "Pete", "Ben" };
 
             return values;
-   
-       }
 
-       public class JsonContent : HttpContent {
+        }
 
-    private readonly MemoryStream _Stream = new MemoryStream();
-    public JsonContent(object value) {
+        public class JsonContent : HttpContent
+        {
 
-        Headers.ContentType = new MediaTypeHeaderValue("application/json");
-        var jw = new JsonTextWriter( new StreamWriter(_Stream));
-        jw.Formatting = Formatting.Indented;
-        var serializer = new JsonSerializer();
-        serializer.Serialize(jw, value);
-        jw.Flush();
-        _Stream.Position = 0;
+            private readonly MemoryStream _Stream = new MemoryStream();
+            public JsonContent(object value)
+            {
+
+                Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                var jw = new JsonTextWriter(new StreamWriter(_Stream));
+                jw.Formatting = Formatting.Indented;
+                var serializer = new JsonSerializer();
+                serializer.Serialize(jw, value);
+                jw.Flush();
+                _Stream.Position = 0;
+
+            }
+            protected override Task SerializeToStreamAsync(Stream stream, TransportContext context)
+            {
+                return _Stream.CopyToAsync(stream);
+            }
+
+            protected override bool TryComputeLength(out long length)
+            {
+                length = _Stream.Length;
+                return true;
+            }
+
+
+        }
 
     }
-    protected override Task SerializeToStreamAsync(Stream stream, TransportContext context) {
-        return _Stream.CopyToAsync(stream);
-    }
-
-    protected override bool TryComputeLength(out long length) {
-        length = _Stream.Length;
-        return true;
-    }
-}
 
 
-    }
+
+
 }

@@ -272,7 +272,7 @@ function TradeViewModel(
 
     this.addGroup = function () {
         var nextIndex = this.tradegroups().length;
-        var newGroup = new TradeGroup(nextIndex, 1, "", "", [new TradeLine()]);
+        var newGroup = new TradeGroup(nextIndex, "", "", "", [new TradeLine()]);
         self.tradegroups.push(newGroup);
     };
 

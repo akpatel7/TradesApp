@@ -134,13 +134,13 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div class="editor-label">Group Structure</div>
+                                        <div class="editor-label">Group Structure:</div>
                                         @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), "{Structure}", new { @data_bind = "value: trade_line_group_type_id, selectedText: trade_line_group_type_string", @class = "form-control" })
-                                        <div class="editor-label">Editorial Label</div>
+                                        <div class="editor-label">Editorial Label:</div>
                                         <div class="editor-field">
                                             <input type="text" data-bind="value: trade_line_group_editorial_label" class="form-control" />
                                         </div>
-                                        <div class="editor-label">Canonical Label</div>
+                                        <div class="editor-label">Canonical Label:</div>
                                         <div class="editor-field">
                                             <input type="text" data-bind="value: trade_line_group_label" class="form-control" disabled="disabled" />
                                         </div>
@@ -151,9 +151,9 @@
                                         <table data-bind='foreach: tradeLines'>
                                             <thead>
                                                 <tr>
-                                                    <th>Order&#160;&#160;&#160;</th>
-                                                    <th>Position</th>
-                                                    <th>Financial Instrument</th>
+                                                    <th>Order:&#160;&#160;&#160;</th>
+                                                    <th>Position:</th>
+                                                    <th>Financial Instrument:</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
