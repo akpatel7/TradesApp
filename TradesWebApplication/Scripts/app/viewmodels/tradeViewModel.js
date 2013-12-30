@@ -323,6 +323,26 @@ function TradeViewModel(
             }).showAllMessages(true);
     }, self);
 
+    this.instructionDateCheck = ko.computed(function () {
+        if (self.instruction_exit_date() == "")
+        {
+            return true;
+        }
+
+        if (self.instruction_entry_date.isValid() && self.instruction_exit_date() != "")
+        {
+            var startDate = moment(self.instruction_entry_date());
+            var endDate = moment(self.instruction_exit_date());
+            console.log(startDate);
+            console.log(endDate);
+            console.log(moment(startDate).isBefore(endDate));
+            return moment(startDate).isBefore(endDate);
+        }
+
+        return true;
+
+    }, self);
+
 }
 
 var vm = new TradeViewModel();
