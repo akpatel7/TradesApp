@@ -277,7 +277,10 @@ function TradeViewModel(
     };
 
     this.removeGroup = function (item) {
-        self.tradegroups.remove(item);
+        if (self.tradegroups().length > 1)
+        {
+            self.tradegroups.remove(item);
+        }  
     };
     //end tradegroups
     
