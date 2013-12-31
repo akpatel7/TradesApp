@@ -178,7 +178,7 @@
                                             </tbody>
                                         </table>
                                         <button data-bind='click: $root.removeGroup' class='btn btn-small btn-danger'>Delete trade group</button>
-                                        <button data-bind='click: addLine' class="btn btn-small btn-info">Add new trade line</button>
+                                        <button id="btnAddLine" data-bind='click: addLine' class="btn btn-small btn-info">Add new trade line</button>
                                 </tr>
                             </tbody>
                         </table>
@@ -499,7 +499,12 @@
                 $('#dpInstructionEntryText').click();
             });
 
-        
+        $('#btnAddLine').click(function () {
+            console.log('trying select2');
+            $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}" });
+        });
+
+
         var Example = (function () {
             "use strict";
 
