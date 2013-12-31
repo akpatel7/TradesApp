@@ -119,7 +119,7 @@ namespace TradesWebApplication.ViewModels
         public string mark_to_mark_rate { get; set; }
         
         // internset rate diff
-        [DisplayName("Interest Rate Differential;")]
+        [DisplayName("Interest Rate Differential:")]
         public string interest_rate_diff { get; set; }
         
         // abs performance

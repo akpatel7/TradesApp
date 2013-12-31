@@ -8,7 +8,7 @@ body {
     background-color: #fff;
     border-top: solid 10px #000;
     color: #333;
-    font-size: .95em;
+    font-size: 1em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
@@ -95,7 +95,7 @@ h5, h6 {
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 0 auto;
-    max-width: 960px;
+    max-width: 860px;
 }
 
 #body {
@@ -408,14 +408,22 @@ fieldset.tgroup {
     border-radius: 4px;
 }
     
-    fieldset legend {
+    /*fieldset legend {
         display: none;
-    }
+    }*/
     
 
     fieldset legend.trade_group {
-        /*padding: 10px;*/
+        padding: 2px;
         display: inline;
+        background-color: #a6dbed;
+    }
+
+    
+    fieldset legend.trade_group_head {
+        padding: 2px;
+        display: inline;
+        background-color: #a6dbed;
     }
 
     fieldset ol {
