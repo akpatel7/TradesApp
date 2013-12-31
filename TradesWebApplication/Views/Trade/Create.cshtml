@@ -54,7 +54,7 @@
             </tr>
             <tr>
                 <td>
-                    <div  class="input-group">
+                    <div class="input-group" data-bind="visible: relativity_id() == 2">
                         @Html.LabelFor(model => model.benchmark_id)
                     </div>
                 </td>
@@ -470,7 +470,7 @@
 <input id="hdnVmMessage" type="hidden" data-bind="attr: { value: vmMessages }" />
 </form>
 
-@*<pre data-bind='text: ko.toJSON($root, null, 2)'></pre>*@
+<pre data-bind='text: ko.toJSON($root, null, 2)'></pre>
 
 @section scripts{
     <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
@@ -484,7 +484,7 @@
             $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}" });
             //$(".tradableThingList").select2({ placeholder: "{Financial Instrument}" });
             $("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
-            $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}" });
+            $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}", width: '200px'});
             $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
             $("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
             $('#dpInstructionEntry').datepicker();
