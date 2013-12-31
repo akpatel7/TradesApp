@@ -461,7 +461,7 @@
         </fieldset>
         <p>
             <button id="create" type="submit" class="btn btn-primary">Create</button>
-            <button name="Reset Form" class="btn btn-primary" onclick=" document.location.href = $('#createUrl').attr('href');">Reset</button>
+            @*<button name="Reset Form" class="btn btn-primary" onclick=" document.location.href = $('#createUrl').attr('href');">Reset</button>*@
             <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
             <button name="ClientCancel" class="btn btn-primary" onclick=" document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
             <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Home"))" style="display:none;"></a>

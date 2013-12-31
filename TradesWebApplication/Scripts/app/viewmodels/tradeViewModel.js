@@ -313,12 +313,34 @@ function TradeViewModel(
                     if (data.Success) {
                         console.log(data.Message);
                         self.vmMessages(data.Message); //display success
-                        bootbox.alert(self.vmMessages());
+                        //bootbox.alert(self.vmMessages());
+                        var message = self.vmMessages() + " Create another?";
+                        bootbox.dialog({
+                            message: message,
+                            title: "Trade Creation",
+                            buttons: {
+                                success: {
+                                    label: "Create",
+                                    className: "btn-success",
+                                    callback: function () {
+                                        document.location.href = $('#createUrl').attr('href');
+                                    }
+                                },
+                                main: {
+                                    label: "Exit",
+                                    className: "btn-primary",
+                                    callback: function () {
+                                        document.location.href = $('#cancelUrl').attr('href');
+                                    }
+                                }
+                            }
+                        });
                     }
                     else {
                         console.log(data.Message);
                         self.vmMessages(data.Message); //display exception
                         bootbox.alert(self.vmMessages());
+                       
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -332,7 +354,36 @@ function TradeViewModel(
         {
             console.log('Validation errors found, please check form.');
             self.vmMessages("Validation errors found, please check form.");
-            bootbox.alert(self.vmMessages());
+            //bootbox.alert(self.vmMessages());
+            var message = self.vmMessages();
+            bootbox.dialog({
+                message: message,
+                title: "Trade Creation",
+                className: "alert-danger",
+                buttons: {
+                    //success: {
+                    //    label: "Create",
+                    //    className: "btn-success",
+                    //    callback: function () {
+                    //        //Example.show("great success");
+                    //    }
+                    //},
+                    danger: {
+                        label: "OK",
+                        className: "btn-danger",
+                        callback: function () {
+                            //Example.show("uh oh, look out!");
+                        }
+                    },
+                    //main: {
+                    //    label: "Exit",
+                    //    className: "btn-primary",
+                    //    callback: function () {
+                    //        //Example.show("Primary button");
+                    //    }
+                    //}
+                }
+            });
         }
     };
     
