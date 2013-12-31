@@ -314,7 +314,7 @@ function TradeViewModel(
                         console.log(data.Message);
                         self.vmMessages(data.Message); //display success
                         //bootbox.alert(self.vmMessages());
-                        var message = self.vmMessages() + " Create another?";
+                        var message = self.vmMessages() + ". Create another?";
                         bootbox.dialog({
                             message: message,
                             title: "Trade Creation",
