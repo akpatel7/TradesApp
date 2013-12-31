@@ -185,7 +185,7 @@
 
                     </tr>
                     <tr>
-                        <button data-bind='click: addGroup' class="btn btn-small btn-info">Add new group</button>
+                        <button id="btnAddGroup" data-bind='click: addGroup' class="btn btn-small btn-info">Add new group</button>
                     </tr>
                 </table>
         </fieldset>
@@ -482,7 +482,7 @@
             //init form custom controls
             $("#BenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}" });
             $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}" });
-            //$(".tradableThingList").select2({ placeholder: "{Financial Instrument}" });
+            $(".tradableThingList").select2({ placeholder: "{Financial Instrument}" });
             $("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
             $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}", width: '200px'});
             $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
@@ -499,10 +499,16 @@
                 $('#dpInstructionEntryText').click();
             });
 
-        $('#btnAddLine').click(function () {
-            console.log('trying select2');
+        //$('#btnAddLine').click(function () {
+        //    console.log('trying select2 for line');
+        //    $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}" });
+        //});
+
+        $('#btnAddGroup').click(function () {
+            console.log('trying select2 for group');
             $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}" });
         });
+
 
 
         var Example = (function () {
