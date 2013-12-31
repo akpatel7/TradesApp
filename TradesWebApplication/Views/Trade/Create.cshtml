@@ -169,22 +169,22 @@
                                                         @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), "{Financial Instrument}", new { @data_bind = "value: tradable_thing_id, selectedText: tradableThingString", @class = "form-control tradableThingList" })
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-small" data-bind='click: function () { $parent.removeLine($data);  }'>
+                                                        <button type="button" class="btn btn-small btn-danger" data-bind='click: function () { $parent.removeLine($data);  }'>
                                                             <span class="glyphicon glyphicon-remove-circle"></span>
                                                         </button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <button data-bind='click: $root.removeGroup' class='btn btn-small'>Delete trade group</button>
-                                        <button data-bind='click: addLine' class="btn btn-small">Add new trade line</button>
+                                        <button data-bind='click: $root.removeGroup' class='btn btn-small btn-danger'>Delete trade group</button>
+                                        <button data-bind='click: addLine' class="btn btn-small btn-info">Add new trade line</button>
                                 </tr>
                             </tbody>
                         </table>
 
                     </tr>
                     <tr>
-                        <button data-bind='click: addGroup' class="btn btn-small">Add new group</button>
+                        <button data-bind='click: addGroup' class="btn btn-small btn-info">Add new group</button>
                     </tr>
                 </table>
             </div>
