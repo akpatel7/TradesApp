@@ -8,7 +8,7 @@ body {
     background-color: #fff;
     border-top: solid 10px #000;
     color: #333;
-    font-size: .85em;
+    font-size: .95em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
@@ -70,7 +70,7 @@ h1 {
 }
 
 h2 {
-    font-size: 1.75em;
+    font-size: 1.5em;
 }
 
 h3 {
@@ -414,7 +414,7 @@ fieldset.tgroup {
     
 
     fieldset legend.trade_group {
-        padding: 10px;
+        /*padding: 10px;*/
         display: inline;
     }
 
@@ -427,9 +427,9 @@ fieldset.tgroup {
             padding-bottom: 5px;
         }
 
-label {
+/*label {
     display: block;
-    font-size: 1.2em;
+    //font-size: 1.2em;
     font-weight: 600;
 }
 
@@ -481,7 +481,7 @@ textarea {
         font-size: 1em;
         padding: 4px;
         margin-right: 4px;
-    }
+    }*/
 
 /* info and errors */
 .message-info {
@@ -547,7 +547,8 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
     margin-top: 0.75em;
-    border: 0 none;
+    border: 2px;
+    color: #000080;
 }
 
 th {
