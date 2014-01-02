@@ -467,7 +467,7 @@
         </p>
 
     </fieldset>
-<input id="hdnVmMessage" type="hidden" data-bind="attr: { value: vmMessages }" />
+
 </form>
 
 <pre data-bind='text: ko.toJSON($root, null, 2)'></pre>
@@ -480,16 +480,16 @@
         $(document).ready(function() {
 
             //init form custom controls
-            $("#BenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}" });
-            $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}" });
-            $(".tradableThingList").select2({ placeholder: "{Financial Instrument}" });
-            $("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
+            $("#BenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}", width: '200px' });
+            $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}", width: '200px' });
+            $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
+            $("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
             $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}", width: '200px'});
-            $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
-            $("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}" });
+            $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
+            $("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
             $('#dpInstructionEntry').datepicker();
             $('#dpInstructionExit').datepicker();
-            $('.warnTest').alert('close');
+            
         });
 
         //to invoke validation on razor - Not working
@@ -505,8 +505,8 @@
         //});
 
         $('#btnAddGroup').click(function () {
-            console.log('trying select2 for group');
-            $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}" });
+            //console.log('trying select2 for group');
+            $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
         });
 
 

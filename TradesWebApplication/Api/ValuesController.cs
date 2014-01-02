@@ -102,20 +102,36 @@ namespace TradesWebApplication.Api
             }            
             trade.created_on = trade.last_updated = DateTime.Now;
             //TODO: Verify if db was changed to varmax
-            if (!String.IsNullOrEmpty(vm.trade_label) && vm.trade_label.Length > 255)
+            if (!String.IsNullOrEmpty(vm.trade_label) )
             {
-                trade.trade_label = vm.trade_label.Substring(0, 255);
+               if( vm.trade_label.Length > 255 )
+               {
+                    trade.trade_label = vm.trade_label.Substring(0, 255);
+               }
+               else
+               {
+                    trade.trade_label = vm.trade_label;
+               }
             }
             
+            
             //TODO: Verify if db was changed to varmax
-            if (!String.IsNullOrEmpty(vm.trade_editorial_label) && vm.trade_editorial_label.Length > 255)
+            if (!String.IsNullOrEmpty(vm.trade_editorial_label) )
             {
-                trade.trade_editorial_label = vm.trade_editorial_label.Substring(0, 255);
-            }
-           
+                if (vm.trade_editorial_label.Length > 255)
+                {
+                    trade.trade_editorial_label = vm.trade_editorial_label.Substring(0, 255);
+                }
+                else 
+                {
+                    trade.trade_editorial_label = vm.trade_editorial_label;
+                }
+            } 
+        
             trade.structure_type_id = vm.structure_type_id;
             trade.currency_id = vm.currency_id;
             //TODO: createdby
+            trade.created_by = 0;
             //STATUS Always Visible on create
             trade.status = 1; //1 is Visible, 2: Invisible, 3: Deleted
             unitOfWork.TradeRepository.InsertTrade(trade);

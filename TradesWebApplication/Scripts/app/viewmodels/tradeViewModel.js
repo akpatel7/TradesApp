@@ -121,7 +121,7 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
     this.addLine = function () {
         var nextIndex = this.tradeLines().length;
         self.tradeLines.push(new TradeLine(nextIndex));
-        $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}" });
+        $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
     };
 
     this.removeLine = function (item) {
