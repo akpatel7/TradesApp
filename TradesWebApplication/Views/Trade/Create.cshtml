@@ -320,7 +320,9 @@
                     </td>
                     <td>
                         <div class="form-control">
-                            @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_editorial_label"), new { @data_bind = "selectedOptions: related_trade_ids", @class = "form-control", @id = "selectRelatedTrades", @multiple = "true" })
+                            @*@Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_editorial_label"), new { @data_bind = "selectedOptions: related_trade_ids", @class = "form-control", @id = "selectRelatedTrades", @multiple = "true" })*@
+
+<input class="input-xlarge" id="selectRelatedTrades" type="hidden" data-bind="value: related_trade_ids_list"/>
                         </div>
                     </td>
                     <td></td>
@@ -492,10 +494,43 @@
             $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}", width: '200px' });
             $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
             //$("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
-            $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}", width: '500px'});
+            //$("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}", width: '500px'});
             //$("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
             //$("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
           
+
+            //to remotely get currencies for typeaheads
+            function format_trade(item) {
+                return item.trade_editorial_label;
+            }
+            $("#selectRelatedTrades").select2({
+                minimumInputLength: 1,
+                placeholder: "{Linked Trades}",
+                width: '500px',
+                multiple: true,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteLinkedTrades",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function (term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function (obj) {
+                    return obj.trade_id;
+                },
+                formatResult: format_trade,
+                formatSelection: format_trade
+            });
+            //end typeAhead
+
             //to remotely get currencies for typeaheads
             function format_currency(item) {
                 return item.currency_label;
@@ -529,9 +564,6 @@
             //end typeAhead
 
             //to remotely get currencies for typeaheads
-            function format_currency(item) {
-                return item.currency_label;
-            }
             $("#absCurrencyTypeAhead").select2({
                 minimumInputLength: 2,
                 placeholder: "{Currency Selection}",
@@ -561,9 +593,6 @@
             //end typeAhead
 
             //to remotely get currencies for typeaheads
-            function format_currency(item) {
-                return item.currency_label;
-            }
             $("#relCurrencyTypeAhead").select2({
                 minimumInputLength: 2,
                 placeholder: "{Currency Selection}",

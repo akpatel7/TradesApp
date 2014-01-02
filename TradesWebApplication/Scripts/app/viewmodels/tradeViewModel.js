@@ -232,8 +232,26 @@ function TradeViewModel(
     currency_id = typeof (currency_id) !== 'undefined' ? currency_id : 0;
     this.currency_id = ko.observable(currency_id);
 
+    related_trade_ids_list = typeof (related_trade_ids_list) !== 'undefined' ? related_trade_ids_list : "";
+    this.related_trade_ids_list = ko.observable(related_trade_ids_list);
+    //create a separate observableArray and use a subscription to keep it updated
     related_trade_ids = typeof (related_trade_ids) !== 'undefined' ? related_trade_ids : [];
     this.related_trade_ids = ko.observableArray(related_trade_ids);
+
+    this.related_trade_ids_list.subscribe(function (newValue) {
+        this.related_trade_ids(newValue.split(","));
+    }, this);
+
+    /*
+    //compute the split values from the original observable
+    this.computedSplitValues = ko.computed(function() {
+        return this.value().split(",");
+    }, this);
+    
+    this.computedJoinedValues = ko.computed(function() {
+        return this.splitValues().join(",");
+    }, this);
+    */
 
     apl_func = typeof (apl_func) !== 'undefined' ? apl_func : "";
     this.apl_func = ko.observable(apl_func);

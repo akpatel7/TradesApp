@@ -401,10 +401,10 @@ namespace TradesWebApplication.Controllers
         {
             var list = unitOfWork.TradeRepository.GetTrades();
             var result = (from r in list
-                          where ( !String.IsNullOrEmpty(r.trade_label)
+                          where (!String.IsNullOrEmpty(r.trade_editorial_label)
                           &&
-                          r.trade_label.ToLower().Contains(term.ToLower()))
-                          select new { r.trade_label, r.trade_id }); //TODO: Verify will retrieve duplicate editorial labels
+                          r.trade_editorial_label.ToLower().Contains(term.ToLower()))
+                          select new { r.trade_editorial_label, r.trade_id }); 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
