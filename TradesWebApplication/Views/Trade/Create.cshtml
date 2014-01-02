@@ -392,7 +392,8 @@
                             @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" })
                         </div>
                         <div class="form-control" data-bind="visible: abs_measure_type_id() == 2">
-                            @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: abs_currency_id", @class = "form-control", @id = "absCurrencyTypeAhead" })
+                            @*@Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: abs_currency_id", @class = "form-control", @id = "absCurrencyTypeAhead" })*@
+<input class="input-xlarge" id="absCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id"/>
                         </div>
                         <div class="form-control">
                             @Html.TextBoxFor(model => model.abs_return_value, new { @data_bind = "value: abs_return_value", @class = "form-control" })
@@ -418,7 +419,8 @@
                             @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: rel_measure_type_id", @class = "form-control" })
                         </div>
                         <div class="form-control" data-bind="visible: rel_measure_type_id() == 2">
-                            @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: rel_currency_id", @class = "form-control", @id = "relCurrencyTypeAhead" })
+                           @* @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: rel_currency_id", @class = "form-control", @id = "relCurrencyTypeAhead" })*@
+<input class="input-xlarge" id="relCurrencyTypeAhead" type="hidden" data-bind="value: rel_currency_id"/>
                         </div>
                         <div class="form-control">
                             @Html.TextBoxFor(model => model.rel_return_value, new { @data_bind = "value: rel_return_value" })
@@ -491,12 +493,9 @@
             $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
             //$("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
             $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}", width: '500px'});
-            $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
-            $("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
+            //$("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
+            //$("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
           
-
-
-
             //to remotely get currencies for typeaheads
             function format_currency(item) {
                 return item.currency_label;
@@ -521,6 +520,70 @@
                        };
                    }
                },
+                id: function (obj) {
+                    return obj.currency_id;
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+
+            //to remotely get currencies for typeaheads
+            function format_currency(item) {
+                return item.currency_label;
+            }
+            $("#absCurrencyTypeAhead").select2({
+                minimumInputLength: 2,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                //multiple: true,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function (term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function (obj) {
+                    return obj.currency_id;
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+
+            //to remotely get currencies for typeaheads
+            function format_currency(item) {
+                return item.currency_label;
+            }
+            $("#relCurrencyTypeAhead").select2({
+                minimumInputLength: 2,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                //multiple: true,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function (term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
                 id: function (obj) {
                     return obj.currency_id;
                 },
