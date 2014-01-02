@@ -61,7 +61,8 @@
                 </td>
                 <td>
                     <div class="form-control" data-bind="visible: relativity_id() == 2">
-                        @Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), "{Benchmark Selection}", new { @data_bind = "value: benchmark_id", @id = "BenchmarkTypeAhead" })
+                        @*@Html.DropDownListFor(model => model.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), "{Benchmark Selection}", new { @data_bind = "value: benchmark_id", @id = "BenchmarkTypeAhead" })*@
+<input class="input-xlarge" id="BenchmarkTypeAhead" type="hidden" data-bind="value: benchmark_id"/>
                     </div>
                 </td>
             </tr>
@@ -438,7 +439,8 @@
                     </td>
                     <td>
                         <div class="form-control">
-                            @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty, new { @data_bind = "value: return_benchmark_id", @class = "form-control", @id = "relBenchmarkTypeAhead" })
+                            @*@Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty, new { @data_bind = "value: return_benchmark_id", @class = "form-control", @id = "relBenchmarkTypeAhead" })*@
+<input class="input-xlarge" id="relBenchmarkTypeAhead" type="hidden" data-bind="value: return_benchmark_id"/>
                         </div>
                     </td>
                 </tr>
@@ -485,21 +487,76 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-
+            //init form custom controls
+            //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpInstructionEntry').datepicker();
             $('#dpInstructionExit').datepicker();
 
-            //init form custom controls
-            $("#BenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}", width: '200px' });
-            $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}", width: '200px' });
+            //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
+            //TODO: Api call for searches on tradable things
             $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
-            //$("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
-            //$("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}", width: '500px'});
-            //$("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
-            //$("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
-          
+            
+            
+            //select2.3.5 jquery control for typeaheads
+            //to remotely get Benchmarks for typeaheads
+            function format_benchmark(item) {
+                return item.benchmark_label;
+            }
+            $("#BenchmarkTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Benchmark Selection}",
+                width: '200px',
+                allowClear: true,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteBenchmark",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function (term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function (obj) {
+                    return obj.benchmark_id;
+                },
+                formatResult: format_benchmark,
+                formatSelection: format_benchmark
+            });
+            $("#relBenchmarkTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Benchmark Selection}",
+                width: '200px',
+                allowClear: true,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteBenchmark",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function (term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function (obj) {
+                    return obj.benchmark_id;
+                },
+                formatResult: format_benchmark,
+                formatSelection: format_benchmark
+            });
+            //end typeAhead
 
-            //to remotely get currencies for typeaheads
+            //to remotely get linked trades for typeaheads
             function format_trade(item) {
                 return item.trade_editorial_label;
             }
@@ -507,6 +564,7 @@
                 minimumInputLength: 1,
                 placeholder: "{Linked Trades}",
                 width: '500px',
+                allowClear: true,
                 multiple: true,
                 ajax: {
                     url: baseUrl + "Trade/AutoCompleteLinkedTrades",
@@ -536,11 +594,11 @@
                 return item.currency_label;
             }
             $("#CurrencyTypeAhead").select2({
-                minimumInputLength: 2,
+                minimumInputLength: 1,
                 placeholder: "{Currency Selection}",
                 width: '200px',
-                //multiple: true,
-               ajax: {
+                allowClear: true,
+                ajax: {
                    url: baseUrl + "Trade/AutoCompleteCurrency",
                    dataType: 'json',
                    type: 'POST',
@@ -565,10 +623,10 @@
 
             //to remotely get currencies for typeaheads
             $("#absCurrencyTypeAhead").select2({
-                minimumInputLength: 2,
+                minimumInputLength: 1,
                 placeholder: "{Currency Selection}",
                 width: '200px',
-                //multiple: true,
+                allowClear: true,
                 ajax: {
                     url: baseUrl + "Trade/AutoCompleteCurrency",
                     dataType: 'json',
@@ -594,10 +652,10 @@
 
             //to remotely get currencies for typeaheads
             $("#relCurrencyTypeAhead").select2({
-                minimumInputLength: 2,
+                minimumInputLength: 1,
                 placeholder: "{Currency Selection}",
                 width: '200px',
-                //multiple: true,
+                allowClear: true,
                 ajax: {
                     url: baseUrl + "Trade/AutoCompleteCurrency",
                     dataType: 'json',
@@ -620,28 +678,39 @@
                 formatSelection: format_currency
             });
             //end typeAhead
-
-            
-            
             
         });
 
-        
-
-    
-        //function currencySource(term, page) {
-        //    $.ajax({
-        //        url: "/Trade/AutoCompleteCurrency",
-        //        type: "POST",
-        //        dataType: "json",
-        //        data: { term: request.term },
-        //        success: function (data) {
-        //            response($.map(data, function (item) {
-        //                return { results: item.currency_label, id: item.currency_id };
-        //            }));
+        //to remotely get Financial Instrument for typeaheads
+        //function format_financialInstrument(item) {
+        //    return item.tradable_thing_label;
+        //}
+        //$(".tradableThingList").select2({
+        //    minimumInputLength: 1,
+        //    placeholder: "{Financial Instrument}",
+        //    width: '200px',
+        //    allowClear: true,
+        //    ajax: {
+        //        url: baseUrl + "Trade/AutoCompleteTradableThing",
+        //        dataType: 'json',
+        //        type: 'POST',
+        //        data: function (term, page) {
+        //            return {
+        //                term: term, //search term 
+        //            };
+        //        },
+        //        results: function (data, page) {
+        //            return {
+        //                results: data
+        //            };
         //        }
-        //    });
-        //};
+        //    },
+        //    id: function (obj) {
+        //        return obj.tradable_thing_id;
+        //    },
+        //    formatResult: format_financialInstrument,
+        //    formatSelection: format_financialInstrument
+        //});
 
         //to invoke validation on razor - Not working
         $('#dpInstructionEntry').datepicker()

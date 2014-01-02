@@ -229,7 +229,7 @@ function TradeViewModel(
     hedge_id = typeof (hedge_id) !== 'undefined' ? hedge_id : 2; //default value
     this.hedge_id = ko.observable(2);
 
-    currency_id = typeof (currency_id) !== 'undefined' ? currency_id : 0;
+    currency_id = typeof (currency_id) !== 'undefined' ? currency_id : "";
     this.currency_id = ko.observable(currency_id);
 
     related_trade_ids_list = typeof (related_trade_ids_list) !== 'undefined' ? related_trade_ids_list : "";
@@ -368,7 +368,35 @@ function TradeViewModel(
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log("error: " + XMLHttpRequest.responseText);
                     self.vmMessages("error: " + XMLHttpRequest.responseText);
-                    bootbox.alert(self.vmMessages());
+                    var message = self.vmMessages();
+                    bootbox.dialog({
+                        message: message,
+                        title: "Trade Creation",
+                        className: "alert-danger",
+                        buttons: {
+                            //success: {
+                            //    label: "Create",
+                            //    className: "btn-success",
+                            //    callback: function () {
+                            //        //Example.show("great success");
+                            //    }
+                            //},
+                            danger: {
+                                label: "OK",
+                                className: "btn-danger",
+                                callback: function () {
+                                    //Example.show("uh oh, look out!");
+                                }
+                            },
+                            //main: {
+                            //    label: "Exit",
+                            //    className: "btn-primary",
+                            //    callback: function () {
+                            //        //Example.show("Primary button");
+                            //    }
+                            //}
+                        }
+                    });
                 }
             });
         }
@@ -439,7 +467,7 @@ function TradeViewModel(
     }, self);
 
     //set this to true to see ko.toJson on form for debugging knockout bindings
-    this.debug = true;
+    this.debug = false;
     ////////////////
 
 }
