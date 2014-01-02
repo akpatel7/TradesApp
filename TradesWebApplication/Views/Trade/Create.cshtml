@@ -297,7 +297,9 @@
                     </td>
                     <td>
                         <div class="form-control">
-                            @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: currency_id", @class = "form-control", @id = "CurrencyTypeAhead" })
+@*                            @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new { @data_bind = "value: currency_id", @class = "form-control", @id = "CurrencyTypeAhead" })*@
+
+<input class="input-xlarge" id="CurrencyTypeAhead" type="hidden" data-bind="value: currency_id"/>
                         </div>
                     </td>
                     <td></td>
@@ -480,18 +482,74 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
+            $('#dpInstructionEntry').datepicker();
+            $('#dpInstructionExit').datepicker();
+
             //init form custom controls
             $("#BenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}", width: '200px' });
             $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}", width: '200px' });
             $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
-            $("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
+            //$("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
             $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}", width: '500px'});
             $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
             $("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
-            $('#dpInstructionEntry').datepicker();
-            $('#dpInstructionExit').datepicker();
+          
+
+
+
+            //to remotely get currencies for typeaheads
+            function format_currency(item) {
+                return item.currency_label;
+            }
+            $("#CurrencyTypeAhead").select2({
+                minimumInputLength: 2,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                //multiple: true,
+               ajax: {
+                   url: baseUrl + "Trade/AutoCompleteCurrency",
+                   dataType: 'json',
+                   type: 'POST',
+                   data: function (term, page) {
+                       return {
+                           term: term, //search term 
+                       };
+                   },
+                   results: function (data, page) {
+                       return {
+                           results: data
+                       };
+                   }
+               },
+                id: function (obj) {
+                    return obj.currency_id;
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+
+            
+            
             
         });
+
+        
+
+    
+        //function currencySource(term, page) {
+        //    $.ajax({
+        //        url: "/Trade/AutoCompleteCurrency",
+        //        type: "POST",
+        //        dataType: "json",
+        //        data: { term: request.term },
+        //        success: function (data) {
+        //            response($.map(data, function (item) {
+        //                return { results: item.currency_label, id: item.currency_id };
+        //            }));
+        //        }
+        //    });
+        //};
 
         //to invoke validation on razor - Not working
         $('#dpInstructionEntry').datepicker()
