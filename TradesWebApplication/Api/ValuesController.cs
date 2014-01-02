@@ -147,8 +147,31 @@ namespace TradesWebApplication.Api
             {
                 var lineGroup = new Trade_Line_Group();
                 lineGroup.trade_line_group_type_id = grp.trade_line_group_type_id;
-                lineGroup.trade_line_group_editorial_label = grp.trade_line_group_editorial_label;
-                lineGroup.trade_line_group_label = grp.trade_line_group_label;
+                //TODO: Verify if db was changed to varmax
+                if (!String.IsNullOrEmpty(grp.trade_line_group_label))
+                {
+                    if (grp.trade_line_group_label.Length > 255)
+                    {
+                        lineGroup.trade_line_group_label = grp.trade_line_group_label.Substring(0, 255);
+                    }
+                    else
+                    {
+                        lineGroup.trade_line_group_label = grp.trade_line_group_label;
+                    }
+                }
+                //TODO: Verify if db was changed to varmax
+                if (!String.IsNullOrEmpty(grp.trade_line_group_editorial_label))
+                {
+                    if (grp.trade_line_group_editorial_label.Length > 255)
+                    {
+                        lineGroup.trade_line_group_editorial_label = grp.trade_line_group_editorial_label.Substring(0, 255);
+                    }
+                    else
+                    {
+                        lineGroup.trade_line_group_editorial_label = grp.trade_line_group_editorial_label;
+                    }
+                }
+
                 unitOfWork.TradeLineGroupRepository.Insert(lineGroup);
                 unitOfWork.Save();
                 var grpId = lineGroup.trade_line_group_id;
