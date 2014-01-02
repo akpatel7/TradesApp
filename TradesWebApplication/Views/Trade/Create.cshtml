@@ -8,7 +8,8 @@
         new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });*@
 }
 
-<form data-bind="submit: function (){ saveTrade(); }">
+<form role="form" data-bind="submit: function (){ saveTrade(); }">
+   <div class="form-group">
     @Html.ValidationSummary(true)
     <fieldset class="tgroup">
         <legend class="trade_group_head"><strong>Trade Creation</strong></legend>
@@ -16,7 +17,7 @@
         <table id="main_trade_table">
             <tr>
                 <td>
-                    <div  class="input-group">
+                    <div class="control-label">
                         @Html.LabelFor(model => model.service_id)
                     </div>
 
@@ -27,7 +28,7 @@
                 </td>
             <tr>
                 <td>
-                    <div  class="input-group">
+                    <div class="control-label">
                         @Html.LabelFor(model => model.length_type_id)
                     </div>
 
@@ -41,7 +42,7 @@
             </tr>
             <tr>
                 <td>
-                    <div  class="input-group">
+                    <div class="control-label">
                         @Html.LabelFor(model => model.relativity_id)
                     </div>
                 </td>
@@ -54,7 +55,7 @@
             </tr>
             <tr>
                 <td>
-                    <div class="input-group" data-bind="visible: relativity_id() == 2">
+                    <divclass="control-label" data-bind="visible: relativity_id() == 2">
                         @Html.LabelFor(model => model.benchmark_id)
                     </div>
                 </td>
@@ -66,7 +67,7 @@
             </tr>
             @* !!!Removed from form<tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.created_on)
                         </div>
                     </td>
@@ -79,7 +80,7 @@
                 </tr>*@
             <tr>
                 <td>
-                    <div  class="input-group">
+                    <div class="control-label">
                         @Html.LabelFor(model => model.trade_label)
                     </div>
                 </td>
@@ -91,7 +92,7 @@
             </tr>
             <tr>
                 <td>
-                    <div  class="input-group">
+                    <div class="control-label">
                         @Html.LabelFor(model => model.trade_editorial_label)
                     </div>
                 </td>
@@ -105,7 +106,7 @@
             <tr>
                 <td>
 
-                    <div  class="input-group">
+                    <div class="control-label">
                         @Html.LabelFor(model => model.structure_type_id)
                     </div>
                 </td>
@@ -133,15 +134,15 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div class="input-group">Group Structure:</div>
+                                        <div class="control-label">Group Structure:</div>
                                         <div class="form-control">
                                             @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), "{Structure}", new { @data_bind = "value: trade_line_group_type_id, selectedText: trade_line_group_type_string", @class = "form-control" })
                                        </div>
-                                            <div class="input-group">Editorial Label:</div>
+                                            <div class="control-label">Editorial Label:</div>
                                             <div class="form-control">
                                                 <input type="text" data-bind="value: trade_line_group_editorial_label" class="form-control" />
                                             </div>
-                                            <div class="input-group">Canonical Label:</div>
+                                            <div class="control-label">Canonical Label:</div>
                                             <div class="form-control">
                                                 <input type="text" data-bind="value: trade_line_group_label" class="form-control" disabled="disabled" />
                                             </div>
@@ -195,7 +196,7 @@
             <table>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.instruction_entry)
                         </div>
 
@@ -212,7 +213,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.instruction_entry_date)
                         </div>
 
@@ -228,7 +229,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.instruction_exit)
                         </div>
 
@@ -242,7 +243,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.instruction_exit_date)
                         </div>
                     </td>
@@ -259,7 +260,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.instruction_type_id)
                         </div>
 
@@ -277,7 +278,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.hedge_id)
                         </div>
                     </td>
@@ -290,7 +291,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.currency_id)
                         </div>
                     </td>
@@ -310,21 +311,21 @@
             <table>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.related_trade_ids)
                         </div>
 
                     </td>
                     <td>
                         <div class="form-control">
-                            @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), new { @data_bind = "selectedOptions: related_trade_ids", @class = "form-control", @id = "selectRelatedTrades", @multiple = "true" })
+                            @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_editorial_label"), new { @data_bind = "selectedOptions: related_trade_ids", @class = "form-control", @id = "selectRelatedTrades", @multiple = "true" })
                         </div>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.apl_func)
                         </div>
 
@@ -344,7 +345,7 @@
             <table>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.mark_to_mark_rate)
                         </div>
 
@@ -358,7 +359,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.interest_rate_diff)
                         </div>
 
@@ -379,7 +380,7 @@
             <table>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.abs_measure_type_id)
                         </div>
 
@@ -405,7 +406,7 @@
             <table>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.rel_measure_type_id)
                         </div>
 
@@ -424,7 +425,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.return_benchmark_id)
                         </div>
 
@@ -444,14 +445,14 @@
             <table>
                 <tr>
                     <td>
-                        <div  class="input-group">
+                        <div class="control-label">
                             @Html.LabelFor(model => model.comments)
                         </div>
 
                     </td>
                     <td>
                         <div class="form-control">
-                            @Html.TextAreaFor(model => model.comments, new { @data_bind = "value: comments", @class = "form-control" })
+                            @Html.TextAreaFor(model => model.comments, new { @data_bind = "value: comments", @class = "form-control", @rows="5"})
                         </div>
                     </td>
                 </tr>
@@ -467,10 +468,10 @@
         </p>
 
     </fieldset>
-
+ </div>
 </form>
 
-<pre data-bind='text: ko.toJSON($root, null, 2)'></pre>
+<pre data-bind='text: ko.toJSON($root, null, 2), visible: debug'></pre>
 
 @section scripts{
     <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
@@ -484,7 +485,7 @@
             $("#relBenchmarkTypeAhead").select2({ placeholder: "{Benchmark Selection}", width: '200px' });
             $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
             $("#CurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
-            $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}", width: '200px'});
+            $("#selectRelatedTrades").select2({ placeholder: "{Linked Trades}", width: '500px'});
             $("#absCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
             $("#relCurrencyTypeAhead").select2({ placeholder: "{Currency Selection}", width: '200px' });
             $('#dpInstructionEntry').datepicker();
