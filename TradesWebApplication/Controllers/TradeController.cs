@@ -72,7 +72,7 @@ namespace TradesWebApplication.Controllers
                     break;
             }
 
-            int pageSize = 7;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(trades.ToPagedList(pageNumber, pageSize));
 

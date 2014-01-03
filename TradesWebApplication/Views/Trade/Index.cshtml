@@ -46,27 +46,6 @@
         <th>
            Last Updated
         </th>
-        <th>
-            Benchmark Uri
-        </th>
-        <th>
-            Currency Uri
-        </th>
-        <th>
-            Length Type
-        </th>
-        <th>
-            Relativity
-        </th>
-        <th>
-            Service Uri
-        </th>
-        <th>
-            Status
-        </th>
-        <th>
-            Structure Type
-        </th>
     </tr>
 
     @foreach (var item in Model) {
@@ -96,27 +75,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.last_updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Benchmark.benchmark_uri)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Currency.currency_uri)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Length_Type.length_type_label)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Relativity.relativity_label)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Service.service_uri)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status1.status_label)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Structure_Type.structure_type_label)
             </td>
         </tr>
     }
