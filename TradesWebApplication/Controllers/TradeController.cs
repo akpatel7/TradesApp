@@ -108,8 +108,29 @@ namespace TradesWebApplication.Controllers
 
         private void PopulateAbsoluteAndRelativePerformance(TradesCreationViewModel viewModel)
         {
-            //TODO check logic
-            //absolute
+       
+            //fx spot and carry
+            var relatedTrackRecords = unitOfWork.TrackRecordRepository.GetAll()
+                                      .Where(t => t.trade_id == viewModel.Trade.trade_id)
+                                      .ToList();
+
+            if (relatedTrackRecords.Any())
+            {
+                //mark to market rate
+                var rec1 = relatedTrackRecords.Last(r => r.trade_id == viewModel.Trade.trade_id && r.track_record_type_id == 1);
+                if (rec1 != null)
+                {
+                    viewModel.mark_to_mark_rate = rec1.track_record_value.ToString();
+                }
+
+                //Interest rate differential
+                var rec2 = relatedTrackRecords.Last(r => r.trade_id == viewModel.Trade.trade_id && r.track_record_type_id == 2);
+                if (rec2 != null)
+                {
+                    viewModel.interest_rate_diff = rec2.track_record_value.ToString();
+                }
+
+            }
 
             //related
             viewModel.MeasureTypes = unitOfWork.MeasureTypeRepository.GetAll().ToList();
@@ -119,13 +140,36 @@ namespace TradesWebApplication.Controllers
                     .ToList();
             if (relatedTradePerformances.Any())
             {
-                var latestPerformance = relatedTradePerformances.Last();
-                viewModel.rel_measure_type_id = latestPerformance.measure_type_id;
-                viewModel.rel_currency_id = latestPerformance.return_currency_id;
-                viewModel.rel_return_value = latestPerformance.return_value;
-                viewModel.return_benchmark_id = latestPerformance.return_benchmark_id;
+                //absolute performance
+                bool perfFound = false;
+                var absolutePerformance = relatedTradePerformances.Last( r => r.trade_id == viewModel.Trade.trade_id && r.return_benchmark_id == null );
+                if (absolutePerformance != null)
+                {
+                    perfFound = true;
+                    viewModel.abs_measure_type_id = absolutePerformance.measure_type_id;
+                    viewModel.abs_currency_id = absolutePerformance.return_currency_id;
+                    viewModel.abs_return_value = absolutePerformance.return_value;
+                    viewModel.apl_func = absolutePerformance.return_apl_function;
+                }
+               
+
+                //relative performance
+                var relativePerformance = relatedTradePerformances.Last(r => r.trade_id == viewModel.Trade.trade_id && r.return_benchmark_id != null);
+                if (relativePerformance != null)
+                {
+                    perfFound = true;
+                    viewModel.rel_measure_type_id = relativePerformance.measure_type_id;
+                    viewModel.rel_currency_id = relativePerformance.return_currency_id;
+                    viewModel.rel_return_value = relativePerformance.return_value;
+                    viewModel.return_benchmark_id = relativePerformance.return_benchmark_id;
+                }
+               
                 //apl
-                viewModel.apl_func = latestPerformance.return_apl_function;
+                if (!perfFound && relatedTradePerformances.Any())
+                {
+                    viewModel.apl_func = relatedTradePerformances.Last(r => r.trade_id == viewModel.Trade.trade_id).return_apl_function;
+                }
+                
             }
 
 
@@ -139,7 +183,8 @@ namespace TradesWebApplication.Controllers
 
         private void PopulateRelatedTrades(TradesCreationViewModel viewModel)
         {
-            viewModel.RelatedTrades = unitOfWork.TradeRepository.GetTrades().ToList();
+            viewModel.RelatedTrades = unitOfWork.RelatedTradeRepository.GetAll()
+                                      .Where( r => r.trade_id == viewModel.Trade.trade_id).ToList();
         }
 
         private void PopulateInstructions(TradesCreationViewModel viewModel)

@@ -311,7 +311,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "trade_label"), String.Empty )
+                    @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "related_trade_id"), String.Empty )
                 </div>
             </td>
             <td></td>
@@ -438,7 +438,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.TextArea("comments", new { rows = 5, columns = 50 })
+                    @Html.TextAreaFor(model => model.Comment.comment_label, new { rows = 5, columns = 50 })
                 </div>
             </td>
         </tr>

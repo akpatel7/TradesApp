@@ -105,7 +105,7 @@ namespace TradesWebApplication.ViewModels
         // linked trades
         [DisplayName("Linked Trades:")]
         public int[] related_trade_ids { get; set; }
-        public List<Trade> RelatedTrades { get; set; }
+        public List<Related_Trade> RelatedTrades { get; set; }
 
 
 
