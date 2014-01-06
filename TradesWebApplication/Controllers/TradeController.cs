@@ -441,6 +441,16 @@ namespace TradesWebApplication.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        //TradeableThing (Financial Instrument) typeahead
+        public JsonResult GetTradableThing(string id)
+        {
+            var trabableThingId = int.Parse(id);
+            var list = unitOfWork.TradableThingRepository.Get(r => r.tradable_thing_id == trabableThingId);
+            var result = (from r in list
+                          select new { r.tradable_thing_label, r.tradable_thing_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         //Linked Trades typeahead
         public JsonResult AutoCompleteLinkedTrades(string term)
         {

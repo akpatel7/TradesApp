@@ -98,12 +98,42 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
     this.tradable_thing_id = ko.validatedObservable(tradable_thing_id).extend({ required: true });
 
     this.positionString = ko.observable("");
-    this.tradableThingString = ko.observable(null).extend({ required: true });;
+    this.tradableThingString = ko.observable("");
+
+    //to get desc of selected financial instrument
+    self.tradable_thing_id.subscribe( 
+        function (newValue) 
+        {
+            if (newValue > 0) 
+            {
+                    $.ajax({
+                        type: 'POST',
+                        url: baseUrl + "Trade/GetTradableThing",
+                        dataType: "json",
+                        crossDomain: true,
+                        data: {
+                            id: newValue, //id of Financial Instrument
+                        },
+                        success: function (data) {
+                            var resultData = data[0];
+                            //console.log(resultData.tradable_thing_label);
+                            self.tradableThingString(resultData.tradable_thing_label);
+                        }
+                    });
+                 
+            }
+            else
+            {
+                //console.log("HERE 2");
+                return;
+            }
+    });
 
     this.canonicalLabelPart = ko.computed(function () {
         return self.positionString() + ", " + self.tradableThingString();
     });
 
+   
 }
 
 function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_group_label, trade_line_group_editorial_label, tradeLines) {
