@@ -1,4 +1,14 @@
 ﻿
+ko.bindingHandlers.uniqueIdTradableThing = {
+    init: function (element, valueAccessor) {
+        var value = valueAccessor();
+        value.id = value.id || ko.bindingHandlers.uniqueIdTradableThing.prefix + (++ko.bindingHandlers.uniqueIdTradableThing.counter);
+
+        element.id = value.id;
+    },
+    counter: 0,
+    prefix: "tradableThing"
+}
 
 ko.bindingHandlers.selectedText = {
     init: function (element, valueAccessor) {
@@ -84,7 +94,7 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
     position_id = typeof (position_id) !== 'undefined' ? position_id : 0;
     this.position_id = ko.validatedObservable(position_id).extend({ required: true});
 
-    tradable_thing_id = typeof (tradable_thing_id) !== 'undefined' ? tradable_thing_id : 0;
+    tradable_thing_id = typeof (tradable_thing_id) !== 'undefined' ? tradable_thing_id : "";
     this.tradable_thing_id = ko.validatedObservable(tradable_thing_id).extend({ required: true });
 
     this.positionString = ko.observable("");
@@ -121,7 +131,6 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
     this.addLine = function () {
         var nextIndex = this.tradeLines().length;
         self.tradeLines.push(new TradeLine(nextIndex));
-        $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
     };
 
     this.removeLine = function (item) {
@@ -467,7 +476,7 @@ function TradeViewModel(
     }, self);
 
     //set this to true to see ko.toJson on form for debugging knockout bindings
-    this.debug = false;
+    this.debug = true;
     ////////////////
 
 }

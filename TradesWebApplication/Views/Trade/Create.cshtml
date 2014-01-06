@@ -169,7 +169,8 @@
                                                         @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })
                                                     </td>
                                                     <td>
-                                                        @Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), "{Financial Instrument}", new { @data_bind = "value: tradable_thing_id, selectedText: tradableThingString", @class = "form-control tradableThingList" })
+                                                        @*@Html.DropDownListFor(x => x.tradable_thing_id, new SelectList(Model.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), "{Financial Instrument}", new { @data_bind = "value: tradable_thing_id, selectedText: tradableThingString", @class = "form-control tradableThingList" })*@
+<input class="input-xlarge" type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id"/>
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-small btn-danger" data-bind='click: function () { $parent.removeLine($data);  }'>
@@ -180,14 +181,14 @@
                                             </tbody>
                                         </table>
                                         <button data-bind='click: $root.removeGroup' class='btn btn-small btn-danger'>Delete trade group</button>
-                                        <button id="btnAddLine" data-bind='click: addLine' class="btn btn-small btn-info">Add new trade line</button>
+                                        <button id="btnAddLine" data-bind='click: function () { addLine(); typeAheadFinInstr(); }' class="btn btn-small btn-info">Add new trade line</button>
                                 </tr>
                             </tbody>
                         </table>
 
                     </tr>
                     <tr>
-                        <button id="btnAddGroup" data-bind='click: addGroup' class="btn btn-small btn-info">Add new group</button>
+                        <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadFinInstr(); }' class="btn btn-small btn-info">Add new group</button>
                     </tr>
                 </table>
         </fieldset>
@@ -679,38 +680,45 @@
             });
             //end typeAhead
             
+            //Financial Instrument for typeahead
+            typeAheadFinInstr();
         });
 
         //to remotely get Financial Instrument for typeaheads
-        //function format_financialInstrument(item) {
-        //    return item.tradable_thing_label;
-        //}
-        //$(".tradableThingList").select2({
-        //    minimumInputLength: 1,
-        //    placeholder: "{Financial Instrument}",
-        //    width: '200px',
-        //    allowClear: true,
-        //    ajax: {
-        //        url: baseUrl + "Trade/AutoCompleteTradableThing",
-        //        dataType: 'json',
-        //        type: 'POST',
-        //        data: function (term, page) {
-        //            return {
-        //                term: term, //search term 
-        //            };
-        //        },
-        //        results: function (data, page) {
-        //            return {
-        //                results: data
-        //            };
-        //        }
-        //    },
-        //    id: function (obj) {
-        //        return obj.tradable_thing_id;
-        //    },
-        //    formatResult: format_financialInstrument,
-        //    formatSelection: format_financialInstrument
-        //});
+        function typeAheadFinInstr() {
+            console.log(ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter);
+            var newTradableThing = '#' + ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter;
+            $(newTradableThing).select2({
+                minimumInputLength: 1,
+                placeholder: "{Financial Instrument}",
+                width: '200px',
+                allowClear: true,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteTradableThing",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function (term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function (obj) {
+                    return obj.tradable_thing_id;
+                },
+                formatResult: function (item) {
+                    return item.tradable_thing_label;
+                },
+                formatSelection: function (item) {
+                    return item.tradable_thing_label;
+                }
+            });
+        };
 
         //to invoke validation on razor - Not working
         $('#dpInstructionEntry').datepicker()

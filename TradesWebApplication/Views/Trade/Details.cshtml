@@ -401,7 +401,7 @@
 
             </td>
             <td>
-                <div class="editor-field">
+                <div class="editor-field disabled">
                     @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"))
                     @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
                     @Html.EditorFor(model => model.rel_return_value)
