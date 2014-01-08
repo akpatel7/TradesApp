@@ -52,8 +52,8 @@ namespace TradesWebApplication
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/Bootstrap/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/bootstrap-theme.css",
+                      "~/Content/css/bootstrap.css",
+                      "~/Content/css/bootstrap-theme.css",
                       "~/Content/bootstrap-datetimepicker.min.css"));
 
            
