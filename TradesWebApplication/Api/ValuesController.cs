@@ -141,7 +141,6 @@ namespace TradesWebApplication.Api
             var newTradeId = trade.trade_id;
             vm.trade_id = newTradeId;
             //TODO: verify uri
-            //trade.trade_uri = @"http://data.emii.com/bca/trades/" + newTradeId + ">";
             trade.trade_uri = tradesConfig.TradeSemanticURIPrefix + getFlakeID() + tradesConfig.TradeSemanticURISuffix;
 
             //Add groups
@@ -178,7 +177,7 @@ namespace TradesWebApplication.Api
                 unitOfWork.Save();
                 var grpId = lineGroup.trade_line_group_id;
                 //TODO: verify uri
-                lineGroup.trade_line_group_uri = @"http://data.emii.com/bca/trade-line-groups/" + grpId + ">";
+                lineGroup.trade_line_group_uri = tradesConfig.TradeLineGroupSemanticURIPrefix + getFlakeID() + tradesConfig.TradeLineGroupSemanticURISuffix;
 
                 //Add tradelines
                 foreach (var line in grp.tradeLines)
@@ -196,7 +195,7 @@ namespace TradesWebApplication.Api
                     unitOfWork.Save();
                     var newTradeLineId = tradeLine.trade_line_id;
                     //TODO: verify uri
-                    tradeLine.trade_line_uri = @"http://data.emii.com/bca/trade-lines/" + newTradeLineId + ">";
+                    tradeLine.trade_line_uri = tradesConfig.TradeLineSemanticURIPrefix + getFlakeID() + tradesConfig.TradeLineGroupSemanticURISuffix;
                 }
                 
             }
