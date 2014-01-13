@@ -142,9 +142,7 @@ namespace TradesWebApplication.Api
             vm.trade_id = newTradeId;
             //TODO: verify uri
             //trade.trade_uri = @"http://data.emii.com/bca/trades/" + newTradeId + ">";
-            trade.trade_uri = tradesConfig.TradeSemanticURIPrefix + newTradeId.ToString() + tradesConfig.TradeSemanticURISuffix;
-;
-
+            trade.trade_uri = tradesConfig.TradeSemanticURIPrefix + getFlakeID() + tradesConfig.TradeSemanticURISuffix;
 
             //Add groups
             foreach (var grp in vm.tradegroups)
@@ -388,7 +386,19 @@ namespace TradesWebApplication.Api
             }
 
 
-        }    
+        }
+
+        public string getFlakeID(string parameters = "")
+        {
+            string endPoint = tradesConfig.FlakeServiceURI;
+            var client = new RestClient(endPoint);
+            var response = client.MakeRequest();
+            if (String.IsNullOrEmpty(response))
+            {
+                throw new Exception("Error while calling FlakeId service");
+            }
+            return response;
+        }
 
     }
 

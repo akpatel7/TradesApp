@@ -189,6 +189,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\RestClient.cs" />
     <Compile Include="Api\TradesAppSettings.cs" />
     <Compile Include="Api\ValuesController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -1014,7 +1015,6 @@
     <Content Include="Scripts\select2-3.4.5\select2_locale_en.js.template">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TradesAppSettings.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
