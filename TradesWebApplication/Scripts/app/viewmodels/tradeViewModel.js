@@ -429,7 +429,7 @@ function TradeViewModel(
                                 callback: function () {
                                     //Example.show("uh oh, look out!");
                                 }
-                            },
+                            }
                             //main: {
                             //    label: "Exit",
                             //    className: "btn-primary",
@@ -466,7 +466,7 @@ function TradeViewModel(
                         callback: function () {
                             //Example.show("uh oh, look out!");
                         }
-                    },
+                    }
                     //main: {
                     //    label: "Exit",
                     //    className: "btn-primary",

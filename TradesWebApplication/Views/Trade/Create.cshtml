@@ -697,7 +697,7 @@
 
         //to remotely get Financial Instrument for typeaheads
         function typeAheadFinInstr() {
-            console.log(ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter);
+            //console.log(ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter);
             var newTradableThing = '#' + ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter;
             $(newTradableThing).select2({
                 minimumInputLength: 1,
