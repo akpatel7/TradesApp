@@ -164,7 +164,10 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
     };
 
     this.removeLine = function (item) {
-        self.tradeLines.remove(item);
+        if (self.tradeLines().length > 1)
+        {
+            self.tradeLines.remove(item);
+        }
     };
     
     //canonical label
@@ -506,7 +509,7 @@ function TradeViewModel(
     }, self);
 
     //set this to true to see ko.toJson on form for debugging knockout bindings
-    this.debug = true;
+    this.debug = false;
     ////////////////
 
 }
