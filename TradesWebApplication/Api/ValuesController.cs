@@ -16,12 +16,14 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
+
+
 namespace TradesWebApplication.Api
 {
     public class ValuesController : ApiController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
-
+        private TradesAppSettings tradesConfig = TradesAppSettings.Settings;
         // GET api/<controller>
         public IEnumerable<string> Get()
         {
@@ -139,7 +141,9 @@ namespace TradesWebApplication.Api
             var newTradeId = trade.trade_id;
             vm.trade_id = newTradeId;
             //TODO: verify uri
-            trade.trade_uri = @"http://data.emii.com/bca/trades/" + newTradeId + ">";
+            //trade.trade_uri = @"http://data.emii.com/bca/trades/" + newTradeId + ">";
+            trade.trade_uri = tradesConfig.TradeSemanticURIPrefix + newTradeId.ToString() + tradesConfig.TradeSemanticURISuffix;
+;
 
 
             //Add groups
@@ -384,11 +388,8 @@ namespace TradesWebApplication.Api
             }
 
 
-        }
+        }    
 
     }
-
-
-
 
 }
