@@ -16,8 +16,8 @@ namespace TradesWebApplication
                         "~/Scripts/jquery-ui-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.unobtrusive*",
-                        "~/Scripts/jquery.validate*"));
+                        "~/Scripts/jquery.validate.js",
+                        "~/Scripts/jquery.validate.unobtrusive.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -26,14 +26,14 @@ namespace TradesWebApplication
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/bootstrap-datetimepicker.min.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                         "~/Scripts/knockout-{version}.js",
-                        "~/Scripts/knockout.validation*"));
+                        "~/Scripts/knockout.validation.js",
+                        "~/Scripts/knockout.mapping-latest.js"));
 
-            bundles.Add(new StyleBundle("~/Content/Jquery/css").Include(
+            bundles.Add(new StyleBundle("~/Content/JqueryUI/css").Include(
                 "~/Content/themes/base/jquery.ui.core.css",
                 "~/Content/themes/base/jquery.ui.resizable.css",
                 "~/Content/themes/base/jquery.ui.selectable.css",
@@ -47,14 +47,10 @@ namespace TradesWebApplication
                 "~/Content/themes/base/jquery.ui.progressbar.css",
                 "~/Content/themes/base/jquery.ui.theme.css"));
 
-            bundles.Add(new StyleBundle("~/Content/Site/css").Include(
-                      "~/Content/PagedList.css",
-                      "~/Content/site.css"));
 
-            bundles.Add(new StyleBundle("~/Content/Bootstrap/css").Include(
+            bundles.Add(new StyleBundle("~/Content/Bootstrap").Include(
                       "~/Content/css/bootstrap.css",
-                      "~/Content/css/bootstrap-theme.css",
-                      "~/Content/bootstrap-datetimepicker.min.css"));
+                      "~/Content/css/bootstrap-theme.css"));
 
            
 

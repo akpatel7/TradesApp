@@ -190,7 +190,7 @@
 
                     </tr>
                     <tr>
-                        <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadFinInstr(); }' class="btn btn-small btn-info">Add new group</button>
+                        <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>
                     </tr>
                 </table>
         </fieldset>
@@ -225,7 +225,6 @@
                             <input class="span2" size="16" type="textarea" value="" data-bind="value: instruction_entry_date">
                             <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
-                        <span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</span>
                     </td>
                     <td></td>
                 </tr>
@@ -251,9 +250,7 @@
                     </td>
                     <td>
                         <div class="input-append date" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
-
                             <input class="span2" size="16" type="textarea" value="" data-bind="value: instruction_exit_date">
-
                             <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
  <span data-bind="visible: instructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
@@ -497,7 +494,6 @@
 
 @section scripts{
     <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
-
 
     <script type="text/javascript">
         $(document).ready(function() {

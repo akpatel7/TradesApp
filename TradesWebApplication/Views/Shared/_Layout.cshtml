@@ -4,14 +4,16 @@
     <meta charset="utf-8" />
     <title>@ViewBag.Title - BCA Trades Application</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @Styles.Render("~/Content/Jquery/css")
+    @Styles.Render("~/Content/JqueryUI/css")
+
     @*<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">*@
     @*<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">*@
     <link href="~/Content/css/bootstrap-combined.min.css" rel="stylesheet" />
-    <link href="~/Content/css/bootstrap.css" rel="stylesheet" />
+    @Styles.Render("~/Content/Bootstrap")
     <link href="~/Scripts/select2-3.4.5/select2.css" rel="stylesheet" /> 
     <link href="~/Content/moment-datepicker/datepicker.css" rel="stylesheet" />
-    @Styles.Render("~/Content/Site/css")
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" />
     <script type="text/javascript">
         var baseUrl = "@Url.Content("~")";
     </script>
@@ -49,15 +51,15 @@
 
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
+@*    @Scripts.Render("~/bundles/jqueryui")  cannot exist with bootstrap ui*@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/knockout")
     <script src="~/Scripts/select2-3.4.5/select2.js"></script>
     <script src="~/Scripts/moment.js"></script>
-    <script src="~/Scripts/moment-with-langs.js"></script>
     <script src="~/Scripts/moment-datepicker.js"></script>
+    <script src="~/Scripts/moment-with-langs.js"></script>
     <script src="~/Scripts/bootbox.js"></script>
     @RenderSection("scripts", required: false)
 </body>
