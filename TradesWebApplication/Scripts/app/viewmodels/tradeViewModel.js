@@ -307,8 +307,8 @@ function TradeViewModel(
     abs_measure_type_id = typeof (abs_measure_type_id) !== 'undefined' ? abs_measure_type_id : 1; //default value
     this.abs_measure_type_id = ko.observable(1);
 
-    abs_currency_id = typeof (abs_currency_id) !== 'undefined' ? abs_currency_id : 1; //default value
-    this.abs_currency_id = ko.observable(1);
+    abs_currency_id = typeof (abs_currency_id) !== 'undefined' ? abs_currency_id : ""; //default value
+    this.abs_currency_id = ko.observable(abs_currency_id);
 
     abs_return_value = typeof (abs_return_value) !== 'undefined' ? abs_return_value : "";
     this.abs_return_value = ko.observable(abs_return_value).extend({ number: true });
@@ -316,7 +316,7 @@ function TradeViewModel(
     rel_measure_type_id = typeof (rel_measure_type_id) !== 'undefined' ? rel_measure_type_id : 2; //default value
     this.rel_measure_type_id = ko.observable(2); 
 
-    rel_currency_id = typeof (rel_currency_id) !== 'undefined' ? rel_currency_id : 0;
+    rel_currency_id = typeof (rel_currency_id) !== 'undefined' ? rel_currency_id : "";
     this.rel_currency_id = ko.observable(rel_currency_id);
 
     rel_return_value = typeof (rel_return_value) !== 'undefined' ? rel_return_value : "";

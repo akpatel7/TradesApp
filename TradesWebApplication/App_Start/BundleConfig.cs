@@ -12,8 +12,9 @@ namespace TradesWebApplication
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-{version}.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jqueryUI").Include(
+                        "~/Scripts/jquery-ui-{version}.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate.js",
@@ -25,8 +26,7 @@ namespace TradesWebApplication
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                         "~/Scripts/knockout-{version}.js",
@@ -48,13 +48,15 @@ namespace TradesWebApplication
                 "~/Content/themes/base/jquery.ui.theme.css"));
 
 
-            bundles.Add(new StyleBundle("~/Content/Bootstrap").Include(
+            bundles.Add(new StyleBundle("~/Content/css/bootstrap").Include(
                       "~/Content/css/bootstrap.css",
                       "~/Content/css/bootstrap-theme.css"));
 
-           
+            bundles.Add(new StyleBundle("~/Content/jqueryUIBootstrapCSS").Include(
+                 "~/Content/jquery-ui-1.10.0.custom.css",
+                 "~/Content/jquery.ui.1.10.0.ie.css"));
 
-
+         
 
         }
     }

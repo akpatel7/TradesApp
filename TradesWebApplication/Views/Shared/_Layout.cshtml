@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <title>@ViewBag.Title - BCA Trades Application</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   @* @Styles.Render("~/Content/JqueryUI/css")*@
-    @Styles.Render("~/Content/Bootstrap")
     <link href="~/Scripts/select2-3.4.5/select2.css" rel="stylesheet" /> 
     <link href="~/Content/moment-datepicker/datepicker.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css/bootstrap")
+    @Styles.Render("~/Content/jqueryUIBootstrapCSS")
     <link href="~/Content/PagedList.css" rel="stylesheet" />
     <link href="~/Content/site.css" rel="stylesheet" />
     <script type="text/javascript">
@@ -45,11 +45,9 @@
         </div>
     </footer>
 
-
-    @Scripts.Render("~/bundles/jquery")
-@*    @Scripts.Render("~/bundles/jqueryui")  cannot exist with bootstrap ui*@
-    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryUI")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/knockout")
     <script src="~/Scripts/select2-3.4.5/select2.js"></script>
