@@ -85,12 +85,12 @@
         <!-- trade groups ------------------------------------->
         <fieldset class="tgroup">
             <legend class="trade_group">Group Information</legend>
-            <table>
+            <table class="well">
                 <tr>
                     <table data-bind='foreach: tradegroups' border="1">
                         <thead>
                             <tr>
-                                <th>Group <span data-bind='text: ($index() + 1)'></span>Information</th>
+                                <th>Group <span data-bind='text: ($index() + 1)'></span> Information</th>
                                 <th>Trade Line(s)</th>
                             </tr>
                         </thead>
@@ -353,7 +353,6 @@
                     @Html.TextAreaFor(model => model.comments, new { @data_bind = "value: comments", @class = "form-control", @rows="3"})
                 </div>
             </div>
-
         </fieldset>
         <p>
             <button id="create" type="submit" class="btn btn-primary">Create</button>
@@ -577,7 +576,7 @@
         $(newTradableThing).select2({
             minimumInputLength: 1,
             placeholder: "{Financial Instrument}",
-            width: '200px',
+            width: '250px',
             allowClear: true,
             ajax: {
                 url: baseUrl + "Trade/AutoCompleteTradableThing",
@@ -620,7 +619,7 @@
     //});
 
     $('#btnAddGroup').click(function () {
-        $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
+        $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '250px' });
     });
 
 
