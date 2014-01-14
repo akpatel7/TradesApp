@@ -17,7 +17,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.service_id, new SelectList(Model.Services, "service_id", "service_code"))
+                    @Html.DropDownListFor(model => model.Trade.service_id, new SelectList(Model.Services, "service_id", "service_code"), new {@disabled="disabled"})
                     @Html.ValidationMessageFor(model => model.service_id)
                 </div>
             </td>
@@ -32,7 +32,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"))
+                    @Html.DropDownListFor(model => model.Trade.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"), new {@disabled="disabled"})
                     @Html.ValidationMessageFor(model => model.length_type_id)
                 </div>
             </td>
@@ -45,7 +45,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"))
+                    @Html.DropDownListFor(model => model.Trade.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"), new {@disabled="disabled"})
                     @Html.ValidationMessageFor(model => model.relativity_id)
                 </div>
             </td>
@@ -58,7 +58,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"))
+                    @Html.DropDownListFor(model => model.Trade.benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), new {@disabled="disabled"})
                     @Html.ValidationMessageFor(model => model.benchmark_id)
                 </div>
             </td>
@@ -71,7 +71,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.Trade.created_on)
+                    @Html.TextBoxFor(model => model.Trade.created_on, new {@disabled="disabled"})
                     @Html.ValidationMessageFor(model => model.created_on)
                 </div>
             </td>
@@ -84,7 +84,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.Trade.trade_label)
+                    @Html.TextBoxFor(model => model.Trade.trade_label, new {@disabled="disabled"})
                     @Html.ValidationMessageFor(model => model.trade_label)
                 </div>
             </td>
@@ -97,7 +97,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.Trade.trade_editorial_label)
+                    @Html.TextBoxFor(model => model.Trade.trade_editorial_label, new {@disabled="disabled"})
                     @Html.ValidationMessageFor(model => model.trade_editorial_label)
                 </div>
             </td>
@@ -111,7 +111,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.Trade.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"))
+                    @Html.DropDownListFor(model => model.Trade.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), new {@disabled="disabled"})
                     @Html.ValidationMessageFor(model => model.structure_type_id)
                 </div>
             </td>
@@ -139,16 +139,16 @@
 
                                             @Html.LabelFor(modelItem => itemGroup.TradeLineGroupType)
             
-                                            @Html.DropDownListFor(modelItem => itemGroup.TradeLineGroupType.trade_line_group_type_id, new SelectList(itemGroup.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), itemGroup.TradeLineGroupType.trade_line_group_type_label)
+                                            @Html.DropDownListFor(modelItem => itemGroup.TradeLineGroupType.trade_line_group_type_id, new SelectList(itemGroup.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), itemGroup.TradeLineGroupType.trade_line_group_type_label, new {@disabled="disabled"})
                                            
                                             <br />
                                             @Html.LabelFor(modelItem => itemGroup.EditorialLabel)
 
-                                            @Html.EditorFor(modelItem => itemGroup.EditorialLabel)
+                                            @Html.TextBoxFor(modelItem => itemGroup.EditorialLabel, new {@disabled="disabled"})
                                             <br />
                                             @Html.LabelFor(modelItem => itemGroup.CanonicalLabel)
 
-                                            @Html.EditorFor(modelItem => itemGroup.CanonicalLabel)
+                                            @Html.TextBoxFor(modelItem => itemGroup.CanonicalLabel, new {@disabled="disabled"})
 
                                         </td>
                                         <td>
@@ -170,10 +170,10 @@
                                                         <tr>
                                                             <td>@Html.Raw(j)</td>
                                                             <td>@Html.DisplayFor(modelItem => lineItem.TradeLine.trade_line_id)</td>
-                                                            <td>@Html.DropDownListFor(modelItem => lineItem.Position.position_id, new SelectList(lineItem.Positions, "position_id", "position_label"), lineItem.Position.position_label)
+                                                            <td>@Html.DropDownListFor(modelItem => lineItem.Position.position_id, new SelectList(lineItem.Positions, "position_id", "position_label"), lineItem.Position.position_label, new {@disabled="disabled"})
                                                                 @*@Html.DisplayFor(modelItem => lineItem.Position.position_label)*@
                                                             </td>
-                                                            <td>@Html.DropDownListFor(modelItem => lineItem.TradeTradableThing.tradable_thing_id, new SelectList(lineItem.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), lineItem.TradeTradableThing.tradable_thing_label)
+                                                            <td>@Html.DropDownListFor(modelItem => lineItem.TradeTradableThing.tradable_thing_id, new SelectList(lineItem.TradeTradableThings, "tradable_thing_id", "tradable_thing_label"), lineItem.TradeTradableThing.tradable_thing_label, new {@disabled="disabled"})
                                                                 @*@Html.DisplayFor(modelItem => lineItem.TradeTradableThing.tradable_thing_label)*@
                                                             </td>
                                                         </tr>
@@ -203,7 +203,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.instruction_entry)
+                    @Html.TextBoxFor(model => model.instruction_entry, new {@disabled="disabled"})
                     @Html.ValidationMessageFor(model => model.instruction_entry)
                 </div>
             </td>
@@ -218,7 +218,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.instruction_entry_date)
+                    @Html.TextBoxFor(model => model.instruction_entry_date, new {@disabled="disabled"})
                     @Html.ValidationMessageFor(model => model.instruction_entry_date)
                 </div>
             </td>
@@ -233,7 +233,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.instruction_exit)
+                    @Html.TextBoxFor(model => model.instruction_exit, new {@disabled="disabled"})
                 </div>
             </td>
             <td></td>
@@ -246,7 +246,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.instruction_exit_date)
+                    @Html.TextBoxFor(model => model.instruction_exit_date, new {@disabled="disabled"})
                 </div>
             </td>
             <td></td>
@@ -260,12 +260,12 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"))
+                    @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new {@disabled="disabled"})
                 </div>
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.instruction_label)
+                    @Html.TextBoxFor(model => model.instruction_label, new {@disabled="disabled"})
                 </div>
             </td>
         </tr>
@@ -277,7 +277,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"))
+                    @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new {@disabled="disabled"})
                 </div>
             </td>
             <td></td>
@@ -290,7 +290,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
+                    @Html.DropDownListFor(model => model.currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new {@disabled="disabled"})
                 </div>
             </td>
             <td></td>
@@ -311,7 +311,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "related_trade_id"), String.Empty )
+                    @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "related_trade_id"), String.Empty, new {@disabled="disabled"} )
                 </div>
             </td>
             <td></td>
@@ -325,7 +325,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.apl_func)
+                    @Html.TextBoxFor(model => model.apl_func, new {@disabled="disabled"})
                 </div>
             </td>
             <td></td>
@@ -345,7 +345,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.mark_to_mark_rate)
+                    @Html.TextBoxFor(model => model.mark_to_mark_rate, new {@disabled="disabled"})
                 </div>
             </td>
             <td></td>
@@ -359,7 +359,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.EditorFor(model => model.interest_rate_diff)
+                    @Html.TextBoxFor(model => model.interest_rate_diff, new {@disabled="disabled"})
                 </div>
             </td>
             <td></td>
@@ -380,9 +380,9 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"))
-                    @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
-                    @Html.EditorFor(model => model.abs_return_value)
+                    @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new {@disabled="disabled"})
+                    @Html.DropDownListFor(model => model.abs_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new {@disabled="disabled"})
+                    @Html.TextBoxFor(model => model.abs_return_value, new {@disabled="disabled"})
                 </div>
             </td>
         </tr>
@@ -402,9 +402,9 @@
             </td>
             <td>
                 <div class="editor-field disabled">
-                    @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"))
-                    @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty)
-                    @Html.EditorFor(model => model.rel_return_value)
+                    @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new {@disabled="disabled"})
+                    @Html.DropDownListFor(model => model.rel_currency_id, new SelectList(Model.Currencies, "currency_id", "currency_label"), String.Empty, new {@disabled="disabled"})
+                    @Html.TextBoxFor(model => model.rel_return_value, new { @disabled = "disabled" })
                 </div>
             </td>
         </tr>
@@ -417,7 +417,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty)
+                    @Html.DropDownListFor(model => model.return_benchmark_id, new SelectList(Model.Benchmarks, "benchmark_id", "benchmark_label"), String.Empty, new {@disabled="disabled"})
 
                 </div>
             </td>
@@ -438,7 +438,7 @@
             </td>
             <td>
                 <div class="editor-field">
-                    @Html.TextAreaFor(model => model.Comment.comment_label, new { rows = 5, columns = 50 })
+                    @Html.TextAreaFor(model => model.Comment.comment_label, new { rows = 5, columns = 50 , @disabled="disabled"})
                 </div>
             </td>
         </tr>

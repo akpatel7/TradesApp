@@ -497,7 +497,7 @@
     <Content Include="Content\jquery.ui.1.10.0.ie.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\moment-datepicker\datepicker.css">
+    <Content Include="Content\moment-datepicker\datepicke_r.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\PagedList.css">

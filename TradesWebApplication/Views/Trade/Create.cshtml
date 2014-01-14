@@ -161,12 +161,11 @@
                 <div class="control-label col-sm-2">
                     @Html.LabelFor(model => model.instruction_entry)
                 </div>
-
-
                 <div class="col-sm-3">
                     <input type="text" data-bind="value: instruction_entry" />
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="control-label col-sm-2">
                     @Html.LabelFor(model => model.instruction_entry_date)
@@ -177,6 +176,7 @@
                 </div>
                 @*<span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</span>*@
             </div>
+
             <div class="form-group">
                 <div class="control-label col-sm-2">
                     @Html.LabelFor(model => model.instruction_exit)
@@ -185,6 +185,7 @@
                     <input type="text" data-bind="value: instruction_exit" />
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="control-label col-sm-2">
                     @Html.LabelFor(model => model.instruction_exit_date)
@@ -194,20 +195,12 @@
                     <input class="span2" size="16" type="text" value="" data-bind="value: instruction_exit_date">
                     <span data-bind="visible: instructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
                 </div>
-
-
             </div>
-
-
-
-
 
             <div class="form-group">
                 <div class="control-label col-sm-2">
                     @Html.LabelFor(model => model.instruction_type_id)
                 </div>
-
-
                 <div class="col-sm-3">
                     @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: instruction_type_id", @class = "form-control" })
                 </div>
@@ -217,6 +210,7 @@
 
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="control-label col-sm-2">
                     @Html.LabelFor(model => model.hedge_id)
@@ -226,6 +220,7 @@
                     @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: hedge_id", @class = "form-control" })
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="control-label col-sm-2">
                     @Html.LabelFor(model => model.currency_id)
@@ -248,10 +243,10 @@
 
                 <div class="form-group">
                     <div>
-
                         <input class="input-xlarge" id="selectRelatedTrades" type="hidden" data-bind="value: related_trade_ids_list" />
                     </div>
                 </div>
+
                 <div class="form-group">
                     <div class="control-label col-sm-2">
                         @Html.LabelFor(model => model.apl_func)
@@ -275,11 +270,11 @@
                     <input type="text" data-bind="value: mark_to_mark_rate" />
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="control-label col-sm-2">
                     @Html.LabelFor(model => model.interest_rate_diff)
                 </div>
-
                 <div class="col-sm-3">
                     <input type="text" data-bind="value: interest_rate_diff" />
                 </div>
@@ -571,7 +566,6 @@
 
     //to remotely get Financial Instrument for typeaheads
     function typeAheadFinInstr() {
-        //console.log(ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter);
         var newTradableThing = '#' + ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter;
         $(newTradableThing).select2({
             minimumInputLength: 1,
@@ -605,19 +599,7 @@
         });
     };
 
-
-    //to invoke validation on razor - Not working
-    //$('#dpInstructionEntry').datepicker()
-    //    .on('changeDate', function(ev) {
-    //        $('#dpInstructionEntryText').keyup();
-    //        $('#dpInstructionEntryText').click();
-    //    });
-
-    //$('#btnAddLine').click(function () {
-    //    console.log('trying select2 for line');
-    //    $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}" });
-    //});
-
+    
     $('#btnAddGroup').click(function () {
         $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '250px' });
     });
