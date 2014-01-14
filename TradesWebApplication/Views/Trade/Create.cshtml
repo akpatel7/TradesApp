@@ -9,353 +9,350 @@
 }
 
 <form role="form" class="form-horizontal" data-bind="submit: function () { saveTrade(); }">
-
     @Html.ValidationSummary(true)
     <fieldset class="tgroup">
         <legend class="trade_group_head"><strong>Trade Creation</strong></legend>
-        
-           <div class="form-group">
-                    <div class="control-label col-sm-2">
-                        @Html.LabelFor(model => model.service_id)
-                    </div>
 
-              <div class="col-sm-3">
- @Html.DropDownListFor(model => model.service_id, new SelectList(Model.Services, "service_id", "service_code"), "{Service}", new { @data_bind = "value: service_id", @class = "form-control col-xs-2" })
-              </div>
-                   
-</div>
- <div class="form-group">          
-                    <div class="control-label col-sm-2">
-                        @Html.LabelFor(model => model.length_type_id)
-                    </div>
+        <div class="form-group">
+            <div class="control-label col-sm-2">
+                @Html.LabelFor(model => model.service_id)
+            </div>
 
-          
-<div class="col-sm-3">
-                        @Html.DropDownListFor(model => model.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"), "{Trade Type}", new { @data_bind = "value: length_type_id", @class = "form-control" })
-                  </div>
-                    </div>
+            <div class="col-sm-3">
+                @Html.DropDownListFor(model => model.service_id, new SelectList(Model.Services, "service_id", "service_code"), "{Service}", new { @data_bind = "value: service_id", @class = "form-control col-xs-2" })
+            </div>
 
-<div class="form-group">
-                    <div class="control-label col-sm-2">
-                        @Html.LabelFor(model => model.relativity_id)
-                    </div>
-              
-                    <div class="col-sm-3">
-                        @Html.DropDownListFor(model => model.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"), "{Benchmark}", new { @data_bind = "value: relativity_id", @class = "form-control form-control col-xs-2" })
+        </div>
+        <div class="form-group">
+            <div class="control-label col-sm-2">
+                @Html.LabelFor(model => model.length_type_id)
+            </div>
+
+
+            <div class="col-sm-3">
+                @Html.DropDownListFor(model => model.length_type_id, new SelectList(Model.LengthTypes, "length_type_id", "length_type_label"), "{Trade Type}", new { @data_bind = "value: length_type_id", @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-2">
+                @Html.LabelFor(model => model.relativity_id)
+            </div>
+
+            <div class="col-sm-3">
+                @Html.DropDownListFor(model => model.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"), "{Benchmark}", new { @data_bind = "value: relativity_id", @class = "form-control form-control col-xs-2" })
                         @Html.ValidationMessageFor(model => model.relativity_id)
-                    </div>
-</div>
-<div class="form-group">
-                    <div class="control-label col-sm-2" data-bind="visible: relativity_id() == 2">
-                        @Html.LabelFor(model => model.benchmark_id)
-                    </div>
-            
-                    <div class="col-sm-3" data-bind="visible: relativity_id() == 2">
-<input class="input-xlarge" id="BenchmarkTypeAhead" type="hidden" data-bind="value: benchmark_id"/>
-                    </div>
-</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="control-label col-sm-2" data-bind="visible: relativity_id() == 2">
+                @Html.LabelFor(model => model.benchmark_id)
+            </div>
 
-<div class="form-group">
-                    <div class="control-label col-sm-2">
-                        @Html.LabelFor(model => model.trade_label)
-                    </div>
-                
-                    <div class="col-sm-3">
- <input type="text"  data-bind="value: trade_label" placeholder="{Canonical Label}" disabled="disabled"/>
-                    </div>
-</div>
-<div class="form-group">
-                    <div class="control-label col-sm-2">
-                        @Html.LabelFor(model => model.trade_editorial_label)
-                    </div>
-             
-                    <div class="col-sm-3">
-                        <input type="text" class="input-large" data-bind="value: trade_editorial_label" placeholder="{Editorial Label}"/>
-                    </div>
- </div>
-<div class="form-group">
-                    <div class="control-label col-sm-2">
-                        @Html.LabelFor(model => model.structure_type_id)
-                    </div>
-                
-                    <div class="col-sm-3">
-                        @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), "{Structure}", new { @data_bind = "value: structure_type_id", @class = "form-control" })
-                    </div>
-</div>
+            <div class="col-sm-3" data-bind="visible: relativity_id() == 2">
+                <input class="input-xlarge" id="BenchmarkTypeAhead" type="hidden" data-bind="value: benchmark_id" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-sm-2">
+                @Html.LabelFor(model => model.trade_label)
+            </div>
+
+            <div class="col-sm-3">
+                <input type="text" data-bind="value: trade_label" placeholder="{Canonical Label}" disabled="disabled" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="control-label col-sm-2">
+                @Html.LabelFor(model => model.trade_editorial_label)
+            </div>
+
+            <div class="col-sm-3">
+                <input type="text" class="input-large" data-bind="value: trade_editorial_label" placeholder="{Editorial Label}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="control-label col-sm-2">
+                @Html.LabelFor(model => model.structure_type_id)
+            </div>
+
+            <div class="col-sm-3">
+                @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), "{Structure}", new { @data_bind = "value: structure_type_id", @class = "form-control" })
+            </div>
+        </div>
 
         <!-- trade groups ------------------------------------->
         <fieldset class="tgroup">
             <legend class="trade_group">Group Information</legend>
-                <table>
-                    <tr>
-                        <table data-bind='foreach: tradegroups' border="1">
-                            <thead>
-                                <tr>
-                                    <th>Group <span data-bind='text: ($index() + 1)'></span> Information</th>
-                                    <th>Trade Line(s)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="control-label">Group Structure:</div>
-                                        <div>
-                                            @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), "{Structure}", new { @data_bind = "value: trade_line_group_type_id, selectedText: trade_line_group_type_string", @class = "form-control" })
-                                       </div>
-                                            <div class="control-label">Editorial Label:</div>
-                                            <div>
-<input type="text" class="input-large" data-bind="value: trade_line_group_editorial_label" placeholder="{Editorial Label}"/>
-                                            </div>
-                                            <div class="control-label">Canonical Label:</div>
-                                            <div>
-                                                @*<input type="text" data-bind="value: trade_line_group_label" class="" disabled="disabled" />*@
- <input type="text"  data-bind="value: trade_line_group_label" placeholder="{Canonical Label}" disabled="disabled"/>
-                                            </div>
-</td>
+            <table>
+                <tr>
+                    <table data-bind='foreach: tradegroups' border="1">
+                        <thead>
+                            <tr>
+                                <th>Group <span data-bind='text: ($index() + 1)'></span>Information</th>
+                                <th>Trade Line(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="control-label">Group Structure:</div>
+                                    <div>
+                                        @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), "{Structure}", new { @data_bind = "value: trade_line_group_type_id, selectedText: trade_line_group_type_string", @class = "form-control" })
+                                    </div>
+                                    <div class="control-label">Editorial Label:</div>
+                                    <div>
+                                        <input type="text" class="input-large" data-bind="value: trade_line_group_editorial_label" placeholder="{Editorial Label}" />
+                                    </div>
+                                    <div class="control-label">Canonical Label:</div>
+                                    <div>
+                                        @*<input type="text" data-bind="value: trade_line_group_label" class="" disabled="disabled" />*@
+ <input type="text" data-bind="value: trade_line_group_label" placeholder="{Canonical Label}" disabled="disabled" />
+                                    </div>
+                                </td>
 
-                                    <td>
-                                        <!-- Add a list of trade lines. -->
-                                        <table data-bind='foreach: tradeLines'>
-                                            <thead>
-                                                <tr>
-                                                    <th>Order:&#160;&#160;&#160;</th>
-                                                    <th>Position:</th>
-                                                    <th>Financial Instrument:</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <span data-bind='text: ($index() + 1)'></span>
-                                                    </td>
-                                                    <td>
-                                                        @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })
-                                                    </td>
-                                                    <td>
-                                                        
-<input class="input-xlarge" type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id"/>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-danger" data-bind='click: function () { $parent.removeLine($data); }'>
-                                                            <span class="glyphicon glyphicon-remove-circle"></span>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <button data-bind='click: $root.removeGroup' class='btn btn-sm btn-danger'>Delete trade group</button>
-                                        <button id="btnAddLine" data-bind='click: function () { addLine(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new trade line</button>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <td>
+                                    <!-- Add a list of trade lines. -->
+                                    <table data-bind='foreach: tradeLines'>
+                                        <thead>
+                                            <tr>
+                                                <th>Order:&#160;&#160;&#160;</th>
+                                                <th>Position:</th>
+                                                <th>Financial Instrument:</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span data-bind='text: ($index() + 1)'></span>
+                                                </td>
+                                                <td>@Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })
+                                                </td>
+                                                <td>
 
-                    </tr>
-                    <tr>
-                        <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>
-                    </tr>
-                </table>
+                                                    <input class="input-xlarge" type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id" />
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-danger" data-bind='click: function () { $parent.removeLine($data); }'>
+                                                        <span class="glyphicon glyphicon-remove-circle"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button data-bind='click: $root.removeGroup' class='btn btn-sm btn-danger'>Delete trade group</button>
+                                    <button id="btnAddLine" data-bind='click: function () { addLine(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new trade line</button>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </tr>
+                <tr>
+                    <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>
+                </tr>
+            </table>
         </fieldset>
         <!-- instructions ------------------------------------- -->
         <fieldset class="tgroup">
             <legend class="trade_group">Instructions</legend>
-           <div class="form-group">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.instruction_entry)
-                        </div>
-
-                    
-                       <div class="col-sm-3">
-                            <input type="text" data-bind="value: instruction_entry" />
-                        </div>
-</div>
-     <div class="form-group">              
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.instruction_entry_date)
-                        </div>
-                        <div class="input-append date col-sm-3" id="dpInstructionEntry" data-date="" data-datepicker-format="YYYY-MM-DD">
-                            <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
-                            <input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">
-                            
-                        </div>
-                        @*<span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</span>*@
-                    </div>
-                    <div class="form-group">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.instruction_exit)
-                        </div>
-                        <div class="col-sm-3">
-                                <input type="text" data-bind="value: instruction_exit" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.instruction_exit_date)
-                        </div>
-                            <div class="input-append date col-sm-3" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
-                                <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
-                                <input class="span2" size="16" type="text" value=""  data-bind="value: instruction_exit_date">
-<span data-bind="visible: instructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
-                            </div>
-                  
-
-                       </div>
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.instruction_entry)
+                </div>
 
 
+                <div class="col-sm-3">
+                    <input type="text" data-bind="value: instruction_entry" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.instruction_entry_date)
+                </div>
+                <div class="input-append date col-sm-3" id="dpInstructionEntry" data-date="" data-datepicker-format="YYYY-MM-DD">
+                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">
+                </div>
+                @*<span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</span>*@
+            </div>
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.instruction_exit)
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" data-bind="value: instruction_exit" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.instruction_exit_date)
+                </div>
+                <div class="input-append date col-sm-3" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
+                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <input class="span2" size="16" type="text" value="" data-bind="value: instruction_exit_date">
+                    <span data-bind="visible: instructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
+                </div>
 
- 
-    
-<div class="form-group">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.instruction_type_id)
-                        </div>
 
-                    
-                         <div class="col-sm-3">
-                            @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: instruction_type_id", @class = "form-control" })
-                        </div>
-                    
-                         <div class="col-sm-3">
-<input type="text" data-bind="value: instruction_label" />
+            </div>
 
-                        </div>
-</div>
-                 <div class="form-group">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.hedge_id)
-                        </div>
-                    
-                         <div class="col-sm-3">
-                            @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: hedge_id", @class = "form-control" })
-                        </div>
-</div>
-                    <div class="form-group">
-                       <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.currency_id)
-                        </div>
-                    
-                         <div class="col-sm-3">
-<input class="input-xlarge" id="CurrencyTypeAhead" type="hidden" data-bind="value: currency_id"/>
-                        </div>
-</div>
-                   
+
+
+
+
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.instruction_type_id)
+                </div>
+
+
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: instruction_type_id", @class = "form-control" })
+                </div>
+
+                <div class="col-sm-3">
+                    <input type="text" data-bind="value: instruction_label" />
+
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.hedge_id)
+                </div>
+
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: hedge_id", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.currency_id)
+                </div>
+
+                <div class="col-sm-3">
+                    <input class="input-xlarge" id="CurrencyTypeAhead" type="hidden" data-bind="value: currency_id" />
+                </div>
+            </div>
+
         </fieldset>
 
         <!-- supplementary info ------------------------------------- -->
         <fieldset class="tgroup">
             <legend class="trade_group">Supplementary Information</legend>
             <div class="form-group">
-                         <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.related_trade_ids)
-                        </div>
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.related_trade_ids)
+                </div>
 
-                     <div class="form-group">
-                        <div>
-                           
-<input class="input-xlarge" id="selectRelatedTrades" type="hidden" data-bind="value: related_trade_ids_list"/>
-                        </div>
-</div>
- <div class="form-group">
-                         <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.apl_func)
-                        </div>
+                <div class="form-group">
+                    <div>
 
-                  
-                        <div class="col-sm-3">
-<input type="text" data-bind="value: apl_func" />
-                        </div>
+                        <input class="input-xlarge" id="selectRelatedTrades" type="hidden" data-bind="value: related_trade_ids_list" />
                     </div>
+                </div>
+                <div class="form-group">
+                    <div class="control-label col-sm-2">
+                        @Html.LabelFor(model => model.apl_func)
+                    </div>
+
+
+                    <div class="col-sm-3">
+                        <input type="text" data-bind="value: apl_func" />
+                    </div>
+                </div>
         </fieldset>
         <!-- FX Spot and Carry ------------------------------------- -->
         <fieldset class="tgroup">
             <legend class="trade_group">FX Spot and Carry</legend>
             <div class="form-group">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.mark_to_mark_rate)
-                        </div>
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.mark_to_mark_rate)
+                </div>
 
-                        <div class="col-sm-3">
-<input type="text" data-bind="value: mark_to_mark_rate" />
-                        </div>
-                   </div>
- <div class="form-group">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.interest_rate_diff)
-                        </div>
+                <div class="col-sm-3">
+                    <input type="text" data-bind="value: mark_to_mark_rate" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.interest_rate_diff)
+                </div>
 
-                        <div class="col-sm-3">
-<input type="text" data-bind="value: interest_rate_diff" />
-                        </div>
-                    </div>
+                <div class="col-sm-3">
+                    <input type="text" data-bind="value: interest_rate_diff" />
+                </div>
+            </div>
         </fieldset>
 
         <!-- Abs performance ------------------------------------- -->
         <fieldset class="tgroup">
             <legend class="trade_group">Absolute Performance</legend>
             <div class="form-group">
-                       <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.abs_measure_type_id)
-                        </div>
-                    
-                         <div class="col-sm-3">
-                            @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" })
-                        </div>
-                        <div class="col-sm-3" data-bind="visible: abs_measure_type_id() == 2">
-<input class="input-xlarge" id="absCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id"/>
-                        </div>
-<div class="col-sm-3">
-<input type="text" data-bind="value: abs_return_value" />
-                        </div>
-                   </div>
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.abs_measure_type_id)
+                </div>
+
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" })
+                </div>
+                <div class="col-sm-3" data-bind="visible: abs_measure_type_id() == 2">
+                    <input class="input-xlarge" id="absCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id" />
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" data-bind="value: abs_return_value" />
+                </div>
+            </div>
         </fieldset>
 
         <!-- Rel performance ------------------------------------- -->
         <fieldset class="tgroup">
             <legend class="trade_group">Relative Performance</legend>
-             <div class="form-group">
-                         <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.rel_measure_type_id)
-                        </div>
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.rel_measure_type_id)
+                </div>
 
-                        <div class="col-sm-3">
-                            @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: rel_measure_type_id", @class = "form-control" })
-                        </div>
-
-
-                       <div class="col-sm-3" data-bind="visible: rel_measure_type_id() == 2">
-                           
-<input class="input-xlarge" id="relCurrencyTypeAhead" type="hidden" data-bind="value: rel_currency_id"/>
-                        </div>
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: rel_measure_type_id", @class = "form-control" })
+                </div>
 
 
-                        <div class="col-sm-3">
-<input type="text" data-bind="value: rel_return_value" />
-</div>
-                        </div>
-                   <div class="form-group">
-                         <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.return_benchmark_id)
-                        </div>
+                <div class="col-sm-3" data-bind="visible: rel_measure_type_id() == 2">
 
-                        <div class="col-sm-3">
-<input class="input-xlarge" id="relBenchmarkTypeAhead" type="hidden" data-bind="value: return_benchmark_id"/>
-                        </div>
-</div>  
+                    <input class="input-xlarge" id="relCurrencyTypeAhead" type="hidden" data-bind="value: rel_currency_id" />
+                </div>
+
+
+                <div class="col-sm-3">
+                    <input type="text" data-bind="value: rel_return_value" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.return_benchmark_id)
+                </div>
+
+                <div class="col-sm-3">
+                    <input class="input-xlarge" id="relBenchmarkTypeAhead" type="hidden" data-bind="value: return_benchmark_id" />
+                </div>
+            </div>
         </fieldset>
 
         <!-- Comments ------------------------------------- -->
         <fieldset class="tgroup">
             <legend class="trade_group">Trade Comments</legend>
-              <div class="form-group">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.comments)
-                        </div>
+            <div class="form-group">
+                <div class="control-label col-sm-2">
+                    @Html.LabelFor(model => model.comments)
+                </div>
 
-                
-                        <div class="col-sm-9">
-                            @Html.TextAreaFor(model => model.comments, new { @data_bind = "value: comments", @class = "form-control", @rows="3"})
-                        </div>
-                   </div>
+
+                <div class="col-sm-9">
+                    @Html.TextAreaFor(model => model.comments, new { @data_bind = "value: comments", @class = "form-control", @rows="3"})
+                </div>
+            </div>
 
         </fieldset>
         <p>
@@ -366,7 +363,7 @@
         </p>
 
     </fieldset>
- </div>
+    </div>
 </form>
 
 <pre data-bind='text: ko.toJSON($root, null, 2), visible: debug'></pre>
@@ -374,288 +371,288 @@
 @section scripts{
     <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            //init form custom controls
-            //datetimepickers - moment-datetimepicker for bootstrap
-            $('#dpInstructionEntry').datepicker();
-            $('#dpInstructionExit').datepicker();
+<script type="text/javascript">
+    $(document).ready(function () {
+        //init form custom controls
+        //datetimepickers - moment-datetimepicker for bootstrap
+        $('#dpInstructionEntry').datepicker();
+        $('#dpInstructionExit').datepicker();
 
-            //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
-            //TODO: Api call for searches on tradable things
-            $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
+        //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
+        //TODO: Api call for searches on tradable things
+        $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
 
 
-            //select2.3.5 jquery control for typeaheads
-            //to remotely get Benchmarks for typeaheads
-            function format_benchmark(item) {
-                return item.benchmark_label;
-            }
-            $("#BenchmarkTypeAhead").select2({
-                minimumInputLength: 1,
-                placeholder: "{Benchmark Selection}",
-                width: '200px',
-                allowClear: true,
-                ajax: {
-                    url: baseUrl + "Trade/AutoCompleteBenchmark",
-                    dataType: 'json',
-                    type: 'POST',
-                    data: function (term, page) {
-                        return {
-                            term: term, //search term 
-                        };
-                    },
-                    results: function (data, page) {
-                        return {
-                            results: data
-                        };
-                    }
+        //select2.3.5 jquery control for typeaheads
+        //to remotely get Benchmarks for typeaheads
+        function format_benchmark(item) {
+            return item.benchmark_label;
+        }
+        $("#BenchmarkTypeAhead").select2({
+            minimumInputLength: 1,
+            placeholder: "{Benchmark Selection}",
+            width: '200px',
+            allowClear: true,
+            ajax: {
+                url: baseUrl + "Trade/AutoCompleteBenchmark",
+                dataType: 'json',
+                type: 'POST',
+                data: function (term, page) {
+                    return {
+                        term: term, //search term 
+                    };
                 },
-                id: function (obj) {
-                    return obj.benchmark_id;
-                },
-                formatResult: format_benchmark,
-                formatSelection: format_benchmark
-            });
-            $("#relBenchmarkTypeAhead").select2({
-                minimumInputLength: 1,
-                placeholder: "{Benchmark Selection}",
-                width: '200px',
-                allowClear: true,
-                ajax: {
-                    url: baseUrl + "Trade/AutoCompleteBenchmark",
-                    dataType: 'json',
-                    type: 'POST',
-                    data: function (term, page) {
-                        return {
-                            term: term, //search term 
-                        };
-                    },
-                    results: function (data, page) {
-                        return {
-                            results: data
-                        };
-                    }
-                },
-                id: function (obj) {
-                    return obj.benchmark_id;
-                },
-                formatResult: format_benchmark,
-                formatSelection: format_benchmark
-            });
-            //end typeAhead
-
-            //to remotely get linked trades for typeaheads
-            function format_trade(item) {
-                return item.trade_editorial_label;
-            }
-            $("#selectRelatedTrades").select2({
-                minimumInputLength: 1,
-                placeholder: "{Linked Trades}",
-                width: '500px',
-                allowClear: true,
-                multiple: true,
-                ajax: {
-                    url: baseUrl + "Trade/AutoCompleteLinkedTrades",
-                    dataType: 'json',
-                    type: 'POST',
-                    data: function (term, page) {
-                        return {
-                            term: term, //search term 
-                        };
-                    },
-                    results: function (data, page) {
-                        return {
-                            results: data
-                        };
-                    }
-                },
-                id: function (obj) {
-                    return obj.trade_id;
-                },
-                formatResult: format_trade,
-                formatSelection: format_trade
-            });
-            //end typeAhead
-
-            //to remotely get currencies for typeaheads
-            function format_currency(item) {
-                return item.currency_label;
-            }
-            $("#CurrencyTypeAhead").select2({
-                minimumInputLength: 1,
-                placeholder: "{Currency Selection}",
-                width: '200px',
-                allowClear: true,
-                ajax: {
-                    url: baseUrl + "Trade/AutoCompleteCurrency",
-                    dataType: 'json',
-                    type: 'POST',
-                    data: function (term, page) {
-                        return {
-                            term: term, //search term 
-                        };
-                    },
-                    results: function (data, page) {
-                        return {
-                            results: data
-                        };
-                    }
-                },
-                id: function (obj) {
-                    return obj.currency_id;
-                },
-                formatResult: format_currency,
-                formatSelection: format_currency
-            });
-            //end typeAhead
-
-            //to remotely get currencies for typeaheads
-            $("#absCurrencyTypeAhead").select2({
-                minimumInputLength: 1,
-                placeholder: "{Currency Selection}",
-                width: '200px',
-                allowClear: true,
-                ajax: {
-                    url: baseUrl + "Trade/AutoCompleteCurrency",
-                    dataType: 'json',
-                    type: 'POST',
-                    data: function (term, page) {
-                        return {
-                            term: term, //search term 
-                        };
-                    },
-                    results: function (data, page) {
-                        return {
-                            results: data
-                        };
-                    }
-                },
-                id: function (obj) {
-                    return obj.currency_id;
-                },
-                formatResult: format_currency,
-                formatSelection: format_currency
-            });
-            //end typeAhead
-
-            //to remotely get currencies for typeaheads
-            $("#relCurrencyTypeAhead").select2({
-                minimumInputLength: 1,
-                placeholder: "{Currency Selection}",
-                width: '200px',
-                allowClear: true,
-                ajax: {
-                    url: baseUrl + "Trade/AutoCompleteCurrency",
-                    dataType: 'json',
-                    type: 'POST',
-                    data: function (term, page) {
-                        return {
-                            term: term, //search term 
-                        };
-                    },
-                    results: function (data, page) {
-                        return {
-                            results: data
-                        };
-                    }
-                },
-                id: function (obj) {
-                    return obj.currency_id;
-                },
-                formatResult: format_currency,
-                formatSelection: format_currency
-            });
-            //end typeAhead
-
-            //Financial Instrument for typeahead
-            typeAheadFinInstr();
-
-        });
-
-        //to remotely get Financial Instrument for typeaheads
-        function typeAheadFinInstr() {
-            //console.log(ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter);
-            var newTradableThing = '#' + ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter;
-            $(newTradableThing).select2({
-                minimumInputLength: 1,
-                placeholder: "{Financial Instrument}",
-                width: '200px',
-                allowClear: true,
-                ajax: {
-                    url: baseUrl + "Trade/AutoCompleteTradableThing",
-                    dataType: 'json',
-                    type: 'POST',
-                    data: function (term, page) {
-                        return {
-                            term: term, //search term 
-                        };
-                    },
-                    results: function (data, page) {
-                        return {
-                            results: data
-                        };
-                    }
-                },
-                id: function (obj) {
-                    return obj.tradable_thing_id;
-                },
-                formatResult: function (item) {
-                    return item.tradable_thing_label;
-                },
-                formatSelection: function (item) {
-                    return item.tradable_thing_label;
+                results: function (data, page) {
+                    return {
+                        results: data
+                    };
                 }
-            });
-        };
-
-
-        //to invoke validation on razor - Not working
-        //$('#dpInstructionEntry').datepicker()
-        //    .on('changeDate', function(ev) {
-        //        $('#dpInstructionEntryText').keyup();
-        //        $('#dpInstructionEntryText').click();
-        //    });
-
-        //$('#btnAddLine').click(function () {
-        //    console.log('trying select2 for line');
-        //    $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}" });
-        //});
-
-        $('#btnAddGroup').click(function () {
-            $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
+            },
+            id: function (obj) {
+                return obj.benchmark_id;
+            },
+            formatResult: format_benchmark,
+            formatSelection: format_benchmark
         });
+        $("#relBenchmarkTypeAhead").select2({
+            minimumInputLength: 1,
+            placeholder: "{Benchmark Selection}",
+            width: '200px',
+            allowClear: true,
+            ajax: {
+                url: baseUrl + "Trade/AutoCompleteBenchmark",
+                dataType: 'json',
+                type: 'POST',
+                data: function (term, page) {
+                    return {
+                        term: term, //search term 
+                    };
+                },
+                results: function (data, page) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            id: function (obj) {
+                return obj.benchmark_id;
+            },
+            formatResult: format_benchmark,
+            formatSelection: format_benchmark
+        });
+        //end typeAhead
 
+        //to remotely get linked trades for typeaheads
+        function format_trade(item) {
+            return item.trade_editorial_label;
+        }
+        $("#selectRelatedTrades").select2({
+            minimumInputLength: 1,
+            placeholder: "{Linked Trades}",
+            width: '500px',
+            allowClear: true,
+            multiple: true,
+            ajax: {
+                url: baseUrl + "Trade/AutoCompleteLinkedTrades",
+                dataType: 'json',
+                type: 'POST',
+                data: function (term, page) {
+                    return {
+                        term: term, //search term 
+                    };
+                },
+                results: function (data, page) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            id: function (obj) {
+                return obj.trade_id;
+            },
+            formatResult: format_trade,
+            formatSelection: format_trade
+        });
+        //end typeAhead
 
+        //to remotely get currencies for typeaheads
+        function format_currency(item) {
+            return item.currency_label;
+        }
+        $("#CurrencyTypeAhead").select2({
+            minimumInputLength: 1,
+            placeholder: "{Currency Selection}",
+            width: '200px',
+            allowClear: true,
+            ajax: {
+                url: baseUrl + "Trade/AutoCompleteCurrency",
+                dataType: 'json',
+                type: 'POST',
+                data: function (term, page) {
+                    return {
+                        term: term, //search term 
+                    };
+                },
+                results: function (data, page) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            id: function (obj) {
+                return obj.currency_id;
+            },
+            formatResult: format_currency,
+            formatSelection: format_currency
+        });
+        //end typeAhead
 
-        var Example = (function () {
-            "use strict";
+        //to remotely get currencies for typeaheads
+        $("#absCurrencyTypeAhead").select2({
+            minimumInputLength: 1,
+            placeholder: "{Currency Selection}",
+            width: '200px',
+            allowClear: true,
+            ajax: {
+                url: baseUrl + "Trade/AutoCompleteCurrency",
+                dataType: 'json',
+                type: 'POST',
+                data: function (term, page) {
+                    return {
+                        term: term, //search term 
+                    };
+                },
+                results: function (data, page) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            id: function (obj) {
+                return obj.currency_id;
+            },
+            formatResult: format_currency,
+            formatSelection: format_currency
+        });
+        //end typeAhead
 
-            var elem,
-                hideHandler,
-                that = {};
+        //to remotely get currencies for typeaheads
+        $("#relCurrencyTypeAhead").select2({
+            minimumInputLength: 1,
+            placeholder: "{Currency Selection}",
+            width: '200px',
+            allowClear: true,
+            ajax: {
+                url: baseUrl + "Trade/AutoCompleteCurrency",
+                dataType: 'json',
+                type: 'POST',
+                data: function (term, page) {
+                    return {
+                        term: term, //search term 
+                    };
+                },
+                results: function (data, page) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            id: function (obj) {
+                return obj.currency_id;
+            },
+            formatResult: format_currency,
+            formatSelection: format_currency
+        });
+        //end typeAhead
 
-            that.init = function (options) {
-                elem = $(options.selector);
-            };
+        //Financial Instrument for typeahead
+        typeAheadFinInstr();
 
-            that.show = function (text) {
-                clearTimeout(hideHandler);
+    });
 
-                elem.find("span").html(text);
-                elem.delay(200).fadeIn().delay(4000).fadeOut();
-            };
-
-            return that;
-        }());
-
-        //send save request to API            
-        function saveTrade() {
-            if (vm.saveTradeData() == true) {
-                //alert('Trade successfully created');  
+    //to remotely get Financial Instrument for typeaheads
+    function typeAheadFinInstr() {
+        //console.log(ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter);
+        var newTradableThing = '#' + ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter;
+        $(newTradableThing).select2({
+            minimumInputLength: 1,
+            placeholder: "{Financial Instrument}",
+            width: '200px',
+            allowClear: true,
+            ajax: {
+                url: baseUrl + "Trade/AutoCompleteTradableThing",
+                dataType: 'json',
+                type: 'POST',
+                data: function (term, page) {
+                    return {
+                        term: term, //search term 
+                    };
+                },
+                results: function (data, page) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            id: function (obj) {
+                return obj.tradable_thing_id;
+            },
+            formatResult: function (item) {
+                return item.tradable_thing_label;
+            },
+            formatSelection: function (item) {
+                return item.tradable_thing_label;
             }
+        });
+    };
 
+
+    //to invoke validation on razor - Not working
+    //$('#dpInstructionEntry').datepicker()
+    //    .on('changeDate', function(ev) {
+    //        $('#dpInstructionEntryText').keyup();
+    //        $('#dpInstructionEntryText').click();
+    //    });
+
+    //$('#btnAddLine').click(function () {
+    //    console.log('trying select2 for line');
+    //    $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}" });
+    //});
+
+    $('#btnAddGroup').click(function () {
+        $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
+    });
+
+
+
+    var Example = (function () {
+        "use strict";
+
+        var elem,
+            hideHandler,
+            that = {};
+
+        that.init = function (options) {
+            elem = $(options.selector);
         };
 
-    </script>
+        that.show = function (text) {
+            clearTimeout(hideHandler);
+
+            elem.find("span").html(text);
+            elem.delay(200).fadeIn().delay(4000).fadeOut();
+        };
+
+        return that;
+    }());
+
+    //send save request to API            
+    function saveTrade() {
+        if (vm.saveTradeData() == true) {
+            //alert('Trade successfully created');  
+        }
+
+    };
+
+</script>
 }
