@@ -8,7 +8,7 @@
         new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });*@
 }
 
-<form role="form" class="form-horizontal" data-bind="submit: function (){ saveTrade(); }">
+<form role="form" class="form-horizontal" data-bind="submit: function () { saveTrade(); }">
 
     @Html.ValidationSummary(true)
     <fieldset class="tgroup">
@@ -137,7 +137,7 @@
 <input class="input-xlarge" type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id"/>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-sm btn-danger" data-bind='click: function () { $parent.removeLine($data);  }'>
+                                                        <button type="button" class="btn btn-sm btn-danger" data-bind='click: function () { $parent.removeLine($data); }'>
                                                             <span class="glyphicon glyphicon-remove-circle"></span>
                                                         </button>
                                                     </td>
@@ -173,37 +173,38 @@
                         <div class="control-label col-sm-2">
                             @Html.LabelFor(model => model.instruction_entry_date)
                         </div>
-
-                   
                         <div class="input-append date col-sm-3" id="dpInstructionEntry" data-date="" data-datepicker-format="YYYY-MM-DD">
-<span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>                            
-<input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">                  
+                            <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                            <input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">
+                            
                         </div>
-                        @*<span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</@*span>*@
-</div>
+                        @*<span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</span>*@
+                    </div>
                     <div class="form-group">
                         <div class="control-label col-sm-2">
                             @Html.LabelFor(model => model.instruction_exit)
                         </div>
-
                         <div class="col-sm-3">
-  <input type="text" data-bind="value: instruction_exit" />
+                                <input type="text" data-bind="value: instruction_exit" />
                         </div>
-</div>
+                    </div>
                     <div class="form-group">
                         <div class="control-label col-sm-2">
                             @Html.LabelFor(model => model.instruction_exit_date)
                         </div>
-                    
+                            <div class="input-append date col-sm-3" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
+                                <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                                <input class="span2" size="16" type="text" value=""  data-bind="value: instruction_exit_date">
+<span data-bind="visible: instructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
+                            </div>
+                  
 
-                        <div class="input-append date col-sm-3" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
-                            <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
-                            <input class="span2" size="16" type="text" value="" data-bind="value: instruction_exit_date">
-                        </div>
-</div>
+                       </div>
+
+
 
  
-                  <span data-bind="visible: instructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
+    
 <div class="form-group">
                         <div class="control-label col-sm-2">
                             @Html.LabelFor(model => model.instruction_type_id)
@@ -359,7 +360,6 @@
         </fieldset>
         <p>
             <button id="create" type="submit" class="btn btn-primary">Create</button>
-            @*<button name="Reset Form" class="btn btn-primary" onclick=" document.location.href = $('#createUrl').attr('href');">Reset</button>*@
             <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
             <button name="ClientCancel" class="btn btn-primary" onclick=" document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
             <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Home"))" style="display:none;"></a>
@@ -375,7 +375,7 @@
     <script src="~/Scripts/app/viewmodels/tradeViewModel.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             //init form custom controls
             //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpInstructionEntry').datepicker();
@@ -384,8 +384,8 @@
             //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
             //TODO: Api call for searches on tradable things
             $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
-            
-            
+
+
             //select2.3.5 jquery control for typeaheads
             //to remotely get Benchmarks for typeaheads
             function format_benchmark(item) {
@@ -488,20 +488,20 @@
                 width: '200px',
                 allowClear: true,
                 ajax: {
-                   url: baseUrl + "Trade/AutoCompleteCurrency",
-                   dataType: 'json',
-                   type: 'POST',
-                   data: function (term, page) {
-                       return {
-                           term: term, //search term 
-                       };
-                   },
-                   results: function (data, page) {
-                       return {
-                           results: data
-                       };
-                   }
-               },
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function (term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
                 id: function (obj) {
                     return obj.currency_id;
                 },
@@ -567,7 +567,7 @@
                 formatSelection: format_currency
             });
             //end typeAhead
-            
+
             //Financial Instrument for typeahead
             typeAheadFinInstr();
 
@@ -654,7 +654,7 @@
             if (vm.saveTradeData() == true) {
                 //alert('Trade successfully created');  
             }
-            
+
         };
 
     </script>

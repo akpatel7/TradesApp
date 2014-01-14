@@ -27,7 +27,7 @@
         this.format = options.format || this.element.data('datepicker-format') || moment.langData().longDateFormat('L');
         this.calendarPlacement = options.calendarPlacement || this.element.data('datepicker-calendarplacement') || 'right';
         this.picker = $(DPGlobal.template)
-							.appendTo('body')
+							.appendTo(options.container)
 							.on({
 							    click: $.proxy(this.click, this),
 							    mousedown: $.proxy(this.mousedown, this)
@@ -110,6 +110,11 @@
             return (this.moment && this.moment.format(format || this.format)) || '';
         },
         show: function (e) {
+	        
+        	if (this.isInput && this.element.is(':disabled')) { return; }
+
+        	else if (this.element.children('input').is(':disabled')) { return; }
+	        
             this.picker.show();
             this.height = (this.component && this.component.outerHeight()) || this.element.outerHeight();
             this.place();
@@ -224,7 +229,7 @@
             var i = 0
             var monthsShort = $.proxy(moment.langData().monthsShort, moment.langData());
             while (i < 12) {
-                html += '<span class="month">' + monthsShort(moment().month(i++)) + '</span>';
+            	html += '<span class="month">' + monthsShort(moment().startOf('month').month(i++)) + '</span>';
             }
             this.picker.find('.datepicker-months td').append(html);
         },
@@ -413,6 +418,7 @@
     };
 
     $.fn.datepicker.defaults = {
+    	container : 'body'
     };
     $.fn.datepicker.Constructor = Datepicker;
 
