@@ -398,6 +398,9 @@
     <Content Include="Content\images\accent.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\images\BCA_research_logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\images\bullet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
