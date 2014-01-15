@@ -313,9 +313,18 @@
 
             </td>
             <td>
-                <div class="editor-field">
+                @*<div class="editor-field">
                     @Html.DropDownListFor(model => model.related_trade_ids, new SelectList(Model.RelatedTrades, "trade_id", "related_trade_id"), String.Empty, new {@disabled="disabled"} )
-                </div>
+                </div>*@
+                <table class="grid">
+                @foreach (var item in Model.RelatedTrades) {
+
+                <tr>
+                    <td class="left"><@item.related_trade_id></td>
+                    <td class="left"><@item.Trade.trade_editorial_label></td>
+                </tr>
+                }
+            </table>
             </td>
             <td></td>
         </tr>
