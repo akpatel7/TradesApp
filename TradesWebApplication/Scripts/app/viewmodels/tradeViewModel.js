@@ -375,6 +375,7 @@ function TradeViewModel(
                 timeout: 5000,
                 success: function (data) {
                     if (data.Success) {
+                        window.onbeforeunload = null;
                         console.log(data.Message);
                         self.vmMessages(data.Message); //display success
                         //bootbox.alert(self.vmMessages());
@@ -387,6 +388,7 @@ function TradeViewModel(
                                     label: "Create",
                                     className: "btn-success",
                                     callback: function () {
+
                                         document.location.href = $('#createUrl').attr('href');
                                     }
                                 },
