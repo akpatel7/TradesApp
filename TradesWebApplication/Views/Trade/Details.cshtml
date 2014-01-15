@@ -138,17 +138,20 @@
                                         <td>
 
                                             @Html.LabelFor(modelItem => itemGroup.TradeLineGroupType)
+<br />
             
                                             @Html.DropDownListFor(modelItem => itemGroup.TradeLineGroupType.trade_line_group_type_id, new SelectList(itemGroup.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), itemGroup.TradeLineGroupType.trade_line_group_type_label, new {@disabled="disabled"})
                                            
                                             <br />
                                             @Html.LabelFor(modelItem => itemGroup.EditorialLabel)
+<br />
 
                                             @Html.TextBoxFor(modelItem => itemGroup.EditorialLabel, new {@disabled="disabled"})
                                             <br />
                                             @Html.LabelFor(modelItem => itemGroup.CanonicalLabel)
-
+<br />
                                             @Html.TextBoxFor(modelItem => itemGroup.CanonicalLabel, new {@disabled="disabled"})
+<br />
 
                                         </td>
                                         <td>

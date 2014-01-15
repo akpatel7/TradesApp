@@ -254,7 +254,25 @@ namespace TradesWebApplication.Controllers
                             CanonicalLabel = tradeLineGroup.trade_line_group_label
                         };
 
-                        viewModel.TradeLineGroups.Add(tradeLineGroupVM);
+                        bool groupExists = false;
+                        //check to see if exists
+                        if (viewModel.TradeLineGroups.Any())
+                        {
+                            for (int i = 0; i < viewModel.TradeLineGroups.Count; i++)
+                            {
+                                if (viewModel.TradeLineGroups[i].TradeLineGroup.trade_line_group_id == tradeLineGroupVM.TradeLineGroup.trade_line_group_id)
+                                {
+                                    groupExists = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!groupExists)
+                        {
+                            viewModel.TradeLineGroups.Add(tradeLineGroupVM);
+                        }
+                       
                     }
                 }     
             }
