@@ -84,97 +84,103 @@
 
         <!-- trade groups ------------------------------------->
         <fieldset class="tgroup">
-            <legend class="trade_group" >Group Information</legend>
-                    <ul style="list-style: none; margin: 0px; padding: 0px;" data-bind='foreach: tradegroups'>
-                        <li>
-                           <div class="well col-xs-12">
-                               <div class="col-md-12">
+            <legend class="trade_group">Group Information</legend>
+            <ul style="list-style: none; margin: 0px; padding: 0px;" data-bind='foreach: tradegroups'>
+                <li>
+                    <div class="well col-xs-12">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <h3><strong><span>Group </span><span data-bind='text: ($index() + 1)'></span><span> Information</span></strong></h3>
+                            </div>
+                            <div class="row">
+                                <br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="control-group col-md-3">
+                                <div class="row col-md-12">
+                                    <strong><span>Group Structure:</span></strong>
+                                </div>
+                                <div class="row col-md-12">
+                                    @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), "{Structure}", new { @data_bind = "value: trade_line_group_type_id, selectedText: trade_line_group_type_string", @class="form-control" })
+                                </div>
+                                <div class="row col-md-12">
+                                    <strong><span>Editorial Label:</span></strong>
+                                </div>
+                                <div class="row col-md-12">
+                                    <input class="form-control" type="text" data-bind="value: trade_line_group_editorial_label" placeholder="{Editorial Label}" />
+                                </div>
+                                <div class="row col-md-12">
+                                    <strong><span>Canonical Label:</span></strong>
+                                </div>
+                                <div class="row col-md-12">
+                                    <input class="form-control" type="text" data-bind="value: trade_line_group_label" placeholder="{Canonical Label}" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-9">
+                                <div class="well col-xs-12">
                                     <div class="row">
-                                        <h3><strong>Group <span data-bind='text: ($index() + 1)'></span> Information</strong></h3>
+                                        <div class="col-md-12">
+                                            <h4><strong>Trade Line(s)</strong></h4>
+                                        </div>
                                     </div>
                                     <div class="row">
+                                        <br />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <strong><span>Order:</span></strong>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong><span>Position:</span></strong>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <strong><span>Financial Instrument:</span></strong>
+                                        </div>
+                                    </div>
+                                    <!-- Add a list of trade lines. -->
+                                    <ul style="list-style: none; margin: 0px; padding: 0px;" data-bind='foreach: tradeLines'>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-md-1">
+                                                    <strong>
+                                                        <h3 data-bind='text: ($index() + 1)'></h3>
+                                                    </strong>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input class="" type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id" />
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button type="button" class="btn btn-sm btn-danger" data-bind='click: function () { $parent.removeLine($data); }'>
+                                                        <span class="glyphicon glyphicon-remove-circle"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="row">
+                                        <div class="col-md-12">
                                             <br />
+                                            <button id="btnAddLine" data-bind='click: function () { addLine(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new trade line</button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row">     
-                                <div class="control-group col-md-3">
-                                         <div class="row col-md-12">
-                                                <strong><span>Group Structure:</span></strong>
-                                         </div>
-                                         <div class="row col-md-12">
-                                                @Html.DropDownListFor(x => x.trade_line_group_type_id, new SelectList(Model.TradeLineGroupTypes, "trade_line_group_type_id", "trade_line_group_type_label"), "{Structure}", new { @data_bind = "value: trade_line_group_type_id, selectedText: trade_line_group_type_string", @class="form-control" })
-                                        </div>
-                                         <div class="row col-md-12">
-                                                <strong><span>Editorial Label:</span></strong>
-                                         </div>
-                                          <div class="row col-md-12">
-                                            <input class="form-control" type="text" data-bind="value: trade_line_group_editorial_label" placeholder="{Editorial Label}" />
-                                         </div>
-                                         <div class="row col-md-12">
-                                            <strong><span>Canonical Label:</span></strong>
-                                        </div>
-                                        <div class="row col-md-12">
-                                            <input class="form-control" type="text" data-bind="value: trade_line_group_label" placeholder="{Canonical Label}" disabled="disabled" />
-                                        </div>
-                                 </div>                      
-                                 <div class="form-group col-md-9">  
-                                            <div class="well col-xs-12"> 
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <h4><strong>Trade Line(s)</strong></h4>
-                                                </div>
-                                            </div>    
-                                            <div class="row">
-                                                    <br />
-                                            </div>
-                                            <div class="row">
-                                                   <div class="col-md-1">
-                                                       <strong><span>Order:</span></strong>
-                                                   </div>
-                                                  <div class="col-md-4">
-                                                       <strong><span>Position:</span></strong>
-                                                   </div>
-                                                  <div class="col-md-7">
-                                                        <strong><span>Financial Instrument:</span></strong>
-                                                  </div>
-                                            </div>
-                                                <!-- Add a list of trade lines. -->
-                                                     <ul style="list-style: none; margin: 0px; padding: 0px;" data-bind='foreach: tradeLines'>
-                                                           <li>
-                                                                  <div class="row">
-                                                                      <div class="col-md-1">
-                                                                           <strong><h3 data-bind='text: ($index() + 1)'></h3></strong>
-                                                                      </div>
-                                                                      <div class="col-md-4">
-                                                                                @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })
-                                                                      </div>  
-                                                                      <div class="col-md-6">
-                                                                               <input class="" type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id" />
-                                                                      </div>   
-                                                                      <div class="col-md-1">
-                                                                               <button type="button" class="btn btn-sm btn-danger" data-bind='click: function () { $parent.removeLine($data); }'>
-                                                                                  <span class="glyphicon glyphicon-remove-circle"></span>
-                                                                               </button>
-                                                                       </div>   
-                                                                   </div>                                 
-                                                           </li>
-                                                     </ul>
-                                                     <div class="row">
-                                                           <div class="col-md-12">
-                                                               <br />
-                                                               <button id="btnAddLine" data-bind='click: function () { addLine(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new trade line</button>
-                                                           </div>
-                                                     </div>
-                                    </div> <!-- tradeline row --> 
-                                </div>  <!-- tradeline well -->
-                                <div class="row col-md-12">
-                                    <button data-bind='click: $root.removeGroup' class='btn btn-sm btn-danger'>Delete trade group</button>
-                                </div>    
-                                </div> <!-- group row -->
-                            </div> <!-- group well-->
-                        </li>
-                    </ul>
-                    <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>
+                                <!-- tradeline row -->
+                            </div>
+                            <!-- tradeline well -->
+                            <div class="row col-md-12">
+                                <button data-bind='click: $root.removeGroup' class='btn btn-sm btn-danger'>Delete trade group</button>
+                            </div>
+                        </div>
+                        <!-- group row -->
+                    </div>
+                    <!-- group well-->
+                </li>
+            </ul>
+            <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>
         </fieldset>
         <!-- instructions ------------------------------------- -->
         <fieldset class="tgroup">
@@ -365,7 +371,6 @@
                     @Html.LabelFor(model => model.comments)
                 </div>
 
-
                 <div class="col-sm-9">
                     @Html.TextAreaFor(model => model.comments, new { @data_bind = "value: comments", @class = "form-control", @rows="3"})
                 </div>
@@ -392,7 +397,7 @@
         window.onbeforeunload = function () {
             return 'Are you sure you want to navigate away from this page?';
         };
-        
+
         //init form custom controls
         //datetimepickers - moment-datetimepicker for bootstrap
         $('#dpInstructionEntry').datepicker();
@@ -401,7 +406,6 @@
         //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
         //TODO: Api call for searches on tradable things
         $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
-
 
         //select2.3.5 jquery control for typeaheads
         //to remotely get Benchmarks for typeaheads
@@ -625,33 +629,10 @@
         });
     };
 
-
     $('#btnAddGroup').click(function () {
         $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '250px' });
     });
 
-
-
-    var Example = (function () {
-        "use strict";
-
-        var elem,
-            hideHandler,
-            that = {};
-
-        that.init = function (options) {
-            elem = $(options.selector);
-        };
-
-        that.show = function (text) {
-            clearTimeout(hideHandler);
-
-            elem.find("span").html(text);
-            elem.delay(200).fadeIn().delay(4000).fadeOut();
-        };
-
-        return that;
-    }());
 
     //send save request to API            
     function saveTrade() {
