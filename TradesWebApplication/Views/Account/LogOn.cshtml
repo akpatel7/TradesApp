@@ -1,4 +1,4 @@
-﻿@model TradesWebApplication.Models.LoginViewModel
+﻿@model TradesWebApplication.Models.LogOnModel
 
 @{
     ViewBag.Title = "Log in";
@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("LogOn", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                 <h4>Use a local account to log in.</h4>
@@ -41,17 +41,17 @@
                         <input type="submit" value="Log in" class="btn btn-default" />
                     </div>
                 </div>
-                <p>
+                @*<p>
                     @Html.ActionLink("Register", "Register") if you don't have a local account.
-                </p>
+                </p>*@
             }
         </section>
     </div>
-    <div class="col-md-4">
+    @*<div class="col-md-4">
         <section id="socialLoginForm">
             @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
         </section>
-    </div>
+    </div>*@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

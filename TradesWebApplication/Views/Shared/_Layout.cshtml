@@ -20,6 +20,11 @@
                 <p class="site-title">
                     <img src="~/Content/images/BCA_research_logo.png" />@Html.ActionLink(" BCA Trades Application", "Index", "Home")</p>
             </div>
+            <div class="float-right">
+                    <section id="login">
+                        @(User.Identity.IsAuthenticated ? "Hello, " + User.Identity.Name : "Not logged in.")
+                    </section>
+            </div>
             <div>
                 <nav>
                     <ul id="menu">
