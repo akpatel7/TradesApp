@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @Styles.Render("~/Content/css/bootstrap")
     @Styles.Render("~/Content/jqueryUIBootstrapCSS")
-    <link href="~/Scripts/select2-3.4.5/select2.css" rel="stylesheet" /> 
+    <link href="~/Scripts/select2-3.4.5/select2.css" rel="stylesheet" />
     <link href="~/Content/PagedList.css" rel="stylesheet" />
     <link href="~/Content/site.css" rel="stylesheet" />
     <script type="text/javascript">
@@ -16,22 +16,44 @@
 <body>
     <header>
         <div class="content-wrapper">
-            <div>
+            <div class="row float-right">
+                <section id="login">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <h6>@(User.Identity.IsAuthenticated ? "Logged In as: " + User.Identity.Name : "Not logged in.")</h6>
+
+                        </li>
+                        <li>@if(User.Identity.IsAuthenticated)
+                                {
+                            using (Html.BeginForm("LogOff", "Account", FormMethod.Post,
+ new { id = "logoutForm" }))
+{
+
+    @Html.AntiForgeryToken()
+    <a href="javascript:document.getElementById('logoutForm').submit()" class="btn">Log Out</a>
+
+                            }
+}
+                        </li>
+                    </ul>
+
+                </section>
+
+            </div>
+            <div class="row">
                 <p class="site-title">
-                    <img src="~/Content/images/BCA_research_logo.png" />@Html.ActionLink(" BCA Trades Application", "Index", "Home")</p>
+                    <img src="~/Content/images/BCA_research_logo.png" />@Html.ActionLink(" BCA Trades Application", "Index", "Home")
+                </p>
             </div>
-            <div class="float-right">
-                    <section id="login">
-                        @(User.Identity.IsAuthenticated ? "Hello, " + User.Identity.Name : "Not logged in.")
-                    </section>
-            </div>
-            <div>
+
+            <div class="row">
                 <nav>
                     <ul id="menu">
                         <li>@Html.ActionLink("Trades List", "Index", "Trade")</li>
                         <li>@Html.ActionLink("Trades Creation", "Create", "Trade")</li>
                     </ul>
                 </nav>
+
             </div>
         </div>
     </header>

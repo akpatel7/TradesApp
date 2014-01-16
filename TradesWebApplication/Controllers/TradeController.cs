@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 
 namespace TradesWebApplication.Controllers
 {
+    [Authorize]
     public class TradeController : Controller
     {
         
