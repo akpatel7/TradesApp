@@ -41,12 +41,26 @@ namespace TradesWebApplication.Controllers
             if (username.Contains(@"\"))
             {
                 var domain = username.Substring(0, username.IndexOf(@"\"));   
+
+                if (domain.ToLower() != "global" && domain.ToLower() != "global.root")
+                {
+                    ModelState.AddModelError("", "Invalid domain.");
+                }
+
                 username = username.Substring(username.LastIndexOf(@"\") + 1);
             }
             //email entered
             if (username.Contains(@"@"))
             {
+                var domain = username.Substring(username.IndexOf(@"@") + 1);
+                
+                if (domain.ToLower() != "bcaresearch.com" && domain.ToLower() != "euromoneyplc.com")
+                {
+                    ModelState.AddModelError("", "Unrecognized email domain.");
+                }
+
                 username = username.Substring(0, username.IndexOf(@"@"));
+    
             }
 
             if (ModelState.IsValid)
