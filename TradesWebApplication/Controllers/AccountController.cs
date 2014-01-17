@@ -52,15 +52,14 @@ namespace TradesWebApplication.Controllers
             //email entered
             if (username.Contains(@"@"))
             {
-                var domain = username.Substring(username.IndexOf(@"@") + 1);
-                
-                if (domain.ToLower() != "bcaresearch.com" && domain.ToLower() != "euromoneyplc.com")
+                string thisUser = Membership.GetUserNameByEmail(username);
+
+                if (String.IsNullOrEmpty(thisUser))
                 {
-                    ModelState.AddModelError("", "Unrecognized email domain.");
+                    ModelState.AddModelError("", "Unrecognized email.");
                 }
 
-                username = username.Substring(0, username.IndexOf(@"@"));
-    
+                username = thisUser;
             }
 
             if (ModelState.IsValid)
