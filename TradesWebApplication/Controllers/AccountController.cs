@@ -35,11 +35,26 @@ namespace TradesWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
+            //clean-up Username if it's email or contains GLOBAL domain
+            var username = model.UserName;
+            //global.root\
+            if (username.Contains(@"\"))
+            {
+                var domain = username.Substring(0, username.IndexOf(@"\"));   
+                username = username.Substring(username.LastIndexOf(@"\") + 1);
+            }
+            //email entered
+            if (username.Contains(@"@"))
+            {
+                username = username.Substring(0, username.IndexOf(@"@"));
+            }
+
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                if (Membership.ValidateUser(username, model.Password))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                  
+                    FormsAuthentication.SetAuthCookie(username, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
