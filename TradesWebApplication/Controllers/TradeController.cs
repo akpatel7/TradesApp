@@ -29,9 +29,8 @@ namespace TradesWebApplication.Controllers
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.TradeIdSortParm = String.IsNullOrEmpty(sortOrder) ? "TradeId" : "";
-            ViewBag.StatusSortParm = String.IsNullOrEmpty(sortOrder) ? "Status" : "";
-            ViewBag.CreatedDateSortParm = sortOrder == "Date" ? "Date_desc" : "Date";
+            ViewBag.TradeIdSortParm = String.IsNullOrEmpty(sortOrder) ? "TradeId" : "TradeIdDesc";
+            ViewBag.LastUpdatedSortParm = String.IsNullOrEmpty(sortOrder) ? "Date_Asc" :  "LastUpdatedDate";
 
             if (searchString != null)
             {
@@ -57,19 +56,23 @@ namespace TradesWebApplication.Controllers
             switch (sortOrder)
             {
                 case "TradeId":
+                    trades = trades.OrderBy(s => s.trade_id);
+                    ViewBag.TradeIdSortParm = "TradeIdDesc";
+                    break;
+                case "TradeIdDesc":
                     trades = trades.OrderByDescending(s => s.trade_id);
+                    ViewBag.TradeIdSortParm = "TradeId";
                     break;
-                case "Status":
-                    trades = trades.OrderBy(s => s.status);
+                case "LastUpdatedDate":
+                    trades = trades.OrderByDescending(s => s.last_updated).ThenByDescending(t => t.trade_id);
+                    ViewBag.LastUpdatedSortParm = "Date_Asc";
                     break;
-                case "Date":
-                    trades = trades.OrderBy(s => s.created_on);
-                    break;
-                case "Date_desc":
-                    trades = trades.OrderByDescending(s => s.created_on);
+                case "Date_Asc":
+                    trades = trades.OrderBy(s => s.last_updated).ThenBy( t => t.trade_id );
+                    ViewBag.LastUpdatedSortParm = "LastUpdatedDate";
                     break;
                 default:
-                    trades = trades.OrderBy(s => s.trade_id);
+                    trades = trades.OrderByDescending(s => s.last_updated).ThenByDescending(t => t.trade_id);
                     break;
             }
 

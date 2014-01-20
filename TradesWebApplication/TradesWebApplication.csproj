@@ -370,6 +370,7 @@
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\TradesEditViewModel.cs" />
     <Compile Include="ViewModels\TradeLineGroupViewModel.cs" />
     <Compile Include="ViewModels\TradeLineViewModel.cs" />
     <Compile Include="ViewModels\TradesCreationViewModel.cs" />

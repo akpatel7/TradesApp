@@ -4,8 +4,8 @@
 
 @{
     ViewBag.Title = "Trade Creation";
-    @*var jsModel = JsonConvert.SerializeObject(Model, Formatting.Indented,
-        new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });*@
+    var jsModel = JsonConvert.SerializeObject(Model, Formatting.Indented,
+        new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
 }
 
 <form role="form" class="form-horizontal" data-bind="submit: function () { saveTrade(); }">
@@ -380,7 +380,7 @@
             <button id="create" type="submit" class="btn btn-primary">Create</button>
             <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
             <button name="ClientCancel" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
-            <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Home"))" style="display:none;"></a>
+            <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Trade"))" style="display:none;"></a>
         </p>
 
     </fieldset>

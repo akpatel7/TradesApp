@@ -75,7 +75,7 @@ namespace TradesWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Trade");
                     }
                 }
                 else
@@ -96,7 +96,7 @@ namespace TradesWebApplication.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Trade");
         }
     }
 }

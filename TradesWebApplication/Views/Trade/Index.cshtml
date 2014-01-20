@@ -47,7 +47,7 @@
             Created By
         </th>
         <th>
-           Last Updated
+            @Html.ActionLink("Last Updated", "Index", new { sortOrder = ViewBag.LastUpdatedSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
     </tr>
 
