@@ -45,7 +45,7 @@ namespace TradesWebApplication.ViewModels
         
         // update time
         [Required(ErrorMessage = "This field is required.")]
-        [DisplayName("System Updated/Created Date;")]
+        [DisplayName("Last Updated")]
         public string created_on { get; set; }
         
         // canonical label

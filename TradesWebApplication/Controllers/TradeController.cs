@@ -22,6 +22,8 @@ namespace TradesWebApplication.Controllers
     {
         
         private UnitOfWork unitOfWork = new UnitOfWork();
+        private BCATradeEntities db = new BCATradeEntities();
+
 
         // GET: /Trade/
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -43,10 +45,8 @@ namespace TradesWebApplication.Controllers
             ViewBag.CurrentFilter = searchString;
 
 
-            var trades = unitOfWork.TradeRepository.GetTrades();
+            var trades = db.Trades.Include(t => t.Benchmark).Include(t => t.Currency).Include(t => t.Length_Type).Include(t => t.Relativity).Include(t => t.Service).Include(t => t.Status1).Include(t => t.Structure_Type);
 
-            //var trades = from t in tradeRepository.GetTrades() 
-            //             select t;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -376,13 +376,20 @@ namespace TradesWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trade trade = unitOfWork.TradeRepository.Get(id);
-            if (trade == null)
-            {
-                return HttpNotFound();
-            }
 
-            return View(trade);
+            var viewModel = new TradesCreationViewModel();
+
+            viewModel.Trade = unitOfWork.TradeRepository.Get(id);
+            viewModel.trade_id = id;
+            
+            PopulateDropDownEntities(viewModel, false);
+            PopulateRelatedTradeLinesAndGroups(viewModel);
+            PopulateInstructions(viewModel);
+            PopulateAbsoluteAndRelativePerformance(viewModel);
+            PopulateRelatedTrades(viewModel);
+            PopulateComment(viewModel);
+
+            return View(viewModel);
         }
 
         // POST: /Trade/Edit/5
