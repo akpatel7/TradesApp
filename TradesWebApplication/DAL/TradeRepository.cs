@@ -18,12 +18,14 @@ namespace TradesWebApplication.DAL
 
         public IEnumerable<Trade> GetTrades()
         {
-            return context.Trades.ToList();
+            return context.Trades.Include(t => t.Benchmark).Include(t => t.Currency).Include(t => t.Length_Type).Include(t => t.Relativity).Include(t => t.Service).Include(t => t.Status1).Include(t => t.Structure_Type).ToList();
+
         }
 
         public Trade Get(int id)
         {
-            return context.Trades.Find(id);
+            var trade = context.Trades.Include(t => t.Benchmark).Include(t => t.Currency).Include(t => t.Length_Type).Include(t => t.Relativity).Include(t => t.Service).Include(t => t.Status1).Include(t => t.Structure_Type).Where( t => t.trade_id == id).Single();
+            return trade; 
         }
 
         public void InsertTrade(Trade trade)

@@ -22,8 +22,6 @@ namespace TradesWebApplication.Controllers
     {
         
         private UnitOfWork unitOfWork = new UnitOfWork();
-        private BCATradeEntities db = new BCATradeEntities();
-
 
         // GET: /Trade/
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -44,7 +42,7 @@ namespace TradesWebApplication.Controllers
             ViewBag.CurrentFilter = searchString;
 
 
-            var trades = db.Trades.Include(t => t.Benchmark).Include(t => t.Currency).Include(t => t.Length_Type).Include(t => t.Relativity).Include(t => t.Service).Include(t => t.Status1).Include(t => t.Structure_Type);
+            var trades = unitOfWork.TradeRepository.GetTrades();
 
 
             if (!String.IsNullOrEmpty(searchString))
