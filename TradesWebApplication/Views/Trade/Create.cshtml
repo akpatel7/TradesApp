@@ -282,7 +282,7 @@
 
 
                     <div class="col-sm-3">
-                        <input type="text" data-bind="value: apl_func" />
+                        <input type="text" data-bind="value: apl_func" maxlength="255"/>
                     </div>
                 </div>
         </fieldset>
@@ -380,7 +380,7 @@
             <button id="create" type="submit" class="btn btn-primary">Create</button>
             <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
             <button name="ClientCancel" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
-            <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Trade"))" style="display:none;"></a>
+            <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Home"))" style="display:none;"></a>
         </p>
 
     </fieldset>
@@ -400,7 +400,11 @@
 
         //init form custom controls
         //datetimepickers - moment-datetimepicker for bootstrap
-        $('#dpInstructionEntry').datepicker();
+        $('#dpInstructionEntry').datepicker(
+            {
+                setDate: 'd'
+            }
+        );
         $('#dpInstructionExit').datepicker();
 
         //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
@@ -591,6 +595,8 @@
 
         //Financial Instrument for typeahead
         typeAheadFinInstr();
+
+        
 
     });
 

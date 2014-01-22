@@ -246,8 +246,8 @@ function TradeViewModel(
     trade_editorial_label = typeof (trade_editorial_label) !== 'undefined' ? trade_editorial_label : "";
     this.trade_editorial_label = ko.observable(trade_editorial_label);
 
-    structure_type_id = typeof (structure_type_id) !== 'undefined' ? structure_type_id : 4; //default value
-    this.structure_type_id = ko.observable(4).extend({ required: true });
+    structure_type_id = typeof (structure_type_id) !== 'undefined' ? structure_type_id : 0; //default value
+    this.structure_type_id = ko.observable(structure_type_id).extend({ required: true });
 
     //form values - bottom
     instruction_entry = typeof (instruction_entry) !== 'undefined' ? instruction_entry : "";
@@ -511,8 +511,8 @@ function TradeViewModel(
     }, self);
 
     //set this to true to see ko.toJson on form for debugging knockout bindings
-    this.debug = false;
-    ////////////////
+    this.debug = true;
+    //////////////////
 
 }
 
