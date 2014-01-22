@@ -45,7 +45,7 @@ namespace TradesWebApplication.ViewModels
         
         // update time
         [Required(ErrorMessage = "This field is required.")]
-        [DisplayName("Last Updated")]
+        [DisplayName("System created:")]
         public string created_on { get; set; }
         
         // canonical label
@@ -81,7 +81,7 @@ namespace TradesWebApplication.ViewModels
         public Nullable<decimal> instruction_exit { get; set; }
 
         // exit date
-        [DisplayName("Exit Date:")]
+        [DisplayName("Close Date:")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public string instruction_exit_date { get; set; }
 

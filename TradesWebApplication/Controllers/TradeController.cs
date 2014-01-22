@@ -281,24 +281,6 @@ namespace TradesWebApplication.Controllers
        
         }
 
-        // GET: /Trade/Create
-        public ActionResult Create()
-        {
-            var viewModel = new TradesCreationViewModel();
-
-            viewModel.Trade = new Trade();
-
-            PopulateDropDownEntities(viewModel, false);
-            PopulateRelatedTradeLinesAndGroups(viewModel);
-            PopulateInstructions(viewModel);
-            PopulateAbsoluteAndRelativePerformance(viewModel);
-            PopulateRelatedTrades(viewModel);
-            PopulateComment(viewModel);
-
-            return View(viewModel);
-     
-        }
-
         private void PopulateDropDownEntities(TradesCreationViewModel viewModel, bool initialize)
         {
 
@@ -308,7 +290,7 @@ namespace TradesWebApplication.Controllers
             viewModel.Currencies = unitOfWork.CurrencyRepository.GetAll().ToList();
             viewModel.StructureTypes = unitOfWork.StructureTypeRepository.GetAll().ToList();
             viewModel.Relativitys = unitOfWork.RelativityRepository.GetAll().ToList();
-            viewModel.created_on = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            viewModel.created_on = System.DateTime.Now.ToString("yyyy-MM-dd");
 
 
             viewModel.TradeLineGroupTypes = unitOfWork.TradeLineGroupTypeRepository.GetAll().ToList();
@@ -330,6 +312,25 @@ namespace TradesWebApplication.Controllers
                 viewModel.abs_measure_type_id = 1;
                 viewModel.rel_measure_type_id = 2;
             }
+
+        }
+
+        // GET: /Trade/Create
+        public ActionResult Create()
+        {
+            var viewModel = new TradesCreationViewModel();
+
+            viewModel.Trade = new Trade();
+            
+
+            PopulateDropDownEntities(viewModel, false);
+            PopulateRelatedTradeLinesAndGroups(viewModel);
+            PopulateInstructions(viewModel);
+            PopulateAbsoluteAndRelativePerformance(viewModel);
+            PopulateRelatedTrades(viewModel);
+            PopulateComment(viewModel);
+
+            return View(viewModel);
 
         }
 
@@ -378,19 +379,22 @@ namespace TradesWebApplication.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var viewModel = new TradesCreationViewModel();
+            var vm = new TradesCreationViewModel();
 
-            viewModel.Trade = unitOfWork.TradeRepository.Get(id);
-            viewModel.trade_id = id;
+            var trade = unitOfWork.TradeRepository.Get(id);
+            vm.trade_id = trade.trade_id;
+            vm.Trade = trade;
             
-            PopulateDropDownEntities(viewModel, false);
-            PopulateRelatedTradeLinesAndGroups(viewModel);
-            PopulateInstructions(viewModel);
-            PopulateAbsoluteAndRelativePerformance(viewModel);
-            PopulateRelatedTrades(viewModel);
-            PopulateComment(viewModel);
+            PopulateDropDownEntities(vm, false);
+            PopulateRelatedTradeLinesAndGroups(vm);
+            PopulateInstructions(vm);
+            PopulateAbsoluteAndRelativePerformance(vm);
+            PopulateRelatedTrades(vm);
+            PopulateComment(vm);
 
-            return View(viewModel);
+
+            return View(vm);
+
         }
 
         // POST: /Trade/Edit/5
