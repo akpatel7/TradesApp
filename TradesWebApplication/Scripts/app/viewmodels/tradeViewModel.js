@@ -10,6 +10,17 @@ ko.bindingHandlers.uniqueIdTradableThing = {
     prefix: "tradableThing"
 }
 
+ko.bindingHandlers.uniqueIdPosition = {
+    init: function (element, valueAccessor) {
+        var value = valueAccessor();
+        value.id = value.id || ko.bindingHandlers.uniqueIdPosition.prefix + (++ko.bindingHandlers.uniqueIdPosition.counter);
+
+        element.id = value.id;
+    },
+    counter: 0,
+    prefix: "position"
+}
+
 ko.bindingHandlers.selectedText = {
     init: function (element, valueAccessor) {
         var value = valueAccessor();
@@ -91,7 +102,7 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
     trade_line_id = typeof (trade_line_id) !== 'undefined' ? trade_line_id : 0;
     this.trade_line_id = ko.observable(trade_line_id);
 
-    position_id = typeof (position_id) !== 'undefined' ? position_id : 0;
+    position_id = typeof (position_id) !== 'undefined' ? position_id : "";
     this.position_id = ko.validatedObservable(position_id).extend({ required: true});
 
     tradable_thing_id = typeof (tradable_thing_id) !== 'undefined' ? tradable_thing_id : "";
@@ -127,7 +138,33 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
                 //console.log("HERE 2");
                 return;
             }
-    });
+        });
+
+    //to get desc of selected position
+    self.position_id.subscribe(
+        function (newValue) {
+            if (newValue > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: baseUrl + "Trade/GetPosition",
+                    dataType: "json",
+                    crossDomain: true,
+                    data: {
+                        id: newValue, //id of position
+                    },
+                    success: function (data) {
+                        var resultData = data[0];
+                        //console.log(resultData.position_label);
+                        self.positionString(resultData.position_label);
+                    }
+                });
+
+            }
+            else {
+                //console.log("HERE 2");
+                return;
+            }
+        });
 
     this.canonicalLabelPart = ko.computed(function () {
         return self.positionString() + ", " + self.tradableThingString();

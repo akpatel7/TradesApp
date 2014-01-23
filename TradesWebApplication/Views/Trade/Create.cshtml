@@ -40,7 +40,7 @@
             </div>
 
             <div class="col-sm-3">
-                @Html.DropDownListFor(model => model.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"), "{Benchmark}", new { @data_bind = "value: relativity_id", @class = "form-control form-control col-xs-2" })
+                @Html.DropDownListFor(model => model.relativity_id, new SelectList(Model.Relativitys, "relativity_id", "relativity_label"), "{Benchmark}", new { @data_bind = "value: relativity_id", @class = "form-control form-control col-xs-2", @id = "relativityId" })
                         @Html.ValidationMessageFor(model => model.relativity_id)
             </div>
         </div>
@@ -156,7 +156,8 @@
                                                     </strong>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    @Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })
+                                                    @*@Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })*@
+                                                     <input class="" type="hidden" data-bind="uniqueIdPosition: position_id, value: position_id" />
                                                 </div>
                                                 <div class="col-md-6">
                                                     <input class="" type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id" />
@@ -172,7 +173,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <br />
-                                            <button id="btnAddLine" data-bind='click: function () { addLine(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new trade line</button>
+                                            <button id="btnAddLine" data-bind='click: function () { addLine(); typeAheadPosition(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new trade line</button>
                                         </div>
                                     </div>
                                 </div>
@@ -188,7 +189,7 @@
                     <!-- group well-->
                 </li>
             </ul>
-            <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>
+            <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadPosition(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>
         </fieldset>
         <!-- instructions ------------------------------------- -->
         <fieldset class="tgroup">
@@ -407,6 +408,8 @@
         };
 
         //init form custom controls
+        $('#relativityId').val(2);
+    
         //datetimepickers - moment-datetimepicker for bootstrap
         $('#dpInstructionEntry').datepicker(
                     {
@@ -600,6 +603,9 @@
         });
         //end typeAhead
 
+        //Position Typeahead
+        typeAheadPosition(); //default 2 is the relativity id default onload
+
         //Financial Instrument for typeahead
         typeAheadFinInstr();
 
@@ -638,6 +644,49 @@
             },
             formatSelection: function (item) {
                 return item.tradable_thing_label;
+            }
+        });
+    };
+
+    //to remotely get positon for typeaheads
+    function typeAheadPosition() {
+        var newPosition = '#' + ko.bindingHandlers.uniqueIdPosition.prefix + ko.bindingHandlers.uniqueIdPosition.counter;
+        $(newPosition).select2({
+            minimumResultsForSearch: -1,
+            placeholder: "{Position}",
+            width: '175px',
+            allowClear: true,
+            ajax: {
+                url: baseUrl + "Trade/AutoCompletePosition",
+                dataType: 'json',
+                type: 'POST',
+                data: function () {
+                    var relativityId = $('#relativityId').val();
+                    if (relativityId == "" || relativityId == 'undefined')
+                    {
+                        relativityId = "0";
+                    }
+                    return {
+                        relativityId: relativityId, //search term 
+                    };
+                },
+                results: function (data, page) {
+                    return {
+                        results: data
+                    };
+                }
+            },
+            id: function (obj) {
+                return obj.position_id;
+            },
+            formatResult: function (item) {
+                return item.position_label;
+            },
+            formatSelection: function (item) {
+                return item.position_label;
+            },
+            formatNoMatches: function () {
+                return "Please select a Trade Benchmark";
             }
         });
     };

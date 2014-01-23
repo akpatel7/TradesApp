@@ -472,6 +472,17 @@ namespace TradesWebApplication.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        //(Position) typeahead
+        public JsonResult AutoCompletePosition(string relativityId)
+        {
+            var relativityID = int.Parse(relativityId);
+            var list = unitOfWork.PositionRepository.GetAll();
+            var result = (from r in list
+                          where r.position_relativity_id == relativityID
+                          select new { r.position_label, r.position_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         //TradeableThing (Financial Instrument) typeahead
         public JsonResult GetTradableThing(string id)
         {
@@ -479,6 +490,16 @@ namespace TradesWebApplication.Controllers
             var list = unitOfWork.TradableThingRepository.Get(r => r.tradable_thing_id == trabableThingId);
             var result = (from r in list
                           select new { r.tradable_thing_label, r.tradable_thing_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        //(Position) typeahead
+        public JsonResult GetPosition(string id)
+        {
+            var positionId = int.Parse(id);
+            var list = unitOfWork.PositionRepository.Get(r => r.position_id == positionId);
+            var result = (from r in list
+                          select new { r.position_label, r.position_id }).Distinct();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
