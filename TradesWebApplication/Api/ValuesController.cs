@@ -431,6 +431,10 @@ namespace TradesWebApplication.Api
 
             if (!String.IsNullOrEmpty(vm.comments))
             {
+                if (vm.comments.Length > 255)
+                {
+                    vm.comments = vm.comments.Substring(0, 255);
+                }
                 var comment = new Trade_Comment
                 {
                     trade_id = newTradeId, 
