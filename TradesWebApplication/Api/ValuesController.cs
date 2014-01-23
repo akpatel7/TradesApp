@@ -31,9 +31,116 @@ namespace TradesWebApplication.Api
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            return "value";
+            try
+            {
+                return new HttpResponseMessage(HttpStatusCode.Accepted)
+                {
+                    Content = new JsonContent(new
+                    {
+                        Success = true, 
+                        Message = "Trade: " + id + " sucessfully found", 
+                        data = RetrieveTradeFromDb(id)
+                    })
+                };
+                
+            }
+            catch (DataException ex)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new JsonContent(new
+                    {
+                        Success = false,
+                        Message = "Database Exception occured: " + ex.InnerException.ToString(), //return exception
+                        result = "Database Exception occured: " + ex.InnerException.ToString()
+                    })
+                };
+            }
+
+         
+        }
+
+        private string RetrieveTradeFromDb(int id)
+        {
+            var trade = unitOfWork.TradeRepository.Get(id);
+
+            // this view model is to match the knockout json format to be easily serializable on the client side view
+            var viewModel = new TradesEditViewModel();
+
+            // service
+            viewModel.service_id = (int)trade.service_id;
+            // trade type
+            viewModel.length_type_id = (int)trade.length_type_id;
+
+            // benchmark
+            viewModel.relativity_id = (int)trade.relativity_id;
+
+            // benchmark selection
+            viewModel.benchmark_id = trade.benchmark_id;
+
+            // canonical label
+            viewModel.trade_label = trade.trade_label;
+
+            // editorial label
+            viewModel.trade_editorial_label = trade.trade_editorial_label;
+
+            // trade structure
+            viewModel.structure_type_id = (int)trade.structure_type_id;
+
+            // entry level
+            //viewModel.instruction_entry = trade.Trade_Instruction.LastOrDefault().instruction_entry;
+
+            // start date
+            //viewModel.instruction_entry_date = trade.Trade_Instruction.LastOrDefault().instruction_entry_date == null ? "" : ((DateTime)(trade.Trade_Instruction.LastOrDefault().instruction_entry_date)).ToString("YYYY-mm-dd");
+
+            // exit level
+            //viewModel.instruction_exit = trade.Trade_Instruction.LastOrDefault().instruction_exit;
+
+            // exit date
+            // viewModel.instruction_exit_date = trade.Trade_Instruction.LastOrDefault().instruction_exit_date == null ? "" : ((DateTime)(trade.Trade_Instruction.LastOrDefault().instruction_exit_date)).ToString("YYYY-mm-dd");
+
+            // instruction
+            //viewModel.instruction_type_id = trade.Trade_Instruction.LastOrDefault().instruction_type_id;
+            // viewModel.instruction_label = trade.Trade_Instruction.LastOrDefault().instruction_label;
+
+            // hedge instruction
+            //viewModel.hedge_id = trade.Trade_Instruction.LastOrDefault().hedge_id;
+
+            // curency
+            viewModel.currency_id = trade.Currency.currency_id;
+
+            // supplementary info
+            // APL function
+            viewModel.apl_func = "";
+
+            // mark to mark rate
+            viewModel.mark_to_mark_rate = "";
+            // internset rate diff
+            viewModel.interest_rate_diff = "";
+
+            // abs performance
+            viewModel.abs_measure_type_id = null;
+            viewModel.abs_currency_id = null;
+
+            // rel performance
+            viewModel.rel_measure_type_id = null;
+            viewModel.rel_currency_id = null;
+            viewModel.return_benchmark_id = null;
+
+            // return value
+            viewModel.abs_return_value = "";
+            viewModel.rel_return_value = "";
+
+            // comments
+            //viewModel.comments = trade.Trade_Comment.LastOrDefault().comment_label;
+
+            ////for ko json response
+            //public List<TradeLineGroupViewModel> tradegroups { get; set; }
+            //public List<TradeLineViewModel> tradeLines { get; set; }
+
+            return JsonConvert.SerializeObject(viewModel);
         }
 
         // POST api/<controller>

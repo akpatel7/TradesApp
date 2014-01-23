@@ -14,7 +14,7 @@
         <legend class="trade_group_head"><strong>Trade Creation</strong></legend>
 
         <div class="form-group">
-            <div class="control-label col-sm-2">
+            <div class="control-label col-sm-3">
                 @Html.LabelFor(model => model.service_id)
             </div>
 
@@ -24,7 +24,7 @@
 
         </div>
         <div class="form-group">
-            <div class="control-label col-sm-2">
+            <div class="control-label col-sm-3">
                 @Html.LabelFor(model => model.length_type_id)
             </div>
 
@@ -35,7 +35,7 @@
         </div>
 
         <div class="form-group">
-            <div class="control-label col-sm-2">
+            <div class="control-label col-sm-3">
                 @Html.LabelFor(model => model.relativity_id)
             </div>
 
@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="control-label col-sm-2" data-bind="visible: relativity_id() == 2">
+            <div class="control-label col-sm-3" data-bind="visible: relativity_id() == 2">
                 @Html.LabelFor(model => model.benchmark_id)
             </div>
 
@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="control-label col-sm-2">
+            <div class="control-label col-sm-3">
                 @Html.LabelFor(model => model.created_on)
             </div>
 
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="control-label col-sm-2">
+            <div class="control-label col-sm-3">
                 @Html.LabelFor(model => model.trade_label)
             </div>
 
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="control-label col-sm-2">
+            <div class="control-label col-sm-3">
                 @Html.LabelFor(model => model.trade_editorial_label)
             </div>
 
@@ -81,7 +81,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="control-label col-sm-2">
+            <div class="control-label col-sm-3">
                 @Html.LabelFor(model => model.structure_type_id)
             </div>
 
@@ -157,7 +157,7 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     @*@Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })*@
-                                                     <input class="" type="hidden" data-bind="uniqueIdPosition: position_id, value: position_id" />
+                                                     <input class="" type="hidden" data-bind="uniqueIdPosition: position_id, value: position_id" class="tradeLinePosition"/>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <input class="" type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id" />
@@ -195,7 +195,7 @@
         <fieldset class="tgroup">
             <legend class="trade_group">Instructions</legend>
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.instruction_entry)
                 </div>
                 <div class="col-sm-6">
@@ -204,7 +204,7 @@
             </div>
 
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.instruction_entry_date)
                 </div>
                 <div class="input-append date col-sm-4" id="dpInstructionEntry" data-datepicker-format="YYYY-MM-DD">
@@ -215,7 +215,7 @@
             </div>
 
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.instruction_exit)
                 </div>
                 <div class="col-sm-3">
@@ -224,7 +224,7 @@
             </div>
 
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.instruction_exit_date)
                 </div>
                 <div class="input-append date col-sm-7" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
@@ -235,7 +235,7 @@
             </div>
 
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.instruction_type_id)
                 </div>
                 <div class="col-sm-3">
@@ -249,7 +249,7 @@
             </div>
 
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.hedge_id)
                 </div>
 
@@ -259,7 +259,7 @@
             </div>
 
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.currency_id)
                 </div>
 
@@ -274,7 +274,7 @@
         <fieldset class="tgroup">
             <legend class="trade_group">Supplementary Information</legend>
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.related_trade_ids)
                 </div>
                  <div class="col-sm-6">
@@ -283,7 +283,7 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="control-label col-sm-2">
+                    <div class="control-label col-sm-3">
                         @Html.LabelFor(model => model.apl_func)
                     </div>
                     <div class="col-sm-3">
@@ -318,11 +318,11 @@
         <fieldset class="tgroup">
             <legend class="trade_group">Absolute Performance</legend>
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.abs_measure_type_id)
                 </div>
 
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" })
                 </div>
                 <div class="col-sm-3" data-bind="visible: abs_measure_type_id() == 2">
@@ -338,11 +338,11 @@
         <fieldset class="tgroup">
             <legend class="trade_group">Relative Performance</legend>
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.rel_measure_type_id)
                 </div>
 
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: rel_measure_type_id", @class = "form-control" })
                 </div>
 
@@ -358,7 +358,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.return_benchmark_id)
                 </div>
 
@@ -372,12 +372,12 @@
         <fieldset class="tgroup">
             <legend class="trade_group">Trade Comments</legend>
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.comments)
                 </div>
 
-                <div class="col-sm-9">
-                    @Html.TextAreaFor(model => model.comments, new { @data_bind = "value: comments", @class = "form-control", @rows="3", @cols="100"})
+                <div class="col-sm-8">
+                    @Html.TextAreaFor(model => model.comments, new { @data_bind = "value: comments", @class = "form-control", @rows="5", @cols="90"})
                 </div>
             </div>
         </fieldset>
@@ -602,6 +602,14 @@
         //Position Typeahead
         typeAheadPosition(); //default 2 is the relativity id default onload
 
+        //confirm change of relatvity id
+        $('#relativityId').on("focus", function (ev) {
+            toastr.options.closeButton = true;
+            toastr.options.positionClass = "toast-top-left";
+            toastr.options.timeOut = 5000; // 5s
+            toastr.warning('Changing "Benchmark" will clear all selected "Positions" in all Trade Lines on the form','WARNING');
+        });
+
         //Financial Instrument for typeahead
         typeAheadFinInstr();
 
@@ -651,7 +659,7 @@
             minimumResultsForSearch: -1,
             placeholder: "{Position}",
             width: '175px',
-            allowClear: true,
+            allowClear: false,
             ajax: {
                 url: baseUrl + "Trade/AutoCompletePosition",
                 dataType: 'json',
@@ -685,12 +693,14 @@
                 return "Please select a Trade Benchmark";
             }
         });
+        $('#relativityId').change(function () {
+            $(newPosition).select2("val","").trigger("change");
+        });
     };
 
     $('#btnAddGroup').click(function () {
         $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '250px' });
     });
-
 
     //send save request to API            
     function saveTrade() {

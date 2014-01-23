@@ -45,11 +45,11 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="control-label col-sm-2" data-bind="visible: relativity_id() == 2">
+            <div class="control-label col-sm-2" data-bind="visible: function () { return relativity_id() == 2 }">
                 @Html.LabelFor(model => model.benchmark_id)
             </div>
 
-            <div class="col-sm-3" data-bind="visible: relativity_id() == 2">
+            <div class="col-sm-3" data-bind="visible: function () { return relativity_id() == 2 }">
                 <input class="input-xlarge" id="BenchmarkTypeAhead" type="hidden" data-bind="value: benchmark_id" />
             </div>
         </div>
@@ -593,18 +593,42 @@
         typeAheadFinInstr();
 
         //Load .net view model to knockout
-        $(function () {
-            var jsonModel = '@Html.Raw(JsonConvert.SerializeObject(this.Model))';
-            var mvcModel = ko.mapping.fromJSON(jsonModel);
+   
+         ko.mapping.fromJS(GetTradeData('608'), vm);
 
-            var myViewModel = new TradeViewModel();
-            var g = ko.mapping.fromJS(myViewModel, mvcModel);
-
-            ko.applyBindings(g);
-        });
 
 
     });//end document.ready
+
+
+
+    function GetTradeData(id) 
+    {
+        if (id > 0) 
+        {
+            $.ajax({
+                type: 'GET',
+                url: baseUrl + "Api/Values/Get/" + id,
+                dataType: "json",
+                crossDomain: true,
+                async: false,
+                data: {
+                    id: id, //id of Financial Instrument
+                },
+                success: function (data) {
+                    var resultData = data.data;
+                    console.log(resultData);
+                    return resultData;
+                }
+            });
+                 
+        }
+        else
+        {
+            console.log("Trade not found");
+            return;
+        }
+    };
 
     //to remotely get Financial Instrument for typeaheads
     function typeAheadFinInstr() {

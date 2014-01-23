@@ -81,7 +81,7 @@ namespace TradesWebApplication.ViewModels
         public Nullable<decimal> instruction_exit { get; set; }
 
         // exit date
-        [DisplayName("Close Date:")]
+        [DisplayName("Exit Date:")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public string instruction_exit_date { get; set; }
 
