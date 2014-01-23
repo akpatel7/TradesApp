@@ -277,19 +277,15 @@
                 <div class="control-label col-sm-2">
                     @Html.LabelFor(model => model.related_trade_ids)
                 </div>
-
-                <div class="form-group">
-                    <div>
-                        <input class="input-xlarge" id="selectRelatedTrades" type="hidden" data-bind="value: related_trade_ids_list" />
-                    </div>
+                 <div class="col-sm-6">
+                      <input class="input-xlarge" id="selectRelatedTrades" type="hidden" data-bind="value: related_trade_ids_list" />
+                </div>
                 </div>
 
                 <div class="form-group">
                     <div class="control-label col-sm-2">
                         @Html.LabelFor(model => model.apl_func)
                     </div>
-
-
                     <div class="col-sm-3">
                         <input type="text" data-bind="value: apl_func" maxlength="255"/>
                     </div>
@@ -299,7 +295,7 @@
         <fieldset class="tgroup">
             <legend class="trade_group">FX Spot and Carry</legend>
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.mark_to_mark_rate)
                 </div>
 
@@ -309,7 +305,7 @@
             </div>
 
             <div class="form-group">
-                <div class="control-label col-sm-2">
+                <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.interest_rate_diff)
                 </div>
                 <div class="col-sm-3">
