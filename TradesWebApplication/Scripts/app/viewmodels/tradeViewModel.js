@@ -548,7 +548,7 @@ function TradeViewModel(
     }, self);
 
     //set this to true to see ko.toJson on form for debugging knockout bindings
-    this.debug = true;
+    this.debug = false;
     //////////////////
 
 }

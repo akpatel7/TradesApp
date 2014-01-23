@@ -665,8 +665,12 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\toastr.css" />
-    <Content Include="Content\toastr.min.css" />
+    <Content Include="Content\toastr.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\toastr.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -790,7 +794,9 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\toastr.less" />
+    <Content Include="Content\toastr.less">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\TestWebMatrix.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -978,8 +984,12 @@
     <Content Include="Scripts\select2-3.4.5\select2_locale_vi.js" />
     <Content Include="Scripts\select2-3.4.5\select2_locale_zh-CN.js" />
     <Content Include="Scripts\select2-3.4.5\select2_locale_zh-TW.js" />
-    <Content Include="Scripts\toastr.js" />
-    <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Scripts\toastr.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\toastr.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\_references.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1030,7 +1040,9 @@
     <Content Include="Scripts\select2-3.4.5\select2_locale_en.js.template">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\toastr.min.js.map" />
+    <Content Include="Scripts\toastr.min.js.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
