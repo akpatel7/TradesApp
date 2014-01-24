@@ -54,7 +54,7 @@
     @foreach (var item in Model) {
         <tr>
             <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id = item.trade_id }) |*@
+                @Html.ActionLink("Edit", "Edit", new { id = item.trade_id }) | 
                 @Html.ActionLink("Details", "Details", new { id = item.trade_id }) @*|*@
                 @*@Html.ActionLink("Delete", "Delete", new { id = item.trade_id })*@
             </td>

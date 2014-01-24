@@ -31,35 +31,9 @@ namespace TradesWebApplication.Api
         }
 
         // GET api/<controller>/5
-        public HttpResponseMessage Get(int id)
+        public string Get(int id)
         {
-            try
-            {
-                return new HttpResponseMessage(HttpStatusCode.Accepted)
-                {
-                    Content = new JsonContent(new
-                    {
-                        Success = true, 
-                        Message = "Trade: " + id + " sucessfully found", 
-                        data = RetrieveTradeFromDb(id)
-                    })
-                };
-                
-            }
-            catch (DataException ex)
-            {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    Content = new JsonContent(new
-                    {
-                        Success = false,
-                        Message = "Database Exception occured: " + ex.InnerException.ToString(), //return exception
-                        result = "Database Exception occured: " + ex.InnerException.ToString()
-                    })
-                };
-            }
-
-         
+            return RetrieveTradeFromDb(id);
         }
 
         private string RetrieveTradeFromDb(int id)
@@ -68,6 +42,8 @@ namespace TradesWebApplication.Api
 
             // this view model is to match the knockout json format to be easily serializable on the client side view
             var viewModel = new TradesEditViewModel();
+
+            viewModel.trade_id = trade.trade_id;
 
             // service
             viewModel.service_id = (int)trade.service_id;
@@ -79,6 +55,13 @@ namespace TradesWebApplication.Api
 
             // benchmark selection
             viewModel.benchmark_id = trade.benchmark_id;
+
+            //last_updated
+            if (trade.last_updated.HasValue)
+            {
+                viewModel.last_updated = ((DateTime)trade.last_updated).ToString("yyyy-MM-dd");
+            }
+           
 
             // canonical label
             viewModel.trade_label = trade.trade_label;
@@ -109,7 +92,7 @@ namespace TradesWebApplication.Api
             //viewModel.hedge_id = trade.Trade_Instruction.LastOrDefault().hedge_id;
 
             // curency
-            viewModel.currency_id = trade.Currency.currency_id;
+            //viewModel.currency_id = trade.Currency.currency_id;
 
             // supplementary info
             // APL function
@@ -121,17 +104,17 @@ namespace TradesWebApplication.Api
             viewModel.interest_rate_diff = "";
 
             // abs performance
-            viewModel.abs_measure_type_id = null;
-            viewModel.abs_currency_id = null;
+            //viewModel.abs_measure_type_id = null;
+            //viewModel.abs_currency_id = null;
 
             // rel performance
-            viewModel.rel_measure_type_id = null;
-            viewModel.rel_currency_id = null;
-            viewModel.return_benchmark_id = null;
+            //viewModel.rel_measure_type_id = null;
+            //viewModel.rel_currency_id = null;
+           // viewModel.return_benchmark_id = null;
 
             // return value
-            viewModel.abs_return_value = "";
-            viewModel.rel_return_value = "";
+            //viewModel.abs_return_value = "";
+            //viewModel.rel_return_value = "";
 
             // comments
             //viewModel.comments = trade.Trade_Comment.LastOrDefault().comment_label;

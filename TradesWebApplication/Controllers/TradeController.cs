@@ -385,6 +385,10 @@ namespace TradesWebApplication.Controllers
             var trade = unitOfWork.TradeRepository.Get(id);
             vm.trade_id = trade.trade_id;
             vm.Trade = trade;
+            if (trade.last_updated.HasValue)
+            {
+                vm.last_updated = ((DateTime)trade.last_updated).ToString("yyyy-MM-dd");
+            }
             
             PopulateDropDownEntities(vm, false);
             PopulateRelatedTradeLinesAndGroups(vm);

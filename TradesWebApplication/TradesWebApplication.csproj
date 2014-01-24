@@ -740,6 +740,9 @@
     <Content Include="Images\orderedList9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\app\viewmodels\tradeEditViewModel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\app\viewmodels\tradeViewModel.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
