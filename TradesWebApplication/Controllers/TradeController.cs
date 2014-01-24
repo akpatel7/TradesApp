@@ -119,14 +119,14 @@ namespace TradesWebApplication.Controllers
             if (relatedTrackRecords.Any())
             {
                 //mark to market rate
-                var rec1 = relatedTrackRecords.Last(r => r.trade_id == viewModel.Trade.trade_id && r.track_record_type_id == 1);
+                var rec1 = relatedTrackRecords.LastOrDefault(r => r.trade_id == viewModel.Trade.trade_id && r.track_record_type_id == 1);
                 if (rec1 != null)
                 {
                     viewModel.mark_to_mark_rate = rec1.track_record_value.ToString();
                 }
 
                 //Interest rate differential
-                var rec2 = relatedTrackRecords.Last(r => r.trade_id == viewModel.Trade.trade_id && r.track_record_type_id == 2);
+                var rec2 = relatedTrackRecords.LastOrDefault(r => r.trade_id == viewModel.Trade.trade_id && r.track_record_type_id == 2);
                 if (rec2 != null)
                 {
                     viewModel.interest_rate_diff = rec2.track_record_value.ToString();
@@ -144,7 +144,7 @@ namespace TradesWebApplication.Controllers
             {
                 //absolute performance
                 bool perfFound = false;
-                var absolutePerformance = relatedTradePerformances.Last( r => r.trade_id == viewModel.Trade.trade_id && r.return_benchmark_id == null );
+                var absolutePerformance = relatedTradePerformances.LastOrDefault( r => r.trade_id == viewModel.Trade.trade_id && r.return_benchmark_id == null );
                 if (absolutePerformance != null)
                 {
                     perfFound = true;
@@ -156,7 +156,7 @@ namespace TradesWebApplication.Controllers
                
 
                 //relative performance
-                var relativePerformance = relatedTradePerformances.Last(r => r.trade_id == viewModel.Trade.trade_id && r.return_benchmark_id != null);
+                var relativePerformance = relatedTradePerformances.LastOrDefault(r => r.trade_id == viewModel.Trade.trade_id && r.return_benchmark_id != null);
                 if (relativePerformance != null)
                 {
                     perfFound = true;
@@ -169,7 +169,8 @@ namespace TradesWebApplication.Controllers
                 //apl
                 if (!perfFound && relatedTradePerformances.Any())
                 {
-                    viewModel.apl_func = relatedTradePerformances.Last(r => r.trade_id == viewModel.Trade.trade_id).return_apl_function;
+                    var performance = relatedTradePerformances.LastOrDefault(r => r.trade_id == viewModel.Trade.trade_id);
+                    viewModel.apl_func = performance.return_apl_function;
                 }
                 
             }
