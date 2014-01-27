@@ -27,6 +27,9 @@ namespace TradesWebApplication.ViewModels
         
         // update time
         public string last_updated { get; set; }
+
+        // last updated by
+        public int last_updated_by { get; set; }
         
         // canonical label
         public string trade_label { get; set; }
@@ -37,6 +40,8 @@ namespace TradesWebApplication.ViewModels
         // trade structure
         public int structure_type_id { get; set; }
 
+        //status
+        public int status { get; set; }
         
         //------------------------------------
         // entry level
@@ -74,7 +79,7 @@ namespace TradesWebApplication.ViewModels
         // mark to mark rate
         public string mark_to_mark_rate { get; set; }
         
-        // internset rate diff
+        // intrest rate diff
         public string interest_rate_diff { get; set; }
         
         // abs performance

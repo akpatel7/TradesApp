@@ -67,6 +67,11 @@ namespace TradesWebApplication.ViewModels
         public int structure_type_id { get; set; }
         public List<Structure_Type> StructureTypes { get; set; }
 
+        // status
+        [Required(ErrorMessage = "This field is required.")]
+        [DisplayName("TStatus:")]
+        public int? status { get; set; }
+        public List<Status> Statuses { get; set; }
         
         //------------------------------------
         // entry level

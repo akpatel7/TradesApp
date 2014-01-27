@@ -62,7 +62,6 @@ namespace TradesWebApplication.Api
                 viewModel.last_updated = ((DateTime)trade.last_updated).ToString("yyyy-MM-dd");
             }
            
-
             // canonical label
             viewModel.trade_label = trade.trade_label;
 
@@ -72,52 +71,206 @@ namespace TradesWebApplication.Api
             // trade structure
             viewModel.structure_type_id = (int)trade.structure_type_id;
 
-            // entry level
-            //viewModel.instruction_entry = trade.Trade_Instruction.LastOrDefault().instruction_entry;
+            viewModel.currency_id = trade.currency_id;
 
-            // start date
-            //viewModel.instruction_entry_date = trade.Trade_Instruction.LastOrDefault().instruction_entry_date == null ? "" : ((DateTime)(trade.Trade_Instruction.LastOrDefault().instruction_entry_date)).ToString("YYYY-mm-dd");
+            //TODO: createdby
+            viewModel.last_updated_by = 0;
 
-            // exit level
-            //viewModel.instruction_exit = trade.Trade_Instruction.LastOrDefault().instruction_exit;
+            //STATUS Always Visible on create
+            if( trade.status.HasValue )
+            {
+                viewModel.status = (int)trade.status; //1 is Visible, 2: Invisible, 3: Deleted
+            }
+           
+            /*
+            //Add groups
+            foreach (var grp in vm.tradegroups)
+            {
+                var lineGroup = new Trade_Line_Group();
+                lineGroup.trade_line_group_type_id = grp.trade_line_group_type_id;
+                //TODO: Verify if db was changed to varmax
+                if (!String.IsNullOrEmpty(grp.trade_line_group_label))
+                {
+                    if (grp.trade_line_group_label.Length > 255)
+                    {
+                        lineGroup.trade_line_group_label = grp.trade_line_group_label.Substring(0, 255);
+                    }
+                    else
+                    {
+                        lineGroup.trade_line_group_label = grp.trade_line_group_label;
+                    }
+                }
+                //TODO: Verify if db was changed to varmax
+                if (!String.IsNullOrEmpty(grp.trade_line_group_editorial_label))
+                {
+                    if (grp.trade_line_group_editorial_label.Length > 255)
+                    {
+                        lineGroup.trade_line_group_editorial_label = grp.trade_line_group_editorial_label.Substring(0, 255);
+                    }
+                    else
+                    {
+                        lineGroup.trade_line_group_editorial_label = grp.trade_line_group_editorial_label;
+                    }
+                }
+              */
 
-            // exit date
-            // viewModel.instruction_exit_date = trade.Trade_Instruction.LastOrDefault().instruction_exit_date == null ? "" : ((DateTime)(trade.Trade_Instruction.LastOrDefault().instruction_exit_date)).ToString("YYYY-mm-dd");
+               /*
+                //Add tradelines
+                foreach (var line in grp.tradeLines)
+                {
+                    var tradeLine = new Trade_Line();
+                    tradeLine.trade_line_group_id = grpId; //this groupID
+                    tradeLine.trade_id = newTradeId; //this trade
+                    tradeLine.position_id = line.position_id;
+                    tradeLine.tradable_thing_id = line.tradable_thing_id;
+                    //?trade_line_editorial_label
+                    //?trade_line_label
+                    //TODO: createdby
+                    tradeLine.created_on = tradeLine.last_updated = DateTime.Now;
+                    unitOfWork.TradeLineRepository.Insert(tradeLine);
+                    unitOfWork.Save();
+                    var newTradeLineId = tradeLine.trade_line_id;
+                    //TODO: verify uri
+                    tradeLine.trade_line_uri = tradesConfig.TradeLineSemanticURIPrefix + getFlakeID() + tradesConfig.TradeLineGroupSemanticURISuffix;
+                }
+                
 
-            // instruction
-            //viewModel.instruction_type_id = trade.Trade_Instruction.LastOrDefault().instruction_type_id;
-            // viewModel.instruction_label = trade.Trade_Instruction.LastOrDefault().instruction_label;
+            }
+            */
+            // trade instructions
+            var tradeInstructionList = unitOfWork.TradeInstructionRepository.GetAll().Where( i => i.trade_id == trade.trade_id ).ToList();
+            var tradeInstruction = tradeInstructionList.LastOrDefault();
+            if( tradeInstruction != null )
+            {
+                viewModel.instruction_entry = tradeInstruction.instruction_entry;
+                viewModel.instruction_entry_date = ((DateTime)tradeInstruction.instruction_entry_date).ToString("yyyy-MM-dd");
+                viewModel.instruction_exit = tradeInstruction.instruction_exit;
+                if (tradeInstruction.instruction_exit_date.HasValue)
+                {
+                    viewModel.instruction_exit_date = ((DateTime)tradeInstruction.instruction_exit_date).ToString("yyyy-MM-dd");
+                }
+                viewModel.instruction_type_id = tradeInstruction.instruction_type_id;
+                viewModel.instruction_label = tradeInstruction.instruction_label;
+                viewModel.hedge_id = tradeInstruction.hedge_id;
+            }
+            
+            
+            // related trades, TODO:
+            /*
+            if (vm.related_trade_ids != null)
+            {
+                foreach (var i in vm.related_trade_ids)
+                {
+                    var relatedTrade = new Related_Trade();
+                    relatedTrade.trade_id = newTradeId;
+                    relatedTrade.related_trade_id = i;
+                    relatedTrade.created_on = relatedTrade.last_updated = DateTime.Now;
+                    //TODO: created by
+                    unitOfWork.RelatedTradeRepository.Insert(relatedTrade);
+                }
+            }
+            */
 
-            // hedge instruction
-            //viewModel.hedge_id = trade.Trade_Instruction.LastOrDefault().hedge_id;
+     
+            //TODO: where does this go, which tradePerfomance
+            string apl_func = "";
+            bool isTradePerfomanceCreated = false;
 
-            // curency
-            //viewModel.currency_id = trade.Currency.currency_id;
+           var trackRecordList = unitOfWork.TrackRecordRepository.GetAll().Where( r => r.trade_id == trade.trade_id).ToList();
 
-            // supplementary info
-            // APL function
-            viewModel.apl_func = "";
+            if (trackRecordList.Any())
+            {
+                 // mark to mark rate
+                var markTR = trackRecordList.LastOrDefault( m => m.track_record_type_id == 1 );
+                if( markTR != null )
+                {
+                    viewModel.mark_to_mark_rate = markTR.track_record_value.ToString();
+                }
+                // intrest rate diff
+                var interestTR  = trackRecordList.LastOrDefault( m => m.track_record_type_id == 2 );
+                if( interestTR != null )
+                {
+                    viewModel.interest_rate_diff = interestTR.track_record_value.ToString();
+                }
+            }
 
-            // mark to mark rate
-            viewModel.mark_to_mark_rate = "";
-            // internset rate diff
-            viewModel.interest_rate_diff = "";
 
-            // abs performance
-            //viewModel.abs_measure_type_id = null;
-            //viewModel.abs_currency_id = null;
+            // absolute performance
+    /*
+            var abs_measure_id = vm.abs_measure_type_id;
+            if (abs_measure_id != null && !String.IsNullOrEmpty(vm.abs_return_value))
+            {
+                var absPerformance = new Trade_Performance();
+                absPerformance.trade_id = newTradeId;
+                var abs_measure_type_id = (int)abs_measure_id;
+                absPerformance.measure_type_id = abs_measure_type_id;
+                if (abs_measure_type_id == 2)
+                {
+                    absPerformance.return_currency_id = vm.abs_currency_id;
+                }
+                absPerformance.return_value = vm.abs_return_value;
+                isTradePerfomanceCreated = true;
+                if (!String.IsNullOrEmpty(apl_func))
+                {
+                    absPerformance.return_apl_function = apl_func;
+                }
+                absPerformance.created_on = absPerformance.last_updated = DateTime.Now;
+                unitOfWork.TradePerformanceRepository.Insert(absPerformance);
+            }
 
-            // rel performance
-            //viewModel.rel_measure_type_id = null;
-            //viewModel.rel_currency_id = null;
-           // viewModel.return_benchmark_id = null;
+            // relative performance
+            var rel_measure_id = vm.rel_measure_type_id;
+            if (rel_measure_id != null && !String.IsNullOrEmpty(vm.rel_return_value))
+            {
+                var relPerformance = new Trade_Performance();
+                relPerformance.trade_id = newTradeId;
+                var rel_measure_type_id = (int)rel_measure_id;
+                relPerformance.measure_type_id = rel_measure_type_id;
+                if (rel_measure_type_id == 2)
+                {
+                    relPerformance.return_currency_id = vm.rel_currency_id;
+                }
+                relPerformance.return_value = vm.rel_return_value;
+                if (vm.return_benchmark_id != null && vm.return_benchmark_id > 0)
+                {
+                    relPerformance.return_benchmark_id = vm.return_benchmark_id;
+                }
+                isTradePerfomanceCreated = true;
+                if (!String.IsNullOrEmpty(apl_func))
+                {
+                    relPerformance.return_apl_function = apl_func;
+                }
+                relPerformance.created_on = relPerformance.last_updated = DateTime.Now;
+                unitOfWork.TradePerformanceRepository.Insert(relPerformance);
+            }
 
-            // return value
-            //viewModel.abs_return_value = "";
-            //viewModel.rel_return_value = "";
+            //TODO: Verify if creating empty trade performacne for apl_func
+            if (!String.IsNullOrEmpty(apl_func) &&
+                !isTradePerfomanceCreated)
+            {
+                var tradePerformance = new Trade_Performance();
+                tradePerformance.trade_id = newTradeId;
+                tradePerformance.return_apl_function = apl_func;
+                unitOfWork.TradePerformanceRepository.Insert(tradePerformance);
+            }
 
-            // comments
-            //viewModel.comments = trade.Trade_Comment.LastOrDefault().comment_label;
+            if (!String.IsNullOrEmpty(vm.comments))
+            {
+                if (vm.comments.Length > 255)
+                {
+                    vm.comments = vm.comments.Substring(0, 255);
+                }
+                var comment = new Trade_Comment
+                {
+                    trade_id = newTradeId,
+                    comment_label = vm.comments,
+                };
+                comment.created_on = comment.last_updated = DateTime.Now;
+                unitOfWork.TradeCommentRepository.Insert(comment);
+            }
+            
+
+            */
 
             ////for ko json response
             //public List<TradeLineGroupViewModel> tradegroups { get; set; }

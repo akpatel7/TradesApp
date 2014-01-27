@@ -542,6 +542,17 @@ namespace TradesWebApplication.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        //Currency typeahead
+        public JsonResult GetCurrency(string id)
+        {
+            var currencyId = int.Parse(id);
+            var list = unitOfWork.CurrencyRepository.GetAll();
+            var result = (from r in list
+                          where r.currency_id == currencyId
+                          select new { r.currency_label, r.currency_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
