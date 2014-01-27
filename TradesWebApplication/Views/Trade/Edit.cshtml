@@ -635,7 +635,7 @@
 
         //ko.mapping.fromJS(GetTradeData('608'), vm);
         // Load initial state from server, convert it to Task instances, then populate self.tasks
-        var id = '622';
+        var id = @Html.DisplayFor(model => model.trade_id);
         LoadTradeData(id);
         
 
@@ -644,7 +644,7 @@
     function LoadTradeData(id) {
         var apiGetURL = baseUrl;
         apiGetURL += "Api/Values/Get/";
-        apiGetURL += '622';
+        apiGetURL += id;
 
         $.getJSON(apiGetURL, function (allData) {
             var parsed = JSON.parse(allData);
