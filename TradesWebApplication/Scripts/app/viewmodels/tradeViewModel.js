@@ -534,7 +534,7 @@ function TradeViewModel(
             return true;
         }
 
-        if (self.instruction_entry_date.isValid() && self.instruction_exit_date() != "")
+        if (self.instruction_entry_date.isValid() && self.instruction_exit_date() != "" && self.instruction_exit_date() != null)
         {
             var startDate = moment(self.instruction_entry_date());
             var endDate = moment(self.instruction_exit_date());
