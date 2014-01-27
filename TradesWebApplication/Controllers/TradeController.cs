@@ -467,6 +467,17 @@ namespace TradesWebApplication.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        //Benchmark typeahead
+        public JsonResult GetBenchmark(string id)
+        {
+            var benchmarkId = int.Parse(id);
+            var list = unitOfWork.BenchmarkRepository.GetAll();
+            var result = (from r in list
+                          where r.benchmark_id == benchmarkId
+                          select new { r.benchmark_label, r.benchmark_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         //TradeableThing (Financial Instrument) typeahead
         public JsonResult AutoCompleteTradableThing(string term)
         {

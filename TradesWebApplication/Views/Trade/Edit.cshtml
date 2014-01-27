@@ -3,7 +3,7 @@
 @using TradesWebApplication.DAL.EFModels
 
 @{
-    ViewBag.Title = "Trade Creation";
+    ViewBag.Title = "Trade Edit Update";
     var jsModel = JsonConvert.SerializeObject(Model, Formatting.Indented,
         new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
 }
@@ -50,7 +50,7 @@
             </div>
 
             <div class="col-sm-3" data-bind="visible: relativity_id() == 2">
-                <input class="input-xlarge" id="BenchmarkTypeAhead" type="hidden" data-bind="value: benchmark_id" />
+                <input class="input-xlarge" id="BenchmarkTypeAhead" type="hidden" data-bind="value: benchmark_id" value="0000"/>
             </div>
         </div>
         <div class="form-group">
@@ -281,6 +281,7 @@
         //TODO: Api call for searches on tradable things
         $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
 
+        //trigger changes on typeaheads
         //select2.3.5 jquery control for typeaheads
         //to remotely get Benchmarks for typeaheads
         function format_benchmark(item) {
@@ -309,9 +310,23 @@
             id: function (obj) {
                 return obj.benchmark_id;
             },
+            initSelection: function (element, callback) {
+                console.log('reached here: id:' + element.val())
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl + "Trade/GetBenchmark",
+                    dataType: 'json',
+                    async: false,
+                    data: { id: (element.val()) },
+                    success: function (data) {
+                    }
+                }).done(function (data) { callback(data[0]); });
+            },
             formatResult: format_benchmark,
             formatSelection: format_benchmark
+            
         });
+
         $("#relBenchmarkTypeAhead").select2({
             minimumInputLength: 1,
             placeholder: "{Benchmark Selection}",
@@ -336,7 +351,8 @@
                 return obj.benchmark_id;
             },
             formatResult: format_benchmark,
-            formatSelection: format_benchmark
+            formatSelection: format_benchmark,
+
         });
         //end typeAhead
 
@@ -481,10 +497,8 @@
         // Load initial state from server, convert it to Task instances, then populate self.tasks
         var id = '622';
         LoadTradeData(id);
-
-        //trigger changes on typeaheads
-        $("#BenchmarkTypeAhead").val( vm.benchmark_id() ).trigger("change");
         
+
 });//end document.ready
 
     function LoadTradeData(id) {
@@ -503,7 +517,11 @@
             vm.trade_editorial_label(parsed.trade_editorial_label);
             vm.structure_type_id(parsed.structure_type_id);
             //vm.tradegroups.push(new TradeGroup(0, 0, "", "", [new TradeLine()]));
+            $("#BenchmarkTypeAhead").select2("val", parsed.benchmark_id);
         });
+        
+        
+
     };
 
 
