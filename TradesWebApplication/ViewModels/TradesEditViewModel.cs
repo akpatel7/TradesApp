@@ -44,6 +44,9 @@ namespace TradesWebApplication.ViewModels
         public int status { get; set; }
         
         //------------------------------------
+        //dbo.Trade_Instruction
+        public int trade_instruction_id { get; set; }
+        
         // entry level
         public decimal? instruction_entry { get; set; }
         
@@ -77,15 +80,19 @@ namespace TradesWebApplication.ViewModels
         public string apl_func { get; set; }
 
         // mark to mark rate
+        public int mark_track_record_id { get; set; }
         public string mark_to_mark_rate { get; set; }
         
         // intrest rate diff
+        public int int_track_record_id { get; set; }
         public string interest_rate_diff { get; set; }
         
         // abs performance
+        public int abs_track_performance_id { get; set; }
         public Nullable<int> abs_measure_type_id { get; set; }
         public Nullable<int> abs_currency_id { get; set; }
         // rel performance
+        public int rel_track_performance_id { get; set; }
         public Nullable<int> rel_measure_type_id { get; set; }
         public Nullable<int> rel_currency_id { get; set; }
         public Nullable<int> return_benchmark_id { get; set; }
@@ -94,6 +101,7 @@ namespace TradesWebApplication.ViewModels
         public string rel_return_value { get; set; }
 
         // comments
+        public int comment_id { get; set; }
         public string comments { get; set; }
 
         //for ko json response

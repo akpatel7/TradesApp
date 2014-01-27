@@ -142,6 +142,7 @@ namespace TradesWebApplication.Api
             var tradeInstruction = tradeInstructionList.LastOrDefault();
             if( tradeInstruction != null )
             {
+                viewModel.trade_instruction_id = tradeInstruction.trade_instruction_id;
                 viewModel.instruction_entry = tradeInstruction.instruction_entry;
                 viewModel.instruction_entry_date = ((DateTime)tradeInstruction.instruction_entry_date).ToString("yyyy-MM-dd");
                 viewModel.instruction_exit = tradeInstruction.instruction_exit;
@@ -171,10 +172,6 @@ namespace TradesWebApplication.Api
             }
             */
 
-     
-            //TODO: where does this go, which tradePerfomance
-            string apl_func = "";
-            bool isTradePerfomanceCreated = false;
 
            var trackRecordList = unitOfWork.TrackRecordRepository.GetAll().Where( r => r.trade_id == trade.trade_id).ToList();
 
@@ -184,94 +181,93 @@ namespace TradesWebApplication.Api
                 var markTR = trackRecordList.LastOrDefault( m => m.track_record_type_id == 1 );
                 if( markTR != null )
                 {
+                    viewModel.mark_track_record_id = markTR.track_record_id;
                     viewModel.mark_to_mark_rate = markTR.track_record_value.ToString();
                 }
                 // intrest rate diff
                 var interestTR  = trackRecordList.LastOrDefault( m => m.track_record_type_id == 2 );
                 if( interestTR != null )
                 {
+                    viewModel.int_track_record_id = interestTR.track_record_id;
                     viewModel.interest_rate_diff = interestTR.track_record_value.ToString();
                 }
             }
 
 
-            // absolute performance
-    /*
-            var abs_measure_id = vm.abs_measure_type_id;
-            if (abs_measure_id != null && !String.IsNullOrEmpty(vm.abs_return_value))
-            {
-                var absPerformance = new Trade_Performance();
-                absPerformance.trade_id = newTradeId;
-                var abs_measure_type_id = (int)abs_measure_id;
-                absPerformance.measure_type_id = abs_measure_type_id;
-                if (abs_measure_type_id == 2)
-                {
-                    absPerformance.return_currency_id = vm.abs_currency_id;
-                }
-                absPerformance.return_value = vm.abs_return_value;
-                isTradePerfomanceCreated = true;
-                if (!String.IsNullOrEmpty(apl_func))
-                {
-                    absPerformance.return_apl_function = apl_func;
-                }
-                absPerformance.created_on = absPerformance.last_updated = DateTime.Now;
-                unitOfWork.TradePerformanceRepository.Insert(absPerformance);
-            }
+            //TODO: where does this go, which tradePerfomance
+            string apl_func = "";
+            bool isTradePerfomanceCreated = false;
 
-            // relative performance
-            var rel_measure_id = vm.rel_measure_type_id;
-            if (rel_measure_id != null && !String.IsNullOrEmpty(vm.rel_return_value))
-            {
-                var relPerformance = new Trade_Performance();
-                relPerformance.trade_id = newTradeId;
-                var rel_measure_type_id = (int)rel_measure_id;
-                relPerformance.measure_type_id = rel_measure_type_id;
-                if (rel_measure_type_id == 2)
-                {
-                    relPerformance.return_currency_id = vm.rel_currency_id;
-                }
-                relPerformance.return_value = vm.rel_return_value;
-                if (vm.return_benchmark_id != null && vm.return_benchmark_id > 0)
-                {
-                    relPerformance.return_benchmark_id = vm.return_benchmark_id;
-                }
-                isTradePerfomanceCreated = true;
-                if (!String.IsNullOrEmpty(apl_func))
-                {
-                    relPerformance.return_apl_function = apl_func;
-                }
-                relPerformance.created_on = relPerformance.last_updated = DateTime.Now;
-                unitOfWork.TradePerformanceRepository.Insert(relPerformance);
-            }
 
+            var tradePerformances = unitOfWork.TradePerformanceRepository.GetAll().Where(t => t.trade_id == trade.trade_id).ToList();
+
+            if (tradePerformances.Any())
+            {
+
+                var abs_perf = tradePerformances.LastOrDefault(t => t.return_benchmark_id != 1); // it would make sense to use value 2 for absolute!! TODO
+
+                // absolute performance
+                if ( abs_perf != null )
+                {
+                    viewModel.abs_track_performance_id = abs_perf.trade_performance_id;
+                    viewModel.abs_measure_type_id = abs_perf.measure_type_id;
+                    if (abs_perf.measure_type_id ==2 )
+                    {
+                        viewModel.abs_currency_id = abs_perf.return_currency_id;
+                    }
+                    viewModel.abs_return_value = abs_perf.return_value;
+
+                    if( !String.IsNullOrEmpty(abs_perf.return_apl_function) )
+                    {
+                        apl_func = abs_perf.return_apl_function;
+                        isTradePerfomanceCreated = true;
+                    }
+
+                }
+            
+                var rel_perf = tradePerformances.LastOrDefault(t => t.return_benchmark_id == 1); 
+
+                // relative performance
+                if ( rel_perf != null )
+                {
+                    viewModel.rel_track_performance_id = rel_perf.trade_performance_id;
+                    viewModel.rel_measure_type_id = rel_perf.measure_type_id;
+                    if (rel_perf.measure_type_id == 2 )
+                    {
+                        viewModel.rel_currency_id = rel_perf.return_currency_id;
+                    }
+                    viewModel.rel_return_value = rel_perf.return_value;
+
+                    if( !String.IsNullOrEmpty(rel_perf.return_apl_function) && !isTradePerfomanceCreated )
+                    {
+                        isTradePerfomanceCreated = true;
+                        apl_func = rel_perf.return_apl_function;
+                    }
+
+                    if (rel_perf.return_benchmark_id != null && rel_perf.return_benchmark_id > 0)
+                    {
+                        viewModel.return_benchmark_id = rel_perf.return_benchmark_id;
+                    }
+                }
+            }
+           
             //TODO: Verify if creating empty trade performacne for apl_func
-            if (!String.IsNullOrEmpty(apl_func) &&
-                !isTradePerfomanceCreated)
+            if( isTradePerfomanceCreated  && !String.IsNullOrEmpty(apl_func) )
             {
-                var tradePerformance = new Trade_Performance();
-                tradePerformance.trade_id = newTradeId;
-                tradePerformance.return_apl_function = apl_func;
-                unitOfWork.TradePerformanceRepository.Insert(tradePerformance);
+                viewModel.apl_func = apl_func;
             }
+          
 
-            if (!String.IsNullOrEmpty(vm.comments))
+            //trade comments
+            var comments = unitOfWork.TradeCommentRepository.GetAll().Where( c => c.trade_id == trade.trade_id ).ToList();
+
+            if (comments.Any())
             {
-                if (vm.comments.Length > 255)
-                {
-                    vm.comments = vm.comments.Substring(0, 255);
-                }
-                var comment = new Trade_Comment
-                {
-                    trade_id = newTradeId,
-                    comment_label = vm.comments,
-                };
-                comment.created_on = comment.last_updated = DateTime.Now;
-                unitOfWork.TradeCommentRepository.Insert(comment);
+                var latestComment = comments.LastOrDefault();
+                viewModel.comment_id = latestComment.comment_id;
+                viewModel.comments = latestComment.comment_label;
             }
             
-
-            */
-
             ////for ko json response
             //public List<TradeLineGroupViewModel> tradegroups { get; set; }
             //public List<TradeLineViewModel> tradeLines { get; set; }

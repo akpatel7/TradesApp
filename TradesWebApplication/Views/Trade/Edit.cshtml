@@ -490,6 +490,18 @@
             id: function (obj) {
                 return obj.benchmark_id;
             },
+            initSelection: function (element, callback) {
+                //console.log('reached here: id:' + element.val())
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl + "Trade/GetBenchmark",
+                    dataType: 'json',
+                    async: false,
+                    data: { id: (element.val()) },
+                    success: function (data) {
+                    }
+                }).done(function (data) { callback(data[0]); });
+            },
             formatResult: format_benchmark,
             formatSelection: format_benchmark,
 
@@ -716,8 +728,9 @@
             //vm.tradegroups.push(new TradeGroup(0, 0, "", "", [new TradeLine()]));
             $("#BenchmarkTypeAhead").select2("val", parsed.benchmark_id);
             $("#CurrencyTypeAhead").select2("val", parsed.currency_id);
-            $("#absCurrencyTypeAhead").select2("val", parsed.currency_id);
-            $("#relCurrencyTypeAhead").select2("val", parsed.currency_id);
+            $("#absCurrencyTypeAhead").select2("val", parsed.abs_currency_id);
+            $("#relCurrencyTypeAhead").select2("val", parsed.rel_currency_id);
+            $("#relBenchmarkTypeAhead").select2("val", parsed.return_benchmark_id);
         });
         
         
