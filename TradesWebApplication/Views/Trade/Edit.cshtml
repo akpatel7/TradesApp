@@ -281,7 +281,7 @@
                     @Html.LabelFor(model => model.related_trade_ids)
                 </div>
                  <div class="col-sm-6">
-                      <input class="input-xlarge" id="selectRelatedTrades" type="hidden" data-bind="value: related_trade_ids_list" disabled="disabled"/>
+                      <input class="input-xlarge" id="selectRelatedTrades" type="hidden" data-bind="value: related_trade_ids_list"/>
                 </div>
                 </div>
 
@@ -290,7 +290,7 @@
                         @Html.LabelFor(model => model.apl_func)
                     </div>
                     <div class="col-sm-3">
-                        <input type="text" data-bind="value: apl_func" maxlength="255" disabled="disabled"/>
+                        <input type="text" data-bind="value: apl_func" maxlength="255" />
                     </div>
                 </div>
         </fieldset>
