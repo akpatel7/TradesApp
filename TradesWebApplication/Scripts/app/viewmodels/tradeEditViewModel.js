@@ -213,6 +213,10 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
         self.tradeLines.push(new TradeLine(nextIndex));
     };
 
+    this.addParsedLine = function (trade_line_id, position_id, tradable_thing_id) {
+        self.tradeLines.push(new TradeLine(trade_line_id, position_id, tradable_thing_id));
+    };
+
     this.removeLine = function (item) {
         if (self.tradeLines().length > 1)
         {
