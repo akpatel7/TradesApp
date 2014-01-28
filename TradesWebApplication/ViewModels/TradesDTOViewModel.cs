@@ -8,7 +8,7 @@ using TradesWebApplication.DAL.EFModels;
 
 namespace TradesWebApplication.ViewModels
 {
-    public class TradesEditViewModel
+    public class TradesDTOViewModel
     {
         // Trade
         public int trade_id { get; set; }
@@ -106,7 +106,7 @@ namespace TradesWebApplication.ViewModels
         public string comments { get; set; }
 
         //for ko json response
-        public List<TradeLineGroupViewModel> tradegroups { get; set; }
-        public List<TradeLineViewModel> tradeLines { get; set; }
+        public List<TradeLineGroupDTOViewModel> tradegroups { get; set; }
+        public List<TradeLineDTOViewModel> tradeLines { get; set; }
     }
 }

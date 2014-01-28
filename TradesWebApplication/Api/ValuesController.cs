@@ -41,7 +41,7 @@ namespace TradesWebApplication.Api
             var trade = unitOfWork.TradeRepository.Get(id);
 
             // this view model is to match the knockout json format to be easily serializable on the client side view
-            var viewModel = new TradesEditViewModel();
+            var viewModel = new TradesDTOViewModel();
 
             viewModel.trade_id = trade.trade_id;
 
@@ -82,61 +82,6 @@ namespace TradesWebApplication.Api
                 viewModel.status = (int)trade.status; //1 is Visible, 2: Invisible, 3: Deleted
             }
            
-            /*
-            //Add groups
-            foreach (var grp in vm.tradegroups)
-            {
-                var lineGroup = new Trade_Line_Group();
-                lineGroup.trade_line_group_type_id = grp.trade_line_group_type_id;
-                //TODO: Verify if db was changed to varmax
-                if (!String.IsNullOrEmpty(grp.trade_line_group_label))
-                {
-                    if (grp.trade_line_group_label.Length > 255)
-                    {
-                        lineGroup.trade_line_group_label = grp.trade_line_group_label.Substring(0, 255);
-                    }
-                    else
-                    {
-                        lineGroup.trade_line_group_label = grp.trade_line_group_label;
-                    }
-                }
-                //TODO: Verify if db was changed to varmax
-                if (!String.IsNullOrEmpty(grp.trade_line_group_editorial_label))
-                {
-                    if (grp.trade_line_group_editorial_label.Length > 255)
-                    {
-                        lineGroup.trade_line_group_editorial_label = grp.trade_line_group_editorial_label.Substring(0, 255);
-                    }
-                    else
-                    {
-                        lineGroup.trade_line_group_editorial_label = grp.trade_line_group_editorial_label;
-                    }
-                }
-              */
-
-               /*
-                //Add tradelines
-                foreach (var line in grp.tradeLines)
-                {
-                    var tradeLine = new Trade_Line();
-                    tradeLine.trade_line_group_id = grpId; //this groupID
-                    tradeLine.trade_id = newTradeId; //this trade
-                    tradeLine.position_id = line.position_id;
-                    tradeLine.tradable_thing_id = line.tradable_thing_id;
-                    //?trade_line_editorial_label
-                    //?trade_line_label
-                    //TODO: createdby
-                    tradeLine.created_on = tradeLine.last_updated = DateTime.Now;
-                    unitOfWork.TradeLineRepository.Insert(tradeLine);
-                    unitOfWork.Save();
-                    var newTradeLineId = tradeLine.trade_line_id;
-                    //TODO: verify uri
-                    tradeLine.trade_line_uri = tradesConfig.TradeLineSemanticURIPrefix + getFlakeID() + tradesConfig.TradeLineGroupSemanticURISuffix;
-                }
-                
-
-            }
-            */
             // trade instructions
             var tradeInstructionList = unitOfWork.TradeInstructionRepository.GetAll().Where( i => i.trade_id == trade.trade_id ).ToList();
             var tradeInstruction = tradeInstructionList.LastOrDefault();
@@ -169,8 +114,6 @@ namespace TradesWebApplication.Api
                     i++;
                 }
             }
-
-
 
            var trackRecordList = unitOfWork.TrackRecordRepository.GetAll().Where( r => r.trade_id == trade.trade_id).ToList();
 
@@ -267,9 +210,60 @@ namespace TradesWebApplication.Api
                 viewModel.comments = latestComment.comment_label;
             }
             
-            ////for ko json response
-            //public List<TradeLineGroupViewModel> tradegroups { get; set; }
-            //public List<TradeLineViewModel> tradeLines { get; set; }
+            //trade groups and lines
+            var tradeLines = unitOfWork.TradeLineRepository.GetAll().Where(t => t.trade_id == viewModel.trade_id).ToList();
+
+            if (tradeLines.Any())
+            {
+                viewModel.tradeLines = new List<TradeLineDTOViewModel>();
+                viewModel.tradegroups = new List<TradeLineGroupDTOViewModel>();
+
+                foreach (var tradeline in tradeLines)
+                {
+
+                    var tradeLineVM = new TradeLineDTOViewModel
+                    {
+                        trade_line_id = tradeline.trade_line_id,
+                        position_id = (int)tradeline.position_id,
+                        tradable_thing_id = (int)tradeline.tradable_thing_id
+                    };
+
+                    viewModel.tradeLines.Add(tradeLineVM);
+
+                    var tradeLineGroup = unitOfWork.TradeLineGroupRepository.GetByID(tradeline.trade_line_group_id);
+
+                    if (tradeLineGroup != null)
+                    {
+                        var tradeLineGroupVM = new TradeLineGroupDTOViewModel
+                        {
+                            trade_line_group_id = tradeLineGroup.trade_line_group_id,
+                            trade_line_group_type_id  = (int)tradeLineGroup.trade_line_group_type_id,
+                            trade_line_group_editorial_label = tradeLineGroup.trade_line_group_editorial_label,
+                            trade_line_group_label = tradeLineGroup.trade_line_group_label
+                        };
+
+                        bool groupExists = false;
+                        //check to see if exists
+                        if (viewModel.tradegroups.Any())
+                        {
+                            for (int i = 0; i < viewModel.tradegroups.Count; i++)
+                            {
+                                if (viewModel.tradegroups[i].trade_line_group_id == tradeLineGroupVM.trade_line_group_id)
+                                {
+                                    groupExists = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!groupExists)
+                        {
+                            viewModel.tradegroups.Add(tradeLineGroupVM);
+                        }
+
+                    }
+                }
+            }
 
             return JsonConvert.SerializeObject(viewModel);
         }
