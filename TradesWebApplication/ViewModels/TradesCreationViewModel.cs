@@ -69,9 +69,9 @@ namespace TradesWebApplication.ViewModels
 
         // status
         [Required(ErrorMessage = "This field is required.")]
-        [DisplayName("TStatus:")]
+        [DisplayName("Status:")]
         public int? status { get; set; }
-        public List<Status> Statuses { get; set; }
+        public List<Status> Status { get; set; }
         
         //------------------------------------
         // entry level

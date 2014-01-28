@@ -302,8 +302,9 @@ namespace TradesWebApplication.Controllers
             viewModel.InstructionTypes = unitOfWork.InstructionTypeRepository.GetAll().ToList();
             viewModel.HedgeTypes = unitOfWork.HedgeTypeRepository.GetAll().ToList();
             viewModel.MeasureTypes = unitOfWork.MeasureTypeRepository.GetAll().ToList();
+            viewModel.Status = unitOfWork.StatusRepository.GetAll().ToList();
 
-            //default values for trade creation
+                //default values for trade creation
             if (initialize)
             {
                 viewModel.length_type_id = 2;
@@ -396,6 +397,16 @@ namespace TradesWebApplication.Controllers
             PopulateAbsoluteAndRelativePerformance(vm);
             PopulateRelatedTrades(vm);
             PopulateComment(vm);
+
+            if (trade.status.HasValue)
+            {
+                vm.status = trade.status;
+            }
+            else 
+            {   
+                //HACK: need to fill statuses in db
+                vm.status = 1;
+            }
 
 
             return View(vm);
