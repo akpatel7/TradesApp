@@ -157,20 +157,18 @@ namespace TradesWebApplication.Api
             
             
             // related trades, TODO:
-            /*
-            if (vm.related_trade_ids != null)
+            var relatedTrades = unitOfWork.RelatedTradeRepository.GetAll().Where(r => r.trade_id == trade.trade_id).ToList();
+            if (relatedTrades.Any())
             {
-                foreach (var i in vm.related_trade_ids)
+                int i = 0;
+                viewModel.related_trade_ids = new int[relatedTrades.Count];
+                foreach( var r in relatedTrades )
                 {
-                    var relatedTrade = new Related_Trade();
-                    relatedTrade.trade_id = newTradeId;
-                    relatedTrade.related_trade_id = i;
-                    relatedTrade.created_on = relatedTrade.last_updated = DateTime.Now;
-                    //TODO: created by
-                    unitOfWork.RelatedTradeRepository.Insert(relatedTrade);
+                    viewModel.related_trade_ids[i] = r.related_trade_id;
+                    i++;
                 }
             }
-            */
+
 
 
            var trackRecordList = unitOfWork.TrackRecordRepository.GetAll().Where( r => r.trade_id == trade.trade_id).ToList();

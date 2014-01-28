@@ -533,6 +533,19 @@
                     };
                 }
             },
+            initSelection: function (element, callback) {
+                //console.log('reached here: id:' + element.val())
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl + "Trade/GetLinkedTrade",
+                    dataType: 'json',
+                    async: false,
+                    data: { id: (element.val()) },
+                    success: function (data) {
+                    }
+                }).done(function (data)  { callback(data[0]); });
+            },
+
             id: function (obj) {
                 return obj.trade_id;
             },
@@ -711,8 +724,8 @@
             vm.instruction_type_id(parsed.instruction_type_id);
             vm.instruction_label(parsed.instruction_label);
             vm.hedge_id(parsed.hedge_id);
-            vm.currency_id(parsed.currency_id);
-            //vm.related_trade_ids(PARSED),
+            vm.currency_id(parsed.currency_id); 
+            vm.related_trade_ids(parsed.related_trade_ids),
             vm.apl_func(parsed.apl_func);
             vm.mark_to_mark_rate(parsed.mark_to_mark_rate);
             vm.interest_rate_diff(parsed.interest_rate_diff);
@@ -731,6 +744,11 @@
             $("#absCurrencyTypeAhead").select2("val", parsed.abs_currency_id);
             $("#relCurrencyTypeAhead").select2("val", parsed.rel_currency_id);
             $("#relBenchmarkTypeAhead").select2("val", parsed.return_benchmark_id);
+            for( var i = 0; i < parsed.related_trade_ids.length; i++ )
+            {
+                $("#selectRelatedTrades").select2("val",parsed.related_trade_ids[i]);
+            }
+            
         });
         
         

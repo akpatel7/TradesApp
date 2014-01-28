@@ -531,6 +531,22 @@ namespace TradesWebApplication.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetLinkedTrade(string id)
+        {
+            var linkedTradeIds = StringToIntList(id);
+            linkedTradeIds.ToList();
+            var tradesList = new List<Trade>();
+
+            foreach (var t in linkedTradeIds)
+            {
+                tradesList.Add(unitOfWork.TradeRepository.Get(t));
+            }
+
+            var result = (from r in tradesList
+                          select new { r.trade_editorial_label, r.trade_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         
         //Currency typeahead
         public JsonResult AutoCompleteCurrency(string term)
@@ -551,6 +567,19 @@ namespace TradesWebApplication.Controllers
                           where r.currency_id == currencyId
                           select new { r.currency_label, r.currency_id }).Distinct();
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public IEnumerable<int> StringToIntList(string str)
+        {
+            if (String.IsNullOrEmpty(str))
+                yield break;
+
+            foreach (var s in str.Split(','))
+            {
+                int num;
+                if (int.TryParse(s, out num))
+                    yield return num;
+            }
         }
 
         protected override void Dispose(bool disposing)
