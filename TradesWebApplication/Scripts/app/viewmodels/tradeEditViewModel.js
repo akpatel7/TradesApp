@@ -385,7 +385,7 @@ function TradeViewModel(
     this.comments = ko.observable(comments);
 
     status = typeof (status) !== 'undefined' ? status : "";
-    this.status = ko.observable(status);
+    this.status = ko.observable(status).extend({ required: true });
     
     //tradegroups
     this.tradegroups = ko.observableArray([]);

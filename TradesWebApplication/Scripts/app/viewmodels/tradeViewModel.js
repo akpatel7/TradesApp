@@ -250,7 +250,8 @@ function TradeViewModel(
   rel_currency_id,
   rel_return_value,
   return_benchmark_id,
-  comments
+  comments,
+  status
   ) {
     var self = this;
 
@@ -364,6 +365,10 @@ function TradeViewModel(
 
     comments = typeof (comments) !== 'undefined' ? comments : "";
     this.comments = ko.observable(comments);
+
+
+    status = typeof (status) !== 'undefined' ? status : "";
+    this.status = ko.observable(status).extend({ required: true });
     
     //tradegroups
     this.tradegroups = ko.observableArray([]);

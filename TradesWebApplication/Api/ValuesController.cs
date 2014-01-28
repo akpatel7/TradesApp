@@ -77,11 +77,16 @@ namespace TradesWebApplication.Api
             viewModel.last_updated_by = 0;
 
             //STATUS Always Visible on create
-            if( trade.status.HasValue )
+            if (trade.status.HasValue)
             {
-                viewModel.status = (int)trade.status; //1 is Visible, 2: Invisible, 3: Deleted
+                viewModel.status = (int)trade.status; //1 is Unpublished, 2:Ready To Publish, 3: Published, 4: Deleted
+            }
+            else 
+            {
+                viewModel.status = 1;
             }
            
+
             // trade instructions
             var tradeInstructionList = unitOfWork.TradeInstructionRepository.GetAll().Where( i => i.trade_id == trade.trade_id ).ToList();
             var tradeInstruction = tradeInstructionList.LastOrDefault();
@@ -371,7 +376,14 @@ namespace TradesWebApplication.Api
             //TODO: createdby
             trade.created_by = 0;
             //STATUS Always Visible on create
-            trade.status = 1; //1 is Visible, 2: Invisible, 3: Deleted
+            if (vm.status.HasValue)
+            {
+                trade.status = vm.status; //1 is Unpublished, 2: Ready For publish, 3: Published, 4: Deleted
+            }
+            else
+            {
+                trade.status = 1;
+            }
             unitOfWork.TradeRepository.InsertTrade(trade);
             unitOfWork.Save();
             var newTradeId = trade.trade_id;
