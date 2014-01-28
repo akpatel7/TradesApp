@@ -215,7 +215,6 @@ namespace TradesWebApplication.Api
 
             if (tradeLines.Any())
             {
-                viewModel.tradeLines = new List<TradeLineDTOViewModel>();
                 viewModel.tradegroups = new List<TradeLineGroupDTOViewModel>();
 
                 foreach (var tradeline in tradeLines)
@@ -228,8 +227,6 @@ namespace TradesWebApplication.Api
                         tradable_thing_id = (int)tradeline.tradable_thing_id
                     };
 
-                    viewModel.tradeLines.Add(tradeLineVM);
-
                     var tradeLineGroup = unitOfWork.TradeLineGroupRepository.GetByID(tradeline.trade_line_group_id);
 
                     if (tradeLineGroup != null)
@@ -239,7 +236,8 @@ namespace TradesWebApplication.Api
                             trade_line_group_id = tradeLineGroup.trade_line_group_id,
                             trade_line_group_type_id  = (int)tradeLineGroup.trade_line_group_type_id,
                             trade_line_group_editorial_label = tradeLineGroup.trade_line_group_editorial_label,
-                            trade_line_group_label = tradeLineGroup.trade_line_group_label
+                            trade_line_group_label = tradeLineGroup.trade_line_group_label,
+                            
                         };
 
                         bool groupExists = false;
@@ -250,6 +248,7 @@ namespace TradesWebApplication.Api
                             {
                                 if (viewModel.tradegroups[i].trade_line_group_id == tradeLineGroupVM.trade_line_group_id)
                                 {
+                                    viewModel.tradegroups[i].tradeLines.Add(tradeLineVM);
                                     groupExists = true;
                                     break;
                                 }
@@ -258,6 +257,11 @@ namespace TradesWebApplication.Api
 
                         if (!groupExists)
                         {
+                            if (tradeLineGroupVM.tradeLines == null)
+                            {
+                                tradeLineGroupVM.tradeLines = new List<TradeLineDTOViewModel>();
+                            }
+                            tradeLineGroupVM.tradeLines.Add(tradeLineVM);
                             viewModel.tradegroups.Add(tradeLineGroupVM);
                         }
 

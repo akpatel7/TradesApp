@@ -18,6 +18,6 @@ namespace TradesWebApplication.ViewModels
         public string trade_line_group_editorial_label { get; set; }
         [DisplayName("Canonical Label")]
         public string trade_line_group_label { get; set; }
-        public List<TradeLineViewModel> tradeLines { get; set; }
+        public List<TradeLineDTOViewModel> tradeLines { get; set; }
     }
 }

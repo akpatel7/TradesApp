@@ -107,6 +107,6 @@ namespace TradesWebApplication.ViewModels
 
         //for ko json response
         public List<TradeLineGroupDTOViewModel> tradegroups { get; set; }
-        public List<TradeLineDTOViewModel> tradeLines { get; set; }
+        //public List<TradeLineDTOViewModel> tradeLines { get; set; }
     }
 }
