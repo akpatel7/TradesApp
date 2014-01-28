@@ -543,7 +543,14 @@
                     data: { id: (element.val()) },
                     success: function (data) {
                     }
-                }).done(function (data)  { callback(data[0]); });
+                }).done(function (data)  { 
+                    var results = [];
+                    for( var i = 0; i < data.length; i++ )
+                    {
+                        results.push(data[i]);
+                    }
+                    callback(results); 
+                });
             },
 
             id: function (obj) {
