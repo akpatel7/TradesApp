@@ -165,6 +165,7 @@ namespace TradesWebApplication.Api
                 foreach( var r in relatedTrades )
                 {
                     viewModel.related_trade_ids[i] = r.related_trade_id;
+                    viewModel.related_trade_ids_list += r.related_trade_id + ",";
                     i++;
                 }
             }

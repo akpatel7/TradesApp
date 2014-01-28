@@ -533,13 +533,15 @@ namespace TradesWebApplication.Controllers
 
         public JsonResult GetLinkedTrade(string id)
         {
-            var linkedTradeIds = StringToIntList(id);
-            linkedTradeIds.ToList();
-            var tradesList = new List<Trade>();
+            //var linkedTradeIds = StringToIntList(id);
+            //linkedTradeIds.ToList();
+            var tradeId = int.Parse(id);
+            var tradesListIds = unitOfWork.RelatedTradeRepository.GetAll().Where(r => r.trade_id == tradeId).ToList();
 
-            foreach (var t in linkedTradeIds)
+            var tradesList = new List<Trade>();
+            foreach (var t in tradesListIds)
             {
-                tradesList.Add(unitOfWork.TradeRepository.Get(t));
+                tradesList.Add(unitOfWork.TradeRepository.Get(t.related_trade_id));
             }
 
             var result = (from r in tradesList

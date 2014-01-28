@@ -75,6 +75,7 @@ namespace TradesWebApplication.ViewModels
         // supplementary info
         // linked trades
         public int[] related_trade_ids { get; set; }
+        public string related_trade_ids_list { get; set; }
 
         // APL function
         public string apl_func { get; set; }
