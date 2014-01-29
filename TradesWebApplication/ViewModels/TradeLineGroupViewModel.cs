@@ -28,5 +28,8 @@ namespace TradesWebApplication.ViewModels
         [DisplayName("Canonical Label")]
         public string trade_line_group_label { get; set; }
         public List<TradeLineViewModel> tradeLines { get; set; }
+
+        //new json respone fields for edit.cshtml
+        public string CRUDMode { get; set; }
     }
 }

@@ -88,7 +88,7 @@ namespace TradesWebApplication.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var vm = new TradesCreationViewModel();
+            var vm = new TradesViewModel();
 
             var trade = unitOfWork.TradeRepository.Get(id);
             vm.trade_id = trade.trade_id;
@@ -119,7 +119,7 @@ namespace TradesWebApplication.Controllers
             return View(vm);
         }
 
-        private void PopulateAbsoluteAndRelativePerformance(TradesCreationViewModel viewModel)
+        private void PopulateAbsoluteAndRelativePerformance(TradesViewModel viewModel)
         {
        
             //fx spot and carry
@@ -189,19 +189,19 @@ namespace TradesWebApplication.Controllers
 
         }
 
-        private void PopulateComment(TradesCreationViewModel viewModel)
+        private void PopulateComment(TradesViewModel viewModel)
         {
             viewModel.Comment =
                 unitOfWork.TradeCommentRepository.Get(c => c.trade_id == viewModel.Trade.trade_id).LastOrDefault();
         }
 
-        private void PopulateRelatedTrades(TradesCreationViewModel viewModel)
+        private void PopulateRelatedTrades(TradesViewModel viewModel)
         {
             viewModel.RelatedTrades = unitOfWork.RelatedTradeRepository.GetAll()
                                       .Where( r => r.trade_id == viewModel.Trade.trade_id).ToList();
         }
 
-        private void PopulateInstructions(TradesCreationViewModel viewModel)
+        private void PopulateInstructions(TradesViewModel viewModel)
         {
             var instructionTypes = unitOfWork.TradeInstructionRepository.GetAll().ToList();
             var instructionType = instructionTypes.FindAll(i => i.trade_id == viewModel.Trade.trade_id).FirstOrDefault();
@@ -232,7 +232,7 @@ namespace TradesWebApplication.Controllers
             
         }
 
-        private void PopulateRelatedTradeLinesAndGroups(TradesCreationViewModel viewModel)
+        private void PopulateRelatedTradeLinesAndGroups(TradesViewModel viewModel)
         {
             viewModel.TradeLines = new List<TradeLineViewModel>();
             viewModel.TradeLineGroups = new List<TradeLineGroupViewModel>();
@@ -293,7 +293,7 @@ namespace TradesWebApplication.Controllers
        
         }
 
-        private void PopulateDropDownEntities(TradesCreationViewModel viewModel, bool initialize)
+        private void PopulateDropDownEntities(TradesViewModel viewModel, bool initialize)
         {
 
             viewModel.Services = unitOfWork.ServiceRepository.GetAll().ToList();
@@ -331,7 +331,7 @@ namespace TradesWebApplication.Controllers
         // GET: /Trade/Create
         public ActionResult Create()
         {
-            var viewModel = new TradesCreationViewModel();
+            var viewModel = new TradesViewModel();
 
             viewModel.Trade = new Trade();
             
@@ -380,7 +380,7 @@ namespace TradesWebApplication.Controllers
         [HttpPost]
         public ActionResult Create(object data)
         {
-            return View(new TradesCreationViewModel());
+            return View(new TradesViewModel());
 
         }
 
@@ -392,7 +392,7 @@ namespace TradesWebApplication.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var vm = new TradesCreationViewModel();
+            var vm = new TradesViewModel();
 
             var trade = unitOfWork.TradeRepository.Get(id);
             vm.trade_id = trade.trade_id;

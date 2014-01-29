@@ -17,6 +17,9 @@ namespace TradesWebApplication.ViewModels
         public int trade_line_id { get; set; }
         public int position_id { get; set; }
         public int tradable_thing_id { get; set; }
+
+        //new json respone fields for edit.cshtml
+        public string CRUDMode { get; set; }
         
     }
 }

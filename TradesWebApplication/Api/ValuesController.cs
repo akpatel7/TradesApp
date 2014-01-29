@@ -283,11 +283,11 @@ namespace TradesWebApplication.Api
 
             if (ModelState.IsValid)
             {
-                var vm = new TradesCreationViewModel();
+                var vm = new TradesViewModel();
 
                 string jsonData = value;
 
-                vm = JsonConvert.DeserializeObject<TradesCreationViewModel>(value);
+                vm = JsonConvert.DeserializeObject<TradesViewModel>(value);
                 try
                 {
                     PersistToDb(vm);
@@ -327,7 +327,7 @@ namespace TradesWebApplication.Api
             };
         }
 
-        private void PersistToDb(TradesCreationViewModel vm)
+        private void PersistToDb(TradesViewModel vm)
         {
             //Create Trade
             Trade trade = new Trade();

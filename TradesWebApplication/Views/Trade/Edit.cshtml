@@ -1,4 +1,4 @@
-﻿@model TradesWebApplication.ViewModels.TradesCreationViewModel
+﻿@model TradesWebApplication.ViewModels.TradesViewModel
 @using Newtonsoft.Json
 @using TradesWebApplication.DAL.EFModels
 
@@ -339,7 +339,7 @@
                     @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control", @disabled="disabled" })
                 </div>
                 <div class="col-sm-3" data-bind="visible: abs_measure_type_id() == 2">
-                    <input class="input-xlarge" id="absCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id" />
+                    <input class="input-xlarge" id="absCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id" disabled="disabled"/>
                 </div>
                 <div class="col-sm-3">
                     <input type="text" data-bind="value: abs_return_value" disabled="disabled" />
