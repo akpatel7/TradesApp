@@ -87,25 +87,36 @@ namespace TradesWebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var viewModel = new TradesCreationViewModel();
 
-            viewModel.Trade = unitOfWork.TradeRepository.Get(id);
-            viewModel.trade_id = id;
+            var vm = new TradesCreationViewModel();
 
-            if (viewModel.Trade == null)
+            var trade = unitOfWork.TradeRepository.Get(id);
+            vm.trade_id = trade.trade_id;
+            vm.Trade = trade;
+            if (trade.last_updated.HasValue)
             {
-                return HttpNotFound();
+                vm.last_updated = ((DateTime)trade.last_updated).ToString("yyyy-MM-dd");
             }
 
-            viewModel.currency_id = viewModel.Trade.currency_id;
-            PopulateDropDownEntities(viewModel, false);
-            PopulateRelatedTradeLinesAndGroups(viewModel);
-            PopulateInstructions(viewModel);
-            PopulateAbsoluteAndRelativePerformance(viewModel);
-            PopulateRelatedTrades(viewModel);
-            PopulateComment(viewModel);
+            PopulateDropDownEntities(vm, false);
+            PopulateRelatedTradeLinesAndGroups(vm);
+            PopulateInstructions(vm);
+            PopulateAbsoluteAndRelativePerformance(vm);
+            PopulateRelatedTrades(vm);
+            PopulateComment(vm);
 
-            return View(viewModel);
+            if (trade.status.HasValue)
+            {
+                vm.status = trade.status;
+            }
+            else
+            {
+                //HACK: need to fill statuses in db
+                vm.status = 1;
+            }
+
+
+            return View(vm);
         }
 
         private void PopulateAbsoluteAndRelativePerformance(TradesCreationViewModel viewModel)
