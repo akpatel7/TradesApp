@@ -497,7 +497,7 @@ namespace TradesWebApplication.Api
             }
 
             // trade instructions
-            if (!isNewTrade)
+            if (isNewTrade)
             {
                 var tradeInstruction = new Trade_Instruction
                 {
@@ -545,7 +545,7 @@ namespace TradesWebApplication.Api
             //TODO: where does this go, which tradePerfomance
             string apl_func = vm.apl_func;
 
-            if (!isNewTrade)
+            if (isNewTrade)
             {
                 bool isTradePerfomanceCreated = false;
 

@@ -320,7 +320,7 @@ function TradeViewModel(
 
     //form values - bottom
     trade_instruction_id = typeof (trade_instruction_id) !== 'undefined' ? trade_instruction_id : "";
-    this.trade_instruction_id = ko.Observable(trade_instruction_id);
+    this.trade_instruction_id = ko.observable(trade_instruction_id);
 
     instruction_entry = typeof (instruction_entry) !== 'undefined' ? instruction_entry : "";
     this.instruction_entry = ko.validatedObservable(null).extend({ required: true }).extend({ number: true });
