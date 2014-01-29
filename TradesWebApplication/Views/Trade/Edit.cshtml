@@ -167,11 +167,10 @@
                                                     </strong>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    @*@Html.DropDownListFor(x => x.position_id, new SelectList(Model.Positions, "position_id", "position_label"), "{Position}", new { @data_bind = "value: position_id, selectedText: positionString", @class = "form-control" })*@
-                                                     <input class="" type="hidden" data-bind="uniqueIdPosition: position_id, value: position_id" class="tradeLinePosition"/>
+                                                     <input type="hidden" data-bind="uniqueIdPosition: position_id, value: position_id" class="tradeLinePosition"/>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <input class="" type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id" />
+                                                    <input type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id" class="tradeLineTradeableThing"/>
                                                 </div>
                                                 <div class="col-md-1">
                                                     <button type="button" class="btn btn-sm btn-danger" data-bind='click: function () { $parent.removeLine($data); }'>
@@ -430,7 +429,7 @@
 
         //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
         //TODO: Api call for searches on tradable things
-        $(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
+        //$(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
 
         //trigger changes on typeaheads
         //select2.3.5 jquery control for typeaheads
@@ -716,11 +715,6 @@
         // Load initial state from server, convert it to Task instances, then populate self.tasks
         var id = @Html.DisplayFor(model => model.trade_id);
         LoadTradeData(id);
-        
-        //Position Typeahead
-        typeAheadPosition(); //default 2 is the relativity id default onload
-        //Financial Instrument for typeahead
-        typeAheadFinInstr();
 
 });//end document.ready
 
@@ -856,37 +850,139 @@
             $("#relBenchmarkTypeAhead").select2("val", parsed.return_benchmark_id);
             $("#selectRelatedTrades").select2("val",parsed.trade_id);
 
-            //trade groups and lines
-       
+            //trade groups and lines      
             for( var i = 0; i < parsed.tradegroups.length; i++ )
             {
+                
+                var currentParsedGroup = parsed.tradegroups[i];
+                var tradeLinesArray = new Array();                                                                        
+                for( var j = 0; j < currentParsedGroup.tradeLines.length; j++ )
+                {
+                    tradeLinesArray[j] = new TradeLine(
+                                                    currentParsedGroup.tradeLines[j].trade_line_id,                                                               currentParsedGroup.tradeLines[j].position_id,
+                                                    currentParsedGroup.tradeLines[j].tradable_thing_id
+                    );
+                }
+
+                
                 var newGroup = new TradeGroup(
                                             parsed.tradegroups[i].trade_line_group_id,
                                             parsed.tradegroups[i].trade_line_group_type_id,
                                             parsed.tradegroups[i].trade_line_group_label,
                                             parsed.tradegroups[i].trade_line_group_editorial_label,
-                                            []);
-                
-                var currentParsedGroup = parsed.tradegroups[i];
-                vm.tradegroups[i];
-                                                                                       
-                for( var j = 0; j < currentParsedGroup.tradeLines.length; j++ )
-                {
-                    newGroup.addParsedLine(new TradeLine(
-                                                    currentParsedGroup.tradeLines[j].trade_line_id,                                                                                            currentParsedGroup.tradeLines[j].position_id,
-                                                    currentParsedGroup.tradeLines[j].tradable_thing_id
-                    ));
-                    //Position Typeahead
-                    typeAheadPosition(); //default 2 is the relativity id default onload
-                    //Financial Instrument for typeahead
-                    typeAheadFinInstr();
-               
-                }
-
-
+                                            tradeLinesArray);
                 vm.tradegroups.push(newGroup);
-               
             }
+
+            $('.tradeLinePosition').select2({
+                minimumResultsForSearch: -1,
+                placeholder: "{Position}",
+                width: '175px',
+                allowClear: false,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompletePosition",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function () {
+                        var relativityId = $('#relativityId').val();
+                        if (relativityId == "" || relativityId == 'undefined') {
+                            relativityId = "0";
+                        }
+                        return {
+                            relativityId: relativityId, //search term 
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl +  "Trade/GetPosition",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function (data) {
+                        }
+                    }).done(function (data) { callback(data[0]); });
+                },
+                id: function (obj) {
+                    return obj.position_id;
+                },
+                formatResult: function (item) {
+                    return item.position_label;
+                },
+                formatSelection: function (item) {
+                    return item.position_label;
+                },
+                formatNoMatches: function () {
+                    return "Please select a Trade Benchmark";
+                }
+            });
+
+            $('#relativityId').change(function () {
+                $('.tradeLinePosition').select2("val", "").trigger("change");
+            });
+
+            $('.tradeLineTradeableThing').select2({
+                minimumInputLength: 1,
+                placeholder: "{Financial Instrument}",
+                width: '275px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteTradableThing",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function (term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl +  "Trade/GetTradableThing",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function (data) {
+                        }
+                    }).done(function (data) { callback(data[0]); });
+                },
+                id: function (obj) {
+                    return obj.tradable_thing_id;
+                },
+                formatResult: function (item) {
+                    return item.tradable_thing_label;
+                },
+                formatSelection: function (item) {
+                    return item.tradable_thing_label;
+                }
+            });
+            //for( var i = 0; i < vm.tradegroups.length; i++ )
+            //{
+            //    var currentGroup = vm.tradegroups[i];
+            //    for( var j = 0; j < currentGroup.tradeLines.length; j++ )
+            //    {
+            //        //Position Typeahead
+            //        typeAheadPosition(); //default 2 is the relativity id default onload
+            //        //Financial Instrument for typeahead
+            //        typeAheadFinInstr();
+            //    }    
+            //}
 
         });
 
