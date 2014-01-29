@@ -124,6 +124,32 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
     this.positionString = ko.observable("");
     this.tradableThingString = ko.observable("");
 
+    //to get desc of selected position
+    self.position_id.subscribe(
+        function (newValue) {
+            if (newValue > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: baseUrl + "Trade/GetPosition",
+                    dataType: "json",
+                    crossDomain: true,
+                    data: {
+                        id: newValue, //id of position
+                    },
+                    success: function (data) {
+                        var resultData = data[0];
+                        //console.log(resultData.position_label);
+                        self.positionString(resultData.position_label);
+                    }
+                });
+
+            }
+            else {
+                //console.log("HERE 2");
+                return;
+            }
+        });
+
     //to get desc of selected financial instrument
     self.tradable_thing_id.subscribe( 
         function (newValue) 
@@ -153,33 +179,9 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
             }
         });
 
-    //to get desc of selected position
-    self.position_id.subscribe(
-        function (newValue) {
-            if (newValue > 0) {
-                $.ajax({
-                    type: 'POST',
-                    url: baseUrl + "Trade/GetPosition",
-                    dataType: "json",
-                    crossDomain: true,
-                    data: {
-                        id: newValue, //id of position
-                    },
-                    success: function (data) {
-                        var resultData = data[0];
-                        //console.log(resultData.position_label);
-                        self.positionString(resultData.position_label);
-                    }
-                });
-
-            }
-            else {
-                //console.log("HERE 2");
-                return;
-            }
-        });
-
     this.canonicalLabelPart = ko.computed(function () {
+        self.position_id.valueHasMutated();
+        self.tradable_thing_id.valueHasMutated();
         return self.positionString() + ", " + self.tradableThingString();
     });
 
@@ -548,6 +550,19 @@ function TradeViewModel(
                 deep: true
             }).showAllMessages(true);
     }, self);
+
+    self.valueHasMutated = function () {
+        console.log('MUTATION!!!');
+        for (var i = 0; i < self.tradegroups().length; i++)
+        {
+            var curgroup = self.tradegroups()[i];
+            for (var j = 0; j > curgroup.tradeLines().length; j++) {
+                console.log('MUTATION!!!' + i + ',' + j);
+                curgroup.tradeLines()[j].position_id().valueHasMutated();
+                curgroup.tradeLines()[j].tradable_thing_id().valueHasMutated();
+            }
+        }
+    };
 
     this.instructionDateCheck = ko.computed(function () {
         if (self.instruction_exit_date() == "")
