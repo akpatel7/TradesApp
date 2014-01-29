@@ -270,6 +270,7 @@ function TradeViewModel(
   apl_func,
   mark_track_record_id,
   mark_to_mark_rate,
+  int_track_record_id,
   interest_rate_diff,
   abs_track_performance_id,
   abs_measure_type_id,
@@ -470,17 +471,17 @@ function TradeViewModel(
                         console.log(data.Message);
                         self.vmMessages(data.Message); //display success
                         //bootbox.alert(self.vmMessages());
-                        var message = self.vmMessages() + ". Create another?";
+                        var message = self.vmMessages();
                         bootbox.dialog({
                             message: message,
-                            title: "Trade Creation",
+                            title: "Trade Edit",
                             buttons: {
                                 success: {
-                                    label: "Create",
+                                    label: "OK",
                                     className: "btn-success",
                                     callback: function () {
-
-                                        document.location.href = $('#createUrl').attr('href');
+                                        return true;
+                                        //document.location.href = $('#createUrl').attr('href');
                                     }
                                 },
                                 main: {
@@ -506,7 +507,7 @@ function TradeViewModel(
                     var message = self.vmMessages();
                     bootbox.dialog({
                         message: message,
-                        title: "Trade Creation",
+                        title: "Trade Edit",
                         className: "alert-danger",
                         buttons: {
                             //success: {
@@ -543,7 +544,7 @@ function TradeViewModel(
             var message = self.vmMessages();
             bootbox.dialog({
                 message: message,
-                title: "Trade Creation",
+                title: "Trade Edit",
                 className: "alert-danger",
                 buttons: {
                     //success: {

@@ -305,6 +305,18 @@ namespace TradesWebApplication.Api
                     };
                 }
 
+                if (!String.IsNullOrEmpty(vm.CRUDMode) && vm.CRUDMode == "edit")
+                {
+                    return new HttpResponseMessage(HttpStatusCode.Created)
+                    {
+                        Content = new JsonContent(new
+                        {
+                            Success = true, //error
+                            Message = "Trade: " + vm.trade_id + " sucessfully updated", //return exception
+                            result = "Trade: " + vm.trade_id + " sucessfully updated"
+                        })
+                    };
+                }
 
                 return new HttpResponseMessage(HttpStatusCode.Created)
                 {
@@ -312,9 +324,10 @@ namespace TradesWebApplication.Api
                     {
                         Success = true, //error
                         Message = "Trade: " + vm.trade_id + " sucessfully created", //return exception
-                        result = "Trade: " + vm.trade_id +" sucessfully created"
+                        result = "Trade: " + vm.trade_id + " sucessfully created"
                     })
                 };
+               
             }
             return new HttpResponseMessage(HttpStatusCode.BadRequest)
             {

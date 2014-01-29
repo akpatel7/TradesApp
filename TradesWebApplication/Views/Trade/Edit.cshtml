@@ -822,6 +822,7 @@
             vm.last_updated(parsed.last_updated);
             vm.trade_editorial_label(parsed.trade_editorial_label);
             vm.structure_type_id(parsed.structure_type_id);
+            vm.trade_instruction_id(parsed.trade_instruction_id);
             vm.instruction_entry(parsed.instruction_entry);
             vm.instruction_entry_date(parsed.instruction_entry_date);
             vm.instruction_exit(parsed.instruction_exit);
@@ -832,15 +833,21 @@
             vm.currency_id(parsed.currency_id); 
             vm.related_trade_ids(parsed.related_trade_ids),
             vm.apl_func(parsed.apl_func);
+            vm.mark_track_record_id(parsed.mark_track_record_id);
             vm.mark_to_mark_rate(parsed.mark_to_mark_rate);
+            vm.int_track_record_id(parsed.int_track_record_id);
+            vm.int_track_record_id(parsed.int_track_record_id);
             vm.interest_rate_diff(parsed.interest_rate_diff);
+            vm.abs_track_performance_id(parsed.abs_track_performance_id);
             vm.abs_measure_type_id(parsed.abs_measure_type_id);
             vm.abs_currency_id(parsed.abs_currency_id);
             vm.abs_return_value(parsed.abs_return_value);
+            vm.rel_track_performance_id(parsed.rel_track_performance_id);
             vm.rel_measure_type_id(parsed.rel_measure_type_id);
             vm.rel_currency_id(parsed.rel_currency_id);
             vm.rel_return_value(parsed.rel_return_value);
             vm.return_benchmark_id(parsed.return_benchmark_id);
+            vm.comment_id(parsed.comment_id);
             vm.comments(parsed.comments);
 
             $("#BenchmarkTypeAhead").select2("val", parsed.benchmark_id);
