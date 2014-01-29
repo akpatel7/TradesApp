@@ -169,5 +169,11 @@ namespace TradesWebApplication.ViewModels
 
         //new json respone fields for edit.cshtml
         public string CRUDMode { get; set; }
+        public int trade_instruction_id { get; set; }
+        public int mark_track_record_id { get; set; }
+        public int int_track_record_id { get; set; }
+        public int abs_track_performance_id { get; set; }
+        public int rel_track_performance_id { get; set; }
+        public int comment_id { get; set; }
     }
 }

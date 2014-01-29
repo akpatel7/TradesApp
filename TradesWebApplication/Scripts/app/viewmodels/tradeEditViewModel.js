@@ -257,6 +257,7 @@ function TradeViewModel(
   trade_label,
   trade_editorial_label,
   structure_type_id,
+  trade_instruction_id,
   instruction_entry,
   instruction_entry_date,
   instruction_exit,
@@ -267,15 +268,19 @@ function TradeViewModel(
   currency_id,
   related_trade_ids,
   apl_func,
+  mark_track_record_id,
   mark_to_mark_rate,
   interest_rate_diff,
+  abs_track_performance_id,
   abs_measure_type_id,
   abs_currency_id,
   abs_return_value,
+  rel_track_performance_id,
   rel_measure_type_id,
   rel_currency_id,
   rel_return_value,
   return_benchmark_id,
+  comment_id,
   comments,
   status
   ) {
@@ -314,6 +319,9 @@ function TradeViewModel(
     this.structure_type_id = ko.observable(structure_type_id).extend({ required: true });
 
     //form values - bottom
+    trade_instruction_id = typeof (trade_instruction_id) !== 'undefined' ? trade_instruction_id : "";
+    this.trade_instruction_id = ko.Observable(trade_instruction_id);
+
     instruction_entry = typeof (instruction_entry) !== 'undefined' ? instruction_entry : "";
     this.instruction_entry = ko.validatedObservable(null).extend({ required: true }).extend({ number: true });
 
@@ -362,11 +370,20 @@ function TradeViewModel(
     apl_func = typeof (apl_func) !== 'undefined' ? apl_func : "";
     this.apl_func = ko.observable(apl_func);
 
+    mark_track_record_id = typeof (mark_track_record_id) !== 'undefined' ? mark_track_record_id : "";
+    this.mark_track_record_id = ko.observable(mark_track_record_id);
+
     mark_to_mark_rate = typeof (mark_to_mark_rate) !== 'undefined' ? mark_to_mark_rate : "";
     this.mark_to_mark_rate = ko.observable(mark_to_mark_rate).extend({ number: true });
 
+    int_track_record_id = typeof (int_track_record_id) !== 'undefined' ? int_track_record_id : "";
+    this.int_track_record_id = ko.observable(int_track_record_id);
+
     interest_rate_diff = typeof (interest_rate_diff) !== 'undefined' ? interest_rate_diff : "";
     this.interest_rate_diff = ko.observable(interest_rate_diff).extend({ number: true });
+
+    abs_track_performance_id = typeof (abs_track_performance_id) !== 'undefined' ? abs_track_performance_id : "";
+    this.abs_track_performance_id = ko.observable(abs_track_performance_id);
 
     abs_measure_type_id = typeof (abs_measure_type_id) !== 'undefined' ? abs_measure_type_id : 1; //default value
     this.abs_measure_type_id = ko.observable(1);
@@ -376,6 +393,9 @@ function TradeViewModel(
 
     abs_return_value = typeof (abs_return_value) !== 'undefined' ? abs_return_value : "";
     this.abs_return_value = ko.observable(abs_return_value).extend({ number: true });
+
+    rel_track_performance_id = typeof (rel_track_performance_id) !== 'undefined' ? rel_track_performance_id : "";
+    this.rel_track_performance_id = ko.observable(rel_track_performance_id);
 
     rel_measure_type_id = typeof (rel_measure_type_id) !== 'undefined' ? rel_measure_type_id : 2; //default value
     this.rel_measure_type_id = ko.observable(2); 
@@ -388,6 +408,9 @@ function TradeViewModel(
 
     return_benchmark_id = typeof (return_benchmark_id) !== 'undefined' ? return_benchmark_id : 0;
     this.return_benchmark_id = ko.observable(0); //Hack to avoid null in json
+
+    comment_id = typeof (comment_id) !== 'undefined' ? comment_id : "";
+    this.comment_id = ko.observable(comment_id);
 
     comments = typeof (comments) !== 'undefined' ? comments : "";
     this.comments = ko.observable(comments);

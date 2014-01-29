@@ -330,7 +330,14 @@ namespace TradesWebApplication.Api
         private void PersistToDb(TradesViewModel vm)
         {
             //Create Trade
+            bool isNewTrade = true;
             Trade trade = new Trade();
+            if (!String.IsNullOrEmpty(vm.CRUDMode) && vm.CRUDMode == "edit")
+            { //edit mode
+                isNewTrade = false;
+                trade = unitOfWork.TradeRepository.Get(vm.trade_id);
+            }
+            
             trade.service_id = vm.service_id;
             trade.length_type_id = vm.length_type_id;
             trade.relativity_id = vm.relativity_id;
@@ -342,8 +349,8 @@ namespace TradesWebApplication.Api
                     trade.benchmark_id = vm.benchmark_id;
                 }
                 
-            }            
-            trade.created_on = trade.last_updated = DateTime.Now;
+            }
+            
             //TODO: Verify if db was changed to varmax
             if (!String.IsNullOrEmpty(vm.trade_label) )
             {
@@ -384,17 +391,41 @@ namespace TradesWebApplication.Api
             {
                 trade.status = 1;
             }
-            unitOfWork.TradeRepository.InsertTrade(trade);
-            unitOfWork.Save();
-            var newTradeId = trade.trade_id;
-            vm.trade_id = newTradeId;
-            //TODO: verify uri
-            trade.trade_uri = tradesConfig.TradeSemanticURIPrefix + getFlakeID() + tradesConfig.TradeSemanticURISuffix;
+            if (isNewTrade)
+            {
+                trade.trade_uri = tradesConfig.TradeSemanticURIPrefix + getFlakeID() + tradesConfig.TradeSemanticURISuffix;
+                unitOfWork.TradeRepository.InsertTrade(trade);
+            }
 
+            if (isNewTrade)
+            {
+                //TODO: createdby
+                trade.created_by = 0;
+                trade.created_on = trade.last_updated = DateTime.Now;
+            }
+            else 
+            {
+                trade.last_updated = DateTime.Now;
+            }
+            unitOfWork.Save();
+
+            var tradeId = trade.trade_id;
+            if (isNewTrade)
+            {
+                vm.trade_id = tradeId;
+            }
             //Add groups
             foreach (var grp in vm.tradegroups)
             {
+                //Create Group
+                bool isNewGroup = true;
                 var lineGroup = new Trade_Line_Group();
+                if (!String.IsNullOrEmpty(grp.CRUDMode) && grp.CRUDMode == "edit")
+                { //edit mode
+                    isNewGroup = false;
+                    lineGroup = unitOfWork.TradeLineGroupRepository.GetByID(grp.trade_line_group_id);
+                }
+
                 lineGroup.trade_line_group_type_id = grp.trade_line_group_type_id;
                 //TODO: Verify if db was changed to varmax
                 if (!String.IsNullOrEmpty(grp.trade_line_group_label))
@@ -421,169 +452,221 @@ namespace TradesWebApplication.Api
                     }
                 }
 
-                unitOfWork.TradeLineGroupRepository.Insert(lineGroup);
+                if (isNewGroup)
+                {
+                    lineGroup.trade_line_group_uri = tradesConfig.TradeLineGroupSemanticURIPrefix + getFlakeID() + tradesConfig.TradeLineGroupSemanticURISuffix;
+                    unitOfWork.TradeLineGroupRepository.Insert(lineGroup);
+                }
                 unitOfWork.Save();
                 var grpId = lineGroup.trade_line_group_id;
-                //TODO: verify uri
-                lineGroup.trade_line_group_uri = tradesConfig.TradeLineGroupSemanticURIPrefix + getFlakeID() + tradesConfig.TradeLineGroupSemanticURISuffix;
-
+              
                 //Add tradelines
                 foreach (var line in grp.tradeLines)
                 {
+                    
+                    //Create Trade
+                    bool isNewLine = true;
                     var tradeLine = new Trade_Line();
+                    if (!String.IsNullOrEmpty(line.CRUDMode) && line.CRUDMode == "edit")
+                    { //edit mode
+                        isNewLine = false;
+                        tradeLine = unitOfWork.TradeLineRepository.GetByID(line.trade_line_id);
+                    }
                     tradeLine.trade_line_group_id = grpId; //this groupID
-                    tradeLine.trade_id = newTradeId; //this trade
+                    tradeLine.trade_id = tradeId; //this trade
                     tradeLine.position_id = line.position_id;
                     tradeLine.tradable_thing_id = line.tradable_thing_id;
                     //?trade_line_editorial_label
                     //?trade_line_label
                     //TODO: createdby
-                    tradeLine.created_on = tradeLine.last_updated = DateTime.Now;
-                    unitOfWork.TradeLineRepository.Insert(tradeLine);
+                    if (isNewLine)
+                    {
+                        tradeLine.trade_line_uri = tradesConfig.TradeLineSemanticURIPrefix + getFlakeID() + tradesConfig.TradeLineGroupSemanticURISuffix;
+                        tradeLine.created_on = tradeLine.last_updated = DateTime.Now;
+                        unitOfWork.TradeLineRepository.Insert(tradeLine);
+                    }
+                    else 
+                    {
+                        tradeLine.last_updated = DateTime.Now;
+                    }
                     unitOfWork.Save();
-                    var newTradeLineId = tradeLine.trade_line_id;
-                    //TODO: verify uri
-                    tradeLine.trade_line_uri = tradesConfig.TradeLineSemanticURIPrefix + getFlakeID() + tradesConfig.TradeLineGroupSemanticURISuffix;
+                    var tradeLineId = tradeLine.trade_line_id;
+                   
                 }
                 
             }
 
             // trade instructions
-            var tradeInstruction = new Trade_Instruction
+            if (!isNewTrade)
             {
-                trade_id = newTradeId,
-                instruction_entry = vm.instruction_entry,
-                instruction_entry_date = DateTime.Parse(vm.instruction_entry_date),
-                instruction_exit = vm.instruction_exit
-            };
-            if (!String.IsNullOrEmpty(vm.instruction_exit_date))
-            {
-                tradeInstruction.instruction_exit_date = DateTime.Parse(vm.instruction_exit_date);
+                var tradeInstruction = new Trade_Instruction
+                {
+                    trade_id = tradeId,
+                    instruction_entry = vm.instruction_entry,
+                    instruction_entry_date = DateTime.Parse(vm.instruction_entry_date),
+                    instruction_exit = vm.instruction_exit
+                };
+                if (!String.IsNullOrEmpty(vm.instruction_exit_date))
+                {
+                    tradeInstruction.instruction_exit_date = DateTime.Parse(vm.instruction_exit_date);
+                }
+                tradeInstruction.instruction_type_id = vm.instruction_type_id;
+                tradeInstruction.instruction_label = vm.instruction_label;
+                tradeInstruction.hedge_id = vm.hedge_id;
+                tradeInstruction.created_on = tradeInstruction.last_updated = DateTime.Now;
+                unitOfWork.TradeInstructionRepository.Insert(tradeInstruction);
             }
-            tradeInstruction.instruction_type_id = vm.instruction_type_id;
-            tradeInstruction.instruction_label = vm.instruction_label;
-            tradeInstruction.hedge_id = vm.hedge_id;
-            tradeInstruction.created_on = tradeInstruction.last_updated = DateTime.Now;
-            unitOfWork.TradeInstructionRepository.Insert(tradeInstruction);
+           
 
-            // related trades, TODO:
+            // related trades
             if (vm.related_trade_ids != null)
             {
                 foreach (var i in vm.related_trade_ids)
                 {
+                    var relationExists = false;
                     var relatedTrade = new Related_Trade();
-                    relatedTrade.trade_id = newTradeId;
+                    relatedTrade.trade_id = tradeId;
                     relatedTrade.related_trade_id = i;
-                    relatedTrade.created_on = relatedTrade.last_updated = DateTime.Now;
-                    //TODO: created by
-                    unitOfWork.RelatedTradeRepository.Insert(relatedTrade);
+
+                    var relatedTrades = new List<Related_Trade>();
+                    relatedTrades = unitOfWork.RelatedTradeRepository.GetAll().Where(r => r.trade_id == tradeId).ToList();
+                    relationExists = relatedTrades.Exists(r => r.related_trade_id == i);
+
+                    if (!relationExists)
+                    {
+                        relatedTrade.created_on = relatedTrade.last_updated = DateTime.Now;
+                        //TODO: created by
+                        unitOfWork.RelatedTradeRepository.Insert(relatedTrade);
+                    }
+                    
                 }
             }
-               
+
             //TODO: where does this go, which tradePerfomance
             string apl_func = vm.apl_func;
-            bool isTradePerfomanceCreated = false;
 
-            if (!String.IsNullOrEmpty(vm.mark_to_mark_rate))
+            if (!isNewTrade)
             {
-                var markTR = new Track_Record
-                {
-                    trade_id = newTradeId,
-                    track_record_type_id = 1,
-                    track_record_value = decimal.Parse(vm.mark_to_mark_rate)
-                };
-                //TODO: NO field exists!! interestTR.created_on = 
-                markTR.last_updated = DateTime.Now;
-                unitOfWork.TrackRecordRepository.Insert(markTR);
+                bool isTradePerfomanceCreated = false;
 
-            }
-            
-            if (!String.IsNullOrEmpty(vm.interest_rate_diff))
-            {
-                var interestTR = new Track_Record
+                if (!String.IsNullOrEmpty(vm.mark_to_mark_rate))
                 {
-                    trade_id = newTradeId,
-                    track_record_type_id = 2,
-                    track_record_value = decimal.Parse(vm.interest_rate_diff)
-                };
-                //TODO: NO field exists!! interestTR.created_on = 
-                interestTR.last_updated = DateTime.Now;
-                unitOfWork.TrackRecordRepository.Insert(interestTR);
-            }
+                    var markTR = new Track_Record
+                    {
+                        trade_id = tradeId,
+                        track_record_type_id = 1,
+                        track_record_value = decimal.Parse(vm.mark_to_mark_rate)
+                    };
+                    //TODO: NO field exists!! interestTR.created_on = 
+                    markTR.last_updated = DateTime.Now;
+                    unitOfWork.TrackRecordRepository.Insert(markTR);
 
-            // absolute performance
-            
-            var abs_measure_id = vm.abs_measure_type_id;
-            if (abs_measure_id != null && !String.IsNullOrEmpty(vm.abs_return_value))
-            {
-                var absPerformance = new Trade_Performance();
-                absPerformance.trade_id = newTradeId;
-                var abs_measure_type_id = (int)abs_measure_id;
-                absPerformance.measure_type_id = abs_measure_type_id;
-                if (abs_measure_type_id == 2)
-                {
-                    absPerformance.return_currency_id = vm.abs_currency_id;
                 }
-                absPerformance.return_value = vm.abs_return_value;
-                isTradePerfomanceCreated = true;
-                if(!String.IsNullOrEmpty(apl_func))
-                {
-                    absPerformance.return_apl_function = apl_func;
-                }
-                absPerformance.created_on = absPerformance.last_updated = DateTime.Now;
-                unitOfWork.TradePerformanceRepository.Insert(absPerformance);
-            }
 
-            // relative performance
-            var rel_measure_id = vm.rel_measure_type_id;
-            if (rel_measure_id != null && !String.IsNullOrEmpty(vm.rel_return_value))
-            {
-                var relPerformance = new Trade_Performance();
-                relPerformance.trade_id = newTradeId;
-                var rel_measure_type_id = (int)rel_measure_id;
-                relPerformance.measure_type_id = rel_measure_type_id;
-                if (rel_measure_type_id == 2)
+                if (!String.IsNullOrEmpty(vm.interest_rate_diff))
                 {
-                    relPerformance.return_currency_id = vm.rel_currency_id;
+                    var interestTR = new Track_Record
+                    {
+                        trade_id = tradeId,
+                        track_record_type_id = 2,
+                        track_record_value = decimal.Parse(vm.interest_rate_diff)
+                    };
+                    //TODO: NO field exists!! interestTR.created_on = 
+                    interestTR.last_updated = DateTime.Now;
+                    unitOfWork.TrackRecordRepository.Insert(interestTR);
                 }
-                relPerformance.return_value = vm.rel_return_value;
-                if (vm.return_benchmark_id != null && vm.return_benchmark_id > 0)
+
+                // absolute performance
+                var abs_measure_id = vm.abs_measure_type_id;
+                if (abs_measure_id != null && !String.IsNullOrEmpty(vm.abs_return_value))
                 {
-                    relPerformance.return_benchmark_id = vm.return_benchmark_id;
-                }               
-                isTradePerfomanceCreated = true;
+                    var absPerformance = new Trade_Performance();
+                    absPerformance.trade_id = tradeId;
+                    var abs_measure_type_id = (int)abs_measure_id;
+                    absPerformance.measure_type_id = abs_measure_type_id;
+                    if (abs_measure_type_id == 2)
+                    {
+                        absPerformance.return_currency_id = vm.abs_currency_id;
+                    }
+                    absPerformance.return_value = vm.abs_return_value;
+                    isTradePerfomanceCreated = true;
+                    if (!String.IsNullOrEmpty(apl_func))
+                    {
+                        absPerformance.return_apl_function = apl_func;
+                    }
+                    absPerformance.created_on = absPerformance.last_updated = DateTime.Now;
+                    unitOfWork.TradePerformanceRepository.Insert(absPerformance);
+                }
+
+                // relative performance
+                var rel_measure_id = vm.rel_measure_type_id;
+                if (rel_measure_id != null && !String.IsNullOrEmpty(vm.rel_return_value))
+                {
+                    var relPerformance = new Trade_Performance();
+                    relPerformance.trade_id = tradeId;
+                    var rel_measure_type_id = (int)rel_measure_id;
+                    relPerformance.measure_type_id = rel_measure_type_id;
+                    if (rel_measure_type_id == 2)
+                    {
+                        relPerformance.return_currency_id = vm.rel_currency_id;
+                    }
+                    relPerformance.return_value = vm.rel_return_value;
+                    if (vm.return_benchmark_id != null && vm.return_benchmark_id > 0)
+                    {
+                        relPerformance.return_benchmark_id = vm.return_benchmark_id;
+                    }
+                    isTradePerfomanceCreated = true;
+                    if (!String.IsNullOrEmpty(apl_func))
+                    {
+                        relPerformance.return_apl_function = apl_func;
+                    }
+                    relPerformance.created_on = relPerformance.last_updated = DateTime.Now;
+                    unitOfWork.TradePerformanceRepository.Insert(relPerformance);
+                }
+
+                //TODO: Verify if creating empty trade performacne for apl_func
+                if (!String.IsNullOrEmpty(apl_func) &&
+                    !isTradePerfomanceCreated)
+                {
+                    var tradePerformance = new Trade_Performance();
+                    tradePerformance.trade_id = tradeId;
+                    tradePerformance.return_apl_function = apl_func;
+                    unitOfWork.TradePerformanceRepository.Insert(tradePerformance);
+                }
+
+                if (!String.IsNullOrEmpty(vm.comments))
+                {
+                    if (vm.comments.Length > 255)
+                    {
+                        vm.comments = vm.comments.Substring(0, 255);
+                    }
+                    var comment = new Trade_Comment
+                    {
+                        trade_id = tradeId,
+                        comment_label = vm.comments,
+                    };
+                    comment.created_on = comment.last_updated = DateTime.Now;
+                    unitOfWork.TradeCommentRepository.Insert(comment);
+                }
+            }
+            else //Not Newtrade
+            {
+                //Update apl_func
                 if (!String.IsNullOrEmpty(apl_func))
                 {
-                    relPerformance.return_apl_function = apl_func;
+                    var absTrack = unitOfWork.TradePerformanceRepository.GetByID(vm.abs_track_performance_id);
+                    if (absTrack != null)
+                    {
+                        absTrack.return_apl_function = apl_func;
+                    }
+                    var relTrack = unitOfWork.TradePerformanceRepository.GetByID(vm.rel_track_performance_id);
+                    if (relTrack != null)
+                    {
+                        relTrack.return_apl_function = apl_func;
+                    }
                 }
-                relPerformance.created_on = relPerformance.last_updated = DateTime.Now;
-                unitOfWork.TradePerformanceRepository.Insert(relPerformance);
             }
 
-            //TODO: Verify if creating empty trade performacne for apl_func
-            if (!String.IsNullOrEmpty(apl_func) && 
-                !isTradePerfomanceCreated)
-            {
-                var tradePerformance = new Trade_Performance();
-                tradePerformance.trade_id = newTradeId;
-                tradePerformance.return_apl_function = apl_func;
-                unitOfWork.TradePerformanceRepository.Insert(tradePerformance);
-            }
-
-            if (!String.IsNullOrEmpty(vm.comments))
-            {
-                if (vm.comments.Length > 255)
-                {
-                    vm.comments = vm.comments.Substring(0, 255);
-                }
-                var comment = new Trade_Comment
-                {
-                    trade_id = newTradeId, 
-                    comment_label = vm.comments, 
-                };
-                comment.created_on = comment.last_updated = DateTime.Now;
-                unitOfWork.TradeCommentRepository.Insert(comment);
-            }
             unitOfWork.Save();
            
         }
