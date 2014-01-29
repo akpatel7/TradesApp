@@ -124,6 +124,8 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
     this.positionString = ko.observable("");
     this.tradableThingString = ko.observable("");
 
+    this.CRUDMode = "";
+
     //to get desc of selected position
     self.position_id.subscribe(
         function (newValue) {
@@ -210,9 +212,13 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
     tradeLines = typeof (tradeLines) !== 'undefined' ? tradeLines : [];
     this.tradeLines = ko.observableArray(tradeLines);
 
+    this.CRUDMode = "";
+
     this.addLine = function () {
         var nextIndex = this.tradeLines().length;
-        self.tradeLines.push(new TradeLine(nextIndex));
+        var newTradeLine = new TradeLine(nextIndex);
+        newTradeLine.CRUDMode = "add"
+        self.tradeLines.push(newTradeLine);
     };
 
     this.addParsedLine = function (trade_line_id, position_id, tradable_thing_id) {
@@ -395,6 +401,7 @@ function TradeViewModel(
     this.addGroup = function () {
         var nextIndex = this.tradegroups().length;
         var newGroup = new TradeGroup(nextIndex, "", "", "", [new TradeLine()]);
+        newGroup.CRUDMode = "add";
         self.tradegroups.push(newGroup);
     };
 
@@ -584,6 +591,7 @@ function TradeViewModel(
 
     }, self);
 
+    this.CRUDMode = "";
     //set this to true to see ko.toJson on form for debugging knockout bindings
     this.debug = true;
     //////////////////

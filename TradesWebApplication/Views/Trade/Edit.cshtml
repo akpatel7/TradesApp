@@ -862,6 +862,8 @@
                                                     currentParsedGroup.tradeLines[j].trade_line_id,                                                               currentParsedGroup.tradeLines[j].position_id,
                                                     currentParsedGroup.tradeLines[j].tradable_thing_id
                     );
+                    tradeLinesArray[j].CRUDMode = "edit";
+
                 }
 
                 
@@ -871,6 +873,7 @@
                                             parsed.tradegroups[i].trade_line_group_label,
                                             parsed.tradegroups[i].trade_line_group_editorial_label,
                                             tradeLinesArray);
+                newGroup.CRUDMode = "edit";
                 vm.tradegroups.push(newGroup);
             }
 
@@ -972,20 +975,10 @@
                     return item.tradable_thing_label;
                 }
             });
-            //for( var i = 0; i < vm.tradegroups.length; i++ )
-            //{
-            //    var currentGroup = vm.tradegroups[i];
-            //    for( var j = 0; j < currentGroup.tradeLines.length; j++ )
-            //    {
-            //        //Position Typeahead
-            //        typeAheadPosition(); //default 2 is the relativity id default onload
-            //        //Financial Instrument for typeahead
-            //        typeAheadFinInstr();
-            //    }    
-            //}
-            //vm.valueHasMutated();
 
         });
+
+        vm.CRUDMode = "edit";
 
     };
 
