@@ -189,6 +189,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Comments.cs" />
     <Compile Include="Api\RestClient.cs" />
     <Compile Include="Api\TradesAppSettings.cs" />
     <Compile Include="Api\ValuesController.cs" />

@@ -395,7 +395,10 @@
 
             </div>
             <div>
-                <button id="addComment" type="button" class="btn btn primary"
+                <button id="editComment" type="button" class="btn btn-sm btn-info"
+                    onclick="vm.editComment()">
+                    Edit Comment</button>
+                <button id="addComment" type="button" class="btn btn-sm btn-info"
                     onclick="vm.addComment()">
                     Add Comment</button>
             </div>
@@ -426,16 +429,43 @@
                 <div class="modal-body">
                     <form action="#" data-bind="submit: add">
                         <div class="control-group">
-                            <label class="control-label">Comment:</label>
+                            <label class="control-label">Comments:</label>
                             <div class="controls">
-                                <textarea data-bind="value: text"></textarea>
+                                <textarea data-bind="value: text" rows="6" cols="75"></textarea>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" data-bind="click: add">Add Comment</button>
-                    <button type="button" class="btn btn-primary" data-bind="click: cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-bind="click: add">Add</button>
+                    <button type="button" class="btn" data-bind="click: cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+</div>
+</script>
+
+<script type="text/html" id="EditComment">
+ <div class="modal fade" id="EditComment">
+    <div class="modal-dialog">
+             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true" data-bind="click: cancel">&times;</button>
+                    <h3>Edit Comment</h3>
+                </div>
+                <div class="modal-body">
+                    <form action="#" data-bind="submit: save">
+                        <div class="control-group">
+                            <label class="control-label">Comments:</label>
+                            <div class="controls">
+                                <textarea data-bind="value: text" rows="6" cols="75"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-bind="click: save">Save</button>
+                    <button type="button" class="btn" data-bind="click: cancel">Cancel</button>
                 </div>
             </div>
         </div>

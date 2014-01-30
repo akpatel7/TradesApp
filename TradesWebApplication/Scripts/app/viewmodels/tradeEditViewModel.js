@@ -648,6 +648,72 @@ function TradeViewModel(
 
     }, self);
 
+    //Start Comments save//////////////////////////
+    self.saveCommentData = function () {
+        console.log('Posting Comments to server to save.');
+        self.vmMessages("Posting Comments to server to save.");
+        var apiURL = baseUrl;
+        apiURL += "api/comments/post";
+        $.ajax({
+            url: apiURL,
+            type: 'post',
+            data: JSON.stringify(ko.toJSON(this)),
+            contentType: 'application/json',
+            timeout: 5000,
+            success: function (data) {
+                if (data.Success) {
+                    window.onbeforeunload = null;
+                    console.log(data.Message);
+                    self.vmMessages(data.Message); //display success
+                    var message = self.vmMessages();
+                    bootbox.dialog({
+                        message: message,
+                        title: "Trade Edit",
+                        buttons: {
+                            success: {
+                                label: "OK",
+                                className: "btn-success",
+                                callback: function () {
+                                    return true;
+                                }
+                            },
+                            main: {
+                                label: "Exit",
+                                className: "btn-primary",
+                                callback: function () {
+                                    document.location.href = $('#cancelUrl').attr('href');
+                                }
+                            }
+                        }
+                    });
+                }
+                else {
+                    console.log(data.Message);
+                    self.vmMessages(data.Message); //display exception
+                    bootbox.alert(self.vmMessages());
+
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log("error: " + XMLHttpRequest.responseText);
+                self.vmMessages("error: " + XMLHttpRequest.responseText);
+                var message = self.vmMessages();
+                bootbox.dialog({
+                    message: message,
+                    title: "Trade Comment Edit",
+                    className: "alert-danger",
+                    buttons: {
+                        danger: {
+                            label: "OK",
+                            className: "btn-danger",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
     this.CRUDMode = "";
     //set this to true to see ko.toJson on form for debugging knockout bindings
     this.debug = true;
@@ -766,7 +832,7 @@ var whenUIHiddenThenRemoveUI = function ($ui) {
 ///End show Modal
 
 
-
+//Start Comments section//////////////////////////
 //Add Comment modal 
 var AddCommentViewModel = function () {
     this.text = ko.observable();
@@ -796,8 +862,54 @@ vm.addComment = function () {
 };
 
 vm._addCommentToComments = function (newComment) {
-    this.comments.push(newComment);
-
+    console.log('saving added comment');
+    this.comment_id(0);
+    this.comments(newComment.text);
+    this.saveCommentData();
 };
 //End Add Comment modal 
+
+//Edit Comment modal 
+var EditCommentViewModel = function () {
+    this.id = ko.observable();
+    this.text = ko.observable();
+}
+
+// The name of the template to render
+EditCommentViewModel.prototype.template = "EditComment";
+
+EditCommentViewModel.prototype.save = function () {
+    var editedComment = {
+        id: this.id,
+        text: this.text(),
+    };
+    // Close the modal, passing the new note object as the result data.
+    this.modal.close(editedComment);
+};
+
+EditCommentViewModel.prototype.cancel = function () {
+    // Close the modal without passing any result data.
+    this.modal.close();
+};
+
+vm.editComment = function () {
+    var viewModel = new EditCommentViewModel();
+    viewModel.id(vm.comment_id());
+    viewModel.text(vm.comments());
+    showModal({
+        viewModel: viewModel,
+        context: this // Set context so we don't need to bind the callback function
+    }).then(this._editCommentToComments);
+};
+
+vm._editCommentToComments = function (editedComment) {
+    console.log('saving edited comment');
+    this.comment_id(editedComment.id);
+    this.comments(editedComment.text);
+    this.saveCommentData();
+};
+//End Edit Comment modal
+
+
+//End Comments section//////////////////////////
     
