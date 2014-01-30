@@ -50,7 +50,7 @@
             </div>
 
             <div class="col-sm-3" data-bind="visible: relativity_id() == 2">
-                <input class="input-xlarge" id="BenchmarkTypeAhead" type="hidden" data-bind="value: benchmark_id" value="0000"/>
+                <input class="input-xlarge" id="BenchmarkTypeAhead" type="hidden" data-bind="value: benchmark_id" value="0000" />
             </div>
         </div>
         <div class="form-group">
@@ -58,7 +58,7 @@
                 @Html.LabelFor(model => model.last_updated)
             </div>
 
-            <div  class="col-sm-3">
+            <div class="col-sm-3">
                 @Html.TextBoxFor(model => model.last_updated, new { @class = "form-control", @disabled = "disabled" })
             </div>
         </div>
@@ -90,16 +90,16 @@
             </div>
         </div>
 
-        
-            <div class="form-group">
-                <div class="control-label col-sm-3">
-                    @Html.LabelFor(model => model.status)
-                </div>
 
-                <div class="col-sm-3">
-                    @Html.DropDownListFor(model => model.status, new SelectList(Model.Status, "status_id", "status_label"), new { @data_bind = "value: status", @class = "form-control"})
-                </div>
+        <div class="form-group">
+            <div class="control-label col-sm-3">
+                @Html.LabelFor(model => model.status)
             </div>
+
+            <div class="col-sm-3">
+                @Html.DropDownListFor(model => model.status, new SelectList(Model.Status, "status_id", "status_label"), new { @data_bind = "value: status", @class = "form-control"})
+            </div>
+        </div>
 
         <!-- trade groups ------------------------------------->
         <fieldset class="tgroup">
@@ -109,7 +109,7 @@
                     <div class="well col-xs-12">
                         <div class="col-md-12">
                             <div class="row">
-                                <h3><strong><span>Group </span><span data-bind='text: ($index() + 1)'></span><span> Information</span></strong></h3>
+                                <h3><strong><span>Group </span><span data-bind='text: ($index() + 1)'></span><span>Information</span></strong></h3>
                             </div>
                             <div class="row">
                                 <br />
@@ -167,10 +167,10 @@
                                                     </strong>
                                                 </div>
                                                 <div class="col-md-4">
-                                                     <input type="hidden" data-bind="uniqueIdPosition: position_id, value: position_id" class="tradeLinePosition"/>
+                                                    <input type="hidden" data-bind="uniqueIdPosition: position_id, value: position_id" class="tradeLinePosition" />
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <input type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id" class="tradeLineTradeableThing"/>
+                                                    <input type="hidden" data-bind="uniqueIdTradableThing: tradable_thing_id, value: tradable_thing_id" class="tradeLineTradeableThing" />
                                                 </div>
                                                 <div class="col-md-1">
                                                     <button type="button" class="btn btn-sm btn-danger" data-bind='click: function () { $parent.removeLine($data); }'>
@@ -201,16 +201,16 @@
             </ul>
             <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadPosition(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>
         </fieldset>
-        
+
         <!-- instructions ------------------------------------- -->
-         <fieldset class="tgroup">
+        <fieldset class="tgroup">
             <legend class="trade_group">Instructions</legend>
             <div class="form-group">
                 <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.instruction_entry)
                 </div>
                 <div class="col-sm-6">
-                    <input type="text" data-bind="value: instruction_entry" disabled="disabled"/>
+                    <input type="text" data-bind="value: instruction_entry" disabled="disabled" />
                 </div>
             </div>
 
@@ -230,7 +230,7 @@
                     @Html.LabelFor(model => model.instruction_exit)
                 </div>
                 <div class="col-sm-3">
-                    <input type="text" data-bind="value: instruction_exit" disabled="disabled"/>
+                    <input type="text" data-bind="value: instruction_exit" disabled="disabled" />
                 </div>
             </div>
 
@@ -254,7 +254,7 @@
                 </div>
 
                 <div class="col-sm-3">
-                    <input type="text" data-bind="value: instruction_label" disabled="disabled"/>
+                    <input type="text" data-bind="value: instruction_label" disabled="disabled" />
 
                 </div>
             </div>
@@ -275,13 +275,13 @@
                 </div>
 
                 <div class="col-sm-3">
-                    <input class="input-xlarge" id="CurrencyTypeAhead" type="hidden" data-bind="value: currency_id" disabled="disabled"/>
+                    <input class="input-xlarge" id="CurrencyTypeAhead" type="hidden" data-bind="value: currency_id" disabled="disabled" />
                 </div>
             </div>
 
         </fieldset>
-        
-        
+
+
 
         <!-- supplementary info ------------------------------------- -->
         <fieldset class="tgroup">
@@ -290,19 +290,19 @@
                 <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.related_trade_ids)
                 </div>
-                 <div class="col-sm-6">
-                      <input class="input-xlarge" id="selectRelatedTrades" type="hidden" data-bind="value: related_trade_ids_list"/>
+                <div class="col-sm-6">
+                    <input class="input-xlarge" id="selectRelatedTrades" type="hidden" data-bind="value: related_trade_ids_list" />
                 </div>
-                </div>
+            </div>
 
-                <div class="form-group">
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.apl_func)
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="text" data-bind="value: apl_func" maxlength="255" />
-                    </div>
+            <div class="form-group">
+                <div class="control-label col-sm-3">
+                    @Html.LabelFor(model => model.apl_func)
                 </div>
+                <div class="col-sm-3">
+                    <input type="text" data-bind="value: apl_func" maxlength="255" />
+                </div>
+            </div>
         </fieldset>
         <!-- FX Spot and Carry ------------------------------------- -->
         <fieldset class="tgroup">
@@ -313,7 +313,7 @@
                 </div>
 
                 <div class="col-sm-3">
-                    <input type="text" data-bind="value: mark_to_mark_rate" disabled="disabled"/>
+                    <input type="text" data-bind="value: mark_to_mark_rate" disabled="disabled" />
                 </div>
             </div>
 
@@ -322,7 +322,7 @@
                     @Html.LabelFor(model => model.interest_rate_diff)
                 </div>
                 <div class="col-sm-3">
-                    <input type="text" data-bind="value: interest_rate_diff" disabled="disabled"/>
+                    <input type="text" data-bind="value: interest_rate_diff" disabled="disabled" />
                 </div>
             </div>
         </fieldset>
@@ -339,7 +339,7 @@
                     @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control", @disabled="disabled" })
                 </div>
                 <div class="col-sm-3" data-bind="visible: abs_measure_type_id() == 2">
-                    <input class="input-xlarge" id="absCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id" disabled="disabled"/>
+                    <input class="input-xlarge" id="absCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id" disabled="disabled" />
                 </div>
                 <div class="col-sm-3">
                     <input type="text" data-bind="value: abs_return_value" disabled="disabled" />
@@ -362,12 +362,12 @@
 
                 <div class="col-sm-3" data-bind="visible: rel_measure_type_id() == 2">
 
-                    <input class="input-xlarge" id="relCurrencyTypeAhead" type="hidden" data-bind="value: rel_currency_id" disabled="disabled"/>
+                    <input class="input-xlarge" id="relCurrencyTypeAhead" type="hidden" data-bind="value: rel_currency_id" disabled="disabled" />
                 </div>
 
 
                 <div class="col-sm-3">
-                    <input type="text" data-bind="value: rel_return_value" disabled="disabled"/>
+                    <input type="text" data-bind="value: rel_return_value" disabled="disabled" />
                 </div>
             </div>
             <div class="form-group">
@@ -376,7 +376,7 @@
                 </div>
 
                 <div class="col-sm-3">
-                    <input class="input-xlarge" id="relBenchmarkTypeAhead" type="hidden" data-bind="value: return_benchmark_id" disabled="disabled"/>
+                    <input class="input-xlarge" id="relBenchmarkTypeAhead" type="hidden" data-bind="value: return_benchmark_id" disabled="disabled" />
                 </div>
             </div>
         </fieldset>
@@ -392,25 +392,57 @@
                 <div class="col-sm-8">
                     @Html.TextAreaFor(model => model.comments, new { @data_bind = "value: comments", @class = "form-control", @rows="5", @cols="90", @disabled="disabled"})
                 </div>
+
+            </div>
+            <div>
+                <button id="addComment" type="button" class="btn btn primary"
+                    onclick="vm.addComment()">
+                    Add Comment</button>
             </div>
         </fieldset>
 
-        <p>
-            <button id="create" type="submit" class="btn btn-primary">Save</button>
+        <div>
+<button id="create" type="submit" class="btn btn-primary">Save</button>
             <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
             <button name="ClientCancel" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
             <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Home"))" style="display:none;"></a>
-        </p>
+        </div>
 
     </fieldset>
-    </div>
 </form>
 
 <pre data-bind='text: ko.toJSON($root, null, 2), visible: debug'></pre>
 
 @section scripts{
-    <script src="~/Scripts/app/viewmodels/tradeEditViewModel.js"></script>
 
+<script type="text/html" id="AddComment">
+ <div class="modal fade" id="AddComment">
+    <div class="modal-dialog">
+             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true" data-bind="click: cancel">&times;</button>
+                    <h3>Add Comment</h3>
+                </div>
+                <div class="modal-body">
+                    <form action="#" data-bind="submit: add">
+                        <div class="control-group">
+                            <label class="control-label">Comment:</label>
+                            <div class="controls">
+                                <textarea data-bind="value: text"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-bind="click: add">Add Comment</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+</div>
+</script>
+
+<script src="~/Scripts/app/viewmodels/tradeEditViewModel.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         window.onbeforeunload = function () {
@@ -716,7 +748,7 @@
         var id = @Html.DisplayFor(model => model.trade_id);
         LoadTradeData(id);
 
-});//end document.ready
+    });//end document.ready
 
    
         
@@ -999,3 +1031,6 @@
 
 </script>
 }
+
+
+
