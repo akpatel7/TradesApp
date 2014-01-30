@@ -51,10 +51,12 @@ namespace TradesWebApplication.Api
 
                 string jsonData = value;
 
+                string resultingCommentId = "";
+
                 vm = JsonConvert.DeserializeObject<TradesViewModel>(value);
                 try
                 {
-                    PersistToDb(vm);
+                    resultingCommentId = PersistToDb(vm);
                 }
                 catch (DataException ex)
                 {
@@ -74,8 +76,8 @@ namespace TradesWebApplication.Api
                     Content = new JsonContent(new
                     {
                         Success = true, //error
-                        Message = "Trade commment sucessfully posted", 
-                        result = "Trade commment sucessfully posted"
+                        Message = "Trade commment id: " + resultingCommentId + " sucessfully posted",
+                        result = resultingCommentId
                     })
                 };
 
@@ -91,7 +93,7 @@ namespace TradesWebApplication.Api
             };
         }
 
-        private void PersistToDb(TradesViewModel vm)
+        private string PersistToDb(TradesViewModel vm)
         {
             Trade trade = new Trade();
             if (!String.IsNullOrEmpty(vm.CRUDMode) && vm.CRUDMode == "edit")
@@ -100,13 +102,14 @@ namespace TradesWebApplication.Api
             }
             else
             { //should never be in trade Create mode in this contrller
-                return;
+                return "";
             }
 
+            var comment = new Trade_Comment();
             if (vm.comment_id > 0)
             {
                 //update comment
-                var comment = unitOfWork.TradeCommentRepository.GetByID(vm.comment_id);
+                comment = unitOfWork.TradeCommentRepository.GetByID(vm.comment_id);
                 if (!String.IsNullOrEmpty(vm.comments))
                 {
                     if (vm.comments.Length > 255)
@@ -126,7 +129,8 @@ namespace TradesWebApplication.Api
                     {
                         vm.comments = vm.comments.Substring(0, 255);
                     }
-                    var comment = new Trade_Comment
+                    
+                    comment = new Trade_Comment
                     {
                         trade_id = (int)vm.trade_id,
                         comment_label = vm.comments,
@@ -136,6 +140,8 @@ namespace TradesWebApplication.Api
                 }
             }
             unitOfWork.Save();
+
+            return comment.comment_id.ToString();
 
         }
 

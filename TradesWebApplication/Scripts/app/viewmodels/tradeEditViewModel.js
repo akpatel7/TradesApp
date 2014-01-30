@@ -662,6 +662,8 @@ function TradeViewModel(
             timeout: 5000,
             success: function (data) {
                 if (data.Success) {
+                    //update comment id
+                    self.comment_id(data.result);
                     window.onbeforeunload = null;
                     console.log(data.Message);
                     self.vmMessages(data.Message); //display success
