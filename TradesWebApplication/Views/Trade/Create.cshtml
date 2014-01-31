@@ -220,7 +220,7 @@
                 </div>
                 <div class="input-append date col-sm-4" id="dpInstructionEntry" data-datepicker-format="YYYY-MM-DD">
                     <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input class="span2" size="16" type="text" value="" data-bind="value: instruction_entry_date">
+                    <input class="span2" size="16" type="text" data-bind="value: instruction_entry_date", datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
                 </div>
                 @*<span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</span>*@
             </div>
@@ -420,7 +420,7 @@
         //datetimepickers - moment-datetimepicker for bootstrap
         $('#dpInstructionEntry').datepicker(
                     {
-                        startDate: moment(new Date(), "YYYY-MM-DD")
+                        setDate: moment(new Date(), "YYYY-MM-DD")
                     });
         $('#dpInstructionExit').datepicker();
 
