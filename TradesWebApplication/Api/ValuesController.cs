@@ -649,9 +649,9 @@ namespace TradesWebApplication.Api
 
                 if (!String.IsNullOrEmpty(vm.comments))
                 {
-                    if (vm.comments.Length > 255)
+                    if (vm.comments.Length > 500)
                     {
-                        vm.comments = vm.comments.Substring(0, 255);
+                        vm.comments = vm.comments.Substring(0, 500);
                     }
                     var comment = new Trade_Comment
                     {
