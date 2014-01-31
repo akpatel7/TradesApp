@@ -86,7 +86,7 @@
             </div>
 
             <div class="col-sm-3">
-                @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), "{Structure}", new { @data_bind = "value: structure_type_id", @class = "form-control" })
+                @Html.DropDownListFor(model => model.structure_type_id, new SelectList(Model.StructureTypes, "structure_type_id", "structure_type_label"), String.Empty, new { @data_bind = "value: structure_type_id", @class = "form-control" })
             </div>
         </div>
 

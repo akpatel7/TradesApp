@@ -334,7 +334,6 @@ namespace TradesWebApplication.Controllers
             var viewModel = new TradesViewModel();
 
             viewModel.Trade = new Trade();
-            
 
             PopulateDropDownEntities(viewModel, false);
             PopulateRelatedTradeLinesAndGroups(viewModel);
