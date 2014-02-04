@@ -19,5 +19,7 @@ namespace TradesWebApplication.ViewModels
         [DisplayName("Canonical Label")]
         public string trade_line_group_label { get; set; }
         public List<TradeLineDTOViewModel> tradeLines { get; set; }
+        public List<TradeLineDTOViewModel> removedTradeLines { get; set; }
+        public string CRUDMode { get; set; }
     }
 }

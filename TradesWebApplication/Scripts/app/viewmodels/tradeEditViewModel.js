@@ -245,6 +245,8 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
     tradeLines = typeof (tradeLines) !== 'undefined' ? tradeLines : [];
     this.tradeLines = ko.observableArray(tradeLines);
 
+    this.removedTradeLines = [];
+
     this.CRUDMode = "";
 
     this.addLine = function () {
@@ -261,6 +263,8 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
     this.removeLine = function (item) {
         if (self.tradeLines().length > 1)
         {
+            item.CRUDMode = "delete";
+            self.removedTradeLines.push(item);
             self.tradeLines.remove(item);
         }
     };

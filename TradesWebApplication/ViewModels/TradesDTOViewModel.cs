@@ -41,7 +41,7 @@ namespace TradesWebApplication.ViewModels
         public int structure_type_id { get; set; }
 
         //status
-        public int status { get; set; }
+        public int? status { get; set; }
         
         //------------------------------------
         //dbo.Trade_Instruction
@@ -107,6 +107,7 @@ namespace TradesWebApplication.ViewModels
 
         //for ko json response
         public List<TradeLineGroupDTOViewModel> tradegroups { get; set; }
+        public string CRUDMode { get; set; }
         //public List<TradeLineDTOViewModel> tradeLines { get; set; }
     }
 }
