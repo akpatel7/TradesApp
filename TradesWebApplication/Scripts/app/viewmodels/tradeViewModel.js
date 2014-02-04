@@ -292,7 +292,7 @@ function TradeViewModel(
     this.instruction_entry = ko.validatedObservable(null).extend({ required: true }).extend({ number: true });
 
     instruction_entry_date = typeof (instruction_entry_date) !== 'undefined' ? instruction_entry_date : "";
-    this.instruction_entry_date = ko.validatedObservable(instruction_entry_date).extend({ required: true, dateISO: true });
+    this.instruction_entry_date = ko.validatedObservable(instruction_entry_date).extend({ required: { params: true, message: "" }, dateISO: { params: true, message: "" } });
 
     instruction_exit = typeof (instruction_exit) !== 'undefined' ? instruction_exit : "";
     this.instruction_exit = ko.observable(instruction_exit).extend({ number: true });

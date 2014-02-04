@@ -218,11 +218,15 @@
                 <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.instruction_entry_date)
                 </div>
-                <div class="input-append date col-sm-4" id="dpInstructionEntry" data-datepicker-format="YYYY-MM-DD">
-                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input class="span2" size="16" type="text" data-bind="value: instruction_entry_date", datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
-                </div>
-                @*<span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</span>*@
+                
+                    <div class="input-append date col-sm-7" id="dpInstructionEntry" data-datepicker-format="YYYY-MM-DD">
+                        <input class="span2" size="16" type="text" data-bind="value: instruction_entry_date", datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                        <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>                       
+                    </div>
+
+               @* <span data-bind="visible: instruction_entry_date.isValid() == false" class="validationMessage">This field is required.</span>*@
+               
+                
             </div>
 
             <div class="form-group">
@@ -238,9 +242,9 @@
                 <div class="control-label col-sm-3">
                     @Html.LabelFor(model => model.instruction_exit_date)
                 </div>
-                <div class="input-append date col-sm-7" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
-                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                <div class="input-append date col-sm-7" id="dpInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">                 
                     <input class="span2" size="16" type="text" value="" data-bind="value: instruction_exit_date">
+                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
                     <span data-bind="visible: instructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
                 </div>
             </div>
@@ -297,8 +301,8 @@
                     <div class="control-label col-sm-3">
                         @Html.LabelFor(model => model.apl_func)
                     </div>
-                    <div class="col-sm-3">
-                        <input type="text" data-bind="value: apl_func" maxlength="255"/>
+                    <div class="col-sm-7">
+                        <input type="text" class="input-xlarge form-control" data-bind="value: apl_func" maxlength="255"/>
                     </div>
                 </div>
         </fieldset>
@@ -494,7 +498,7 @@
         $("#selectRelatedTrades").select2({
             minimumInputLength: 1,
             placeholder: "{Linked Trades}",
-            width: '500px',
+            width: '490px',
             allowClear: true,
             multiple: true,
             ajax: {
