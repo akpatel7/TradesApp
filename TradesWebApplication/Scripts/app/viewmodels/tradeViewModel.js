@@ -364,7 +364,7 @@ function TradeViewModel(
     this.return_benchmark_id = ko.observable(0); //Hack to avoid null in json
 
     comments = typeof (comments) !== 'undefined' ? comments : "";
-    this.comments = ko.observable(comments).extend({ maxLength: 500 });;
+    this.comments = ko.observable(comments).extend({ maxLength: 255 });;
 
 
     status = typeof (status) !== 'undefined' ? status : "";

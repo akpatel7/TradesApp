@@ -151,7 +151,7 @@ namespace TradesWebApplication.Api
             if (tradePerformances.Any())
             {
 
-                var abs_perf = tradePerformances.LastOrDefault(t => t.return_benchmark_id != 1); // it would make sense to use value 2 for absolute!! TODO
+                var abs_perf = tradePerformances.LastOrDefault(t => t.return_benchmark_id == null);
 
                 // absolute performance
                 if ( abs_perf != null )
@@ -172,7 +172,7 @@ namespace TradesWebApplication.Api
 
                 }
             
-                var rel_perf = tradePerformances.LastOrDefault(t => t.return_benchmark_id == 1); 
+                var rel_perf = tradePerformances.LastOrDefault(t => t.return_benchmark_id != null); 
 
                 // relative performance
                 if ( rel_perf != null )
@@ -649,9 +649,9 @@ namespace TradesWebApplication.Api
 
                 if (!String.IsNullOrEmpty(vm.comments))
                 {
-                    if (vm.comments.Length > 500)
+                    if (vm.comments.Length > 255)
                     {
-                        vm.comments = vm.comments.Substring(0, 500);
+                        vm.comments = vm.comments.Substring(0, 255);
                     }
                     var comment = new Trade_Comment
                     {
