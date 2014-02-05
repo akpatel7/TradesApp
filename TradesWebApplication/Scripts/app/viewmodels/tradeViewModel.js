@@ -360,8 +360,14 @@ function TradeViewModel(
     rel_return_value = typeof (rel_return_value) !== 'undefined' ? rel_return_value : "";
     this.rel_return_value = ko.observable(rel_return_value).extend({ number: true });
 
-    return_benchmark_id = typeof (return_benchmark_id) !== 'undefined' ? return_benchmark_id : 0;
-    this.return_benchmark_id = ko.observable(0); //Hack to avoid null in json
+    return_benchmark_id = typeof (return_benchmark_id) !== 'undefined' ? return_benchmark_id : "";
+    this.return_benchmark_id = ko.observable(return_benchmark_id).extend({
+        required: {
+            onlyIf: function () {
+                return (self.rel_return_value() !== "" && self.rel_return_value() !== null && self.rel_return_value() !== 'undefined');
+            },
+        },
+    }); 
 
     comments = typeof (comments) !== 'undefined' ? comments : "";
     this.comments = ko.observable(comments).extend({ maxLength: 255 });;
