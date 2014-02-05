@@ -370,7 +370,7 @@ function TradeViewModel(
     }); 
 
     comments = typeof (comments) !== 'undefined' ? comments : "";
-    this.comments = ko.observable(comments).extend({ maxLength: 255 });;
+    this.comments = ko.observable(comments).extend({ maxLength: 255 });
 
 
     status = typeof (status) !== 'undefined' ? status : "";

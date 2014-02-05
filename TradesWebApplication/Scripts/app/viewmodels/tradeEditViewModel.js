@@ -134,10 +134,10 @@ ko.bindingHandlers.datePicker = {
 	};
 
 
+ko.validation.init({ insertMessages: false });
 ko.validation.configure({
     decorateElement: true
 });
-
 // enable validation
 ko.validation.init({ grouping: { deep: true, observable: true } });
 
@@ -444,14 +444,20 @@ function TradeViewModel(
     rel_return_value = typeof (rel_return_value) !== 'undefined' ? rel_return_value : "";
     this.rel_return_value = ko.observable(rel_return_value).extend({ number: true });
 
-    return_benchmark_id = typeof (return_benchmark_id) !== 'undefined' ? return_benchmark_id : 0;
-    this.return_benchmark_id = ko.observable(0); //Hack to avoid null in json
+    return_benchmark_id = typeof (return_benchmark_id) !== 'undefined' ? return_benchmark_id : "";
+    this.return_benchmark_id = ko.observable(return_benchmark_id).extend({
+        required: {
+            onlyIf: function () {
+                return (self.rel_return_value() !== "" && self.rel_return_value() !== null && self.rel_return_value() !== 'undefined');
+            },
+        },
+    });
 
     comment_id = typeof (comment_id) !== 'undefined' ? comment_id : "";
     this.comment_id = ko.observable(comment_id);
 
     comments = typeof (comments) !== 'undefined' ? comments : "";
-    this.comments = ko.observable(comments);
+    this.comments = ko.observable(comments).extend({ maxLength: 255 });
 
     status = typeof (status) !== 'undefined' ? status : "";
     this.status = ko.observable(status).extend({ required: true });
@@ -841,7 +847,7 @@ var whenUIHiddenThenRemoveUI = function ($ui) {
 //Start Comments section//////////////////////////
 //Add Comment modal 
 var AddCommentViewModel = function () {
-    this.text = ko.observable();
+    this.text = ko.observable().extend({ maxLength: 255 });
 }
 
 // The name of the template to render
@@ -878,7 +884,7 @@ vm._addCommentToComments = function (newComment) {
 //Edit Comment modal 
 var EditCommentViewModel = function () {
     this.id = ko.observable();
-    this.text = ko.observable();
+    this.text = ko.observable().extend({ maxLength: 255 });
 }
 
 // The name of the template to render
