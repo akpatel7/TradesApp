@@ -167,10 +167,11 @@
                                     <ul style="list-style: none; margin: 0px; padding: 0px;" data-bind='foreach: tradeLines'>
                                         <li>
                                             <div class="row">
-                                                <div class="col-md-1">
-                                                    <strong>
-                                                        <h3 data-bind='text: ($index() + 1)'></h3>
-                                                    </strong>
+                                                <div class="col-md-1 center-block">
+                                                    
+
+                                                        <label class="control-label" data-bind='text: ($index() + 1)'></label>
+                                               
                                                 </div>
                                                 <div class="col-md-4">
                                                   <input class="" type="hidden" data-bind="uniqueIdPosition: position_id, value: position_id" class="tradeLinePosition"/>
@@ -189,7 +190,7 @@
                                         </li>
                                     </ul>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="pull-right">
                                             <br />
                                             <button id="btnAddLine" data-bind='click: function () { addLine(); typeAheadPosition(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new trade line</button>
                                         </div>
@@ -198,7 +199,7 @@
                                 <!-- tradeline row -->
                             </div>
                             <!-- tradeline well -->
-                            <div class="row col-md-12">
+                            <div class="pull-right">
                                 <button data-bind='click: $root.removeGroup' class='btn btn-sm btn-danger'>Delete trade group</button>
                             </div>
                         </div>
@@ -207,7 +208,9 @@
                     <!-- group well-->
                 </li>
             </ul>
+<div class="pull-right">
             <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadPosition(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>
+</div>
         </fieldset>
         <!-- instructions ------------------------------------- -->
         <fieldset class="tgroup">
@@ -407,12 +410,12 @@
                 </div>
             </div>
         </fieldset>
-        <p>
+        <div class="pull-right">
             <button id="create" type="submit" class="btn btn-primary">Create</button>
             <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
             <button name="ClientCancel" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
             <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Home"))" style="display:none;"></a>
-        </p>
+        </div>
 
     </fieldset>
     </div>
