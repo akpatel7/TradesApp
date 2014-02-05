@@ -111,7 +111,7 @@
             <legend class="trade_group">Group Information</legend>
             <ul style="list-style: none; margin: 0px; padding: 0px;" data-bind='foreach: tradegroups'>
                 <li>
-                    <div class="well col-xs-12">
+                    <div class="well col-xs-12" style="margin-bottom: 10px; padding-bottom: 0px; padding-top: 0px">
                         <div class="col-md-12">
                             <div class="row">
                                 <h3><strong><span>Group </span><span data-bind='text: ($index() + 1)'></span><span> Information</span></strong></h3>
@@ -188,29 +188,35 @@
                                                 </div>
                                             </div>
                                         </li>
+                                        
                                     </ul>
                                     <div class="row">
-                                        <div class="pull-right">
-                                            <br />
-                                            <button id="btnAddLine" data-bind='click: function () { addLine(); typeAheadPosition(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new trade line</button>
-                                        </div>
+<div class="pull-left">
+ <br />
+                                <button data-bind='click: $root.removeGroup' class='btn btn-sm btn-danger'>Delete trade group</button>
+                            </div>
+                                            <div class="pull-right">
+                                                <br />
+                                                <button id="btnAddLine" data-bind='click: function () { addLine(); typeAheadPosition(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new trade line</button>
+                                             </div>
                                     </div>
                                 </div>
                                 <!-- tradeline row -->
                             </div>
                             <!-- tradeline well -->
-                            <div class="pull-right">
-                                <button data-bind='click: $root.removeGroup' class='btn btn-sm btn-danger'>Delete trade group</button>
-                            </div>
+                            
                         </div>
                         <!-- group row -->
                     </div>
                     <!-- group well-->
                 </li>
             </ul>
-<div class="pull-right">
-            <button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadPosition(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>
+<div class="row">
+    <div class="col-xs-3 pull-right">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="btnAddGroup" data-bind='click: function () { addGroup(); typeAheadPosition(); typeAheadFinInstr(); }' class="btn btn-sm btn-info">Add new group</button>   
 </div>
+</div>
+
         </fieldset>
         <!-- instructions ------------------------------------- -->
         <fieldset class="tgroup">
