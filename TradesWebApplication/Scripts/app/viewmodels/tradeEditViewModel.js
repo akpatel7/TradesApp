@@ -680,7 +680,7 @@ function TradeViewModel(
                     var message = self.vmMessages();
                     bootbox.dialog({
                         message: message,
-                        title: "Trade Edit",
+                        title: "Trade Comment",
                         buttons: {
                             success: {
                                 label: "OK",
@@ -712,7 +712,7 @@ function TradeViewModel(
                 var message = self.vmMessages();
                 bootbox.dialog({
                     message: message,
-                    title: "Trade Comment Edit",
+                    title: "Trade Comment",
                     className: "alert-danger",
                     buttons: {
                         danger: {

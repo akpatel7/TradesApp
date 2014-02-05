@@ -76,7 +76,7 @@ namespace TradesWebApplication.Api
                     Content = new JsonContent(new
                     {
                         Success = true, //error
-                        Message = "Trade commment id: " + resultingCommentId + " sucessfully posted",
+                        Message = "Trade comment id: " + resultingCommentId + " sucessfully saved",
                         result = resultingCommentId
                     })
                 };
