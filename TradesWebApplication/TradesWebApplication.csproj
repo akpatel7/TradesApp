@@ -192,6 +192,7 @@
     <Compile Include="Api\Comments.cs" />
     <Compile Include="Api\RestClient.cs" />
     <Compile Include="Api\TradesAppSettings.cs" />
+    <Compile Include="Api\TradesPlatoController.cs" />
     <Compile Include="Api\ValuesController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -352,6 +353,11 @@
     <Compile Include="Models\LengthType.cs" />
     <Compile Include="Models\Locations.cs" />
     <Compile Include="Models\MeasureType.cs" />
+    <Compile Include="SemanticModels\GenericPlatoSemanticDTOs.cs" />
+    <Compile Include="SemanticModels\PlatoTradeContextDTO.cs" />
+    <Compile Include="SemanticModels\PlatoTradeGraphDTO.cs" />
+    <Compile Include="SemanticModels\PlatoTradeBodyDTO.cs" />
+    <Compile Include="SemanticModels\PlatoTradeLineSetDTO.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\RelatedTrade.cs" />
     <Compile Include="Models\Relativity.cs" />
