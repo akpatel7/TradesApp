@@ -489,8 +489,33 @@ namespace TradesWebApplication.Api
                     tradeLine.trade_id = tradeId; //this trade
                     tradeLine.position_id = line.position_id;
                     tradeLine.tradable_thing_id = line.tradable_thing_id;
-                    //?trade_line_editorial_label
-                    //?trade_line_label
+                    //TODO: Verify if db was changed to varmax
+                    //trade_line_editorial_label
+                    if (!String.IsNullOrEmpty(line.trade_line_editorial_label))
+                    {
+                        if (line.trade_line_editorial_label.Length > 255)
+                        {
+                            tradeLine.trade_line_editorial_label = line.trade_line_editorial_label.Substring(0, 255);
+                        }
+                        else
+                        {
+                            tradeLine.trade_line_editorial_label = line.trade_line_editorial_label;
+                        }
+                    }
+                    //TODO: Verify if db was changed to varmax
+                    //trade_line_label
+                    if (!String.IsNullOrEmpty(line.canonicalLabelPart))
+                    {
+                        if (line.canonicalLabelPart.Length > 255)
+                        {
+                            tradeLine.trade_line_label = line.canonicalLabelPart.Substring(0, 255);
+                        }
+                        else
+                        {
+                            tradeLine.trade_line_label = line.canonicalLabelPart;
+                        }
+                    }
+
                     //TODO: createdby
                     if (isNewLine)
                     {

@@ -488,6 +488,16 @@ namespace TradesWebApplication.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        //(service) 
+        public JsonResult GetService(string id)
+        {
+            var serviceId = int.Parse(id);
+            var list = unitOfWork.ServiceRepository.Get(r => r.service_id == serviceId);
+            var result = (from r in list
+                          select new { r.service_code, r.service_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         //Benchmark typeahead
         public JsonResult GetBenchmark(string id)
         {
@@ -496,6 +506,16 @@ namespace TradesWebApplication.Controllers
             var result = (from r in list
                           where r.benchmark_id == benchmarkId
                           select new { r.benchmark_label, r.benchmark_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        //(structure_type) 
+        public JsonResult GetStructureType(string id)
+        {
+            var typeId = int.Parse(id);
+            var list = unitOfWork.StructureTypeRepository.Get(r => r.structure_type_id == typeId);
+            var result = (from r in list
+                          select new { r.structure_type_label, r.structure_type_id }).Distinct();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

@@ -167,7 +167,8 @@ function TradeLine(trade_line_id, position_id, tradable_thing_id) {
         });
 
     this.canonicalLabelPart = ko.computed(function () {
-        return self.positionString() + ", " + self.tradableThingString();
+        //return self.positionString() + ", " + self.tradableThingString();
+        return self.positionString() + " " + self.tradableThingString();
     });
 
    
@@ -217,7 +218,8 @@ function TradeGroup(trade_line_group_id, trade_line_group_type_id, trade_line_gr
                 tradeLineParts += ", ";
             }
         }
-        return self.trade_line_group_type_string() + ": " + tradeLineParts;
+        //return self.trade_line_group_type_string() + ": " + tradeLineParts;
+        return tradeLineParts;
     });
 }
 
@@ -393,14 +395,67 @@ function TradeViewModel(
     };
     //end tradegroups
     
+    this.serviceString = ko.observable("{Service}");
+
+    this.structure_type_String = ko.observable("{Trade Type}");
+    
+    //to get desc of selected trade type
+    self.structure_type_id.subscribe(
+        function (newValue) {
+            if (newValue > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: baseUrl + "Trade/GetStructureType",
+                    dataType: "json",
+                    crossDomain: true,
+                    data: {
+                        id: newValue, //id of position
+                    },
+                    success: function (data) {
+                        var resultData = data[0];
+                        self.structure_type_String(resultData.structure_type_label);
+                    }
+                });
+            }
+            else {
+                return;
+            }
+        });
+            
+    //to get desc of selected service
+    self.service_id.subscribe(
+        function (newValue) {
+            if (newValue > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: baseUrl + "Trade/GetService",
+                    dataType: "json",
+                    crossDomain: true,
+                    data: {
+                        id: newValue, //id of position
+                    },
+                    success: function (data) {
+                        var resultData = data[0];
+                        self.serviceString(resultData.service_code);
+                    }
+                });
+
+            }
+            else {
+                return;
+            }
+        });
+    
     //canonical label
     trade_label = typeof (trade_label) !== 'undefined' ? trade_label : "";
     this.trade_label = ko.computed(function () {
-        var tradeGroupParts = "";
+        var tradeGroupParts = self.serviceString() + " - " + self.structure_type_String() + " - (";
         for (var i = 0; i < self.tradegroups().length; i++) {
             tradeGroupParts += self.tradegroups()[i].trade_line_group_label();
             if (i + 1 != self.tradegroups().length) {
-                tradeGroupParts += " - ";
+                tradeGroupParts += ") - (";
+            } else {
+                tradeGroupParts += ")";
             }
         }
         return tradeGroupParts;
@@ -559,7 +614,7 @@ function TradeViewModel(
     }, self);
 
     //set this to true to see ko.toJson on form for debugging knockout bindings
-    this.debug = false;
+    this.debug = true;
     //////////////////
 
 }
