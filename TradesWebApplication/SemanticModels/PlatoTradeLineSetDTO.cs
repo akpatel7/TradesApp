@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace TradesWebApplication.SemanticModels
 {
     public class PlatoTradeLineDTO
     {
+        [JsonProperty("@set")]
         public List<PlatoTradeLineSetDTO> @set { get; set; }
     }
 
@@ -13,7 +15,9 @@ namespace TradesWebApplication.SemanticModels
         public GenericPlatoSemanticWithTypeDTO onTradableThing { get; set; }
         public GenericPlatoSemanticWithTypeDTO tradeLinePosition { get; set; }
         public GenericPlatoSemanticDTO tradeLineGroup { get; set; }
+        [JsonProperty("@type")]
         public string @type { get; set; }
+        [JsonProperty("@id")]
         public string @id { get; set; }
         public string canonicalLabel { get; set; }
 

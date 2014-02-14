@@ -21,7 +21,7 @@ namespace TradesWebApplication.Api
         public string ContentType { get; set; }
         public string PostData { get; set; }
 
-        public RestClient()
+        public  RestClient()
         {
             EndPoint = "";
             Method = HttpVerb.GET;
@@ -70,6 +70,7 @@ namespace TradesWebApplication.Api
                 var encoding = new UTF8Encoding();
                 var bytes = Encoding.GetEncoding("iso-8859-1").GetBytes(PostData);
                 request.ContentLength = bytes.Length;
+                //request.TransferEncoding = encoding;
 
                 using (var writeStream = request.GetRequestStream())
                 {

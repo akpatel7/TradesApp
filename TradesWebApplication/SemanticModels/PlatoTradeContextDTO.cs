@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace TradesWebApplication.SemanticModels
 {
     public class PlatoTradeContextDTO
     {
+        [JsonProperty ("@language")]
         public string @language { get; set; }
         public string rights { get; set; }
         public string TradeRecommendation { get; set; }
