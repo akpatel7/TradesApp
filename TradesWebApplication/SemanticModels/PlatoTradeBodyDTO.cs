@@ -6,8 +6,12 @@ namespace TradesWebApplication.SemanticModels
     public class PlatoTradeBodyDTO
     {
         [JsonProperty("@context")]
-        public PlatoTradeContextDTO @context { get; set; }
+        public PlatoTradeContextDTO context { get; set; }
         [JsonProperty("@graph")]
-        public PlatoTradeGraphDTO @graph { get; set; }
-    } 
+        public List<PlatoTradeGraphNodeDTO> graph { get; set; }
+    }
+
+    public abstract class PlatoTradeGraphNodeDTO
+    {
+    }
 }

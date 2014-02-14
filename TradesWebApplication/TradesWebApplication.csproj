@@ -357,7 +357,7 @@
     <Compile Include="SemanticModels\PlatoTradeContextDTO.cs" />
     <Compile Include="SemanticModels\PlatoTradeGraphDTO.cs" />
     <Compile Include="SemanticModels\PlatoTradeBodyDTO.cs" />
-    <Compile Include="SemanticModels\PlatoTradeLineSetDTO.cs" />
+    <Compile Include="SemanticModels\PlatoTradeGroupDTO.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\RelatedTrade.cs" />
     <Compile Include="Models\Relativity.cs" />
@@ -376,6 +376,7 @@
     <Compile Include="Models\TradePerformance.cs" />
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SemanticModels\PlatoTradeLineDTO.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\TradeLineDTOViewModel.cs" />
     <Compile Include="ViewModels\TradeLineGroupDTOViewModel.cs" />

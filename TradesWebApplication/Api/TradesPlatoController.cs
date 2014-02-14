@@ -34,7 +34,7 @@ namespace TradesWebApplication.Api
             {
                 var vm = new TradesDTOViewModel();
                 var tradeId = id;
-
+                vm.trade_id = tradeId;
                 try
                 {
                     vm = RetrieveTradeFromDb(tradeId);
@@ -61,7 +61,7 @@ namespace TradesWebApplication.Api
                     var response = new RestClient
                     {
                             ContentType = "application/json+ld",
-                            EndPoint = "http://localhost:63242/api/tradesplato/post",
+                            EndPoint = tradesConfig.PlatoEndpoint,
                             Method = HttpVerb.POST,
                             PostData = jsonResponse
                     };
@@ -161,9 +161,118 @@ namespace TradesWebApplication.Api
         {
         }
 
-        private PlatoTradeContextDTO ConvertTradeDTOtoPlatoTradeDTO(TradesDTOViewModel vm)
+        private PlatoTradeBodyDTO ConvertTradeDTOtoPlatoTradeDTO(TradesDTOViewModel vm)
         {
-            return new PlatoTradeContextDTO();
+            var platoTradeDTO = new PlatoTradeBodyDTO();
+            platoTradeDTO.context = new PlatoTradeContextDTO();
+            
+            var summary = new PlatoTradeGraphSummary();
+            var tradeGroupNodes = new List<PlatoTradeGroupDTO>();
+            var tradelineNodes = new List<PlatoTradeLineDTO>();
+
+            //@id
+            summary.id = vm.trade_uri;
+            //service
+            var serviceUri =
+                   unitOfWork.ServiceRepository.Get(
+                       t => t.service_id == vm.service_id)
+                             .Distinct()
+                             .Select(t => t.service_uri).ToString();
+            summary.service.id = serviceUri;
+           
+            //benchmark
+            var benchmarkUri =
+                  unitOfWork.BenchmarkRepository.Get(
+                      t => t.benchmark_id == vm.benchmark_id)
+                            .Distinct()
+                            .Select(t => t.benchmark_uri).ToString();
+            summary.benchmark.id = benchmarkUri;
+                      
+            //status
+            var statusUri = "http://data.emii.com/status/";
+            statusUri +=
+                   unitOfWork.StatusRepository.Get(
+                       t => t.status_id == vm.status)
+                             .Distinct()
+                             .Select(t => t.status_label).ToString();
+            summary.status.id = statusUri;
+            
+            //canonicalLabel
+            summary.canonicalLabel.language = "en";
+            summary.canonicalLabel.value = vm.trade_label;
+
+            //rights
+            summary.rights.id = "http://data.emii.com/business-groups/bca";
+
+            //add tradelines to summary
+            foreach( var g in vm.tradegroups )
+            {
+                //add to root of graph node
+                var group = new PlatoTradeGroupDTO()
+                    {
+                        id = g.trade_line_group_uri,
+                        type = @"http://data.emii.com/ontologies/bcatrading/TradeLineGroup",
+                    };
+                var groupType =
+                    unitOfWork.TradeLineGroupTypeRepository.Get(
+                        t => t.trade_line_group_type_id == g.trade_line_group_type_id)
+                              .Distinct()
+                              .Select(t => t.trade_line_group_type_label).ToString();
+
+                group.tradelineGroupType.id = @"http://data.emii.com/trade-line-group-type/" + groupType;
+
+                group.canonicalLabel.language = "en";
+                group.canonicalLabel.value = g.trade_line_group_label;
+
+                tradeGroupNodes.Add(group);
+
+                foreach (var l in g.tradeLines)
+                {
+                    //add line to graphsummary
+                    summary.tradeLine.Add( new GenericIdPlatoSemanticDTO() { id = l.trade_line_uri});
+
+                    //add to graph root
+                    var line = new PlatoTradeLineDTO()
+                    {
+                        id = l.trade_line_uri,
+                        type = @"http://data.emii.com/ontologies/bcatrading/TradeLine",
+                    };
+                    var tradableThingUri =
+                        unitOfWork.TradableThingRepository.Get(
+                            t => t.tradable_thing_id == l.tradable_thing_id)
+                                  .Distinct()
+                                  .Select(t => t.tradable_thing_uri).ToString();
+
+                    line.onTradableThing.id = tradableThingUri;
+
+                     var positionUri =
+                        unitOfWork.PositionRepository.Get(
+                            t => t.position_id == l.position_id)
+                                  .Distinct()
+                                  .Select(t => t.position_uri).ToString();
+
+                    line.tradeLinePosition.id = positionUri;
+                    
+                    line.canonicalLabel.language = "en";
+                    line.canonicalLabel.value = l.canonicalLabelPart;
+
+                    tradelineNodes.Add(line);
+
+                }
+            }
+
+            
+            platoTradeDTO.graph.Add(summary);
+            foreach (var g in tradeGroupNodes)
+            {
+                platoTradeDTO.graph.Add(g);
+            }
+            foreach (var t in tradelineNodes)
+            {
+                platoTradeDTO.graph.Add(t);
+            }
+
+            return platoTradeDTO;
         }
 
         private TradesDTOViewModel RetrieveTradeFromDb(int id)
@@ -174,6 +283,8 @@ namespace TradesWebApplication.Api
             var viewModel = new TradesDTOViewModel();
 
             viewModel.trade_id = trade.trade_id;
+
+            viewModel.trade_uri = trade.trade_uri;
 
             // service
             viewModel.service_id = (int)trade.service_id;
@@ -211,140 +322,7 @@ namespace TradesWebApplication.Api
             {
                 viewModel.status = (int)trade.status; //1 is Unpublished, 2:Ready To Publish, 3: Published, 4: Deleted
             }
-            else
-            {
-                viewModel.status = 1;
-            }
-
-
-            // trade instructions
-            var tradeInstructionList = unitOfWork.TradeInstructionRepository.GetAll().Where(i => i.trade_id == trade.trade_id).ToList();
-            var tradeInstruction = tradeInstructionList.LastOrDefault();
-            if (tradeInstruction != null)
-            {
-                viewModel.trade_instruction_id = tradeInstruction.trade_instruction_id;
-                viewModel.instruction_entry = tradeInstruction.instruction_entry;
-                viewModel.instruction_entry_date = ((DateTime)tradeInstruction.instruction_entry_date).ToString("yyyy-MM-dd");
-                viewModel.instruction_exit = tradeInstruction.instruction_exit;
-                if (tradeInstruction.instruction_exit_date.HasValue)
-                {
-                    viewModel.instruction_exit_date = ((DateTime)tradeInstruction.instruction_exit_date).ToString("yyyy-MM-dd");
-                }
-                viewModel.instruction_type_id = tradeInstruction.instruction_type_id;
-                viewModel.instruction_label = tradeInstruction.instruction_label;
-                viewModel.hedge_id = tradeInstruction.hedge_id;
-            }
-
-
-            // related trades, TODO:
-            var relatedTrades = unitOfWork.RelatedTradeRepository.GetAll().Where(r => r.trade_id == trade.trade_id).ToList();
-            if (relatedTrades.Any())
-            {
-                int i = 0;
-                viewModel.related_trade_ids = new int[relatedTrades.Count];
-                foreach (var r in relatedTrades)
-                {
-                    viewModel.related_trade_ids[i] = r.related_trade_id;
-                    viewModel.related_trade_ids_list += r.related_trade_id + ",";
-                    i++;
-                }
-            }
-
-            var trackRecordList = unitOfWork.TrackRecordRepository.GetAll().Where(r => r.trade_id == trade.trade_id).ToList();
-
-            if (trackRecordList.Any())
-            {
-                // mark to mark rate
-                var markTR = trackRecordList.LastOrDefault(m => m.track_record_type_id == 1);
-                if (markTR != null)
-                {
-                    viewModel.mark_track_record_id = markTR.track_record_id;
-                    viewModel.mark_to_mark_rate = markTR.track_record_value.ToString();
-                }
-                // intrest rate diff
-                var interestTR = trackRecordList.LastOrDefault(m => m.track_record_type_id == 2);
-                if (interestTR != null)
-                {
-                    viewModel.int_track_record_id = interestTR.track_record_id;
-                    viewModel.interest_rate_diff = interestTR.track_record_value.ToString();
-                }
-            }
-
-
-            //TODO: where does this go, which tradePerfomance
-            string apl_func = "";
-            bool isTradePerfomanceCreated = false;
-
-
-            var tradePerformances = unitOfWork.TradePerformanceRepository.GetAll().Where(t => t.trade_id == trade.trade_id).ToList();
-
-            if (tradePerformances.Any())
-            {
-
-                var abs_perf = tradePerformances.LastOrDefault(t => t.return_benchmark_id == null);
-
-                // absolute performance
-                if (abs_perf != null)
-                {
-                    viewModel.abs_track_performance_id = abs_perf.trade_performance_id;
-                    viewModel.abs_measure_type_id = abs_perf.measure_type_id;
-                    if (abs_perf.measure_type_id == 2)
-                    {
-                        viewModel.abs_currency_id = abs_perf.return_currency_id;
-                    }
-                    viewModel.abs_return_value = abs_perf.return_value;
-
-                    if (!String.IsNullOrEmpty(abs_perf.return_apl_function))
-                    {
-                        apl_func = abs_perf.return_apl_function;
-                        isTradePerfomanceCreated = true;
-                    }
-
-                }
-
-                var rel_perf = tradePerformances.LastOrDefault(t => t.return_benchmark_id != null);
-
-                // relative performance
-                if (rel_perf != null)
-                {
-                    viewModel.rel_track_performance_id = rel_perf.trade_performance_id;
-                    viewModel.rel_measure_type_id = rel_perf.measure_type_id;
-                    if (rel_perf.measure_type_id == 2)
-                    {
-                        viewModel.rel_currency_id = rel_perf.return_currency_id;
-                    }
-                    viewModel.rel_return_value = rel_perf.return_value;
-
-                    if (!String.IsNullOrEmpty(rel_perf.return_apl_function) && !isTradePerfomanceCreated)
-                    {
-                        isTradePerfomanceCreated = true;
-                        apl_func = rel_perf.return_apl_function;
-                    }
-
-                    if (rel_perf.return_benchmark_id != null && rel_perf.return_benchmark_id > 0)
-                    {
-                        viewModel.return_benchmark_id = rel_perf.return_benchmark_id;
-                    }
-                }
-            }
-
-            //TODO: Verify if creating empty trade performacne for apl_func
-            if (isTradePerfomanceCreated && !String.IsNullOrEmpty(apl_func))
-            {
-                viewModel.apl_func = apl_func;
-            }
-
-
-            //trade comments
-            var comments = unitOfWork.TradeCommentRepository.GetAll().Where(c => c.trade_id == trade.trade_id).ToList();
-
-            if (comments.Any())
-            {
-                var latestComment = comments.LastOrDefault();
-                viewModel.comment_id = latestComment.comment_id;
-                viewModel.comments = latestComment.comment_label;
-            }
-
+            
             //trade groups and lines
             var tradeLines = unitOfWork.TradeLineRepository.GetAll().Where(t => t.trade_id == viewModel.trade_id).ToList();
 
@@ -359,7 +337,10 @@ namespace TradesWebApplication.Api
                     {
                         trade_line_id = tradeline.trade_line_id,
                         position_id = (int)tradeline.position_id,
-                        tradable_thing_id = (int)tradeline.tradable_thing_id
+                        tradable_thing_id = (int)tradeline.tradable_thing_id,
+                        trade_line_editorial_label = tradeline.trade_line_editorial_label,
+                        trade_line_uri = tradeline.trade_line_uri,
+                        canonicalLabelPart = tradeline.trade_line_label
                     };
 
                     var tradeLineGroup = unitOfWork.TradeLineGroupRepository.GetByID(tradeline.trade_line_group_id);
@@ -372,6 +353,7 @@ namespace TradesWebApplication.Api
                             trade_line_group_type_id = (int)tradeLineGroup.trade_line_group_type_id,
                             trade_line_group_editorial_label = tradeLineGroup.trade_line_group_editorial_label,
                             trade_line_group_label = tradeLineGroup.trade_line_group_label,
+                            trade_line_group_uri = tradeLineGroup.trade_line_group_uri
 
                         };
 

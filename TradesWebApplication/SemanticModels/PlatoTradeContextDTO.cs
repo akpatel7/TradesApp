@@ -10,9 +10,10 @@ namespace TradesWebApplication.SemanticModels
     public class PlatoTradeContextDTO
     {
         [JsonProperty ("@language")]
-        public string @language { get; set; }
+        public string language { get; set; }
         public string rights { get; set; }
         public string TradeRecommendation { get; set; }
+        public string informedByView { get; set; }
         public string Service { get; set; }
         public string TradeLine { get; set; }
         public string TradeLineGroup { get; set; }
@@ -27,10 +28,12 @@ namespace TradesWebApplication.SemanticModels
 
         public PlatoTradeContextDTO()
         {
-            @language = "en";
+            language = "en";
             rights = "http://purl.org/dc/elements/1.1/rights";
             TradeRecommendation = "http://data.emii.com/ontologies/bca/TradeRecommendation";
+            informedByView = "http://data.emii.com/ontologies/bca/informedByView";
             Service = "http://data.emii.com/ontologies/bca/Service";
+            tradeBenchmark = "http://data.emii.com/ontologies/bcatrading/tradeBenchmark";
             TradeLine = "http://data.emii.com/ontologies/bcatrading/TradeLine";
             TradeLineGroup = "http://data.emii.com/ontologies/bcatrading/TradeLineGroup";
             Type = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Type";

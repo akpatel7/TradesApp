@@ -40,6 +40,9 @@ namespace TradesWebApplication.ViewModels
         // trade structure
         public int structure_type_id { get; set; }
 
+        //trade uri
+        public string trade_uri { get; set; }
+
         //status
         public int? status { get; set; }
         

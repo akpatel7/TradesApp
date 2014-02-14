@@ -78,5 +78,17 @@ namespace TradesWebApplication.Api
                 return this["TradeLineSemanticURISuffix"] as string;
             }
         }
+
+        [ConfigurationProperty("PlatoEndpoint", IsRequired = false)]
+        public string PlatoEndpoint
+        {
+            get
+            {
+                return this["PlatoEndpoint"] as string;
+            }
+        }
+
+
+        
     }
 }

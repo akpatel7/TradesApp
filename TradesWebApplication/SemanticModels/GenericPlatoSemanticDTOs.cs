@@ -6,23 +6,13 @@ using Newtonsoft.Json;
 
 namespace TradesWebApplication.SemanticModels
 {
-    public class GenericPlatoSemanticDTO
-    {
-            [JsonProperty("@type")]
-            public string @type { get; set; }
-            [JsonProperty("@id")]
-            public string @id { get; set; }
-            public string canonicalLabel { get; set; }   
-    }
 
-    public class GenericPlatoSemanticWithTypeDTO
+    public class CanonicalLabelPlatoDTO
     {
-        public string Type { get; set; }
-        [JsonProperty("@type")]
-        public string @type { get; set; }
-        [JsonProperty("@id")]
-        public string @id { get; set; }
-        public string canonicalLabel { get; set; }
+        [JsonProperty("@language")]
+        public string @language { get; set; }
+        [JsonProperty("@value")]
+        public string @value { get; set; }
     }
 
     public class GenericIdPlatoSemanticDTO
