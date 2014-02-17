@@ -748,9 +748,9 @@ function TradeViewModel(
             function (newValue) {
                 if (newValue > 0) {
                     var apiURL = baseUrl;
-                    apiURL += "api/platoTrade/get/";
+                    apiURL += "api/tradesplato/get/";
                     $.ajax({
-                        type: 'POST',
+                        type: 'GET',
                         url: apiURL,
                         dataType: "json",
                         crossDomain: true,

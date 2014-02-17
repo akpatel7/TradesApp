@@ -28,12 +28,12 @@ namespace TradesWebApplication.Api
         }
 
         // GET api/<controller>/5
-        public object Get(int id)
+        public object Get(string id)
         {
             if (ModelState.IsValid)
             {
                 var vm = new TradesDTOViewModel();
-                var tradeId = id;
+                var tradeId = int.Parse(id);
                 vm.trade_id = tradeId;
                 try
                 {
