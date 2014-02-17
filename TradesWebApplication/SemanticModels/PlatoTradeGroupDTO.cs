@@ -16,5 +16,12 @@ namespace TradesWebApplication.SemanticModels
         [JsonProperty("http://data.emii.com/ontologies/core/canonicalLabel")]
         public CanonicalLabelPlatoDTO canonicalLabel { get; set; }
 
+        public PlatoTradeGroupDTO()
+        {
+            tradelineGroupType = new GenericIdPlatoSemanticDTO();
+            canonicalLabel = new CanonicalLabelPlatoDTO();
+        }
+
     }
+  
 }

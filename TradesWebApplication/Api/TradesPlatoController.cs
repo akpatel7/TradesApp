@@ -174,30 +174,28 @@ namespace TradesWebApplication.Api
 
             //@id
             summary.id = vm.trade_uri;
+            
             //service
-            var serviceUri =
+            var service = 
                    unitOfWork.ServiceRepository.Get(
-                       t => t.service_id == vm.service_id)
-                             .Distinct()
-                             .Select(t => t.service_uri).ToString();
-            summary.service.id = serviceUri;
+                       t => t.service_id == vm.service_id).SingleOrDefault();
+            summary.service.id = service != null ? service.service_uri : String.Empty;
            
             //benchmark
-            var benchmarkUri =
-                  unitOfWork.BenchmarkRepository.Get(
-                      t => t.benchmark_id == vm.benchmark_id)
-                            .Distinct()
-                            .Select(t => t.benchmark_uri).ToString();
-            summary.benchmark.id = benchmarkUri;
-                      
+            var benchmark =
+                   unitOfWork.BenchmarkRepository.Get(
+                       t => t.benchmark_id == vm.benchmark_id).SingleOrDefault();
+            summary.benchmark.id = benchmark != null ? benchmark.benchmark_uri : String.Empty;
+           
+
             //status
-            var statusUri = "http://data.emii.com/status/";
-            statusUri +=
+            var status =
                    unitOfWork.StatusRepository.Get(
-                       t => t.status_id == vm.status)
-                             .Distinct()
-                             .Select(t => t.status_label).ToString();
+                       t => t.status_id == vm.status).SingleOrDefault();
+            var statusUri = "http://data.emii.com/status/";
+            statusUri += status != null ? status.status_label : String.Empty;
             summary.status.id = statusUri;
+
             
             //canonicalLabel
             summary.canonicalLabel.language = "en";
@@ -215,13 +213,12 @@ namespace TradesWebApplication.Api
                         id = g.trade_line_group_uri,
                         type = @"http://data.emii.com/ontologies/bcatrading/TradeLineGroup",
                     };
-                var groupType =
-                    unitOfWork.TradeLineGroupTypeRepository.Get(
-                        t => t.trade_line_group_type_id == g.trade_line_group_type_id)
-                              .Distinct()
-                              .Select(t => t.trade_line_group_type_label).ToString();
 
-                group.tradelineGroupType.id = @"http://data.emii.com/trade-line-group-type/" + groupType;
+                //group type
+                var groupType =
+                       unitOfWork.TradeLineGroupTypeRepository.Get(
+                           t => t.trade_line_group_type_id == g.trade_line_group_type_id).SingleOrDefault();
+                group.tradelineGroupType.id = groupType != null ? groupType.trade_line_group_type_uri : String.Empty;
 
                 group.canonicalLabel.language = "en";
                 group.canonicalLabel.value = g.trade_line_group_label;
@@ -239,21 +236,18 @@ namespace TradesWebApplication.Api
                         id = l.trade_line_uri,
                         type = @"http://data.emii.com/ontologies/bcatrading/TradeLine",
                     };
-                    var tradableThingUri =
-                        unitOfWork.TradableThingRepository.Get(
-                            t => t.tradable_thing_id == l.tradable_thing_id)
-                                  .Distinct()
-                                  .Select(t => t.tradable_thing_uri).ToString();
 
-                    line.onTradableThing.id = tradableThingUri;
+                    //tradableThing
+                    var tradableThing =
+                           unitOfWork.TradableThingRepository.Get(
+                               t => t.tradable_thing_id == l.tradable_thing_id).SingleOrDefault();
+                    line.onTradableThing.id = tradableThing != null ? tradableThing.tradable_thing_uri : String.Empty;
 
-                     var positionUri =
-                        unitOfWork.PositionRepository.Get(
-                            t => t.position_id == l.position_id)
-                                  .Distinct()
-                                  .Select(t => t.position_uri).ToString();
-
-                    line.tradeLinePosition.id = positionUri;
+                    //position
+                    var position =
+                           unitOfWork.PositionRepository.Get(
+                               t => t.position_id == l.position_id).SingleOrDefault();
+                    line.tradeLinePosition.id = position != null ? position.position_uri : String.Empty;
                     
                     line.canonicalLabel.language = "en";
                     line.canonicalLabel.value = l.canonicalLabelPart;
