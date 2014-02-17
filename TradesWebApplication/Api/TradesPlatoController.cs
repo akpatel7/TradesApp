@@ -56,43 +56,45 @@ namespace TradesWebApplication.Api
                 try
                 {
                     var platoTradeDTO = ConvertTradeDTOtoPlatoTradeDTO(vm);
-                    var jsonResponse = JsonConvert.SerializeObject(platoTradeDTO);
+                    var jsonObject = JsonConvert.SerializeObject(platoTradeDTO);
 
-                    var response = new RestClient
-                    {
-                            ContentType = "application/json+ld",
-                            EndPoint = tradesConfig.PlatoEndpoint,
-                            Method = HttpVerb.POST,
-                            PostData = jsonResponse
-                    };
+                    return jsonObject;
 
-                    var response1 = new RestClient
-                    {
-                        ContentType = "application/json",
-                        EndPoint = "http://localhost:63242/api/tradesplato/post",
-                        Method = HttpVerb.POST,
-                        PostData = jsonResponse
-                    };
+                    //var response = new RestClient
+                    //{
+                    //        ContentType = "application/json+ld",
+                    //        EndPoint = tradesConfig.PlatoEndpoint,
+                    //        Method = HttpVerb.POST,
+                    //        PostData = jsonResponse
+                    //};
 
-                    try
-                    {
-                       return response1.MakeRequest("");
-                       //return new HttpResponseMessage(HttpStatusCode.OK);
-                    }
-                    catch(Exception ex)
-                    {
-                        return new HttpResponseMessage(HttpStatusCode.NotAcceptable)
-                        {
-                            Content = new JsonContent(new
-                            {
-                                Success = false,
-                                Message = "Exception occured: " + ex.InnerException.ToString(),
-                                //return exception
-                                result = "Exception occured: " + ex.InnerException.ToString()
-                            })
-                        };
-                    }
-                   
+                    //var response1 = new RestClient
+                    //{
+                    //    ContentType = "application/json",
+                    //    EndPoint = "http://localhost:63242/api/tradesplato/post",
+                    //    Method = HttpVerb.POST,
+                    //    PostData = jsonResponse
+                    //};
+
+                    //try
+                    //{
+                    //   return response1.MakeRequest("");
+                    //   //return new HttpResponseMessage(HttpStatusCode.OK);
+                    //}
+                    //catch(Exception ex)
+                    //{
+                    //    return new HttpResponseMessage(HttpStatusCode.NotAcceptable)
+                    //    {
+                    //        Content = new JsonContent(new
+                    //        {
+                    //            Success = false,
+                    //            Message = "Exception occured: " + ex.InnerException.ToString(),
+                    //            //return exception
+                    //            result = "Exception occured: " + ex.InnerException.ToString()
+                    //        })
+                    //    };
+                    //}
+
 
                 }
                 catch (Newtonsoft.Json.JsonException ex)

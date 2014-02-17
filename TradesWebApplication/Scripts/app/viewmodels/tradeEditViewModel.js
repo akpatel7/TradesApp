@@ -728,8 +728,63 @@ function TradeViewModel(
     }
     this.CRUDMode = "";
     //set this to true to see ko.toJson on form for debugging knockout bindings
+    this.APItester = new ResultViewModel();
     this.debug = true;
     //////////////////
+    
+
+
+    //Test api calls section
+    function ResultViewModel() {
+        var self = this;
+
+        this.trade_id = ko.observable("");
+        this.endpoint = ko.observable("");
+        this.tradeGraph = ko.observable("");
+        this.results = ko.observable("");
+
+        //to get graph of trade for isis plato
+        self.trade_id.subscribe(
+            function (newValue) {
+                if (newValue > 0) {
+                    var apiURL = baseUrl;
+                    apiURL += "api/platoTrade/get/";
+                    $.ajax({
+                        type: 'POST',
+                        url: apiURL,
+                        dataType: "json",
+                        crossDomain: true,
+                        data: {
+                            id: newValue, //id of Financial Instrument
+                        },
+                        success: function (data) {
+                            var resultData = data[0];
+                            console.log(resultData);
+                            self.tradeGraph(resultData);
+                        }
+                    });
+
+                }
+                else {
+                    //console.log("HERE 2");
+                    return;
+                }
+            });
+
+
+
+        self.postTradeData = function (baseApiUrl) {
+
+            console.log('Posting Trade to server to save.');
+            var apiURL = baseUrl;
+            apiURL += "api/platoTrade/get/" + self.trade_id + "?endpoint=";
+            $.getJSON('apiURL', function (data) {
+                console.log(data);
+                self.results(data);
+            });
+        };
+
+    }
 
 }
 
@@ -924,4 +979,6 @@ vm._editCommentToComments = function (editedComment) {
 
 
 //End Comments section//////////////////////////
+
+
     
