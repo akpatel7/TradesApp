@@ -60,40 +60,15 @@ namespace TradesWebApplication.Api
 
                     return jsonObject;
 
-                    //var response = new RestClient
-                    //{
-                    //        ContentType = "application/json+ld",
-                    //        EndPoint = tradesConfig.PlatoEndpoint,
-                    //        Method = HttpVerb.POST,
-                    //        PostData = jsonResponse
-                    //};
-
-                    //var response1 = new RestClient
-                    //{
-                    //    ContentType = "application/json",
-                    //    EndPoint = "http://localhost:63242/api/tradesplato/post",
-                    //    Method = HttpVerb.POST,
-                    //    PostData = jsonResponse
-                    //};
-
-                    //try
-                    //{
-                    //   return response1.MakeRequest("");
-                    //   //return new HttpResponseMessage(HttpStatusCode.OK);
-                    //}
-                    //catch(Exception ex)
-                    //{
-                    //    return new HttpResponseMessage(HttpStatusCode.NotAcceptable)
-                    //    {
-                    //        Content = new JsonContent(new
-                    //        {
-                    //            Success = false,
-                    //            Message = "Exception occured: " + ex.InnerException.ToString(),
-                    //            //return exception
-                    //            result = "Exception occured: " + ex.InnerException.ToString()
-                    //        })
-                    //    };
-                    //}
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new JsonContent(new
+                        {
+                            Success = true, //error
+                            Message = "Success", //return exception
+                            Data = jsonObject
+                        })
+                    };
 
 
                 }
@@ -145,17 +120,9 @@ namespace TradesWebApplication.Api
         }
 
         // PUT api/<controller>/5
-        public HttpResponseMessage Put([FromBody]string value)
+        public HttpResponseMessage Put()
         {
-            return new HttpResponseMessage(HttpStatusCode.Created)
-            {
-                Content = new JsonContent(new
-                {
-                    Success = true, //error
-                    Message = "Post test", //return exception
-                    result = value
-                })
-            };
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
 
         // DELETE api/<controller>/5

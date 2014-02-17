@@ -735,6 +735,7 @@ function TradeViewModel(
 
 
     //Test api calls section
+
     function ResultViewModel() {
         var self = this;
 
@@ -745,7 +746,7 @@ function TradeViewModel(
 
         //to get graph of trade for isis plato
         self.trade_id.subscribe(
-            function (newValue) {
+            function(newValue) {
                 if (newValue > 0) {
                     var apiURL = baseUrl;
                     apiURL += "api/tradesplato/get/";
@@ -757,43 +758,52 @@ function TradeViewModel(
                         data: {
                             id: newValue, //id of Financial Instrument
                         },
-                        success: function (data) {
+                        success: function(data) {
                             var resultData = data;
                             console.log(resultData);
                             self.tradeGraph(resultData);
                         }
                     });
 
-                }
-                else {
+                } else {
                     //console.log("HERE 2");
                     return;
                 }
             });
 
 
-
-           self.postTradeData = function () {
-
+        self.postTradeData = function(httpverb) {
             console.log('Posting Trade to server to save.');
             //var apiURL = baseUrl;
             apiURL = self.endpoint();
             var postdata = self.tradeGraph();
             $.ajax({
-                type: 'POST',
+                type: httpverb,
                 url: apiURL,
-                dataType: "json",
+                dataType: "application/json",
                 crossDomain: true,
-                data: {
-                    postdata: postdata, 
+                data: postdata,
+                success: function(data) {
+                    console.log(data);
+                    self.results(data);
                 },
-                success: function (data) {
-                    console.log("RESULT: " + data[0]);
-                    self.results("RESULT: " + data[0]);
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest.responseText);
+                    self.results(XMLHttpRequest.responseText);
                 }
             });
         };
 
+        //self.getTradeData = function() {
+        //    console.log('Getting trade graph');
+        //    var apiURL = baseUrl;
+        //    apiURL += baseUrl + "/api/tradesplato/get/?id=" + self.trade_id;
+        //    //var postdata = self.tradeGraph();
+        //    $.getJSON(apiURL, function(data) {
+        //        self.results(data);
+        //    });
+
+        //};
     }
 
 }
