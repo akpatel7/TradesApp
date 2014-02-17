@@ -5,26 +5,29 @@
     ViewBag.Title = "Plato API Test";
 }
 
-<form role="form" class="form-horizontal" data-bind="submit: function () { postTradeToPlato(); }">
-<fieldset class="tgroup">
+<form role="form" class="form-horizontal" data-bind="submit: function () { $root.APItester.postTradeData(); }">
+    <fieldset class="tgroup">
         <legend class="trade_group_head"><strong>Plato API Test</strong></legend>
 
-    <div class="form-group">
-        <div class="control-label col-sm-3">
-            <label>Plato Endpoint URL:</label>
+        <div class="form-group">
+            <div class="control-label col-sm-3">
+                <label>Plato Endpoint URL:</label>
+            </div>
+            <div class="col-sm-9">
+                <input class="input-xlarge form-control" id="platoEndpoint" data-bind="text: $root.APItester.endpoint" type="text" />
+            </div>
         </div>
-        <div class="col-sm-9">
-            <input class="input-xlarge form-control" id="platoEndpoint" type="text" />
-        </div>
-    </div>
     
-    <p>
-        <button name="PostTradeToIsis" class="btn btn-info" type="submit">Post</button>
-    </p>
-    <p>
+        <p>
+            <button name="PostTradeToIsis" class="btn btn-info" type="submit">Post</button>
+        </p>
+      
+    </fieldset>
+</form>
+ <p>
         
         <label>Trade Graph:</label>
-     <pre data-bind='text: $root.APItester.tradeGraph()'></pre>
+     <pre data-bind='text: ko.toJSON($root.APItester.tradeGraph(), null, 2)'></pre>
 
 
         <label>Post Results:</label>
@@ -32,10 +35,6 @@
         <pre data-bind='text: $root.APItester.results()'></pre>
 
     </p>
-    
-    
-</fieldset>
-</form>
 <form role="form" class="form-horizontal" data-bind="submit: function () { saveTrade(); }">
     @Html.ValidationSummary(true)
     <fieldset class="tgroup">

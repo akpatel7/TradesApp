@@ -192,7 +192,7 @@ namespace TradesWebApplication.Api
             var status =
                    unitOfWork.StatusRepository.Get(
                        t => t.status_id == vm.status).SingleOrDefault();
-            var statusUri = "http://data.emii.com/status/";
+            var statusUri = @"http://data.emii.com/status/";
             statusUri += status != null ? status.status_label : String.Empty;
             summary.status.id = statusUri;
 
@@ -202,7 +202,7 @@ namespace TradesWebApplication.Api
             summary.canonicalLabel.value = vm.trade_label;
 
             //rights
-            summary.rights.id = "http://data.emii.com/business-groups/bca";
+            summary.rights.id = @"http://data.emii.com/business-groups/bca";
 
             //add tradelines to summary
             foreach( var g in vm.tradegroups )

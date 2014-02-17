@@ -758,7 +758,7 @@ function TradeViewModel(
                             id: newValue, //id of Financial Instrument
                         },
                         success: function (data) {
-                            var resultData = data[0];
+                            var resultData = data;
                             console.log(resultData);
                             self.tradeGraph(resultData);
                         }
@@ -773,14 +773,24 @@ function TradeViewModel(
 
 
 
-        self.postTradeData = function (baseApiUrl) {
+           self.postTradeData = function () {
 
             console.log('Posting Trade to server to save.');
             var apiURL = baseUrl;
-            apiURL += "api/platoTrade/get/" + self.trade_id + "?endpoint=";
-            $.getJSON('apiURL', function (data) {
-                console.log(data);
-                self.results(data);
+            apiURL += self.endpoint();
+            var postdata = self.tradeGraph();
+            $.ajax({
+                type: 'POST',
+                url: apiURL,
+                dataType: "json",
+                crossDomain: true,
+                data: {
+                    postdata: postdata, 
+                },
+                success: function (data) {
+                    console.log("RESULT: " + data);
+                    self.result("RESULT: " + data);
+                }
             });
         };
 
