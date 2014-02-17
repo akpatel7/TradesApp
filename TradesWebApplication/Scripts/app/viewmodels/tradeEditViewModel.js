@@ -776,8 +776,8 @@ function TradeViewModel(
            self.postTradeData = function () {
 
             console.log('Posting Trade to server to save.');
-            var apiURL = baseUrl;
-            apiURL += self.endpoint();
+            //var apiURL = baseUrl;
+            apiURL = self.endpoint();
             var postdata = self.tradeGraph();
             $.ajax({
                 type: 'POST',
@@ -788,8 +788,8 @@ function TradeViewModel(
                     postdata: postdata, 
                 },
                 success: function (data) {
-                    console.log("RESULT: " + data);
-                    self.result("RESULT: " + data);
+                    console.log("RESULT: " + data[0]);
+                    self.results("RESULT: " + data[0]);
                 }
             });
         };
