@@ -11,7 +11,7 @@ namespace TradesWebApplication.SemanticModels
         [JsonProperty("@id")] //trade id
         public string @id { get; set; }
 
-        [JsonProperty("@type")] public string @type = "http://data.emii.com/ontologies/bca/TradeRecommendation";
+        [JsonProperty("@type")] public string @type = @"http://data.emii.com/ontologies/bca/TradeRecommendation";
         //deletestatus
         [JsonProperty("http://data.emii.com/ontologies/bca/informedByView")]
         public GenericIdPlatoSemanticDTO informedByView { get; set; }
@@ -41,7 +41,9 @@ namespace TradesWebApplication.SemanticModels
 
         public PlatoTradeGraphSummary()
         {
-            informedByView = new GenericIdPlatoSemanticDTO();
+            informedByView = new GenericIdPlatoSemanticDTO(){ id = @"http://data.emii.com/ontologies/bca/informedByView" }
+
+    ;
             service = new GenericIdPlatoSemanticDTO();
             benchmark = new GenericIdPlatoSemanticDTO();
             canonicalLabel = new CanonicalLabelPlatoDTO();

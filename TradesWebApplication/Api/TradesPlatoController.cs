@@ -232,13 +232,13 @@ namespace TradesWebApplication.Api
             var service = 
                    unitOfWork.ServiceRepository.Get(
                        t => t.service_id == vm.service_id).SingleOrDefault();
-            summary.service.id = service != null ? service.service_uri : String.Empty;
+            summary.service.id = service != null ? service.service_uri : "";
            
             //benchmark
             var benchmark =
                    unitOfWork.BenchmarkRepository.Get(
                        t => t.benchmark_id == vm.benchmark_id).SingleOrDefault();
-            summary.benchmark.id = benchmark != null ? benchmark.benchmark_uri : String.Empty;
+            summary.benchmark.id = benchmark != null ? benchmark.benchmark_uri : "";
            
 
             //status
@@ -246,7 +246,12 @@ namespace TradesWebApplication.Api
                    unitOfWork.StatusRepository.Get(
                        t => t.status_id == vm.status).SingleOrDefault();
             var statusUri = @"http://data.emii.com/status/";
-            statusUri += status != null ? status.status_label : String.Empty;
+            if (status != null)
+            {
+                var statusDesc = status.status_label;
+                statusDesc = statusDesc.Replace(' ', '-');
+                statusUri += statusDesc;
+            }
             summary.status.id = statusUri;
 
             
@@ -271,7 +276,7 @@ namespace TradesWebApplication.Api
                 var groupType =
                        unitOfWork.TradeLineGroupTypeRepository.Get(
                            t => t.trade_line_group_type_id == g.trade_line_group_type_id).SingleOrDefault();
-                group.tradelineGroupType.id = groupType != null ? groupType.trade_line_group_type_uri : String.Empty;
+                group.tradelineGroupType.id = groupType != null ? groupType.trade_line_group_type_uri : "";
 
                 group.canonicalLabel.language = "en";
                 group.canonicalLabel.value = g.trade_line_group_label;
@@ -290,17 +295,20 @@ namespace TradesWebApplication.Api
                         type = @"http://data.emii.com/ontologies/bcatrading/TradeLine",
                     };
 
+                    //tradeline group
+                    line.tradeLineGroup.id = g.trade_line_group_uri;
+
                     //tradableThing
                     var tradableThing =
                            unitOfWork.TradableThingRepository.Get(
                                t => t.tradable_thing_id == l.tradable_thing_id).SingleOrDefault();
-                    line.onTradableThing.id = tradableThing != null ? tradableThing.tradable_thing_uri : String.Empty;
+                    line.onTradableThing.id = tradableThing != null ? tradableThing.tradable_thing_uri : "";
 
                     //position
                     var position =
                            unitOfWork.PositionRepository.Get(
                                t => t.position_id == l.position_id).SingleOrDefault();
-                    line.tradeLinePosition.id = position != null ? position.position_uri : String.Empty;
+                    line.tradeLinePosition.id = position != null ? position.position_uri : "";
                     
                     line.canonicalLabel.language = "en";
                     line.canonicalLabel.value = l.canonicalLabelPart;
