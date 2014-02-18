@@ -120,9 +120,95 @@ namespace TradesWebApplication.Api
         }
 
         // PUT api/<controller>/5
-        public HttpResponseMessage Put()
+        [HttpPut]
+        public object Put(string id, string endpoint)
         {
-            return new HttpResponseMessage(HttpStatusCode.NoContent);
+            if (ModelState.IsValid)
+            {
+                var vm = new TradesDTOViewModel();
+                var tradeId = int.Parse(id);
+                vm.trade_id = tradeId;
+                try
+                {
+                    vm = RetrieveTradeFromDb(tradeId);
+                }
+                catch (DataException ex)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                    {
+                        Content = new JsonContent(new
+                        {
+                            Success = false,
+                            Message = "Database Exception occured: " + ex.InnerException.ToString(),
+                            //return exception
+                            result = "Database Exception occured: " + ex.InnerException.ToString()
+                        })
+                    };
+                }
+
+                try
+                {
+                    var platoTradeDTO = ConvertTradeDTOtoPlatoTradeDTO(vm);
+                    var jsonObject = JsonConvert.SerializeObject(platoTradeDTO);
+
+                    var response = new RestClient
+                    {
+                        ContentType = "application/json+ld",
+                        EndPoint = endpoint,
+                        Method = HttpVerb.PUT,
+                        PostData = jsonObject
+                    };
+
+                    try
+                    {
+                        var Httpresponse = response.MakeRequest("");
+                        return Httpresponse;
+                    }
+                    catch (Exception ex)
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.NotAcceptable)
+                        {
+                            Content = new JsonContent(new
+                            {
+                                Success = false,
+                                Message = "Exception occured: " + ex.InnerException.ToString(),
+                                //return exception
+                                result = "Exception occured: " + ex.InnerException.ToString()
+                            })
+                        };
+                    }
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                    {
+                        Content = new JsonContent(new
+                        {
+                            Success = false,
+                            Message = "Json conversion exception occured: " + ex.InnerException.ToString(),
+                            //return exception
+                            result = "Json conversion exception occured: " + ex.InnerException.ToString()
+                        })
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                    {
+                        Content = new JsonContent(new
+                        {
+                            Success = false,
+                            Message = "Unknown exception occured: " + ex.InnerException.ToString(),
+                            //return exception
+                            result = "Unknown exception occured: " + ex.InnerException.ToString()
+                        })
+                    };
+                }
+
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+
         }
 
         // DELETE api/<controller>/5

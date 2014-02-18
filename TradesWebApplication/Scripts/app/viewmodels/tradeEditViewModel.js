@@ -794,6 +794,25 @@ function TradeViewModel(
             });
         };
 
+        self.makeRequestTradeData = function (httpVerb) {
+            console.log('Posting Trade to server to save.');
+            //var apiURL = baseUrl;
+            //apiURL += "api/tradesplato/put/?id=" + self.trade_id() + "?endpoint=" + self.endpoint();
+            var postdata = self.tradeGraph();
+            $.ajax({
+                type: httpVerb,
+                contentType: "application/json+ld; charset=utf-8",
+                dataType: "json",
+                url: self.endpoint(),
+                data: postdata,
+                success: function (data) {
+                    self.results(data);
+                },
+                error: function(xhr, err) {
+                    self.results("readyState: " + xhr.readyState + "\nstatus: " + xhr.status + "\nresponseText: " + xhr.responseText);
+                }                
+            });
+        };
         //self.getTradeData = function() {
         //    console.log('Getting trade graph');
         //    var apiURL = baseUrl;

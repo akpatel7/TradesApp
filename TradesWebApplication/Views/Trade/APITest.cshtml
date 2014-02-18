@@ -18,8 +18,10 @@
             </div>
         </div>
         <p>
-   @*         <button name="GetTradeToIsis" class="btn btn-info" data-bind="click: $root.APItester.getTradeData()">GET</button>*@
-            <button name="PutTradeToIsis" class="btn btn-info" data-bind="click: $root.APItester.postTradeData('PUT')">PUT</button>
+            <button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeRequestTradeData('GET')">GET</button>
+            <button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeRequestTradeData('PUT')">PUT</button>
+            <button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeRequestTradeData('POST')">POST</button>
+<button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeRequestTradeData('DELETE')">DELETE</button>
         </p>
       
     </fieldset>
@@ -30,9 +32,9 @@
      <pre data-bind='text: ko.toJSON($root.APItester.tradeGraph(), null, 2)'></pre>
 
 
-@*        <label>Post Results:</label>
+       <label>Post Results:</label>
 
-        <pre data-bind='text: $root.APItester.results()'></pre>*@
+        <pre data-bind='text: $root.APItester.results()'></pre>
 
     </p>
 <form role="form" class="form-horizontal" data-bind="submit: function () { saveTrade(); }">
