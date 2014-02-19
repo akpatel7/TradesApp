@@ -6,10 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using Newtonsoft.Json;
+using RestSharp;
 using TradesWebApplication.DAL;
 using TradesWebApplication.SemanticModels;
 using TradesWebApplication.ViewModels;
@@ -120,9 +123,14 @@ namespace TradesWebApplication.Api
         }
 
         // PUT api/<controller>/5
-        [HttpPut]
-        public object Put(string id, string endpoint)
+        [AcceptVerbs("GET")]
+        public object Put([FromUri(Name = "id")]string id, [FromUri(Name = "endpoint")]string endpoint = "")
         {
+            if (String.IsNullOrEmpty(endpoint))
+            {
+                endpoint = TradesAppSettings.Settings.IsisTradesEndpoint;
+            }
+
             if (ModelState.IsValid)
             {
                 var vm = new TradesDTOViewModel();
@@ -151,32 +159,36 @@ namespace TradesWebApplication.Api
                     var platoTradeDTO = ConvertTradeDTOtoPlatoTradeDTO(vm);
                     var jsonObject = JsonConvert.SerializeObject(platoTradeDTO);
 
-                    var response = new RestClient
-                    {
-                        ContentType = "application/json+ld",
-                        EndPoint = endpoint,
-                        Method = HttpVerb.PUT,
-                        PostData = jsonObject
-                    };
+                    var response =  SendTradeToIsis(jsonObject, endpoint);
 
-                    try
-                    {
-                        var Httpresponse = response.MakeRequest("");
-                        return Httpresponse;
-                    }
-                    catch (Exception ex)
-                    {
-                        return new HttpResponseMessage(HttpStatusCode.NotAcceptable)
-                        {
-                            Content = new JsonContent(new
-                            {
-                                Success = false,
-                                Message = "Exception occured: " + ex.InnerException.ToString(),
-                                //return exception
-                                result = "Exception occured: " + ex.InnerException.ToString()
-                            })
-                        };
-                    }
+                    return response.StatusDescription;
+
+                    //var response = new RestClient
+                    //{
+                    //    ContentType = "application/ld+json; charset=utf-8",
+                    //    EndPoint = TradesAppSettings.Settings.IsisTradeEndpoint,
+                    //    Method = HttpVerb.PUT,
+                    //    PostData = jsonObject
+                    //};
+
+                    //try
+                    //{
+                    //    var Httpresponse = response.MakeRequest("");
+                    //    return Httpresponse;
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    return new HttpResponseMessage(HttpStatusCode.NotAcceptable)
+                    //    {
+                    //        Content = new JsonContent(new
+                    //        {
+                    //            Success = false,
+                    //            Message = "Exception occured: " + ex.InnerException.ToString(),
+                    //            //return exception
+                    //            result = "Exception occured: " + ex.InnerException.ToString()
+                    //        })
+                    //    };
+                    //}
                 }
                 catch (Newtonsoft.Json.JsonException ex)
                 {
@@ -210,6 +222,7 @@ namespace TradesWebApplication.Api
             return new HttpResponseMessage(HttpStatusCode.InternalServerError);
 
         }
+
 
         // DELETE api/<controller>/5
         public void Delete(int id)
@@ -445,6 +458,83 @@ namespace TradesWebApplication.Api
 
             return viewModel;
         }
+
+        public IRestResponse SendTradeToIsis(object tradeGraph, string endpoint)
+        {
+            var client = new RestSharp.RestClient();
+            //client.BaseUrl = endpoint;
+            //client.Authenticator = new HttpBasicAuthenticator("username", "password");
+            var userId = User.Identity.Name;
+
+            var request = new RestRequest(endpoint, Method.PUT);
+            request.AddHeader("Content-Type", "application/ld+json; charset=utf-8");
+            request.AddHeader("consumer-id", TradesAppSettings.Settings.ConsumerId);
+            request.AddHeader("Authorization", GetAuthenticationHeader(userId, TradesAppSettings.Settings.SharedSecret));
+
+            request.AddBody(tradeGraph);
+
+            IRestResponse response = client.Execute(request);
+
+            return response;
+        }
+
+        private string GetAuthenticationHeader(string user_id, string secret_key)
+        {
+
+            //$version = "1";
+            var version = 1;
+            //$device_id = "0000";
+            var device_id = "device";
+            //$permissions = "3";
+            var permissions = "1";
+            //$expiry = mktime(0, 0, 0, 1, 1, 2015);
+            var expiry = mktime(2015, 1, 1);
+            //$random_str = rand_str(15);
+            //var random_str = rand_str(15);
+            var random_str = "A Random String";
+            var token = version + ":" + device_id + ":" + user_id + ":" +
+                permissions + ":" + expiry + ":" + random_str;
+            //$signature = (string)base64_encode(hash_hmac("sha256", $token, $CI->config->item('shared_secret'), TRUE));
+            var signature = (hash_hmac_256_base64(token, secret_key));
+            //$unsigned_token = utf8_encode($token . ":" . $signature);
+            var unsigned_token = token + ":" + signature;
+            Encoding encoding = Encoding.UTF8;
+            var tokenBytes = encoding.GetBytes(unsigned_token);
+            //$auth_token = base64_encode($unsigned_token);
+            var auth_token = Convert.ToBase64String(tokenBytes);
+            //// set the header
+            var auth_str = @"ISIS realm=""bcaresearch.com"" token=""" + auth_token + @"""";
+
+            return auth_str;
+        }
+
+        private string rand_str(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            var result = new string(
+                Enumerable.Repeat(chars, length)
+                          .Select(s => s[random.Next(s.Length)])
+                          .ToArray());
+            return result;
+        }
+
+        private string mktime(int year, int month, int day)
+        {
+            var unixTimestamp = (Int32)((new DateTime(year,month,day)).Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            return unixTimestamp.ToString();
+        }
+
+        private string hash_hmac_256_base64(string token, string key)
+        {
+            Encoding encoding = Encoding.UTF8;
+            var keyByte = encoding.GetBytes(key);
+            var hmac256 = new HMACSHA256(keyByte);
+            hmac256.ComputeHash(encoding.GetBytes(token));
+
+            return Convert.ToBase64String(hmac256.Hash);
+        }
+
     }
 }
 

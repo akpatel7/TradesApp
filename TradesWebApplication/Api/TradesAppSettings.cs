@@ -79,21 +79,30 @@ namespace TradesWebApplication.Api
             }
         }
 
-        [ConfigurationProperty("PlatoEndpoint", IsRequired = false)]
-        public string PlatoEndpoint
-        {
-            get
-            {
-                return this["PlatoEndpoint"] as string;
-            }
-        }
-
         [ConfigurationProperty("ConsumerId", IsRequired = false)]
         public string ConsumerId
         {
             get
             {
                 return this["ConsumerId"] as string;
+            }
+        }
+
+        [ConfigurationProperty("SharedSecret", IsRequired = false)]
+        public string SharedSecret
+        {
+            get
+            {
+                return this["SharedSecret"] as string;
+            }
+        }
+
+        [ConfigurationProperty("IsisTradesEndpoint", IsRequired = false)]
+        public string IsisTradesEndpoint
+        {
+            get
+            {
+                return this["IsisTradesEndpoint"] as string;
             }
         }
         
