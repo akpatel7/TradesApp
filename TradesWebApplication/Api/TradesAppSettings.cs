@@ -88,7 +88,14 @@ namespace TradesWebApplication.Api
             }
         }
 
-
+        [ConfigurationProperty("ConsumerId", IsRequired = false)]
+        public string ConsumerId
+        {
+            get
+            {
+                return this["ConsumerId"] as string;
+            }
+        }
         
     }
 }

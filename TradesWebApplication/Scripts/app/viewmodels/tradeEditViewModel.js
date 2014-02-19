@@ -771,29 +771,6 @@ function TradeViewModel(
                 }
             });
 
-
-        self.postTradeData = function(httpverb) {
-            console.log('Posting Trade to server to save.');
-            //var apiURL = baseUrl;
-            apiURL = self.endpoint();
-            var postdata = self.tradeGraph();
-            $.ajax({
-                type: httpverb,
-                url: apiURL,
-                dataType: "application/json",
-                crossDomain: true,
-                data: postdata,
-                success: function(data) {
-                    console.log(data);
-                    self.results(data);
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    console.log(XMLHttpRequest.responseText);
-                    self.results(XMLHttpRequest.responseText);
-                }
-            });
-        };
-
         self.makeRequestTradeData = function (httpVerb) {
             console.log('Posting Trade to server to save.');
             //var apiURL = baseUrl;
@@ -817,16 +794,7 @@ function TradeViewModel(
                 }                
             });
         };
-        //self.getTradeData = function() {
-        //    console.log('Getting trade graph');
-        //    var apiURL = baseUrl;
-        //    apiURL += baseUrl + "/api/tradesplato/get/?id=" + self.trade_id;
-        //    //var postdata = self.tradeGraph();
-        //    $.getJSON(apiURL, function(data) {
-        //        self.results(data);
-        //    });
-
-        //};
+     
     }
 
 }
