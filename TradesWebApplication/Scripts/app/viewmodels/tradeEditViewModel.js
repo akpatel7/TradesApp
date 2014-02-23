@@ -472,9 +472,13 @@ function TradeViewModel(
         self.tradegroups.push(newGroup);
     };
 
+    this.removedTradeGroups = [];
+
     this.removeGroup = function (item) {
         if (self.tradegroups().length > 1)
         {
+            item.CRUDMode = "delete";
+            self.removedTradeGroups.push(item);
             self.tradegroups.remove(item);
         }  
     };
