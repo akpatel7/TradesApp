@@ -506,7 +506,28 @@ namespace TradesWebApplication.Api
                     var tradeLineId = tradeLine.trade_line_id;
                    
                 }
+
+                //remove tradelines
+                foreach (var line in grp.removedTradeLines)
+                {
+                    unitOfWork.TradeLineRepository.Delete(line.trade_line_id);
+                    unitOfWork.Save();
+                }
                 
+            }
+
+            //remove tradegroups
+            foreach (var grp in vm.removedTradeGroups)
+            { 
+                //remove tradelines in groups to be removed
+                foreach (var line in grp.removedTradeLines)
+                {
+                    unitOfWork.TradeLineRepository.Delete(line.trade_line_id);
+                    unitOfWork.Save();
+                }
+
+                unitOfWork.TradeLineGroupRepository.Delete(grp.trade_line_group_id);
+                unitOfWork.Save();
             }
 
             // trade instructions
