@@ -564,7 +564,7 @@ namespace TradesWebApplication.Api
                 foreach (var grp in vm.removedTradeGroups)
                 {
                     //remove tradelines in groups to be removed
-                    foreach (var line in grp.removedTradeLines)
+                    foreach (var line in grp.tradeLines)
                     {
                         unitOfWork.TradeLineRepository.Delete(line.trade_line_id);
                         unitOfWork.Save();
