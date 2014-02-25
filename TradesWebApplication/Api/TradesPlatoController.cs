@@ -123,7 +123,7 @@ namespace TradesWebApplication.Api
         }
 
         // PUT api/<controller>/5
-        [AcceptVerbs("GET")]
+        [AcceptVerbs("PUT","GET")]
         public object Put([FromUri(Name = "id")]string id, [FromUri(Name = "endpoint")]string endpoint = "")
         {
             if (String.IsNullOrEmpty(endpoint))
@@ -131,8 +131,8 @@ namespace TradesWebApplication.Api
                 endpoint = TradesAppSettings.Settings.IsisTradesEndpoint;
             }
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid) removed because we retrieve from successful trades entires only
+
                 var vm = new TradesDTOViewModel();
                 var tradeId = int.Parse(id);
                 vm.trade_id = tradeId;
@@ -217,7 +217,7 @@ namespace TradesWebApplication.Api
                     };
                 }
 
-            }
+       
 
             return new HttpResponseMessage(HttpStatusCode.InternalServerError);
 
@@ -467,11 +467,14 @@ namespace TradesWebApplication.Api
             var userId = User.Identity.Name;
 
             var request = new RestRequest(endpoint, Method.PUT);
-            request.AddHeader("Content-Type", "application/ld+json; charset=utf-8");
+            request.AddParameter("Content-Type", "application/ld+json; charset=utf-8");
+            //request.AddHeader("Content-Type", "application/ld+json; charset=utf-8");
             request.AddHeader("consumer-id", TradesAppSettings.Settings.ConsumerId);
             request.AddHeader("Authorization", GetAuthenticationHeader(userId, TradesAppSettings.Settings.SharedSecret));
-
-            request.AddBody(tradeGraph);
+            request.AddHeader("Accept", "application/ld+json"); 
+            //request.RequestFormat = DataFormat.Json;
+            //request.AddBody(tradeGraph);
+            request.AddObject(tradeGraph, "Body");
 
             IRestResponse response = client.Execute(request);
 
@@ -486,7 +489,7 @@ namespace TradesWebApplication.Api
             //$device_id = "0000";
             var device_id = "device";
             //$permissions = "3";
-            var permissions = "1";
+            var permissions = "3";
             //$expiry = mktime(0, 0, 0, 1, 1, 2015);
             var expiry = mktime(2015, 1, 1);
             //$random_str = rand_str(15);
@@ -498,15 +501,16 @@ namespace TradesWebApplication.Api
             var signature = (hash_hmac_256_base64(token, secret_key));
             //$unsigned_token = utf8_encode($token . ":" . $signature);
             var unsigned_token = token + ":" + signature;
-            Encoding encoding = Encoding.UTF8;
-            var tokenBytes = encoding.GetBytes(unsigned_token);
-            //$auth_token = base64_encode($unsigned_token);
-            var auth_token = Convert.ToBase64String(tokenBytes);
+            byte[] encbuff = System.Text.Encoding.UTF8.GetBytes(unsigned_token);
+            //var auth_token = System.Convert.ToBase64String(toEncodeAsBytes);
+            string auth_token = Convert.ToBase64String(encbuff);
+           
             //// set the header
             var auth_str = @"ISIS realm=""bcaresearch.com"" token=""" + auth_token + @"""";
 
             return auth_str;
         }
+
 
         private string rand_str(int length)
         {

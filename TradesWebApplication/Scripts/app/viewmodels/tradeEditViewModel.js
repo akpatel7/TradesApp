@@ -773,18 +773,18 @@ function TradeViewModel(
 
         self.makeRequestTradeData = function (httpVerb) {
             console.log('Posting Trade to server to save.');
-            //var apiURL = baseUrl;
-            //apiURL += "api/tradesplato/put/?id=" + self.trade_id() + "?endpoint=" + self.endpoint();
+            var apiURL = baseUrl;
+            apiURL += "api/tradesplato/put/?id=" + self.trade_id() + "&endpoint=" + self.endpoint();
             var postdata = self.tradeGraph();
             $.ajax({
                 type: httpVerb,
-                contentType: "application/ld+json; charset=utf-8",
-                dataType: "json",
-                url: self.endpoint(),
-                headers: {
-                    'consumer-id': 'j88pr5785typ',
-                    'Authorization': 'ISIS realm="bcaresearch.com" token="MTpkZXZpY2U6YW1pdHA6MzoxNDUxNjA2NDAwOkEgUmFuZG9tIFN0cmluZzp1UnYyQkhBZnAzQkVnam5jcTA4MW82S25rQWhCYVczOEpZdmtZS1psV0FzPQ=="'
-                },
+                //contentType: "application/ld+json; charset=utf-8",
+                //dataType: "json",
+                url: apiURL,
+                //headers: {
+                //    'consumer-id': 'j88pr5785typ',
+                //    'Authorization': 'ISIS realm="bcaresearch.com" token="MTpkZXZpY2U6YW1pdHA6MzoxNDUxNjA2NDAwOkEgUmFuZG9tIFN0cmluZzp1UnYyQkhBZnAzQkVnam5jcTA4MW82S25rQWhCYVczOEpZdmtZS1psV0FzPQ=="'
+                //},
                 data: postdata,
                 success: function (data) {
                     self.results(data);
