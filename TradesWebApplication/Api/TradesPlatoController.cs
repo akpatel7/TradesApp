@@ -632,7 +632,7 @@ namespace TradesWebApplication.Api
                 var client = new RestSharp.RestClient();
                 var userId = User.Identity.Name;
 
-                var request = new RestRequest(endpoint, Method.PUT);
+                var request = new RestRequest(statusURL, Method.PUT);
 
                 request.AddHeader("Accept", "application/ld+json");
                 request.Parameters.Clear();

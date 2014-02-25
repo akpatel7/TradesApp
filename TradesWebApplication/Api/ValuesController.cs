@@ -545,29 +545,36 @@ namespace TradesWebApplication.Api
 
                 }
 
-                //remove tradelines
-                foreach (var line in grp.removedTradeLines)
+                if (grp.removedTradeLines != null)
                 {
-                    unitOfWork.TradeLineRepository.Delete(line.trade_line_id);
-                    unitOfWork.Save();
+                    //remove tradelines
+                    foreach (var line in grp.removedTradeLines)
+                    {
+                        unitOfWork.TradeLineRepository.Delete(line.trade_line_id);
+                        unitOfWork.Save();
+                    }
                 }
+            
                 
             }
 
             //remove tradegroups
-            foreach (var grp in vm.removedTradeGroups)
-            { 
-                //remove tradelines in groups to be removed
-                foreach (var line in grp.removedTradeLines)
+            if (vm.removedTradeGroups != null)
+            {
+                foreach (var grp in vm.removedTradeGroups)
                 {
-                    unitOfWork.TradeLineRepository.Delete(line.trade_line_id);
+                    //remove tradelines in groups to be removed
+                    foreach (var line in grp.removedTradeLines)
+                    {
+                        unitOfWork.TradeLineRepository.Delete(line.trade_line_id);
+                        unitOfWork.Save();
+                    }
+
+                    unitOfWork.TradeLineGroupRepository.Delete(grp.trade_line_group_id);
                     unitOfWork.Save();
                 }
-
-                unitOfWork.TradeLineGroupRepository.Delete(grp.trade_line_group_id);
-                unitOfWork.Save();
             }
-
+            
             // trade instructions
             if (isNewTrade)
             {
@@ -746,7 +753,7 @@ namespace TradesWebApplication.Api
             ctr.PushToPlato(tradeId);
 
             //resource status call
-            if (statusChanged && !isNewTrade)
+            if (statusChanged)
             {
                 //set publication status
                 ctr.PushStatusToPlato(trade.trade_uri, (int)trade.status);
