@@ -29,7 +29,7 @@
  <p>
         
         <label>Trade Graph:</label>
-     <pre data-bind='text: ko.toJSON($root.APItester.tradeGraph(), null, 2)'></pre>
+     <pre data-bind='text: $root.APItester.tradeGraph()'></pre>
 
 
        <label>Post Results:</label>
@@ -455,7 +455,7 @@
                         var apiURL = baseUrl;
                         apiURL += "api/platoTrade/get/";
                         $.ajax({
-                            type: 'POST',
+                            type: 'GET',
                             url: apiURL,
                             dataType: "json",
                             crossDomain: true,

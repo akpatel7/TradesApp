@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
 using TradesWebApplication.DAL;
@@ -61,16 +62,12 @@ namespace TradesWebApplication.Api
                     var platoTradeDTO = ConvertTradeDTOtoPlatoTradeDTO(vm);
                     var jsonObject = JsonConvert.SerializeObject(platoTradeDTO);
 
-                    return jsonObject;
+                    //return jsonObject;
+                    
 
                     return new HttpResponseMessage(HttpStatusCode.OK)
                     {
-                        Content = new JsonContent(new
-                        {
-                            Success = true, //error
-                            Message = "Success", //return exception
-                            Data = jsonObject
-                        })
+                        Content = new JsonContent(jsonObject)
                     };
 
 
@@ -123,7 +120,7 @@ namespace TradesWebApplication.Api
         }
 
         // PUT api/<controller>/5
-        [AcceptVerbs("PUT","GET")]
+        [System.Web.Http.AcceptVerbs("PUT","GET")]
         public object Put([FromUri(Name = "id")]string id, [FromUri(Name = "endpoint")]string endpoint = "")
         {
             if (String.IsNullOrEmpty(endpoint))
@@ -161,7 +158,7 @@ namespace TradesWebApplication.Api
 
                     var response =  SendTradeToIsis(jsonObject, endpoint);
 
-                    return response.StatusDescription;
+                    return String.Format("Status Code: {0}\nResponse: {1}\nContent-Length: {2}\nBody: {3}", response.StatusCode, response.StatusDescription, response.ContentLength, response.Content);
 
                     //var response = new RestClient
                     //{
