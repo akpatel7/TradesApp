@@ -467,14 +467,17 @@ namespace TradesWebApplication.Api
             var userId = User.Identity.Name;
 
             var request = new RestRequest(endpoint, Method.PUT);
-            request.AddParameter("Content-Type", "application/ld+json; charset=utf-8");
+            
+            request.AddHeader("Accept", "application/ld+json");
+            request.Parameters.Clear();
+            request.AddHeader("Content-Type", "application/ld+json; charset=utf-8");
             //request.AddHeader("Content-Type", "application/ld+json; charset=utf-8");
             request.AddHeader("consumer-id", TradesAppSettings.Settings.ConsumerId);
             request.AddHeader("Authorization", GetAuthenticationHeader(userId, TradesAppSettings.Settings.SharedSecret));
-            request.AddHeader("Accept", "application/ld+json"); 
+            
             //request.RequestFormat = DataFormat.Json;
             //request.AddBody(tradeGraph);
-            request.AddObject(tradeGraph, "Body");
+            request.AddParameter("application/ld+json", tradeGraph, ParameterType.RequestBody);
 
             IRestResponse response = client.Execute(request);
 
