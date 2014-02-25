@@ -105,6 +105,15 @@ namespace TradesWebApplication.Api
                 return this["IsisTradesEndpoint"] as string;
             }
         }
+
+        [ConfigurationProperty("IsisTradesStatusEndpoint", IsRequired = false)]
+        public string IsisTradesStatusEndpoint
+        {
+            get
+            {
+                return this["IsisTradesStatusEndpoint"] as string;
+            }
+        }
         
     }
 }

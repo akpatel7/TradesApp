@@ -26,9 +26,26 @@ namespace TradesWebApplication.Api
         private TradesAppSettings tradesConfig = TradesAppSettings.Settings;
 
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        public object GetFromIsis([FromUri(Name = "endpoint")]string endpoint = "")
         {
-            return new string[] { "value1", "value2" };
+            var client = new RestSharp.RestClient();
+            //client.BaseUrl = endpoint;
+            //client.Authenticator = new HttpBasicAuthenticator("username", "password");
+            var userId = User.Identity.Name;
+
+            var request = new RestRequest(endpoint, Method.GET);
+
+            request.AddHeader("Accept", "application/ld+json");
+            request.Parameters.Clear();
+            request.AddHeader("Content-Type", "application/ld+json; charset=utf-8");
+            //request.AddHeader("Content-Type", "application/ld+json; charset=utf-8");
+            request.AddHeader("consumer-id", TradesAppSettings.Settings.ConsumerId);
+            request.AddHeader("Authorization", GetAuthenticationHeader(userId, TradesAppSettings.Settings.SharedSecret));
+
+            IRestResponse response = client.Execute(request);
+
+            return String.Format("Status Code: {0}\nResponse: {1}\nContent-Length: {2}\nBody: {3}", response.StatusCode, response.StatusDescription, response.ContentLength, response.Content);
+
         }
 
         // GET api/<controller>/5
@@ -537,6 +554,105 @@ namespace TradesWebApplication.Api
             hmac256.ComputeHash(encoding.GetBytes(token));
 
             return Convert.ToBase64String(hmac256.Hash);
+        }
+
+        public void PushToPlato(int tradeId, string endpoint = "")
+        {
+            if (String.IsNullOrEmpty(endpoint))
+            {
+                endpoint = TradesAppSettings.Settings.IsisTradesEndpoint;
+            }
+
+            //if (ModelState.IsValid) removed because we retrieve from successful trades entires only
+
+            var vm = new TradesDTOViewModel();
+            vm.trade_id = tradeId;
+            try
+            {
+                vm = RetrieveTradeFromDb(tradeId);
+            }
+            catch (DataException ex)
+            {
+                //log ex;
+                throw ex;
+            }
+
+            try
+            {
+                var platoTradeDTO = ConvertTradeDTOtoPlatoTradeDTO(vm);
+                var jsonObject = JsonConvert.SerializeObject(platoTradeDTO);
+
+                var response = SendTradeToIsis(jsonObject, endpoint);
+
+                //log error if responseStatus is not no content
+                String.Format("Status Code: {0}\nResponse: {1}\nContent-Length: {2}\nBody: {3}",
+                              response.StatusCode, response.StatusDescription, response.ContentLength,
+                              response.Content);
+            }
+            catch (Exception ex)
+            {
+                //log ex;
+                throw ex;
+            }
+        }
+
+        public void PushStatusToPlato(string tradeUri, int status, string endpoint = "")
+        {
+            if (String.IsNullOrEmpty(endpoint))
+            {
+                endpoint = TradesAppSettings.Settings.IsisTradesStatusEndpoint;
+            }
+
+            var statusURL = endpoint + "?uri=" + tradeUri;
+
+            switch (status)
+            {
+                case 1:
+                    statusURL += "&status=http://data.emii.com/status/unpublished";
+                    break;
+
+                case 2:
+                    statusURL += "&status=http://data.emii.com/status/ready-for-publish";
+                    break;
+
+                case 3:
+                    statusURL += "&status=http://data.emii.com/status/published";
+                    break;
+
+                case 4:
+                    statusURL += "&status=http://data.emii.com/status/deleted";
+                    break;
+
+                default:
+                    break;
+            }
+
+            try
+            {
+                var client = new RestSharp.RestClient();
+                var userId = User.Identity.Name;
+
+                var request = new RestRequest(endpoint, Method.PUT);
+
+                request.AddHeader("Accept", "application/ld+json");
+                request.Parameters.Clear();
+                request.AddHeader("Content-Type", "application/ld+json; charset=utf-8");
+                request.AddHeader("consumer-id", TradesAppSettings.Settings.ConsumerId);
+                request.AddHeader("Authorization", GetAuthenticationHeader(userId, TradesAppSettings.Settings.SharedSecret));
+
+
+                IRestResponse response = client.Execute(request);
+
+                //log error if responseStatus is not no content
+                String.Format("Status Code: {0}\nResponse: {1}\nContent-Length: {2}\nBody: {3}",
+                              response.StatusCode, response.StatusDescription, response.ContentLength,
+                              response.Content);
+            }
+            catch (Exception ex)
+            {
+                //log ex;
+                throw ex;
+            }
         }
 
     }

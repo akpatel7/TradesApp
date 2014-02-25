@@ -2,7 +2,7 @@
 @using Newtonsoft.Json
 @using TradesWebApplication.DAL.EFModels
 @{
-    ViewBag.Title = "Plato API Test";
+    ViewBag.Title = "ISIS API Test";
 }
 
 
@@ -11,17 +11,17 @@
 
         <div class="form-group">
             <div class="control-label col-sm-3">
-                <label>Plato Endpoint URL:</label>
+                <label>Endpoint URL:</label>
             </div>
             <div class="col-sm-9">
                 <input class="input-xlarge form-control" id="platoEndpoint" data-bind="value: $root.APItester.endpoint" type="text" />
             </div>
         </div>
         <p>
-            <button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeRequestTradeData('GET')">GET</button>
+            @*<button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeGetRequestTradeData('GET')">GET</button>*@
             <button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeRequestTradeData('PUT')">PUT</button>
-            <button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeRequestTradeData('POST')">POST</button>
-<button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeRequestTradeData('DELETE')">DELETE</button>
+           @* <button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeRequestTradeData('POST')">POST</button>
+<button name="PutTradeToIsis" class="btn btn-info" onclick="vm.APItester.makeRequestTradeData('DELETE')">DELETE</button>*@
         </p>
       
     </fieldset>
@@ -479,9 +479,8 @@
             
 
 
-            self.postTradeData = function(baseApiUrl) {
+            self.postTradeData = function(httpVerb) {
 
-                console.log('Posting Trade to server to save.');
                 var apiURL = baseUrl;
                 apiURL += "api/platoTrade/get/" + self.trade_id + "?endpoint=";
                 $.getJSON('apiURL', function(data) {

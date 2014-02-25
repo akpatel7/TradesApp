@@ -794,6 +794,30 @@ function TradeViewModel(
                 }                
             });
         };
+        
+        self.makeGetRequestTradeData = function (httpVerb) {
+            console.log('Getting Trade from server.');
+            var apiURL = baseUrl;
+            apiURL += "api/tradesplato/GetFromIsis/?endpoint=" + self.endpoint();
+            var postdata = self.tradeGraph();
+            $.ajax({
+                type: httpVerb,
+                //contentType: "application/ld+json; charset=utf-8",
+                //dataType: "json",
+                url: apiURL,
+                //headers: {
+                //    'consumer-id': 'j88pr5785typ',
+                //    'Authorization': 'ISIS realm="bcaresearch.com" token="MTpkZXZpY2U6YW1pdHA6MzoxNDUxNjA2NDAwOkEgUmFuZG9tIFN0cmluZzp1UnYyQkhBZnAzQkVnam5jcTA4MW82S25rQWhCYVczOEpZdmtZS1psV0FzPQ=="'
+                //},
+                //data: postdata,
+                success: function (data) {
+                    self.results(data);
+                },
+                error: function (xhr, err) {
+                    self.results("readyState: " + xhr.readyState + "\nstatus: " + xhr.status + "\nresponseText: " + xhr.responseText);
+                }
+            });
+        };
      
     }
 

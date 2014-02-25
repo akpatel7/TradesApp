@@ -346,11 +346,12 @@ namespace TradesWebApplication.Api
             bool isNewTrade = true;
             Trade trade = new Trade();
             if (!String.IsNullOrEmpty(vm.CRUDMode) && vm.CRUDMode == "edit")
-            { //edit mode
+            {
+                //edit mode
                 isNewTrade = false;
                 trade = unitOfWork.TradeRepository.Get(vm.trade_id);
             }
-            
+
             trade.service_id = vm.service_id;
             trade.length_type_id = vm.length_type_id;
             trade.relativity_id = vm.relativity_id;
@@ -361,52 +362,59 @@ namespace TradesWebApplication.Api
                 {
                     trade.benchmark_id = vm.benchmark_id;
                 }
-                
+
             }
-            
+
             //TODO: Verify if db was changed to varmax
-            if (!String.IsNullOrEmpty(vm.trade_label) )
+            if (!String.IsNullOrEmpty(vm.trade_label))
             {
-               if( vm.trade_label.Length > 255 )
-               {
+                if (vm.trade_label.Length > 255)
+                {
                     trade.trade_label = vm.trade_label.Substring(0, 255);
-               }
-               else
-               {
+                }
+                else
+                {
                     trade.trade_label = vm.trade_label;
-               }
+                }
             }
-            
-            
+
+
             //TODO: Verify if db was changed to varmax
-            if (!String.IsNullOrEmpty(vm.trade_editorial_label) )
+            if (!String.IsNullOrEmpty(vm.trade_editorial_label))
             {
                 if (vm.trade_editorial_label.Length > 255)
                 {
                     trade.trade_editorial_label = vm.trade_editorial_label.Substring(0, 255);
                 }
-                else 
+                else
                 {
                     trade.trade_editorial_label = vm.trade_editorial_label;
                 }
-            } 
-        
+            }
+
             trade.structure_type_id = vm.structure_type_id;
             trade.currency_id = vm.currency_id;
             //TODO: createdby
             trade.created_by = 0;
+            bool statusChanged = false;
             //STATUS Always Visible on create
             if (vm.status.HasValue)
             {
-                trade.status = vm.status; //1 is Unpublished, 2: Ready For publish, 3: Published, 4: Deleted
+                if (trade.status != vm.status)
+                {
+                    trade.status = vm.status; //1 is Unpublished, 2: Ready For publish, 3: Published, 4: Deleted
+                    statusChanged = true;
+                }
             }
             else
             {
                 trade.status = 1;
+                statusChanged = true;
             }
             if (isNewTrade)
             {
-                trade.trade_uri = tradesConfig.TradeSemanticURIPrefix + getFlakeID() + tradesConfig.TradeSemanticURISuffix;
+                trade.trade_uri = tradesConfig.TradeSemanticURIPrefix + getFlakeID() +
+                                  tradesConfig.TradeSemanticURISuffix;
                 unitOfWork.TradeRepository.InsertTrade(trade);
             }
 
@@ -416,7 +424,7 @@ namespace TradesWebApplication.Api
                 trade.created_by = 0;
                 trade.created_on = trade.last_updated = DateTime.Now;
             }
-            else 
+            else
             {
                 trade.last_updated = DateTime.Now;
             }
@@ -434,7 +442,8 @@ namespace TradesWebApplication.Api
                 bool isNewGroup = true;
                 var lineGroup = new Trade_Line_Group();
                 if (!String.IsNullOrEmpty(grp.CRUDMode) && grp.CRUDMode == "edit")
-                { //edit mode
+                {
+                    //edit mode
                     isNewGroup = false;
                     lineGroup = unitOfWork.TradeLineGroupRepository.GetByID(grp.trade_line_group_id);
                 }
@@ -457,7 +466,8 @@ namespace TradesWebApplication.Api
                 {
                     if (grp.trade_line_group_editorial_label.Length > 255)
                     {
-                        lineGroup.trade_line_group_editorial_label = grp.trade_line_group_editorial_label.Substring(0, 255);
+                        lineGroup.trade_line_group_editorial_label = grp.trade_line_group_editorial_label.Substring(0,
+                                                                                                                    255);
                     }
                     else
                     {
@@ -467,21 +477,23 @@ namespace TradesWebApplication.Api
 
                 if (isNewGroup)
                 {
-                    lineGroup.trade_line_group_uri = tradesConfig.TradeLineGroupSemanticURIPrefix + getFlakeID() + tradesConfig.TradeLineGroupSemanticURISuffix;
+                    lineGroup.trade_line_group_uri = tradesConfig.TradeLineGroupSemanticURIPrefix + getFlakeID() +
+                                                     tradesConfig.TradeLineGroupSemanticURISuffix;
                     unitOfWork.TradeLineGroupRepository.Insert(lineGroup);
                 }
                 unitOfWork.Save();
                 var grpId = lineGroup.trade_line_group_id;
-              
+
                 //Add tradelines
                 foreach (var line in grp.tradeLines)
                 {
-                    
+
                     //Create Trade
                     bool isNewLine = true;
                     var tradeLine = new Trade_Line();
                     if (!String.IsNullOrEmpty(line.CRUDMode) && line.CRUDMode == "edit")
-                    { //edit mode
+                    {
+                        //edit mode
                         isNewLine = false;
                         tradeLine = unitOfWork.TradeLineRepository.GetByID(line.trade_line_id);
                     }
@@ -519,31 +531,32 @@ namespace TradesWebApplication.Api
                     //TODO: createdby
                     if (isNewLine)
                     {
-                        tradeLine.trade_line_uri = tradesConfig.TradeLineSemanticURIPrefix + getFlakeID() + tradesConfig.TradeLineGroupSemanticURISuffix;
+                        tradeLine.trade_line_uri = tradesConfig.TradeLineSemanticURIPrefix + getFlakeID() +
+                                                   tradesConfig.TradeLineGroupSemanticURISuffix;
                         tradeLine.created_on = tradeLine.last_updated = DateTime.Now;
                         unitOfWork.TradeLineRepository.Insert(tradeLine);
                     }
-                    else 
+                    else
                     {
                         tradeLine.last_updated = DateTime.Now;
                     }
                     unitOfWork.Save();
                     var tradeLineId = tradeLine.trade_line_id;
-                   
+
                 }
-                
+
             }
 
             // trade instructions
             if (isNewTrade)
             {
                 var tradeInstruction = new Trade_Instruction
-                {
-                    trade_id = tradeId,
-                    instruction_entry = vm.instruction_entry,
-                    instruction_entry_date = DateTime.Parse(vm.instruction_entry_date),
-                    instruction_exit = vm.instruction_exit
-                };
+                    {
+                        trade_id = tradeId,
+                        instruction_entry = vm.instruction_entry,
+                        instruction_entry_date = DateTime.Parse(vm.instruction_entry_date),
+                        instruction_exit = vm.instruction_exit
+                    };
                 if (!String.IsNullOrEmpty(vm.instruction_exit_date))
                 {
                     tradeInstruction.instruction_exit_date = DateTime.Parse(vm.instruction_exit_date);
@@ -554,7 +567,7 @@ namespace TradesWebApplication.Api
                 tradeInstruction.created_on = tradeInstruction.last_updated = DateTime.Now;
                 unitOfWork.TradeInstructionRepository.Insert(tradeInstruction);
             }
-           
+
 
             // related trades
             if (vm.related_trade_ids != null)
@@ -567,7 +580,8 @@ namespace TradesWebApplication.Api
                     relatedTrade.related_trade_id = i;
 
                     var relatedTrades = new List<Related_Trade>();
-                    relatedTrades = unitOfWork.RelatedTradeRepository.GetAll().Where(r => r.trade_id == tradeId).ToList();
+                    relatedTrades =
+                        unitOfWork.RelatedTradeRepository.GetAll().Where(r => r.trade_id == tradeId).ToList();
                     relationExists = relatedTrades.Exists(r => r.related_trade_id == i);
 
                     if (!relationExists)
@@ -576,7 +590,7 @@ namespace TradesWebApplication.Api
                         //TODO: created by
                         unitOfWork.RelatedTradeRepository.Insert(relatedTrade);
                     }
-                    
+
                 }
             }
 
@@ -590,11 +604,11 @@ namespace TradesWebApplication.Api
                 if (!String.IsNullOrEmpty(vm.mark_to_mark_rate))
                 {
                     var markTR = new Track_Record
-                    {
-                        trade_id = tradeId,
-                        track_record_type_id = 1,
-                        track_record_value = decimal.Parse(vm.mark_to_mark_rate)
-                    };
+                        {
+                            trade_id = tradeId,
+                            track_record_type_id = 1,
+                            track_record_value = decimal.Parse(vm.mark_to_mark_rate)
+                        };
                     //TODO: NO field exists!! interestTR.created_on = 
                     markTR.last_updated = DateTime.Now;
                     unitOfWork.TrackRecordRepository.Insert(markTR);
@@ -604,11 +618,11 @@ namespace TradesWebApplication.Api
                 if (!String.IsNullOrEmpty(vm.interest_rate_diff))
                 {
                     var interestTR = new Track_Record
-                    {
-                        trade_id = tradeId,
-                        track_record_type_id = 2,
-                        track_record_value = decimal.Parse(vm.interest_rate_diff)
-                    };
+                        {
+                            trade_id = tradeId,
+                            track_record_type_id = 2,
+                            track_record_value = decimal.Parse(vm.interest_rate_diff)
+                        };
                     //TODO: NO field exists!! interestTR.created_on = 
                     interestTR.last_updated = DateTime.Now;
                     unitOfWork.TrackRecordRepository.Insert(interestTR);
@@ -620,7 +634,7 @@ namespace TradesWebApplication.Api
                 {
                     var absPerformance = new Trade_Performance();
                     absPerformance.trade_id = tradeId;
-                    var abs_measure_type_id = (int)abs_measure_id;
+                    var abs_measure_type_id = (int) abs_measure_id;
                     absPerformance.measure_type_id = abs_measure_type_id;
                     if (abs_measure_type_id == 2)
                     {
@@ -642,7 +656,7 @@ namespace TradesWebApplication.Api
                 {
                     var relPerformance = new Trade_Performance();
                     relPerformance.trade_id = tradeId;
-                    var rel_measure_type_id = (int)rel_measure_id;
+                    var rel_measure_type_id = (int) rel_measure_id;
                     relPerformance.measure_type_id = rel_measure_type_id;
                     if (rel_measure_type_id == 2)
                     {
@@ -679,10 +693,10 @@ namespace TradesWebApplication.Api
                         vm.comments = vm.comments.Substring(0, 255);
                     }
                     var comment = new Trade_Comment
-                    {
-                        trade_id = tradeId,
-                        comment_label = vm.comments,
-                    };
+                        {
+                            trade_id = tradeId,
+                            comment_label = vm.comments,
+                        };
                     comment.created_on = comment.last_updated = DateTime.Now;
                     unitOfWork.TradeCommentRepository.Insert(comment);
                 }
@@ -706,7 +720,18 @@ namespace TradesWebApplication.Api
             }
 
             unitOfWork.Save();
-           
+
+            var ctr = new TradesPlatoController();
+            ctr.PushToPlato(tradeId);
+
+            //resource status call
+            if (statusChanged && !isNewTrade)
+            {
+                //set publication status
+                ctr.PushStatusToPlato(trade.trade_uri, (int)trade.status);
+            }
+
+
         }
 
         // PUT api/<controller>/5
