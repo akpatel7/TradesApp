@@ -532,7 +532,36 @@
 </div>
 </script>
 
+<script type="text/html" id="AddMarkToMarketRate">     
+<div class="modal fade" id="AddMarkToMarketRate">
+    <div class="modal-dialog">
+             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true" data-bind="click: cancel">&times;</button>
+                    <h3>Update Mark to Market Rate</h3>
+                </div>
+                <div class="modal-body">
+                    <form action="#" data-bind="submit: add">
+                        <div class="control-group">
+                            <label class="control-label">Mark to Market Rate:</label>
+                            <div class="controls">
+                                <input type="text" data-bind="value: text"></input>
+                                <span class="validationMessage" data-bind="validationMessage: text"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-bind="click: add">Save</button>
+                    <button type="button" class="btn" data-bind="click: cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+</div>
+</script>
 <script src="~/Scripts/app/viewmodels/tradeEditViewModel.js"></script>
+<script src="~/Scripts/app/viewmodels/commentEditViewModel.js"></script>
+<script src="~/Scripts/app/viewmodels/markRateEditViewModel.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         window.onbeforeunload = function () {

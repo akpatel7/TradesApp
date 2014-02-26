@@ -196,6 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\Comments.cs" />
+    <Compile Include="Api\MarkToMarketRate.cs" />
     <Compile Include="Api\RestClient.cs" />
     <Compile Include="Api\TradesAppSettings.cs" />
     <Compile Include="Api\TradesPlatoController.cs" />
@@ -752,6 +753,10 @@
     <Content Include="Images\orderedList9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\app\viewmodels\commentEditViewModel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\app\viewmodels\markRateEditViewModel.js" />
     <Content Include="Scripts\app\viewmodels\tradeEditViewModel.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
