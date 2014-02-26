@@ -508,6 +508,7 @@
     <Content Include="Content\jquery.ui.1.10.0.ie.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\KoGrid.css" />
     <Content Include="Content\moment-datepicker\datepicke_r.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -853,6 +854,8 @@
     <Content Include="Scripts\knockout.validation.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\koGrid-2.1.1.debug.js" />
+    <Content Include="Scripts\koGrid-2.1.1.js" />
     <Content Include="Scripts\modernizr-2.6.2.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

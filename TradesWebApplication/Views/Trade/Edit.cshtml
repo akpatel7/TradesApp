@@ -336,8 +336,9 @@
 
                 <div class="col-sm-3">
                     <input type="text" data-bind="value: mark_to_mark_rate" disabled="disabled"/>
-<span class="validationMessage" data-bind="validationMessage: mark_to_mark_rate"></span>  
+                    <span class="validationMessage" data-bind="validationMessage: mark_to_mark_rate"></span>  
                 </div>
+               
             </div>
             <div class="form-group">
                 <div class="control-label col-sm-3">
@@ -345,9 +346,21 @@
                 </div>
                 <div class="col-sm-3">
                     <input type="text" data-bind="value: interest_rate_diff" disabled="disabled"/>
-<span class="validationMessage" data-bind="validationMessage: interest_rate_diff"></span> 
+                    <span class="validationMessage" data-bind="validationMessage: interest_rate_diff"></span> 
                 </div>
+               
             </div>
+ <div class="pull-right">
+            <button id="addMarkToMarketRate" type="button" class="btn btn-sm btn-info"
+                                                onclick="vm.addMarkToMarketRate()">
+                                            Update Mark To Market Rate</button>
+                                        
+                    <button id="addInterestRate" type="button" class="btn btn-sm btn-info"
+                            onclick="vm.addInterestRate()">
+                        Update Interest Rate Differential</button>
+                </div>
+                                    
+                                   
         </fieldset>
 
         <!-- Abs performance ------------------------------------- -->
@@ -366,9 +379,18 @@
                 </div>
                 <div class="col-sm-3">
                     <input type="text" data-bind="value: abs_return_value" disabled="disabled" />
-<span class="validationMessage" data-bind="validationMessage: abs_return_value"></span> 
+                    <span class="validationMessage" data-bind="validationMessage: abs_return_value"></span> 
                 </div>
             </div>
+ <div class="pull-right">
+            <button id="editAbsolutePerformance" type="button" class="btn btn-sm btn-info"
+                                                onclick="vm.editAbsolutePerformance()">
+                                            Correct Absolute Performance</button>
+                                        
+                    <button id="addAbsolutePerformance" type="button" class="btn btn-sm btn-info"
+                            onclick="vm.addAbsolutePerformance()">
+                         Update Absolute Performance</button>
+                </div>
         </fieldset>
 
         <!-- Rel performance ------------------------------------- -->
@@ -402,9 +424,18 @@
 
                 <div class="col-sm-3">
                     <input class="input-xlarge" id="relBenchmarkTypeAhead" type="hidden" data-bind="value: return_benchmark_id" disabled="disabled"/>
-<span class="validationMessage" data-bind="validationMessage: return_benchmark_id"></span>
+                    <span class="validationMessage" data-bind="validationMessage: return_benchmark_id"></span>
                 </div>
             </div>
+            <div class="pull-right">
+            <button id="editRelativePerformance" type="button" class="btn btn-sm btn-info"
+                                                onclick="vm.editRelativePerformance()">
+                                            Correct Relative Performance</button>
+                                        
+                    <button id="addRelativePerformance" type="button" class="btn btn-sm btn-info"
+                            onclick="vm.addRelativePerformance()">
+                         Update Relative Performance</button>
+                </div>
         </fieldset>
 
         <!-- Comments ------------------------------------- -->
@@ -421,14 +452,14 @@
                 </div>
             </div>
 
-            @*<div class="pull-right">
+            <div class="pull-right">
                 <button id="editComment" type="button" class="btn btn-sm btn-info"
                     onclick="vm.editComment()">
                     Correct Comment</button>
                 <button id="addComment" type="button" class="btn btn-sm btn-info"
                     onclick="vm.addComment()">
                     Update Comment</button>
-            </div>*@
+            </div>
         </fieldset>
 
         <div class="pull-right">
