@@ -16,7 +16,7 @@ using log4net;
 
 namespace TradesWebApplication.Api
 {
-    public class MarkToMarketRate : ApiController
+    public class MarkToMarketRateController : ApiController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
         
@@ -40,7 +40,7 @@ namespace TradesWebApplication.Api
         }
 
         // POST api/<controller>
-        public HttpResponseMessage Post([FromBody]string tradeId, [FromBody]string newMarktoMarketRate)
+        public HttpResponseMessage Post([FromUri]string tradeId, [FromUri]string newMarktoMarketRate)
         {
 
             if (ModelState.IsValid)

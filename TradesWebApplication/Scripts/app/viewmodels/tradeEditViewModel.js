@@ -724,6 +724,72 @@ function TradeViewModel(
         });
     }
     
+    ///MarkToMarketRate save
+    self.saveMarkToMarketRateData = function () {
+        console.log('saving added MarkToMarketRate');
+        //this.trackRecord_id(0);
+        //this.markToMarketRate(newMarkToMarketRate.text);
+        //Start Mark to Market Rate save//////////////////////////
+        console.log('Posting addMarkToMarketRate to server to save.');
+        var apiURL = baseUrl;
+        apiURL += "api/MarkToMarketRate/post/?tradeId=" +
+        self.trade_id() + "&newMarktoMarketRate=" + self.mark_to_mark_rate();
+        $.ajax({
+            url: apiURL,
+            type: 'post',
+            contentType: 'application/json',
+            timeout: 15000,
+            success: function (data) {
+                if (data.Success) {
+                    //update trade info
+                    window.onbeforeunload = null;
+                    console.log(data.Message);
+                    bootbox.dialog({
+                        message: data.Message,
+                        title: "Mark to Mark Rate",
+                        buttons: {
+                            success: {
+                                label: "OK",
+                                className: "btn-success",
+                                callback: function () {
+                                    return true;
+                                }
+                            },
+                            main: {
+                                label: "Exit",
+                                className: "btn-primary",
+                                callback: function () {
+                                    document.location.href = $('#cancelUrl').attr('href');
+                                }
+                            }
+                        }
+                    });
+                    LoadTradeData(vm.trade_id);
+                } else {
+                    console.log(data.Message);
+                    bootbox.alert(data.Message); //display exception
+
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log("error: " + XMLHttpRequest.responseText);
+                var message = "error: " + XMLHttpRequest.responseText;
+                bootbox.dialog({
+                    message: message,
+                    title: "Mark to Mark Rate",
+                    className: "alert-danger",
+                    buttons: {
+                        danger: {
+                            label: "OK",
+                            className: "btn-danger",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
 
     this.CRUDMode = "";
     //set this to true to see ko.toJson on form for debugging knockout bindings

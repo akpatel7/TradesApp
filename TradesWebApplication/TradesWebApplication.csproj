@@ -195,8 +195,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\Comments.cs" />
-    <Compile Include="Api\MarkToMarketRate.cs" />
+    <Compile Include="Api\CommentsController.cs" />
+    <Compile Include="Api\MarkToMarketRateController.cs" />
     <Compile Include="Api\RestClient.cs" />
     <Compile Include="Api\TradesAppSettings.cs" />
     <Compile Include="Api\TradesPlatoController.cs" />
