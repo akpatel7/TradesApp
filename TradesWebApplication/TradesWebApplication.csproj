@@ -196,6 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\CommentsController.cs" />
+    <Compile Include="Api\InterestRateDiffController.cs" />
     <Compile Include="Api\MarkToMarketRateController.cs" />
     <Compile Include="Api\RestClient.cs" />
     <Compile Include="Api\TradesAppSettings.cs" />
@@ -756,6 +757,7 @@
     <Content Include="Scripts\app\viewmodels\commentEditViewModel.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\app\viewmodels\interestRateDiffEditViewModel.js" />
     <Content Include="Scripts\app\viewmodels\markRateEditViewModel.js" />
     <Content Include="Scripts\app\viewmodels\tradeEditViewModel.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

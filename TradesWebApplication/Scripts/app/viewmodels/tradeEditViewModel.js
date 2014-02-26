@@ -764,7 +764,6 @@ function TradeViewModel(
                             }
                         }
                     });
-                    LoadTradeData(vm.trade_id);
                 } else {
                     console.log(data.Message);
                     bootbox.alert(data.Message); //display exception
@@ -777,6 +776,72 @@ function TradeViewModel(
                 bootbox.dialog({
                     message: message,
                     title: "Mark to Mark Rate",
+                    className: "alert-danger",
+                    buttons: {
+                        danger: {
+                            label: "OK",
+                            className: "btn-danger",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+    
+    ///MarkToMarketRate save
+    self.saveInterestRateDiffData = function () {
+        console.log('saving added InterestRateDiff');
+        //this.trackRecord_id(0);
+        //this.markToMarketRate(newMarkToMarketRate.text);
+        //Start Mark to Market Rate save//////////////////////////
+        console.log('Posting InterestRateDiff to server to save.');
+        var apiURL = baseUrl;
+        apiURL += "api/InterestRateDiff/post/?tradeId=" +
+        self.trade_id() + "&interestRateDiff=" + self.interest_rate_diff();
+        $.ajax({
+            url: apiURL,
+            type: 'post',
+            contentType: 'application/json',
+            timeout: 15000,
+            success: function (data) {
+                if (data.Success) {
+                    //update trade info
+                    window.onbeforeunload = null;
+                    console.log(data.Message);
+                    bootbox.dialog({
+                        message: data.Message,
+                        title: "Interest Rate Differential",
+                        buttons: {
+                            success: {
+                                label: "OK",
+                                className: "btn-success",
+                                callback: function () {
+                                    return true;
+                                }
+                            },
+                            main: {
+                                label: "Exit",
+                                className: "btn-primary",
+                                callback: function () {
+                                    document.location.href = $('#cancelUrl').attr('href');
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    console.log(data.Message);
+                    bootbox.alert(data.Message); //display exception
+
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log("error: " + XMLHttpRequest.responseText);
+                var message = "error: " + XMLHttpRequest.responseText;
+                bootbox.dialog({
+                    message: message,
+                    title: "Interest Rate Differential",
                     className: "alert-danger",
                     buttons: {
                         danger: {
