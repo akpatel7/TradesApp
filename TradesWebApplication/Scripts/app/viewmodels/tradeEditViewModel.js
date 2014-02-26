@@ -673,7 +673,7 @@ function TradeViewModel(
             type: 'post',
             data: JSON.stringify(ko.toJSON(this)),
             contentType: 'application/json',
-            timeout: 5000,
+            timeout: 15000,
             success: function (data) {
                 if (data.Success) {
                     //update comment id
@@ -732,8 +732,98 @@ function TradeViewModel(
     }
     this.CRUDMode = "";
     //set this to true to see ko.toJson on form for debugging knockout bindings
+    this.APItester = new ResultViewModel();
     this.debug = true;
     //////////////////
+    
+
+
+    //Test api calls section
+
+    function ResultViewModel() {
+        var self = this;
+
+        this.trade_id = ko.observable("");
+        this.endpoint = ko.observable("");
+        this.tradeGraph = ko.observable("");
+        this.results = ko.observable("");
+
+        //to get graph of trade for isis plato
+        self.trade_id.subscribe(
+            function(newValue) {
+                if (newValue > 0) {
+                    var apiURL = baseUrl;
+                    apiURL += "api/tradesplato/get/";
+                    $.ajax({
+                        type: 'GET',
+                        url: apiURL,
+                        dataType: "json",
+                        crossDomain: true,
+                        data: {
+                            id: newValue, //id of Financial Instrument
+                        },
+                        success: function(data) {
+                            var resultData = data;
+                            console.log(resultData);
+                            self.tradeGraph(resultData);
+                        }
+                    });
+
+                } else {
+                    //console.log("HERE 2");
+                    return;
+                }
+            });
+
+        self.makeRequestTradeData = function (httpVerb) {
+            console.log('Posting Trade to server to save.');
+            var apiURL = baseUrl;
+            apiURL += "api/tradesplato/put/?id=" + self.trade_id() + "&endpoint=" + self.endpoint();
+            var postdata = self.tradeGraph();
+            $.ajax({
+                type: httpVerb,
+                //contentType: "application/ld+json; charset=utf-8",
+                //dataType: "json",
+                url: apiURL,
+                //headers: {
+                //    'consumer-id': 'j88pr5785typ',
+                //    'Authorization': 'ISIS realm="bcaresearch.com" token="MTpkZXZpY2U6YW1pdHA6MzoxNDUxNjA2NDAwOkEgUmFuZG9tIFN0cmluZzp1UnYyQkhBZnAzQkVnam5jcTA4MW82S25rQWhCYVczOEpZdmtZS1psV0FzPQ=="'
+                //},
+                data: postdata,
+                success: function (data) {
+                    self.results(data);
+                },
+                error: function(xhr, err) {
+                    self.results("readyState: " + xhr.readyState + "\nstatus: " + xhr.status + "\nresponseText: " + xhr.responseText);
+                }                
+            });
+        };
+        
+        self.makeGetRequestTradeData = function (httpVerb) {
+            console.log('Getting Trade from server.');
+            var apiURL = baseUrl;
+            apiURL += "api/tradesplato/GetFromIsis/?endpoint=" + self.endpoint();
+            var postdata = self.tradeGraph();
+            $.ajax({
+                type: httpVerb,
+                //contentType: "application/ld+json; charset=utf-8",
+                //dataType: "json",
+                url: apiURL,
+                //headers: {
+                //    'consumer-id': 'j88pr5785typ',
+                //    'Authorization': 'ISIS realm="bcaresearch.com" token="MTpkZXZpY2U6YW1pdHA6MzoxNDUxNjA2NDAwOkEgUmFuZG9tIFN0cmluZzp1UnYyQkhBZnAzQkVnam5jcTA4MW82S25rQWhCYVczOEpZdmtZS1psV0FzPQ=="'
+                //},
+                //data: postdata,
+                success: function (data) {
+                    self.results(data);
+                },
+                error: function (xhr, err) {
+                    self.results("readyState: " + xhr.readyState + "\nstatus: " + xhr.status + "\nresponseText: " + xhr.responseText);
+                }
+            });
+        };
+     
+    }
 
 }
 
@@ -928,4 +1018,6 @@ vm._editCommentToComments = function (editedComment) {
 
 
 //End Comments section//////////////////////////
+
+
     

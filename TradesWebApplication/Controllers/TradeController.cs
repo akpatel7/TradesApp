@@ -14,6 +14,7 @@ using PagedList;
 using TradesWebApplication.ViewModels;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using log4net;
 
 namespace TradesWebApplication.Controllers
 {
@@ -82,6 +83,45 @@ namespace TradesWebApplication.Controllers
 
         // GET: /Trade/Details/5
         public ActionResult Details(int id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var vm = new TradesViewModel();
+
+            var trade = unitOfWork.TradeRepository.Get(id);
+            vm.trade_id = trade.trade_id;
+            vm.Trade = trade;
+            if (trade.last_updated.HasValue)
+            {
+                vm.last_updated = ((DateTime)trade.last_updated).ToString("yyyy-MM-dd");
+            }
+
+            PopulateDropDownEntities(vm, false);
+            PopulateRelatedTradeLinesAndGroups(vm);
+            PopulateInstructions(vm);
+            PopulateAbsoluteAndRelativePerformance(vm);
+            PopulateRelatedTrades(vm);
+            PopulateComment(vm);
+
+            if (trade.status.HasValue)
+            {
+                vm.status = trade.status;
+            }
+            else
+            {
+                //HACK: need to fill statuses in db
+                vm.status = 1;
+            }
+
+
+            return View(vm);
+        }
+
+        // GET: /Trade/Details/5
+        public ActionResult APITest(int id)
         {
             if (id == null)
             {
@@ -349,33 +389,6 @@ namespace TradesWebApplication.Controllers
         // POST: /Trade/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create()
-        //{
-        //    var viewModel = new TradesCreationViewModel();
-
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            unitOfWork.TradeRepository.InsertTrade(trade);
-        //            unitOfWork.TradeRepository.Save();
-        //            return RedirectToAction("Index");
-        //        }
-        //    }
-        //    catch (DataException /* dex */)
-        //    {
-        //        //Log the error (uncomment dex variable name after DataException and add a line here to write a log.
-        //        ModelState.AddModelError(string.Empty, "Unable to save changes. Try again, and if the problem persists contact your system administrator.");
-        //    }
-
-        //    return View(viewModel);
-        //}
-
-        // POST: /Trade/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         public ActionResult Create(object data)
         {
@@ -470,9 +483,11 @@ namespace TradesWebApplication.Controllers
                 unitOfWork.TradeRepository.DeleteTrade(id);
                 unitOfWork.TradeRepository.Save();
             }
-            catch (DataException /* dex */)
+            catch (DataException dex)
             {
-                //Log the error (uncomment dex variable name after DataException and add a line here to write a log.
+                LogManager.GetLogger("ErrorLogger").Error(dex);
+                LogManager.GetLogger("EmailLogger").Error(dex); 
+
                 return RedirectToAction("Delete", new { id = id, saveChangesError = true });
             }
             return RedirectToAction("Index");
@@ -488,6 +503,16 @@ namespace TradesWebApplication.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        //(service) 
+        public JsonResult GetService(string id)
+        {
+            var serviceId = int.Parse(id);
+            var list = unitOfWork.ServiceRepository.Get(r => r.service_id == serviceId);
+            var result = (from r in list
+                          select new { r.service_code, r.service_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         //Benchmark typeahead
         public JsonResult GetBenchmark(string id)
         {
@@ -496,6 +521,16 @@ namespace TradesWebApplication.Controllers
             var result = (from r in list
                           where r.benchmark_id == benchmarkId
                           select new { r.benchmark_label, r.benchmark_id }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        //(structure_type) 
+        public JsonResult GetStructureType(string id)
+        {
+            var typeId = int.Parse(id);
+            var list = unitOfWork.StructureTypeRepository.Get(r => r.structure_type_id == typeId);
+            var result = (from r in list
+                          select new { r.structure_type_label, r.structure_type_id }).Distinct();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -554,16 +589,10 @@ namespace TradesWebApplication.Controllers
 
         public JsonResult GetLinkedTrade(string id)
         {
-            //var linkedTradeIds = StringToIntList(id);
-            //linkedTradeIds.ToList();
             var tradeId = int.Parse(id);
             var tradesListIds = unitOfWork.RelatedTradeRepository.GetAll().Where(r => r.trade_id == tradeId).ToList();
 
-            var tradesList = new List<Trade>();
-            foreach (var t in tradesListIds)
-            {
-                tradesList.Add(unitOfWork.TradeRepository.Get(t.related_trade_id));
-            }
+            var tradesList = tradesListIds.Select(t => unitOfWork.TradeRepository.Get(t.related_trade_id)).ToList();
 
             var result = (from r in tradesList
                           select new { r.trade_editorial_label, r.trade_id }).Distinct();

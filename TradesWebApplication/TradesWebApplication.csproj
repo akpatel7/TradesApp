@@ -47,6 +47,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
@@ -63,6 +66,9 @@
     </Reference>
     <Reference Include="PagedList.Mvc">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -192,6 +198,7 @@
     <Compile Include="Api\Comments.cs" />
     <Compile Include="Api\RestClient.cs" />
     <Compile Include="Api\TradesAppSettings.cs" />
+    <Compile Include="Api\TradesPlatoController.cs" />
     <Compile Include="Api\ValuesController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -352,6 +359,11 @@
     <Compile Include="Models\LengthType.cs" />
     <Compile Include="Models\Locations.cs" />
     <Compile Include="Models\MeasureType.cs" />
+    <Compile Include="SemanticModels\GenericPlatoSemanticDTOs.cs" />
+    <Compile Include="SemanticModels\PlatoTradeContextDTO.cs" />
+    <Compile Include="SemanticModels\PlatoTradeGraphDTO.cs" />
+    <Compile Include="SemanticModels\PlatoTradeBodyDTO.cs" />
+    <Compile Include="SemanticModels\PlatoTradeGroupDTO.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\RelatedTrade.cs" />
     <Compile Include="Models\Relativity.cs" />
@@ -370,6 +382,7 @@
     <Compile Include="Models\TradePerformance.cs" />
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SemanticModels\PlatoTradeLineDTO.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\TradeLineDTOViewModel.cs" />
     <Compile Include="ViewModels\TradeLineGroupDTOViewModel.cs" />
@@ -1046,6 +1059,7 @@
     <Content Include="Scripts\toastr.min.js.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Trade\APITest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
