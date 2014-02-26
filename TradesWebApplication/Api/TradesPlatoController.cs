@@ -17,6 +17,7 @@ using RestSharp;
 using TradesWebApplication.DAL;
 using TradesWebApplication.SemanticModels;
 using TradesWebApplication.ViewModels;
+using log4net;
 
 namespace TradesWebApplication.Api
 {
@@ -62,6 +63,9 @@ namespace TradesWebApplication.Api
                 }
                 catch (DataException ex)
                 {
+                    LogManager.GetLogger("ErrorLogger").Error(ex);
+                    LogManager.GetLogger("EmailLogger").Error(ex); 
+
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
                         {
                             Content = new JsonContent(new
@@ -91,6 +95,9 @@ namespace TradesWebApplication.Api
                 }
                 catch (Newtonsoft.Json.JsonException ex)
                 {
+                    LogManager.GetLogger("ErrorLogger").Error(ex);
+                    LogManager.GetLogger("EmailLogger").Error(ex); 
+
                     return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                         {
                             Content = new JsonContent(new
@@ -104,6 +111,9 @@ namespace TradesWebApplication.Api
                 }
                 catch (Exception ex)
                 {
+                    LogManager.GetLogger("ErrorLogger").Error(ex);
+                    LogManager.GetLogger("EmailLogger").Error(ex); 
+
                     return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                         {
                             Content = new JsonContent(new
@@ -156,6 +166,9 @@ namespace TradesWebApplication.Api
                 }
                 catch (DataException ex)
                 {
+                    LogManager.GetLogger("ErrorLogger").Error(ex);
+                    LogManager.GetLogger("EmailLogger").Error(ex); 
+
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
                     {
                         Content = new JsonContent(new
@@ -175,37 +188,30 @@ namespace TradesWebApplication.Api
 
                     var response =  SendTradeToIsis(jsonObject, endpoint);
 
-                    return String.Format("Status Code: {0}\nResponse: {1}\nContent-Length: {2}\nBody: {3}", response.StatusCode, response.StatusDescription, response.ContentLength, response.Content);
+                    //log error if responseStatus is not no content
+                    var responseFormatted = String.Format("Trade ID: {0}\nTrade Uri: {1}\nStatus Code: {2}\nResponse: {3}\nContent-Length: {4}\nBody: {5}\nSemantic PostData: {6}",
+                                  vm.trade_id,
+                                  vm.trade_uri,
+                                  response.StatusCode,
+                                  response.StatusDescription,
+                                  response.ContentLength,
+                                  response.Content,
+                                  jsonObject);
 
-                    //var response = new RestClient
-                    //{
-                    //    ContentType = "application/ld+json; charset=utf-8",
-                    //    EndPoint = TradesAppSettings.Settings.IsisTradeEndpoint,
-                    //    Method = HttpVerb.PUT,
-                    //    PostData = jsonObject
-                    //};
+                    if (response.StatusCode != HttpStatusCode.NoContent)
+                    {
+                        LogManager.GetLogger("ErrorLogger").Error("Plato PUT fail:\n" + responseFormatted);
+                        LogManager.GetLogger("EmailLogger").Error("Plato PUT fail:\n" + responseFormatted);
+                    }
 
-                    //try
-                    //{
-                    //    var Httpresponse = response.MakeRequest("");
-                    //    return Httpresponse;
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    return new HttpResponseMessage(HttpStatusCode.NotAcceptable)
-                    //    {
-                    //        Content = new JsonContent(new
-                    //        {
-                    //            Success = false,
-                    //            Message = "Exception occured: " + ex.InnerException.ToString(),
-                    //            //return exception
-                    //            result = "Exception occured: " + ex.InnerException.ToString()
-                    //        })
-                    //    };
-                    //}
+
+
                 }
                 catch (Newtonsoft.Json.JsonException ex)
                 {
+                    LogManager.GetLogger("ErrorLogger").Error(ex);
+                    LogManager.GetLogger("EmailLogger").Error(ex); 
+
                     return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                     {
                         Content = new JsonContent(new
@@ -219,6 +225,9 @@ namespace TradesWebApplication.Api
                 }
                 catch (Exception ex)
                 {
+                    LogManager.GetLogger("ErrorLogger").Error(ex);
+                    LogManager.GetLogger("EmailLogger").Error(ex); 
+
                     return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                     {
                         Content = new JsonContent(new
@@ -493,9 +502,25 @@ namespace TradesWebApplication.Api
             //request.AddBody(tradeGraph);
             request.AddParameter("application/ld+json", tradeGraph, ParameterType.RequestBody);
 
-            IRestResponse response = client.Execute(request);
+            IRestResponse asyncresponse = new RestResponse(); 
+            client.ExecuteAsync(request, response =>
+                {
+                    //log error if responseStatus is not no content
+                    var responseFormatted = String.Format("Status Code: {0}\nResponse: {1}\nContent-Length: {2}\nBody: {3}\nSemantic PostData: {4}",
+                                  response.StatusCode,
+                                  response.StatusDescription,
+                                  response.ContentLength,
+                                  response.Content,
+                                  tradeGraph);
 
-            return response;
+                    if (response.StatusCode != HttpStatusCode.NoContent)
+                    {
+                        LogManager.GetLogger("ErrorLogger").Error("Plato PUT fail:\n" + responseFormatted);
+                        LogManager.GetLogger("EmailLogger").Error("Plato PUT fail:\n" + responseFormatted);
+                    }
+                });
+
+            return asyncresponse;
         }
 
         private string GetAuthenticationHeader(string user_id, string secret_key)
@@ -573,8 +598,8 @@ namespace TradesWebApplication.Api
             }
             catch (DataException ex)
             {
-                //log ex;
-                throw ex;
+                LogManager.GetLogger("ErrorLogger").Error(ex);
+                LogManager.GetLogger("EmailLogger").Error(ex); 
             }
 
             try
@@ -584,15 +609,12 @@ namespace TradesWebApplication.Api
 
                 var response = SendTradeToIsis(jsonObject, endpoint);
 
-                //log error if responseStatus is not no content
-                String.Format("Status Code: {0}\nResponse: {1}\nContent-Length: {2}\nBody: {3}",
-                              response.StatusCode, response.StatusDescription, response.ContentLength,
-                              response.Content);
             }
             catch (Exception ex)
             {
-                //log ex;
-                throw ex;
+               
+                LogManager.GetLogger("ErrorLogger").Error(ex);
+                LogManager.GetLogger("EmailLogger").Error(ex); 
             }
         }
 
@@ -641,17 +663,31 @@ namespace TradesWebApplication.Api
                 request.AddHeader("Authorization", GetAuthenticationHeader(userId, TradesAppSettings.Settings.SharedSecret));
 
 
-                IRestResponse response = client.Execute(request);
+                IRestResponse asyncresponse = new RestResponse();
+                client.ExecuteAsync(request, response =>
+                {
+                    //log error if responseStatus is not no content
+                    var responseFormatted =
+                        //log error if responseStatus is not no content
+                String.Format("Request Uri: {0}\nStatus Code: {1}\nResponse: {2}\nContent-Length: {3}\nBody: {4}",
+                              statusURL,
+                              asyncresponse.StatusCode,
+                              asyncresponse.StatusDescription,
+                              asyncresponse.ContentLength,
+                              asyncresponse.Content);
 
-                //log error if responseStatus is not no content
-                String.Format("Status Code: {0}\nResponse: {1}\nContent-Length: {2}\nBody: {3}",
-                              response.StatusCode, response.StatusDescription, response.ContentLength,
-                              response.Content);
+                    if (response.StatusCode != HttpStatusCode.NoContent)
+                    {
+                        LogManager.GetLogger("ErrorLogger").Error("Status PUT fail:\n" + responseFormatted);
+                        LogManager.GetLogger("EmailLogger").Error("Status PUT fail:\n" + responseFormatted);
+                    }
+                });
+
             }
             catch (Exception ex)
             {
-                //log ex;
-                throw ex;
+                LogManager.GetLogger("ErrorLogger").Error(ex);
+                LogManager.GetLogger("EmailLogger").Error(ex); 
             }
         }
 

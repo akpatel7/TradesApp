@@ -15,7 +15,7 @@ using TradesWebApplication.ViewModels;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-
+using log4net;
 
 
 namespace TradesWebApplication.Api
@@ -294,6 +294,9 @@ namespace TradesWebApplication.Api
                 }
                 catch (DataException ex)
                 {
+                    LogManager.GetLogger("ErrorLogger").Error(ex);
+                    LogManager.GetLogger("EmailLogger").Error(ex); 
+
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
                     {
                         Content = new JsonContent(new
@@ -752,12 +755,12 @@ namespace TradesWebApplication.Api
             var ctr = new TradesPlatoController();
             ctr.PushToPlato(tradeId);
 
-            //resource status call
-            if (statusChanged)
-            {
-                //set publication status
-                ctr.PushStatusToPlato(trade.trade_uri, (int)trade.status);
-            }
+            ////resource status call
+            //if (statusChanged)
+            //{
+            //    //set publication status
+            //    ctr.PushStatusToPlato(trade.trade_uri, (int)trade.status);
+            //}
 
 
         }

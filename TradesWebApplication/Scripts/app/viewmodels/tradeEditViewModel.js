@@ -673,7 +673,7 @@ function TradeViewModel(
             type: 'post',
             data: JSON.stringify(ko.toJSON(this)),
             contentType: 'application/json',
-            timeout: 5000,
+            timeout: 15000,
             success: function (data) {
                 if (data.Success) {
                     //update comment id

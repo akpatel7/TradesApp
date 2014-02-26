@@ -15,6 +15,7 @@ using TradesWebApplication.ViewModels;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using log4net;
 
 namespace TradesWebApplication.Api
 {
@@ -60,6 +61,9 @@ namespace TradesWebApplication.Api
                 }
                 catch (DataException ex)
                 {
+                    LogManager.GetLogger("ErrorLogger").Error(ex);
+                    LogManager.GetLogger("EmailLogger").Error(ex); 
+
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
                     {
                         Content = new JsonContent(new
