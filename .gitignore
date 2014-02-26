@@ -228,3 +228,6 @@ TradesApp/Web.config
 .svn/pristine/f4/f418b41018587bfd1d37d68f50dee2f4d54a570f.svn-base
 .svn/pristine/f8/f8c45f33cc1387977847bc83b0653d9b246091cf.svn-base
 .svn/
+TradesWebApplication/Api/ValuesController.cs.orig
+packages/RestSharp.104.4.0/lib/net4/RestSharp.xml
+packages/log4net.2.0.3/lib/net40-full/log4net.xml
