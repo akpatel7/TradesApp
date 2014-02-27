@@ -119,6 +119,44 @@ namespace TradesWebApplication.Controllers
 
             return View(vm);
         }
+        // GET: /Trade/Details/5
+        public ActionResult GetGameListing(int id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var vm = new TradesViewModel();
+
+            //var trade = unitOfWork.TradeRepository.Get(id);
+            //vm.trade_id = trade.trade_id;
+            //vm.Trade = trade;
+            //if (trade.last_updated.HasValue)
+            //{
+            //    vm.last_updated = ((DateTime)trade.last_updated).ToString("yyyy-MM-dd");
+            //}
+
+            //PopulateDropDownEntities(vm, false);
+            //PopulateRelatedTradeLinesAndGroups(vm);
+            //PopulateInstructions(vm);
+            //PopulateAbsoluteAndRelativePerformance(vm);
+            //PopulateRelatedTrades(vm);
+            //PopulateComment(vm);
+
+            //if (trade.status.HasValue)
+            //{
+            //    vm.status = trade.status;
+            //}
+            //else
+            //{
+            //    //HACK: need to fill statuses in db
+            //    vm.status = 1;
+            //}
+
+
+            return PartialView(vm);
+        }
 
         // GET: /Trade/Details/5
         public ActionResult APITest(int id)

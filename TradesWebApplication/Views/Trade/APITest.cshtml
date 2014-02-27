@@ -6,7 +6,10 @@
 }
 
 
-    <fieldset class="tgroup">
+
+<button id='showGame'>Show Game Listing</button>
+
+<fieldset class="tgroup">
         <legend class="trade_group_head"><strong>Plato API Test</strong></legend>
 
         <div class="form-group">
@@ -432,6 +435,29 @@
     </fieldset>
 </form>
 
+<div id='gameModal' class='modal fade' data-url='@Url.Action("GetGameListing/603")'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Update Interest Rate Differential</h3>
+            </div>
+            <div class="modal-body">
+                <div id='gameContainer'>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-bind="click: add">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id='gameModal' class='modal hide fade in' data-url='@Url.Action("GetGameListing/643")'>
+   <div id='gameContainer'>
+   </div>
+</div>*@
 
 <pre data-bind='    text: ko.toJSON($root, null, 2), visible: debug'></pre>  
 @section scripts{
@@ -499,6 +525,16 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+             
+            $('#showGame').click(function() {
+                var url = $('#gameModal').data('url');
+
+                $.get(url, function(data) {
+                    $('#gameContainer').html(data);
+
+                    $('#gameModal').modal('show');
+                });
+            });
 
             //window.onbeforeunload = function () {
             //    return 'Are you sure you want to navigate away from this page?';
