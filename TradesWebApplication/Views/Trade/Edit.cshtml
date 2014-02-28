@@ -511,22 +511,38 @@
                  <h4 class="modal-title">Update Absolute Performance</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                <div class="control-label col-sm-2">
-                    @Html.LabelFor(model => model.abs_measure_type_id)
-                </div>
 
-                <div class="col-sm-2">
-                    @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" , @width="300px"})
+                <div class="center-block"id="grid" style="height: 200px; width: 740px"  
+                     data-bind="koGrid: { data: items,afterSelectionChange: function () { return true; },
+    columnDefs: [{ field: 'firstName', displayName: 'Return Type',width:'250'},
+                 { field: 'lastName', displayName: 'Value',width:'200' },
+                 { field: 'phno',displayName: 'Last Updated',width:'250' }],
+    autogenerateColumns: false,  
+    multiSelect: false,
+    showFilter: true,
+    showColumnMenu: false
+}">
                 </div>
-                <div class="col-sm-3" data-bind="visible: abs_measure_type_id() == 2">
-                    <input  id="modalAbsCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id" />
+                <br/>
+
+
+                <div class="form-group">
+                        
+                    <div class="control-label col-sm-1">
+                        @Html.LabelFor(model => model.abs_measure_type_id)
+                    </div>
+
+                    <div class="col-sm-2">
+                        @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" , @width="300px"})
+                    </div>
+                    <div class="col-sm-3" data-bind="visible: abs_measure_type_id() == 2">
+                        <input  id="modalEditAbsCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" data-bind="value: abs_return_value"  />
+                        <span class="validationMessage" data-bind="validationMessage: abs_return_value"></span> 
+                    </div>
                 </div>
-                <div class="col-sm-3">
-                    <input type="text" data-bind="value: abs_return_value"  />
-                    <span class="validationMessage" data-bind="validationMessage: abs_return_value"></span> 
-                </div>
-            </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -866,6 +882,48 @@
                 },
                 id: function (obj) {
                     return obj.currency_id;
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+            
+            //to remotely get currencies for typeaheads
+            $("#modalEditAbsCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function (term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function (obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function (element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function (data) {
+                        }
+                    }).done(function (data) { callback(data[0]); });
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency

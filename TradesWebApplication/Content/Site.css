@@ -981,7 +981,7 @@ tr.pager td {
 
 /* to center it: Left Margin = (600px – [New Width]) / 2*/
 #editAbsolutePerformanceModal .modal-body {
-  height: 500px;
+  height: 300px;
 }
 
 /********************
