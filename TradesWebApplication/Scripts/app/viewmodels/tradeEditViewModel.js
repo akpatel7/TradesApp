@@ -859,29 +859,57 @@ function TradeViewModel(
     this.CRUDMode = "";
     //set this to true to see ko.toJson on form for debugging knockout bindings
     this.APItester = new ResultViewModel();
-    this.debug = false;
+    this.debug = true;
     //////////////////
     
-    this.items = ko.observableArray([{
-        firstName: "BPS", lastName: "67.000",
-        mail: "Eric@gmail.com", phno: "2014-02-14"
-    },
-        {
-            firstName: "BPS", lastName: "88.0000",
-            mail: "Manuel@gmail.com", phno: "2013-12-14"
+    edit_abs_track_performance_id = typeof (edit_abs_track_performance_id) !== 'undefined' ? edit_abs_track_performance_id : "";
+    this.edit_abs_track_performance_id = ko.observable(edit_abs_track_performance_id);
+
+    edit_abs_measure_type_id = typeof (edit_abs_measure_type_id) !== 'undefined' ? edit_abs_measure_type_id : 1; //default value
+    this.edit_abs_measure_type_id = ko.observable(1);
+
+    this.edit_abs_return_apl_func = ko.observable("");
+
+    edit_abs_currency_id = typeof (edit_abs_currency_id) !== 'undefined' ? edit_abs_currency_id : ""; //default value
+    this.edit_abs_currency_id = ko.observable(edit_abs_currency_id);
+
+    this.edit_abs_return_benchmark_id = ko.observable("");
+
+    edit_abs_return_value = typeof (edit_abs_return_value) !== 'undefined' ? edit_abs_return_value : "";
+    this.edit_abs_return_value = ko.observable(edit_abs_return_value).extend({ number: true });
+
+    this.edit_abs_last_updated = ko.observable("");
+
+    edit_rel_track_performance_id = typeof (edit_rel_track_performance_id) !== 'undefined' ? edit_rel_track_performance_id : "";
+    this.edit_rel_track_performance_id = ko.observable(edit_rel_track_performance_id);
+
+    edit_rel_measure_type_id = typeof (edit_rel_measure_type_id) !== 'undefined' ? edit_rel_measure_type_id : 2; //default value
+    this.edit_rel_measure_type_id = ko.observable(2);
+
+    this.edit_abs_return_apl_func = ko.observable("");
+
+    edit_rel_currency_id = typeof (edit_rel_currency_id) !== 'undefined' ? edit_rel_currency_id : "";
+    this.edit_rel_currency_id = ko.observable(edit_rel_currency_id);
+
+    edit_rel_return_value = typeof (edit_rel_return_value) !== 'undefined' ? edit_rel_return_value : "";
+    this.edit_rel_return_value = ko.observable(edit_rel_return_value).extend({ number: true });
+
+    edit_return_benchmark_id = typeof (edit_return_benchmark_id) !== 'undefined' ? edit_return_benchmark_id : "";
+    this.edit_return_benchmark_id = ko.observable(edit_return_benchmark_id).extend({
+        required: {
+            onlyIf: function () {
+                return (self.edit_rel_return_value() !== "" && self.edit_rel_return_value() !== null && self.edit_rel_return_value() !== 'undefined');
+            },
         },
-        {
-            firstName: "Currency - British Pounds", lastName: "7.89093",
-            mail: "Allen@gmail.com", phno: "2013-11-18"
-        },
-        {
-            firstName: "Percent", lastName: "0.97484",
-            mail: "Joe@gmail.com", phno: "2013-02-12"
-        },
-        {
-            firstName: "Currency - Canadian Dollar", lastName: "15.0985",
-            mail: "aki@gmail.com", phno: "2012-12-29"
-        }]);
+    });
+    
+    this.abs_Performanceitems = ko.observableArray([]);
+    
+    this.abs_SelectedItems = ko.observableArray([]);
+
+    this.rel_Performanceitems = ko.observableArray([]);
+    
+    this.rel_SelectedItems = ko.observableArray([]);
 
     //Test api calls section
 

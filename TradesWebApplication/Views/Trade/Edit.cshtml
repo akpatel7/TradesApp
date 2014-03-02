@@ -419,17 +419,17 @@
                 </div>
 
                 <div class="col-sm-3">
-                    <input class="input-xlarge" id="relBenchmarkTypeAhead" type="hidden" data-bind="value: return_benchmark_id" disabled="disabled"/>
+                    <input class="input-xlarge" id="editRelBenchmarkTypeAhead" type="hidden" data-bind="value: edit_return_benchmark_id" disabled="disabled"/>
                     <span class="validationMessage" data-bind="validationMessage: return_benchmark_id"></span>
                 </div>
             </div>
             <div class="pull-right">
             <button id="editRelativePerformance" type="button" class="btn btn-sm btn-info"
-                                                onclick="vm.editRelativePerformance()">
+                                                onclick="$('#editRelativePerformanceModal').modal('show');">
                                             Correct Relative Performance</button>
                                         
                     <button id="addRelativePerformance" type="button" class="btn btn-sm btn-info"
-                            onclick="vm.addRelativePerformance()">
+                            onclick="$('#addRelativePerformanceModal').modal('show');">
                          Update Relative Performance</button>
                 </div>
         </fieldset>
@@ -483,14 +483,14 @@
                 </div>
 
                 <div class="col-sm-2">
-                    @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" , @width="300px"})
+                    @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: edit_abs_measure_type_id", @class = "form-control" , @width="300px"})
                 </div>
-                <div class="col-sm-3" data-bind="visible: abs_measure_type_id() == 2">
-                    <input  id="modalAbsCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id" />
+                <div class="col-sm-3" data-bind="visible: edit_abs_measure_type_id() == 2">
+                    <input  id="modalAbsCurrencyTypeAhead" type="hidden" data-bind="value: edit_abs_currency_id" />
                 </div>
                 <div class="col-sm-3">
-                    <input type="text" data-bind="value: abs_return_value"  />
-                    <span class="validationMessage" data-bind="validationMessage: abs_return_value"></span> 
+                    <input type="text" data-bind="value: edit_abs_return_value"  />
+                    <span class="validationMessage" data-bind="validationMessage: edit_abs_return_value"></span> 
                 </div>
             </div>
             </div>
@@ -521,6 +521,7 @@
     multiSelect: false,
     showFilter: true,
     showColumnMenu: false,
+    selectedItems: abs_SelectedItems
 }">
                 </div>
                 <br/>
@@ -531,14 +532,14 @@
                     </div>
 
                     <div class="col-sm-2">
-                        @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: abs_measure_type_id", @class = "form-control" , @width="300px"})
+                        @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: edit_abs_measure_type_id", @class = "form-control" , @width="300px"})
                     </div>
-                    <div class="col-sm-3" data-bind="visible: abs_measure_type_id() == 2">
-                        <input  id="modalEditAbsCurrencyTypeAhead" type="hidden" data-bind="value: abs_currency_id" />
+                    <div class="col-sm-3" data-bind="visible: edit_abs_measure_type_id() == 2">
+                        <input  id="modalEditAbsCurrencyTypeAhead" type="hidden" data-bind="value: edit_abs_currency_id" />
                     </div>
                     <div class="col-sm-2">
-                        <input type="text" data-bind="value: abs_return_value"  />
-                        <span class="validationMessage" data-bind="validationMessage: abs_return_value"></span> 
+                        <input type="text" data-bind="value: edit_abs_return_value"  />
+                        <span class="validationMessage" data-bind="validationMessage: edit_abs_return_value"></span> 
                     </div>
                 </div>
             </div>
