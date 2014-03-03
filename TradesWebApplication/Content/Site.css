@@ -952,6 +952,8 @@ tr.pager td {
 
  /* modals */
 
+.datepicker {z-index: 1151 !important;}
+
 #addAbsolutePerformanceModal .modal {
     width: 900px; /* SET THE WIDTH OF THE MODAL */
     /*margin: -250px 0 0 -450px; *//* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
@@ -962,9 +964,9 @@ tr.pager td {
 
 #addAbsolutePerformanceModal .modal-content {
   width: 900px; 
-  margin-top: 175px;
+  margin-bottom: 100px;
   margin-left: -440px;
-  bottom: 75%;
+  bottom: 50%;
   left: 50%;
   position: absolute;
 
@@ -972,7 +974,7 @@ tr.pager td {
 
 /* to center it: Left Margin = (600px – [New Width]) / 2*/
 #addAbsolutePerformanceModal .modal-body {
-  height: 50px;
+  height: 100px;
 }
 
 
@@ -986,7 +988,7 @@ tr.pager td {
 /* to center it: Left Margin = (600px – [New Width]) / 2*/
 #editAbsolutePerformanceModal .modal-content {
   width: 900px; 
-  margin-bottom: -350px;
+  margin-bottom: -200px;
   margin-right: -460px;
   bottom: 50%;
   right: 50%;
@@ -995,7 +997,7 @@ tr.pager td {
 
 /* to center it: Left Margin = (600px – [New Width]) / 2*/
 #editAbsolutePerformanceModal .modal-body {
-  height: 600px;
+  height: 500px;
 }
 
 /********************
