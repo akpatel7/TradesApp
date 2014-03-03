@@ -925,6 +925,8 @@ function TradeViewModel(
 
     edit_rel_return_value = typeof (edit_rel_return_value) !== 'undefined' ? edit_rel_return_value : "";
     this.edit_rel_return_value = ko.observable(edit_rel_return_value).extend({ number: true });
+    
+    this.edit_rel_last_updated = ko.observable("");
 
     edit_return_benchmark_id = typeof (edit_return_benchmark_id) !== 'undefined' ? edit_return_benchmark_id : "";
     this.edit_return_benchmark_id = ko.observable(edit_return_benchmark_id).extend({

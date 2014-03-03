@@ -16,7 +16,7 @@ body {
 
 @media (min-width: 768px) {
   .form-horizontal .control-label {
-    /*text-align: right;*/
+    /*text-align: right;*/m
     text-align: left;
     margin-left: 1em;
   }
@@ -988,7 +988,7 @@ tr.pager td {
 /* to center it: Left Margin = (600px – [New Width]) / 2*/
 #editAbsolutePerformanceModal .modal-content {
   width: 900px; 
-  margin-bottom: -200px;
+  margin-bottom: -300px;
   margin-right: -460px;
   bottom: 50%;
   right: 50%;
@@ -998,6 +998,70 @@ tr.pager td {
 /* to center it: Left Margin = (600px – [New Width]) / 2*/
 #editAbsolutePerformanceModal .modal-body {
   height: 500px;
+}
+
+#addAbsolutePerformanceModal .modal {
+    width: 900px; /* SET THE WIDTH OF THE MODAL */
+    /*margin: -250px 0 0 -450px; *//* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+    }
+#addAbsolutePerformanceModal .modal-dialog {
+  width: 900px;
+}
+
+#addAbsolutePerformanceModal .modal-content {
+  width: 900px; 
+  margin-bottom: 100px;
+  margin-left: -440px;
+  bottom: 50%;
+  left: 50%;
+  position: absolute;
+
+}
+
+/* to center it: Left Margin = (600px – [New Width]) / 2*/
+#addRelativePerformanceModal .modal-body {
+  height: 150px;
+}
+
+
+#editRelativePerformanceModal .modal {
+    width: 900px; /* SET THE WIDTH OF THE MODAL */
+    /*margin: -250px 0 0 -450px; *//* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+    }
+#editRelativePerformanceModal .modal-dialog {
+  width: 900px;
+}
+/* to center it: Left Margin = (600px – [New Width]) / 2*/
+#editRelativePerformanceModal .modal-content {
+  width: 900px; 
+  margin-bottom: -300px;
+  margin-right: -460px;
+  bottom: 50%;
+  right: 50%;
+  position: absolute;
+}
+
+/* to center it: Left Margin = (600px – [New Width]) / 2*/
+#editRelativePerformanceModal .modal-body {
+  height: 500px;
+}
+
+#addRelativePerformanceModal .modal {
+    width: 900px; /* SET THE WIDTH OF THE MODAL */
+    /*margin: -250px 0 0 -450px; *//* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+    }
+#addRelativePerformanceModal .modal-dialog {
+  width: 900px;
+}
+
+#addRelativePerformanceModal .modal-content {
+  width: 900px; 
+  margin-bottom: 50px;
+  margin-left: -440px;
+  bottom: 50%;
+  left: 50%;
+  position: absolute;
+
 }
 
 /********************
