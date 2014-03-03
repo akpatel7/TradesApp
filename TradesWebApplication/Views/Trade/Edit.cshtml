@@ -512,16 +512,17 @@
             </div>
             <div class="modal-body">
 
-               <div class="center-block"id="grid" style="height: 200px; width: 740px"  
-                     data-bind="koGrid: { data: abs_Performanceitems,afterSelectionChange: function () { return true; },
-    columnDefs: [{ field: 'firstName', displayName: 'Return Type',width:'250'},
-                 { field: 'lastName', displayName: 'Value',width:'200' },
-                 { field: 'phno',displayName: 'Last Updated',width:'250' }],
+               <div class="center-block"id="grid" style="height: 500px; width: 740px"  
+                    data-bind="koGrid: { data: abs_Performanceitems, afterSelectionChange: function () { return true; },
+    columnDefs: [{ field: 'measure_type_id', displayName: 'Return Type',width:'250'},
+                 { field: 'return_value', displayName: 'Value',width:'200' },
+                 { field: 'last_updated',displayName: 'Last Updated',width:'250' }],
     autogenerateColumns: false,  
     multiSelect: false,
     showFilter: true,
     showColumnMenu: false,
-    selectedItems: abs_SelectedItems
+    selectedItems: abs_SelectedItems,
+    footerRowHeight: 30
 }">
                 </div>
                 <br/>
@@ -541,11 +542,16 @@
                         <input type="text" data-bind="value: edit_abs_return_value"  />
                         <span class="validationMessage" data-bind="validationMessage: edit_abs_return_value"></span> 
                     </div>
+                    <div class="col-sm-2">
+                        <button type="button" id="ApplyEditAbsPerformance" class="btn btn-default pull-right">
+                            Apply
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
             </div>
         </div>
         <!-- /.modal-content -->
@@ -1347,7 +1353,7 @@
             apiGetURL += vm.trade_id();
 
             $.getJSON(apiGetURL, function (allData) {
-                vm.abs_Performanceitems = allData;
+                vm.abs_Performanceitems(allData);
             });
             
             $('#editAbsolutePerformanceModal').modal('show');
