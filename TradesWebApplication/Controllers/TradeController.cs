@@ -626,25 +626,41 @@ namespace TradesWebApplication.Controllers
         {
             var tradeId = int.Parse(id);
             var list = unitOfWork.TradePerformanceRepository.GetAll().Where(t => t.trade_id == tradeId && t.return_benchmark_id == null).ToList();
-            var result = (from r in list 
+            var result = (from r in list
                           where r.last_updated != null
-                          select new 
-                          { r.trade_performance_id, 
-                            r.trade_id, r.measure_type_id, 
-                            r.return_apl_function, 
-                            r.return_currency_id, 
-                            r.return_value, 
-                            return_date = r.return_date.HasValue ? ((DateTime)r.return_date).ToString("yyyy-mm-dd") : "", 
-                            last_updated = r.last_updated.HasValue ? ((DateTime)r.last_updated).ToString("yyyy-mm-dd") : ""
+                          select new
+                          {
+                              r.trade_performance_id,
+                              r.trade_id,
+                              r.measure_type_id,
+                              measure_type = GetDescription(r.measure_type_id, r.return_currency_id),
+                              r.return_apl_function,
+                              r.return_currency_id,
+                              r.return_value,
+                              return_date = r.return_date.HasValue ? ((DateTime)r.return_date).ToString("yyyy-mm-dd") : "",
+                              last_updated = r.last_updated.HasValue ? ((DateTime)r.last_updated).ToString("yyyy-mm-dd") : ""
                           }).Distinct();
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        //descritpion for KoGrid
+        private string GetDescription(int? measureTypeId, int? currencyTypeId)
+        {
+            var measureType = unitOfWork.MeasureTypeRepository.GetByID(measureTypeId);
+            if (measureTypeId == 2) //currency type
+            {
+                var currencyType = unitOfWork.CurrencyRepository.GetByID(currencyTypeId);
+                return measureType.measure_type_label + ": " + currencyType.currency_label;
+            }
+
+            return measureType.measure_type_label;
         }
 
         //For edit relative performances
         public JsonResult GetRelativePerformances(string id)
         {
             var tradeId = int.Parse(id);
-            var list = unitOfWork.TradePerformanceRepository.GetAll().Where(t => t.trade_id == tradeId && t.return_benchmark_id != null);
+            var list = unitOfWork.TradePerformanceRepository.GetAll().Where(t => t.trade_id == tradeId && t.return_benchmark_id != null).ToList();
             var result = (from r in list
                           where r.last_updated != null
                           where r.last_updated != null
@@ -653,6 +669,7 @@ namespace TradesWebApplication.Controllers
                               r.trade_performance_id,
                               r.trade_id,
                               r.measure_type_id,
+                              measure_type = GetDescription(r.measure_type_id, r.return_currency_id),
                               r.return_apl_function,
                               r.return_currency_id,
                               r.return_value,

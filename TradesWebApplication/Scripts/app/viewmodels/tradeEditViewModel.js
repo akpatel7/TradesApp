@@ -889,11 +889,26 @@ function TradeViewModel(
     }
 
     this.CRUDMode = "";
-    //set this to true to see ko.toJson on form for debugging knockout bindings
-    this.APItester = new ResultViewModel();
-    this.debug = true;
-    //////////////////
     
+    
+    //Absolute performance edit section
+  //  //Sample result from ajax call
+  //  [
+  //{
+  //    "trade_performance_id": 150908,
+  //    "trade_id": 628,
+  //    "measure_type_id": 1,
+  //    "measure_type": "BPS",
+  //    "return_apl_function": "apl12321",
+  //    "return_currency_id": null,
+  //    "return_value": "6",
+  //    "return_date": "",
+  //    "last_updated": "2014-25-29"
+  //}
+  //  ]
+
+
+
     edit_abs_track_performance_id = typeof (edit_abs_track_performance_id) !== 'undefined' ? edit_abs_track_performance_id : "";
     this.edit_abs_track_performance_id = ko.observable(edit_abs_track_performance_id);
 
@@ -912,6 +927,29 @@ function TradeViewModel(
 
     this.edit_abs_last_updated = ko.observable("");
 
+    this.abs_Performanceitems = ko.observableArray([]);
+
+    this.abs_SelectedItems = ko.observableArray([]);
+
+    self.abs_SelectedItems.subscribe(
+   
+   function () {
+       
+
+       var recordindex = (self.abs_SelectedItems().length) - 1;
+       var record = self.abs_SelectedItems()[recordindex];
+       
+       self.edit_abs_track_performance_id(record.trade_performance_id);
+       self.edit_abs_measure_type_id(record.measure_type_id);
+       self.edit_abs_return_apl_func(record.return_apl_function);
+       self.edit_abs_currency_id(record.return_currency_id);
+            //self.edit_abs_return_benchmark_id();
+       self.edit_abs_return_value(record.return_value);
+       self.edit_abs_last_updated(record.last_updated);
+        });
+
+
+    //Relative Performance edit section
     edit_rel_track_performance_id = typeof (edit_rel_track_performance_id) !== 'undefined' ? edit_rel_track_performance_id : "";
     this.edit_rel_track_performance_id = ko.observable(edit_rel_track_performance_id);
 
@@ -937,13 +975,12 @@ function TradeViewModel(
         },
     });
     
-    this.abs_Performanceitems = ko.observableArray([]);
-          
-    this.abs_SelectedItems = ko.observableArray([]);
-
     this.rel_Performanceitems = ko.observableArray([]);
     
     this.rel_SelectedItems = ko.observableArray([]);
+
+
+
 
     //Test api calls section
 
@@ -1019,6 +1056,10 @@ function TradeViewModel(
      
     }
     
+    //set this to true to see ko.toJson on form for debugging knockout bindings
+    this.APItester = new ResultViewModel();
+    this.debug = true;
+    //////////////////
 }
 
 var vm = new TradeViewModel();
