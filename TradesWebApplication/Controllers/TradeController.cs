@@ -637,8 +637,8 @@ namespace TradesWebApplication.Controllers
                               r.return_apl_function,
                               r.return_currency_id,
                               r.return_value,
-                              return_date = r.return_date.HasValue ? ((DateTime)r.return_date).ToString("yyyy-mm-dd") : "",
-                              last_updated = r.last_updated.HasValue ? ((DateTime)r.last_updated).ToString("yyyy-mm-dd") : ""
+                              return_date = r.return_date.HasValue ? ((DateTime)r.return_date).ToString("yyyy-MM-dd") : "",
+                              last_updated = r.last_updated.HasValue ? ((DateTime)r.last_updated).ToString("yyyy-MM-dd") : ""
                           }).Distinct();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -673,8 +673,8 @@ namespace TradesWebApplication.Controllers
                               r.return_apl_function,
                               r.return_currency_id,
                               r.return_value,
-                              return_date = r.return_date.HasValue ? ((DateTime)r.return_date).ToString("yyyy-mm-dd") : "",
-                              last_updated = r.last_updated.HasValue ? ((DateTime)r.last_updated).ToString("yyyy-mm-dd") : ""
+                              return_date = r.return_date.HasValue ? ((DateTime)r.return_date).ToString("yyyy-MM-dd") : "",
+                              last_updated = r.last_updated.HasValue ? ((DateTime)r.last_updated).ToString("yyyy-MM-dd") : ""
                           }).Distinct();
             return Json(result, JsonRequestBehavior.AllowGet);
         }

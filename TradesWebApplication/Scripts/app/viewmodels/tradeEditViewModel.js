@@ -695,7 +695,7 @@ function TradeViewModel(
     }, self);
 
     //Start Comments save//////////////////////////
-    self.saveCommentData = function () {
+    self.saveCommentData = function() {
         console.log('Posting Comments to server to save.');
         self.vmMessages("Posting Comments to server to save.");
         var apiURL = baseUrl;
@@ -706,7 +706,7 @@ function TradeViewModel(
             data: JSON.stringify(ko.toJSON(this)),
             contentType: 'application/json',
             timeout: 15000,
-            success: function (data) {
+            success: function(data) {
                 if (data.Success) {
                     //update comment id
                     self.comment_id(data.result);
@@ -727,15 +727,14 @@ function TradeViewModel(
                             }
                         }
                     });
-                }
-                else {
+                } else {
                     console.log(data.Message);
                     self.vmMessages(data.Message); //display exception
                     bootbox.alert(self.vmMessages());
 
                 }
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log("error: " + XMLHttpRequest.responseText);
                 self.vmMessages("error: " + XMLHttpRequest.responseText);
                 var message = self.vmMessages();
@@ -747,17 +746,17 @@ function TradeViewModel(
                         danger: {
                             label: "OK",
                             className: "btn-danger",
-                            callback: function () {
+                            callback: function() {
                             }
                         }
                     }
                 });
             }
         });
-    }
+    };
     
     ///MarkToMarketRate save
-    self.saveMarkToMarketRateData = function () {
+    self.saveMarkToMarketRateData = function() {
         console.log('saving added MarkToMarketRate');
         //this.trackRecord_id(0);
         //this.markToMarketRate(newMarkToMarketRate.text);
@@ -765,13 +764,13 @@ function TradeViewModel(
         console.log('Posting addMarkToMarketRate to server to save.');
         var apiURL = baseUrl;
         apiURL += "api/MarkToMarketRate/post/?tradeId=" +
-        self.trade_id() + "&newMarktoMarketRate=" + self.mark_to_mark_rate();
+            self.trade_id() + "&newMarktoMarketRate=" + self.mark_to_mark_rate();
         $.ajax({
             url: apiURL,
             type: 'post',
             contentType: 'application/json',
             timeout: 15000,
-            success: function (data) {
+            success: function(data) {
                 if (data.Success) {
                     //update trade info
                     window.onbeforeunload = null;
@@ -783,14 +782,14 @@ function TradeViewModel(
                             success: {
                                 label: "OK",
                                 className: "btn-success",
-                                callback: function () {
+                                callback: function() {
                                     return true;
                                 }
                             },
                             main: {
                                 label: "Exit",
                                 className: "btn-primary",
-                                callback: function () {
+                                callback: function() {
                                     document.location.href = $('#cancelUrl').attr('href');
                                 }
                             }
@@ -802,7 +801,7 @@ function TradeViewModel(
 
                 }
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log("error: " + XMLHttpRequest.responseText);
                 var message = "error: " + XMLHttpRequest.responseText;
                 bootbox.dialog({
@@ -813,17 +812,17 @@ function TradeViewModel(
                         danger: {
                             label: "OK",
                             className: "btn-danger",
-                            callback: function () {
+                            callback: function() {
                             }
                         }
                     }
                 });
             }
         });
-    }
+    };
     
     ///MarkToMarketRate save
-    self.saveInterestRateDiffData = function () {
+    self.saveInterestRateDiffData = function() {
         console.log('saving added InterestRateDiff');
         //this.trackRecord_id(0);
         //this.markToMarketRate(newMarkToMarketRate.text);
@@ -831,13 +830,13 @@ function TradeViewModel(
         console.log('Posting InterestRateDiff to server to save.');
         var apiURL = baseUrl;
         apiURL += "api/InterestRateDiff/post/?tradeId=" +
-        self.trade_id() + "&interestRateDiff=" + self.interest_rate_diff();
+            self.trade_id() + "&interestRateDiff=" + self.interest_rate_diff();
         $.ajax({
             url: apiURL,
             type: 'post',
             contentType: 'application/json',
             timeout: 15000,
-            success: function (data) {
+            success: function(data) {
                 if (data.Success) {
                     //update trade info
                     window.onbeforeunload = null;
@@ -849,14 +848,14 @@ function TradeViewModel(
                             success: {
                                 label: "OK",
                                 className: "btn-success",
-                                callback: function () {
+                                callback: function() {
                                     return true;
                                 }
                             },
                             main: {
                                 label: "Exit",
                                 className: "btn-primary",
-                                callback: function () {
+                                callback: function() {
                                     document.location.href = $('#cancelUrl').attr('href');
                                 }
                             }
@@ -868,7 +867,7 @@ function TradeViewModel(
 
                 }
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log("error: " + XMLHttpRequest.responseText);
                 var message = "error: " + XMLHttpRequest.responseText;
                 bootbox.dialog({
@@ -879,14 +878,14 @@ function TradeViewModel(
                         danger: {
                             label: "OK",
                             className: "btn-danger",
-                            callback: function () {
+                            callback: function() {
                             }
                         }
                     }
                 });
             }
         });
-    }
+    };
 
     this.CRUDMode = "";
     
@@ -932,21 +931,104 @@ function TradeViewModel(
     this.abs_SelectedItems = ko.observableArray([]);
 
     self.abs_SelectedItems.subscribe(
-   
-   function () {
-       
+       function () {
+           var recordindex = (self.abs_SelectedItems().length) - 1;
+           var record = self.abs_SelectedItems()[recordindex];      
+           self.edit_abs_track_performance_id(record.trade_performance_id);
+           self.edit_abs_measure_type_id(record.measure_type_id);
+           self.edit_abs_return_apl_func(record.return_apl_function);
+           self.edit_abs_currency_id(record.return_currency_id);
+           //self.edit_abs_return_benchmark_id();
+           self.edit_abs_return_value(record.return_value);
+           self.edit_abs_last_updated(record.last_updated);
+       });
 
-       var recordindex = (self.abs_SelectedItems().length) - 1;
-       var record = self.abs_SelectedItems()[recordindex];
-       
-       self.edit_abs_track_performance_id(record.trade_performance_id);
-       self.edit_abs_measure_type_id(record.measure_type_id);
-       self.edit_abs_return_apl_func(record.return_apl_function);
-       self.edit_abs_currency_id(record.return_currency_id);
-            //self.edit_abs_return_benchmark_id();
-       self.edit_abs_return_value(record.return_value);
-       self.edit_abs_last_updated(record.last_updated);
+    //self.abs_selectedItemApplyChanges = function () {
+    //    var recordindex = (self.abs_Performanceitems().length) - 1;
+    //    for (var i = 0; i < self.abs_Performanceitems().length; i++) {
+    //        if (self.abs_Performanceitems()[i].trade_performance_id == self.edit_abs_track_performance_id())             {
+    //            recordindex = i;
+    //        }
+    //        var record = self.abs_Performanceitems()[recordindex];
+    //        record.measure_type_id = self.edit_abs_measure_type_id();
+    //        record.return_currency_id = self.edit_abs_currency_id();
+    //        record.return_value = self.edit_abs_return_value();
+    //        record.last_updated = self.edit_abs_last_updated();
+
+    //    }
+    //};
+
+    self.Save_AbsPerformance_Edit_Record = function() {
+        console.log('saving  abs o');
+        //this.trackRecord_id(0);
+        //this.markToMarketRate(newMarkToMarketRate.text);
+        //Start Mark to Market Rate save//////////////////////////
+        console.log('Posting AbsolutePerformances to server to save.');
+        var apiURL = baseUrl;
+        apiURL += "api/AbsolutePerformances/post/";
+        $.ajax({
+            url: apiURL,
+            type: 'post',
+            contentType: 'json',
+            timeout: 15000,
+            data:  JSON.stringify({
+                "trade_performance_id": self.edit_abs_track_performance_id(),
+                "trade_id": self.trade_id(),
+                "measure_type_id": self.edit_abs_measure_type_id(),
+                "return_currency_id": self.edit_abs_currency_id(),
+                "return_value": self.edit_abs_return_value(),
+                "last_updated": self.edit_abs_last_updated()
+            }),
+            success: function(data) {
+                if (data.Success) {
+                    //update trade info
+                    window.onbeforeunload = null;
+                    console.log(data.Message);
+                    bootbox.dialog({
+                        message: data.Message,
+                        title: "Absolute Performance",
+                        buttons: {
+                            success: {
+                                label: "OK",
+                                className: "btn-success",
+                                callback: function() {
+                                    return true;
+                                }
+                            },
+                            //main: {
+                            //    label: "Exit",
+                            //    className: "btn-primary",
+                            //    callback: function() {
+                            //        document.location.href = $('#cancelUrl').attr('href');
+                            //    }
+                            //}
+                        }
+                    });
+                } else {
+                    console.log(data.Message);
+                    bootbox.alert(data.Message); //display exception
+
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log("error: " + XMLHttpRequest.responseText);
+                var message = "error: " + XMLHttpRequest.responseText;
+                bootbox.dialog({
+                    message: message,
+                    title: "Absolute Performance",
+                    className: "alert-danger",
+                    buttons: {
+                        danger: {
+                            label: "OK",
+                            className: "btn-danger",
+                            callback: function() {
+                            }
+                        }
+                    }
+                });
+            }
         });
+    };
 
 
     //Relative Performance edit section
@@ -966,8 +1048,8 @@ function TradeViewModel(
     
     this.edit_rel_last_updated = ko.observable("");
 
-    edit_return_benchmark_id = typeof (edit_return_benchmark_id) !== 'undefined' ? edit_return_benchmark_id : "";
-    this.edit_return_benchmark_id = ko.observable(edit_return_benchmark_id).extend({
+    edit_rel_return_benchmark_id = typeof (edit_rel_return_benchmark_id) !== 'undefined' ? edit_rel_return_benchmark_id : "";
+    this.edit_rel_return_benchmark_id = ko.observable(edit_rel_return_benchmark_id).extend({
         required: {
             onlyIf: function () {
                 return (self.edit_rel_return_value() !== "" && self.edit_rel_return_value() !== null && self.edit_rel_return_value() !== 'undefined');
