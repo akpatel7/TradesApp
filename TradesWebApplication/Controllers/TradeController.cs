@@ -633,7 +633,7 @@ namespace TradesWebApplication.Controllers
                               r.trade_performance_id,
                               r.trade_id,
                               r.measure_type_id,
-                              measure_type = GetDescription(r.measure_type_id, r.return_currency_id),
+                              measure_type = GetMeasureDescription(r.measure_type_id, r.return_currency_id),
                               r.return_apl_function,
                               r.return_currency_id,
                               r.return_value,
@@ -643,19 +643,7 @@ namespace TradesWebApplication.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        //descritpion for KoGrid
-        private string GetDescription(int? measureTypeId, int? currencyTypeId)
-        {
-            var measureType = unitOfWork.MeasureTypeRepository.GetByID(measureTypeId);
-            if (measureTypeId == 2) //currency type
-            {
-                var currencyType = unitOfWork.CurrencyRepository.GetByID(currencyTypeId);
-                return measureType.measure_type_label + ": " + currencyType.currency_label;
-            }
-
-            return measureType.measure_type_label;
-        }
-
+        
         //For edit relative performances
         public JsonResult GetRelativePerformances(string id)
         {
@@ -669,14 +657,37 @@ namespace TradesWebApplication.Controllers
                               r.trade_performance_id,
                               r.trade_id,
                               r.measure_type_id,
-                              measure_type = GetDescription(r.measure_type_id, r.return_currency_id),
+                              measure_type = GetMeasureDescription(r.measure_type_id, r.return_currency_id),
                               r.return_apl_function,
                               r.return_currency_id,
+                              r.return_benchmark_id,
+                              benchmark_type = GetBenchmarkDescription(r.return_benchmark_id),
                               r.return_value,
                               return_date = r.return_date.HasValue ? ((DateTime)r.return_date).ToString("yyyy-MM-dd") : "",
                               last_updated = r.last_updated.HasValue ? ((DateTime)r.last_updated).ToString("yyyy-MM-dd") : ""
                           }).Distinct();
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        //descritpion for KoGrid
+        private string GetMeasureDescription(int? measureTypeId, int? currencyTypeId)
+        {
+            var measureType = unitOfWork.MeasureTypeRepository.GetByID(measureTypeId);
+            if (measureTypeId == 2) //currency type
+            {
+                var currencyType = unitOfWork.CurrencyRepository.GetByID(currencyTypeId);
+                return measureType.measure_type_label + ": " + currencyType.currency_label;
+            }
+
+            return measureType.measure_type_label;
+        }
+
+        //descritpion for KoGrid
+        private string GetBenchmarkDescription(int? benchMarkTypeId)
+        {
+            var benchmarkType = unitOfWork.BenchmarkRepository.GetByID(benchMarkTypeId);
+            
+            return benchmarkType.benchmark_label;
         }
 
         public IEnumerable<int> StringToIntList(string str)

@@ -5,19 +5,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Mvc;
 using Newtonsoft.Json;
 using TradesWebApplication.DAL;
 using TradesWebApplication.DAL.EFModels;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using TradesWebApplication.ViewModels;
 using log4net;
 
 namespace TradesWebApplication.Api
 {
-    public class AbsolutePerformancesController : ApiController
+    public class RelativePerformancesController : ApiController
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
 
@@ -30,32 +26,22 @@ namespace TradesWebApplication.Api
         // GET api/<controller>/5
         public string Get(int id)
         {
-            return RetrieveFromDb(id);
+            return "value";
         }
 
-        private string RetrieveFromDb(int id)
-        {
-            var comment = unitOfWork.TrackRecordRepository.GetByID(id);
-
-            return JsonConvert.SerializeObject(comment);
-        }
-
-       
-       
-
-        // POST api/<controller>
+        /// POST api/<controller>
         public HttpResponseMessage Post([FromBody] string value)
         {
 
             if (ModelState.IsValid)
             {
-                var vm = new AbsolutePerformanceDTO();
+                var vm = new RelativePerformanceDTO();
 
                 string jsonData = value;
 
                 string resultingTrackPerformanceRecordId = "";
 
-                vm = JsonConvert.DeserializeObject<AbsolutePerformanceDTO>(value);
+                vm = JsonConvert.DeserializeObject<RelativePerformanceDTO>(value);
                 try
                 {
                     resultingTrackPerformanceRecordId = PersistToDb(vm);
@@ -100,7 +86,17 @@ namespace TradesWebApplication.Api
             };
         }
 
-        private string PersistToDb(AbsolutePerformanceDTO vm)
+        // PUT api/<controller>/5
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+
+        // DELETE api/<controller>/5
+        public void Delete(int id)
+        {
+        }
+
+        private string PersistToDb(RelativePerformanceDTO vm)
         {
             var tradePerformance = new Trade_Performance();
             if (vm.trade_performance_id != null)
@@ -109,7 +105,7 @@ namespace TradesWebApplication.Api
             }
 
             tradePerformance.trade_id = vm.trade_id;
-            tradePerformance.return_benchmark_id = null;
+            tradePerformance.return_benchmark_id = vm.return_benchmark_id;
             tradePerformance.measure_type_id = vm.measure_type_id;
             tradePerformance.return_currency_id = vm.return_currency_id;
             tradePerformance.return_value = vm.return_value;
@@ -127,47 +123,6 @@ namespace TradesWebApplication.Api
             unitOfWork.Save();
 
             return tradePerformance.trade_performance_id.ToString();
-
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
-        }
-
-        public class JsonContent : HttpContent
-        {
-
-            private readonly MemoryStream _Stream = new MemoryStream();
-
-            public JsonContent(object value)
-            {
-
-                Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                var jw = new JsonTextWriter(new StreamWriter(_Stream));
-                jw.Formatting = Formatting.Indented;
-                var serializer = new JsonSerializer();
-                serializer.Serialize(jw, value);
-                jw.Flush();
-                _Stream.Position = 0;
-
-            }
-
-            protected override Task SerializeToStreamAsync(Stream stream, TransportContext context)
-            {
-                return _Stream.CopyToAsync(stream);
-            }
-
-            protected override bool TryComputeLength(out long length)
-            {
-                length = _Stream.Length;
-                return true;
-            }
 
         }
     }
