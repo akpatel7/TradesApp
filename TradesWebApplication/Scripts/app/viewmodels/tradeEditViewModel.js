@@ -903,7 +903,28 @@ function TradeViewModel(
         },
     });
     
-    this.abs_Performanceitems = ko.observableArray([]);
+    this.abs_Performanceitems //= ko.observableArray([]);
+             = ko.observableArray([{
+                firstName: "BPS", lastName: "67.000",
+                mail: "Eric@gmail.com", phno: "2014-02-14"
+            },
+        {
+            firstName: "BPS", lastName: "88.0000",
+            mail: "Manuel@gmail.com", phno: "2013-12-14"
+        },
+        {
+            firstName: "Currency - British Pounds", lastName: "7.89093",
+            mail: "Allen@gmail.com", phno: "2013-11-18"
+        },
+        {
+            firstName: "Percent", lastName: "0.97484",
+            mail: "Joe@gmail.com", phno: "2013-02-12"
+        },
+        {
+            firstName: "Currency - Canadian Dollar", lastName: "15.0985",
+            mail: "aki@gmail.com", phno: "2012-12-29"
+        }]);
+
     
     this.abs_SelectedItems = ko.observableArray([]);
 

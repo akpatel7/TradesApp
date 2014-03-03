@@ -383,7 +383,7 @@
                 </div>
             </div>
  <div class="pull-right">
-            <button type="button" data-toggle="modal" onclick="$('#editAbsolutePerformanceModal').modal('show');" class="btn btn-sm btn-info">Correct Absolute Performance</button>
+            <button type="button" data-toggle="modal" onclick="  LoadAbsolutePerformanceData();" class="btn btn-sm btn-info">Correct Absolute Performance</button>
                                         
     <button type="button" data-toggle="modal" onclick="$('#addAbsolutePerformanceModal').modal('show');" class="btn btn-sm btn-info">Update Absolute Performance</button>
                 </div>
@@ -508,12 +508,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h4 class="modal-title">Update Absolute Performance</h4>
+                 <h4 class="modal-title">Correct Absolute Performance</h4>
             </div>
             <div class="modal-body">
 
-                <div class="center-block"id="grid" style="height: 200px; width: 740px"  
-                     data-bind="koGrid: { data: items,afterSelectionChange: function () { return true; },
+               <div class="center-block"id="grid" style="height: 200px; width: 740px"  
+                     data-bind="koGrid: { data: abs_Performanceitems,afterSelectionChange: function () { return true; },
     columnDefs: [{ field: 'firstName', displayName: 'Return Type',width:'250'},
                  { field: 'lastName', displayName: 'Value',width:'200' },
                  { field: 'phno',displayName: 'Last Updated',width:'250' }],
@@ -679,7 +679,7 @@
 <script src="~/Scripts/app/viewmodels/markRateEditViewModel.js"></script>
 <script src="~/Scripts/app/viewmodels/interestRateDiffEditViewModel.js"></script>
     <script type="text/javascript">
-        
+          
       
         
         $(document).ready(function () {
@@ -1340,6 +1340,19 @@
             vm.CRUDMode = "edit";
 
         };
+
+        function LoadAbsolutePerformanceData() {
+            var apiGetURL = baseUrl;
+            apiGetURL += "Trade/GetAbsolutePerformances/";
+            apiGetURL += vm.trade_id();
+
+            $.getJSON(apiGetURL, function (allData) {
+                vm.abs_Performanceitems = allData;
+            });
+            
+            $('#editAbsolutePerformanceModal').modal('show');
+          
+        }
 
         //send save request to API            
         function saveTrade() {
