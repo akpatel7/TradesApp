@@ -1258,7 +1258,54 @@ function TradeViewModel(
                 }
             });
         }
-};
+    };
+    
+    //Section TradeInstructionsEdit
+    edit_trade_instruction_id = typeof (edit_trade_instruction_id) !== 'undefined' ? edit_trade_instruction_id : "";
+    this.edit_trade_instruction_id = ko.observable(edit_trade_instruction_id);
+
+    edit_instruction_entry = typeof (edit_instruction_entry) !== 'undefined' ? edit_instruction_entry : "";
+    this.edit_instruction_entry = ko.validatedObservable(null).extend({ required: true }).extend({ number: true });
+
+    edit_instruction_entry_date = typeof (edit_instruction_entry_date) !== 'undefined' ? edit_instruction_entry_date : "";
+    this.edit_instruction_entry_date = ko.validatedObservable(edit_instruction_entry_date).extend({ required: true, dateISO: true });
+
+    edit_instruction_exit = typeof (edit_instruction_exit) !== 'undefined' ? edit_instruction_exit : "";
+    this.edit_instruction_exit = ko.observable(edit_instruction_exit).extend({ number: true });
+
+    edit_instruction_exit_date = typeof (edit_instruction_exit_date) !== 'undefined' ? edit_instruction_exit_date : "";
+    this.edit_instruction_exit_date = ko.observable(edit_instruction_exit_date);
+
+    edit_instruction_type_id = typeof (edit_instruction_type_id) !== 'undefined' ? edit_instruction_type_id : 0;
+    this.edit_instruction_type_id = ko.observable(edit_instruction_type_id);
+
+    edit_instruction_label = typeof (edit_instruction_label) !== 'undefined' ? edit_instruction_label : "";
+    this.edit_instruction_label = ko.observable(edit_instruction_label);
+
+    edit_hedge_id = typeof (edit_hedge_id) !== 'undefined' ? edit_hedge_id : 2; //default value
+    this.edit_hedge_id = ko.observable(2);
+
+    edit_currency_id = typeof (edit_currency_id) !== 'undefined' ? edit_currency_id : "";
+    this.edit_currency_id = ko.observable(edit_currency_id);
+    
+    this.editInstructionDateCheck = ko.computed(function () {
+        if (self.edit_instruction_exit_date() == "") {
+            //self.edit_instruction_exit_date.__valid__(true);
+            return true;
+        }
+
+        if (self.edit_instruction_entry_date.isValid() && self.edit_instruction_exit_date() != "" && self.edit_instruction_exit_date() != null) {
+            var startDate = moment(self.edit_instruction_entry_date());
+            var endDate = moment(self.edit_instruction_exit_date());
+            //self.edit_instruction_exit_date.__valid__(moment(startDate).isBefore(endDate));
+            return moment(startDate).isBefore(endDate);
+        }
+
+        //self.edit_instruction_exit_date.__valid__(true);
+        return true;
+
+    }, self);
+    //End Section TradeInstructionsEdit
 
     //Test api calls section
 

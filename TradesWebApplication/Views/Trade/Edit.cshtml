@@ -303,6 +303,15 @@
                 </div>
             </div>
 
+            <div class="pull-right">
+            <button id="editTradeInstruction" type="button" class="btn btn-sm btn-info"
+                                                onclick="LoadTradeInstructionData();">
+                                            Correct Trade Instruction</button>
+                                        
+                    <button id="addTradeInstruction" type="button" class="btn btn-sm btn-info"
+                            onclick="$('#addTradeInstructionModal').modal('show');">
+                         Update Trade Instruction</button>
+                </div>
         </fieldset>
 
         <!-- supplementary info ------------------------------------- -->
@@ -470,7 +479,102 @@
 
 <pre data-bind='text: ko.toJSON($root, null, 2), visible: debug'></pre>
 <!-- Modal -->
-<div class="modal fade" id="addAbsolutePerformanceModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" onclick="afterModalEditLoadData();" >
+<div class="modal fade" id="addTradeInstructionModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="afterModalEditLoadData();">&times;</button>
+                 <h3 class="modal-title">Update Absolute Performance</h3>
+            </div>
+            <div class="modal-body">
+                 <div class="form-group">
+                <div class="control-label col-sm-3">
+                    @Html.LabelFor(model => model.instruction_entry)
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-xlarge" data-bind="value: edit_instruction_entry" />
+<span class="validationMessage" data-bind="validationMessage: edit_instruction_entry"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="control-label col-sm-3">
+                    @Html.LabelFor(model => model.instruction_entry_date)
+                </div>
+                <div class="col-sm-3">
+                    <div class="input-append date" id="dpAddInstructionEntry" data-datepicker-format="YYYY-MM-DD">
+                        <input class="span2" size="20" type="text" data-bind="value: edit_instruction_entry_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }" disabled="disabled">
+                        <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
+                  <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry_date"></span>
+                    </div>  
+  </div>
+            </div>
+
+            <div class="form-group">
+                <div class="control-label col-sm-3">
+                    @Html.LabelFor(model => model.instruction_exit)
+                </div>
+                <div class="col-sm-3">
+                    <input class="form-control input-xlarge" type="text" data-bind="value: edit_instruction_exit" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="control-label col-sm-3">
+                    @Html.LabelFor(model => model.instruction_exit_date)
+                </div>
+ <div class="col-sm-3">
+                <div class="input-append date" id="dpAddInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
+<input class="span2" size="20" type="text" data-bind="value: instruction_exit_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }" >
+                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <span data-bind="visible: editInstructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
+                </div>
+</div>
+            </div>
+
+            <div class="form-group">
+                <div class="control-label col-sm-3">
+                    @Html.LabelFor(model => model.instruction_type_id)
+                </div>
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: edit_instruction_type_id", @class = "form-control" })
+                </div>
+
+                <div class="col-sm-3">
+                    <input type="text" data-bind="value: edit_instruction_label" />
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="control-label col-sm-3">
+                    @Html.LabelFor(model => model.hedge_id)
+                </div>
+
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: edit_hedge_id", @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="control-label col-sm-3">
+                    @Html.LabelFor(model => model.currency_id)
+                </div>
+
+                <div class="col-sm-3">
+                    <input class="input-xlarge" id="addCurrencyTypeAhead" type="hidden" data-bind="value: edit_currency_id"/>
+                </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+               <button type="submit" class="btn btn-primary" onclick="vm.Save_TradeInstruction_Edit_Record()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
+            </div>
+        </div>
+        <!-- /.modal-content -->
+</div>
+<!-- /.modal -->
+<!-- Modal -->
+<div class="modal fade" id="addAbsolutePerformanceModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="afterModalEditLoadData();">&times;</button>
@@ -851,6 +955,20 @@
                 {
                     //setDate: moment(new Date(), "YYYY-MM-DD")
                 });
+            $('#dpAddInstructionExit').datepicker();
+            
+            //datetimepickers - moment-datetimepicker for bootstrap
+            $('#dpAddInstructionEntry').datepicker(
+                {
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
+                });
+            $('#dpEditInstructionExit').datepicker();
+            
+            //datetimepickers - moment-datetimepicker for bootstrap
+            $('#dpEditInstructionEntry').datepicker(
+                {
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
+                });
             $('#dpInstructionExit').datepicker();
 
             //datetimepickers - moment-datetimepicker for bootstrap
@@ -1114,6 +1232,62 @@
             }
 
             $("#CurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                allowClear: true,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+            
+            $("#editCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                allowClear: true,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+            
+            $("#addCurrencyTypeAhead").select2({
                 minimumInputLength: 1,
                 placeholder: "{Currency Selection}",
                 width: '200px',
