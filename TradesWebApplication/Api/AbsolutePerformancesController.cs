@@ -48,13 +48,9 @@ namespace TradesWebApplication.Api
         {
             if (ModelState.IsValid)
             {
-                //var vm = new AbsolutePerformanceDTO();
-
-                //string jsonData = value;
 
                 string resultingTrackPerformanceRecordId = "";
 
-                //vm = JsonConvert.DeserializeObject<AbsolutePerformanceDTO>(value);
                 try
                 {
                     resultingTrackPerformanceRecordId = PersistToDb(vm);

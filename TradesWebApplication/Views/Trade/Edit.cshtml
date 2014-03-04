@@ -470,10 +470,10 @@
 
 <pre data-bind='text: ko.toJSON($root, null, 2), visible: debug'></pre>
 <!-- Modal -->
-<div class="modal fade" id="addAbsolutePerformanceModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+<div class="modal fade" id="addAbsolutePerformanceModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" onclick="afterModalEditLoadData();" >
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="afterModalEditLoadData();">&times;</button>
                  <h3 class="modal-title">Update Absolute Performance</h3>
             </div>
             <div class="modal-body">
@@ -507,7 +507,7 @@
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-primary" onclick="vm.Save_AbsPerformance_Edit_Record()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
             </div>
         </div>
         <!-- /.modal-content -->
@@ -515,7 +515,7 @@
 <!-- /.modal -->
 
 <!-- Modal -->
-<div class="modal fade" id="editAbsolutePerformanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+<div class="modal fade" id="editAbsolutePerformanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" onclick="afterModalEditLoadData();">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -566,7 +566,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="vm.Save_AbsPerformance_Edit_Record()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
             </div>
         </div>
         <!-- /.modal-content -->
@@ -699,61 +699,61 @@
 <!-- /.modal -->
 @section scripts{
 
-<script type="text/html" id="AddComment">
- <div class="modal fade" id="AddComment">
-    <div class="modal-dialog">
-             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" aria-hidden="true" data-bind="click: cancel">&times;</button>
-                    <h3>Update Comment</h3>
-                </div>
-                <div class="modal-body">
-                    <form action="#" data-bind="submit: add">
-                        <div class="control-group">
-                            <label class="control-label">Comments:</label>
-                            <div class="controls">
-                                <textarea data-bind="value: text" rows="6" cols="75"></textarea>
-                                <span class="validationMessage" data-bind="validationMessage: text"></span> 
+    <script type="text/html" id="AddComment">
+        <div class="modal fade" id="AddComment">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" aria-hidden="true" data-bind="click: cancel">&times;</button>
+                        <h3>Update Comment</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#" data-bind="submit: add">
+                            <div class="control-group">
+                                <label class="control-label">Comments:</label>
+                                <div class="controls">
+                                    <textarea data-bind="value: text" rows="6" cols="75"></textarea>
+                                    <span class="validationMessage" data-bind="validationMessage: text"></span> 
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" data-bind="click: add">Update</button>
-                    <button type="button" class="btn btn-default" data-bind="click: cancel">Close</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bind="click: add">Update</button>
+                        <button type="button" class="btn btn-default" data-bind="click: cancel">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-</div>
-</script>
+    </script>
 
-<script type="text/html" id="EditComment">
- <div class="modal fade" id="EditComment">
-    <div class="modal-dialog">
-             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" aria-hidden="true" data-bind="click: cancel">&times;</button>
-                    <h3>Correct Comment</h3>
-                </div>
-                <div class="modal-body">
-                    <form action="#" data-bind="submit: save">
-                        <div class="control-group">
-                            <label class="control-label">Comments:</label>
-                            <div class="controls">
-                                <textarea data-bind="value: text" rows="6" cols="75"></textarea>
-                                <span class="validationMessage" data-bind="validationMessage: text"></span>
+    <script type="text/html" id="EditComment">
+        <div class="modal fade" id="EditComment">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" aria-hidden="true" data-bind="click: cancel">&times;</button>
+                        <h3>Correct Comment</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#" data-bind="submit: save">
+                            <div class="control-group">
+                                <label class="control-label">Comments:</label>
+                                <div class="controls">
+                                    <textarea data-bind="value: text" rows="6" cols="75"></textarea>
+                                    <span class="validationMessage" data-bind="validationMessage: text"></span>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" data-bind="click: save">Save</button>
-                    <button type="button" class="btn" data-bind="click: cancel">Cancel</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bind="click: save">Save</button>
+                        <button type="button" class="btn" data-bind="click: cancel">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
-</div>
-</script>
+    </script>
 
     <script type="text/html" id="AddMarkToMarketRate">     
         <div class="modal fade" id="AddMarkToMarketRate">
@@ -816,16 +816,14 @@
     </script>
 
   
-<script src="~/Scripts/app/viewmodels/tradeEditViewModel.js"></script>
-<script src="~/Scripts/app/viewmodels/commentEditViewModel.js"></script>
-<script src="~/Scripts/app/viewmodels/markRateEditViewModel.js"></script>
-<script src="~/Scripts/app/viewmodels/interestRateDiffEditViewModel.js"></script>
+    <script src="~/Scripts/app/viewmodels/tradeEditViewModel.js"></script>
+    <script src="~/Scripts/app/viewmodels/commentEditViewModel.js"></script>
+    <script src="~/Scripts/app/viewmodels/markRateEditViewModel.js"></script>
+    <script src="~/Scripts/app/viewmodels/interestRateDiffEditViewModel.js"></script>
     <script type="text/javascript">
-          
-      
-        
-        $(document).ready(function () {
-            
+
+        $(document).ready(function() {
+
             // when .modal-wide opened, set content-body height based on browser height; 200 is appx height of modal padding, modal title and button bar
 
             $(".modal-wide").on("show.bs.modal", function() {
@@ -834,9 +832,10 @@
             });
 
             //HACK to show select2 in bootstrap modals
-            $.fn.modal.Constructor.prototype.enforceFocus = function () {};
-           
-            window.onbeforeunload = function () {
+            $.fn.modal.Constructor.prototype.enforceFocus = function() {
+            };
+
+            window.onbeforeunload = function() {
                 return 'Are you sure you want to navigate away from this page?';
             };
 
@@ -855,22 +854,30 @@
                 {
                     setDate: moment(new Date(), "YYYY-MM-DD")
                 });
-            
+
             //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpEditAbsPerformance').datepicker(
                 {
+                    
+                    
+                    
+                    
                     //setDate: moment(new Date(), "YYYY-MM-DD")
                 });
-            
+
             //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpAddRelPerformance').datepicker(
                 {
                     setDate: moment(new Date(), "YYYY-MM-DD")
                 });
-            
+
             //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpEditRelPerformance').datepicker(
                 {
+                    
+                    
+                    
+                    
                     //setDate: moment(new Date(), "YYYY-MM-DD")
                 });
             //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
@@ -880,9 +887,11 @@
             //trigger changes on typeaheads
             //select2.3.5 jquery control for typeaheads
             //to remotely get Benchmarks for typeaheads
+
             function format_benchmark(item) {
                 return item.benchmark_label;
             }
+
             $("#BenchmarkTypeAhead").select2({
                 minimumInputLength: 1,
                 placeholder: "{Benchmark Selection}",
@@ -893,21 +902,21 @@
                     url: baseUrl + "Trade/AutoCompleteBenchmark",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.benchmark_id;
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -915,13 +924,12 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_benchmark,
                 formatSelection: format_benchmark
-            
             });
 
             $("#relBenchmarkTypeAhead").select2({
@@ -934,21 +942,21 @@
                     url: baseUrl + "Trade/AutoCompleteBenchmark",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.benchmark_id;
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -956,16 +964,15 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_benchmark,
                 formatSelection: format_benchmark,
-
             });
             //end typeAhead
-            
+
             $("#addRelBenchmarkTypeAhead").select2({
                 minimumInputLength: 1,
                 placeholder: "{Benchmark Selection}",
@@ -976,21 +983,21 @@
                     url: baseUrl + "Trade/AutoCompleteBenchmark",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.benchmark_id;
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -998,16 +1005,15 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_benchmark,
                 formatSelection: format_benchmark,
-
             });
             //end typeAhead
-            
+
             $("#editRelBenchmarkTypeAhead").select2({
                 minimumInputLength: 1,
                 placeholder: "{Benchmark Selection}",
@@ -1018,21 +1024,21 @@
                     url: baseUrl + "Trade/AutoCompleteBenchmark",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.benchmark_id;
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -1040,20 +1046,21 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_benchmark,
                 formatSelection: format_benchmark,
-
             });
             //end typeAhead
 
             //to remotely get linked trades for typeaheads
+
             function format_trade(item) {
                 return item.trade_editorial_label;
             }
+
             $("#selectRelatedTrades").select2({
                 minimumInputLength: 1,
                 placeholder: "{Linked Trades}",
@@ -1065,18 +1072,18 @@
                     url: baseUrl + "Trade/AutoCompleteLinkedTrades",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -1084,30 +1091,31 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data)  { 
+                    }).done(function(data) {
                         var results = [];
-                        for( var i = 0; i < data.length; i++ )
-                        {
+                        for (var i = 0; i < data.length; i++) {
                             results.push(data[i]);
                         }
-                        callback(results); 
+                        callback(results);
                     });
                 },
 
-                id: function (obj) {
+                id: function(obj) {
                     return obj.trade_id;
                 },
                 formatResult: format_trade,
                 formatSelection: format_trade
             });
             //end typeAhead
-            
+
             //to remotely get currencies for typeaheads
+
             function format_currency(item) {
                 return item.currency_label;
             }
+
             $("#CurrencyTypeAhead").select2({
                 minimumInputLength: 1,
                 placeholder: "{Currency Selection}",
@@ -1117,25 +1125,25 @@
                     url: baseUrl + "Trade/AutoCompleteCurrency",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.currency_id;
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency
             });
             //end typeAhead
-            
+
             //to remotely get currencies for typeaheads
             $("#modalEditAbsCurrencyTypeAhead").select2({
                 minimumInputLength: 1,
@@ -1147,21 +1155,21 @@
                     url: baseUrl + "Trade/AutoCompleteCurrency",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.currency_id;
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -1169,15 +1177,15 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency
             });
             //end typeAhead
-            
+
             //to remotely get currencies for typeaheads
             $("#modalAbsCurrencyTypeAhead").select2({
                 minimumInputLength: 1,
@@ -1189,21 +1197,21 @@
                     url: baseUrl + "Trade/AutoCompleteCurrency",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.currency_id;
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -1211,15 +1219,15 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency
             });
             //end typeAhead
-          
+
             //to remotely get currencies for typeaheads
             $("#absCurrencyTypeAhead").select2({
                 minimumInputLength: 1,
@@ -1231,21 +1239,21 @@
                     url: baseUrl + "Trade/AutoCompleteCurrency",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.currency_id;
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -1253,9 +1261,9 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency
@@ -1273,21 +1281,21 @@
                     url: baseUrl + "Trade/AutoCompleteCurrency",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.currency_id;
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -1295,15 +1303,15 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency
             });
             //end typeAhead
-            
+
             //to remotely get currencies for typeaheads
             $("#modalRelCurrencyTypeAhead").select2({
                 minimumInputLength: 1,
@@ -1315,21 +1323,21 @@
                     url: baseUrl + "Trade/AutoCompleteCurrency",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.currency_id;
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -1337,9 +1345,9 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency
@@ -1356,21 +1364,21 @@
                     url: baseUrl + "Trade/AutoCompleteCurrency",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.currency_id;
                 },
-                initSelection: function (element, callback) {
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
@@ -1378,9 +1386,9 @@
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency
@@ -1388,7 +1396,7 @@
             //end typeAhead
 
             //confirm change of relatvity id
-            $('#relativityId').on("focus", function (ev) {
+            $('#relativityId').on("focus", function(ev) {
                 toastr.options.closeButton = true;
                 toastr.options.positionClass = "toast-top-left";
                 toastr.options.timeOut = 5000; // 5s
@@ -1400,12 +1408,13 @@
             var id = @Html.DisplayFor(model => model.trade_id);
             LoadTradeData(id);
 
-        });//end document.ready
-
+        });
+//end document.ready
    
         
     
         //to remotely get Financial Instrument for typeaheads
+
         function typeAheadFinInstr() {
             var newTradableThing = '#' + ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter;
             $(newTradableThing).select2({
@@ -1418,30 +1427,33 @@
                     url: baseUrl + "Trade/AutoCompleteTradableThing",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.tradable_thing_id;
                 },
-                formatResult: function (item) {
+                formatResult: function(item) {
                     return item.tradable_thing_label;
                 },
-                formatSelection: function (item) {
+                formatSelection: function(item) {
                     return item.tradable_thing_label;
                 }
             });
-        };
+        }
+
+        ;
 
         //to remotely get positon for typeaheads
+
         function typeAheadPosition() {
             var newPosition = '#' + ko.bindingHandlers.uniqueIdPosition.prefix + ko.bindingHandlers.uniqueIdPosition.counter;
             $(newPosition).select2({
@@ -1454,7 +1466,7 @@
                     url: baseUrl + "Trade/AutoCompletePosition",
                     dataType: 'json',
                     type: 'POST',
-                    data: function () {
+                    data: function() {
                         var relativityId = $('#relativityId').val();
                         if (relativityId == "" || relativityId == 'undefined') {
                             relativityId = "0";
@@ -1463,31 +1475,33 @@
                             relativityId: relativityId, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.position_id;
                 },
-                formatResult: function (item) {
+                formatResult: function(item) {
                     return item.position_label;
                 },
-                formatSelection: function (item) {
+                formatSelection: function(item) {
                     return item.position_label;
                 },
-                formatNoMatches: function () {
+                formatNoMatches: function() {
                     return "Please select a Trade Benchmark";
                 }
             });
-            $('#relativityId').change(function () {
+            $('#relativityId').change(function() {
                 $(newPosition).select2("val", "").trigger("change");
             });
-        };
+        }
 
-        $('#btnAddGroup').click(function () {
+        ;
+
+        $('#btnAddGroup').click(function() {
             $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '250px' });
         });
 
@@ -1496,7 +1510,7 @@
             apiGetURL += "Api/Values/Get/";
             apiGetURL += id;
 
-            $.getJSON(apiGetURL, function (allData) {
+            $.getJSON(apiGetURL, function(allData) {
                 var parsed = JSON.parse(allData);
                 vm.trade_id(parsed.trade_id);
                 vm.service_id(parsed.service_id);
@@ -1514,7 +1528,7 @@
                 vm.instruction_type_id(parsed.instruction_type_id);
                 vm.instruction_label(parsed.instruction_label);
                 vm.hedge_id(parsed.hedge_id);
-                vm.currency_id(parsed.currency_id); 
+                vm.currency_id(parsed.currency_id);
                 vm.related_trade_ids(parsed.related_trade_ids),
                 vm.apl_func(parsed.apl_func);
                 vm.mark_track_record_id(parsed.mark_track_record_id);
@@ -1539,25 +1553,23 @@
                 $("#absCurrencyTypeAhead").select2("val", parsed.abs_currency_id);
                 $("#relCurrencyTypeAhead").select2("val", parsed.rel_currency_id);
                 $("#relBenchmarkTypeAhead").select2("val", parsed.return_benchmark_id);
-                $("#selectRelatedTrades").select2("val",parsed.trade_id);
+                $("#selectRelatedTrades").select2("val", parsed.trade_id);
 
                 //trade groups and lines      
-                for( var i = 0; i < parsed.tradegroups.length; i++ )
-                {
-                
+                for (var i = 0; i < parsed.tradegroups.length; i++) {
+
                     var currentParsedGroup = parsed.tradegroups[i];
-                    var tradeLinesArray = new Array();                                                                        
-                    for( var j = 0; j < currentParsedGroup.tradeLines.length; j++ )
-                    {
+                    var tradeLinesArray = new Array();
+                    for (var j = 0; j < currentParsedGroup.tradeLines.length; j++) {
                         tradeLinesArray[j] = new TradeLine(
-                            currentParsedGroup.tradeLines[j].trade_line_id,                                                               currentParsedGroup.tradeLines[j].position_id,
+                            currentParsedGroup.tradeLines[j].trade_line_id, currentParsedGroup.tradeLines[j].position_id,
                             currentParsedGroup.tradeLines[j].tradable_thing_id
                         );
                         tradeLinesArray[j].CRUDMode = "edit";
 
                     }
 
-                
+
                     var newGroup = new TradeGroup(
                         parsed.tradegroups[i].trade_line_group_id,
                         parsed.tradegroups[i].trade_line_group_type_id,
@@ -1578,7 +1590,7 @@
                         url: baseUrl + "Trade/AutoCompletePosition",
                         dataType: 'json',
                         type: 'POST',
-                        data: function () {
+                        data: function() {
                             var relativityId = $('#relativityId').val();
                             if (relativityId == "" || relativityId == 'undefined') {
                                 relativityId = "0";
@@ -1587,39 +1599,39 @@
                                 relativityId: relativityId, //search term 
                             };
                         },
-                        results: function (data, page) {
+                        results: function(data, page) {
                             return {
                                 results: data
                             };
                         }
                     },
-                    initSelection: function (element, callback) {
+                    initSelection: function(element, callback) {
                         //console.log('reached here: id:' + element.val())
                         $.ajax({
                             type: "POST",
-                            url: baseUrl +  "Trade/GetPosition",
+                            url: baseUrl + "Trade/GetPosition",
                             dataType: 'json',
                             async: false,
                             data: { id: (element.val()) },
-                            success: function (data) {
+                            success: function(data) {
                             }
-                        }).done(function (data) { callback(data[0]); });
+                        }).done(function(data) { callback(data[0]); });
                     },
-                    id: function (obj) {
+                    id: function(obj) {
                         return obj.position_id;
                     },
-                    formatResult: function (item) {
+                    formatResult: function(item) {
                         return item.position_label;
                     },
-                    formatSelection: function (item) {
+                    formatSelection: function(item) {
                         return item.position_label;
                     },
-                    formatNoMatches: function () {
+                    formatNoMatches: function() {
                         return "Please select a Trade Benchmark";
                     }
                 });
 
-                $('#relativityId').change(function () {
+                $('#relativityId').change(function() {
                     $('.tradeLinePosition').select2("val", "").trigger("change");
                 });
 
@@ -1633,36 +1645,36 @@
                         url: baseUrl + "Trade/AutoCompleteTradableThing",
                         dataType: 'json',
                         type: 'POST',
-                        data: function (term, page) {
+                        data: function(term, page) {
                             return {
                                 term: term, //search term 
                             };
                         },
-                        results: function (data, page) {
+                        results: function(data, page) {
                             return {
                                 results: data
                             };
                         }
                     },
-                    initSelection: function (element, callback) {
+                    initSelection: function(element, callback) {
                         //console.log('reached here: id:' + element.val())
                         $.ajax({
                             type: "POST",
-                            url: baseUrl +  "Trade/GetTradableThing",
+                            url: baseUrl + "Trade/GetTradableThing",
                             dataType: 'json',
                             async: false,
                             data: { id: (element.val()) },
-                            success: function (data) {
+                            success: function(data) {
                             }
-                        }).done(function (data) { callback(data[0]); });
+                        }).done(function(data) { callback(data[0]); });
                     },
-                    id: function (obj) {
+                    id: function(obj) {
                         return obj.tradable_thing_id;
                     },
-                    formatResult: function (item) {
+                    formatResult: function(item) {
                         return item.tradable_thing_label;
                     },
-                    formatSelection: function (item) {
+                    formatSelection: function(item) {
                         return item.tradable_thing_label;
                     }
                 });
@@ -1671,7 +1683,9 @@
 
             vm.CRUDMode = "edit";
 
-        };
+        }
+
+        ;
 
         function LoadAbsolutePerformanceData() {
             vm.abs_Performanceitems.removeAll();
@@ -1680,37 +1694,87 @@
             apiGetURL += "Trade/GetAbsolutePerformances/";
             apiGetURL += vm.trade_id();
 
-            $.getJSON(apiGetURL, function (allData) {
+            $.getJSON(apiGetURL, function(allData) {
                 vm.abs_Performanceitems(allData);
             });
-            
+
             $('#editAbsolutePerformanceModal').modal('show');
-          
+
         }
-        
+
         function LoadRelativePerformanceData() {
             var apiGetURL = baseUrl;
             apiGetURL += "Trade/GetRelativePerformances/";
             apiGetURL += vm.trade_id();
 
-            $.getJSON(apiGetURL, function (allData) {
+            $.getJSON(apiGetURL, function(allData) {
                 vm.rel_Performanceitems(allData);
             });
-            
+
             $('#editRelativePerformanceModal').modal('show');
-          
+
         }
 
         //send save request to API            
+
         function saveTrade() {
             if (vm.saveTradeData() == true) {
                 //alert('Trade successfully created');  
             }
 
-        };
+        }
+
+        ;
+
+        function afterModalEditLoadData() {
+
+            var apiGetURL = baseUrl;
+            apiGetURL += "Api/Values/Get/";
+            apiGetURL += vm.trade_id();
+
+            $.getJSON(apiGetURL, function(allData) {
+                var parsed = JSON.parse(allData);
+                //vm.trade_id(parsed.trade_id);
+                //vm.service_id(parsed.service_id);
+                //vm.length_type_id(parsed.length_type_id);
+                //vm.relativity_id(parsed.relativity_id);
+                //vm.benchmark_id(parsed.benchmark_id);
+                //vm.last_updated(parsed.last_updated);
+                //vm.trade_editorial_label(parsed.trade_editorial_label);
+                //vm.structure_type_id(parsed.structure_type_id);
+                vm.trade_instruction_id(parsed.trade_instruction_id);
+                vm.instruction_entry(parsed.instruction_entry);
+                vm.instruction_entry_date(parsed.instruction_entry_date);
+                vm.instruction_exit(parsed.instruction_exit);
+                vm.instruction_exit_date(parsed.instruction_exit_date);
+                vm.instruction_type_id(parsed.instruction_type_id);
+                vm.instruction_label(parsed.instruction_label);
+                vm.hedge_id(parsed.hedge_id);
+                vm.currency_id(parsed.currency_id);
+                vm.related_trade_ids(parsed.related_trade_ids),
+                vm.apl_func(parsed.apl_func);
+                vm.mark_track_record_id(parsed.mark_track_record_id);
+                vm.mark_to_mark_rate(parsed.mark_to_mark_rate);
+                vm.int_track_record_id(parsed.int_track_record_id);
+                vm.int_track_record_id(parsed.int_track_record_id);
+                vm.interest_rate_diff(parsed.interest_rate_diff);
+                vm.abs_track_performance_id(parsed.abs_track_performance_id);
+                vm.abs_measure_type_id(parsed.abs_measure_type_id);
+                vm.abs_currency_id(parsed.abs_currency_id);
+                vm.abs_return_value(parsed.abs_return_value);
+                vm.rel_track_performance_id(parsed.rel_track_performance_id);
+                vm.rel_measure_type_id(parsed.rel_measure_type_id);
+                vm.rel_currency_id(parsed.rel_currency_id);
+                vm.rel_return_value(parsed.rel_return_value);
+                vm.return_benchmark_id(parsed.return_benchmark_id);
+                vm.comment_id(parsed.comment_id);
+                vm.comments(parsed.comments);
+            });
+        }
 
     </script>
 }
+
 
 
 

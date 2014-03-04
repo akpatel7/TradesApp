@@ -954,26 +954,7 @@ function TradeViewModel(
            }
        });
 
-    //self.abs_selectedItemApplyChanges = function () {
-    //    var recordindex = (self.abs_Performanceitems().length) - 1;
-    //    for (var i = 0; i < self.abs_Performanceitems().length; i++) {
-    //        if (self.abs_Performanceitems()[i].trade_performance_id == self.edit_abs_track_performance_id())             {
-    //            recordindex = i;
-    //        }
-    //        var record = self.abs_Performanceitems()[recordindex];
-    //        record.measure_type_id = self.edit_abs_measure_type_id();
-    //        record.return_currency_id = self.edit_abs_currency_id();
-    //        record.return_value = self.edit_abs_return_value();
-    //        record.last_updated = self.edit_abs_last_updated();
-
-    //    }
-    //};
-
     self.Save_AbsPerformance_Edit_Record = function() {
-        console.log('saving  abs o');
-        //this.trackRecord_id(0);
-        //this.markToMarketRate(newMarkToMarketRate.text);
-        //Start Mark to Market Rate save//////////////////////////
         console.log('Posting AbsolutePerformances to server to save.');
         var apiURL = baseUrl;
         apiURL += "api/AbsolutePerformances/post/";
@@ -981,6 +962,7 @@ function TradeViewModel(
             url: apiURL,
             type: 'post',
             contentType: 'application/json',
+            async: false,
             data: JSON.stringify({
                 "trade_performance_id": self.edit_abs_track_performance_id(),
                 "trade_id": self.trade_id(),
@@ -992,6 +974,7 @@ function TradeViewModel(
             success: function(data) {
                 if (data.Success) {
                     //update trade info
+                    afterModalEditLoadData();
                     window.onbeforeunload = null;
                     console.log(data.Message);
                     bootbox.dialog({
@@ -1001,17 +984,10 @@ function TradeViewModel(
                             success: {
                                 label: "OK",
                                 className: "btn-success",
-                                callback: function() {
+                                callback: function () {
                                     return true;
                                 }
                             },
-                            //main: {
-                            //    label: "Exit",
-                            //    className: "btn-primary",
-                            //    callback: function() {
-                            //        document.location.href = $('#cancelUrl').attr('href');
-                            //    }
-                            //}
                         }
                     });
                 } else {
@@ -1084,36 +1060,58 @@ function TradeViewModel(
            self.edit_rel_last_updated(record.last_updated);
        });
     
+    self.rel_SelectedItems.subscribe(
+      function () {
+          var recordindex = (self.rel_SelectedItems().length) - 1;
+          if (recordindex >= 0) {
+              var record = self.rel_SelectedItems()[recordindex];
+              self.edit_rel_track_performance_id(record.trade_performance_id);
+              self.edit_rel_measure_type_id(record.measure_type_id);
+              self.edit_rel_return_apl_func(record.return_apl_function);
+              self.edit_rel_currency_id(record.return_currency_id);
+              self.edit_rel_return_benchmark_id();
+              self.edit_rel_return_value(record.return_value);
+              self.edit_rel_last_updated(record.last_updated);
+              $('#modalEditRelCurrencyTypeAhead').trigger('change');
+              $('#editRelBenchmarkTypeAhead').trigger('change');
+          } else {
+              self.edit_rel_track_performance_id(0);
+              self.edit_rel_measure_type_id(1);
+              //self.edit_abs_return_apl_func(record.return_apl_function);
+              self.edit_rel_currency_id("");
+              self.edit_rel_return_benchmark_id("");
+              self.edit_rel_return_value("");
+              self.edit_rel_last_updated("");
+          }
+      });
+
     self.Save_RelPerformance_Edit_Record = function () {
-        console.log('saving  abs o');
-        //this.trackRecord_id(0);
-        //this.markToMarketRate(newMarkToMarketRate.text);
-        //Start Mark to Market Rate save//////////////////////////
         console.log('Posting AbsolutePerformances to server to save.');
         var apiURL = baseUrl;
-        apiURL += "api/AbsolutePerformances/post/";
+        apiURL += "api/RelativePerformances/post/";
         $.ajax({
             url: apiURL,
             type: 'post',
-            contentType: 'json',
-            timeout: 15000,
+            contentType: 'application/json',
+            async: false,
             data: JSON.stringify({
-                "trade_performance_id": self.edit_abs_track_performance_id(),
+                "trade_performance_id": self.edit_rel_track_performance_id(),
                 "trade_id": self.trade_id(),
-                "measure_type_id": self.edit_abs_measure_type_id(),
-                "return_currency_id": self.edit_abs_currency_id(),
+                "measure_type_id": self.edit_rel_measure_type_id(),
+                "return_currency_id": self.edit_rel_currency_id(),
+                "return_value": self.edit_rel_return_value(),
                 "return_benchmark_id": self.edit_rel_return_benchmark_id(),
-                "return_value": self.edit_abs_return_value(),
-                "last_updated": self.edit_abs_last_updated()
+                "last_updated": self.edit_rel_last_updated()
             }),
             success: function (data) {
                 if (data.Success) {
                     //update trade info
+                    afterModalEditLoadData();
                     window.onbeforeunload = null;
                     console.log(data.Message);
                     bootbox.dialog({
                         message: data.Message,
-                        title: "Relative Performance",
+                        title: "Absolute Performance",
                         buttons: {
                             success: {
                                 label: "OK",
@@ -1122,13 +1120,6 @@ function TradeViewModel(
                                     return true;
                                 }
                             },
-                            //main: {
-                            //    label: "Exit",
-                            //    className: "btn-primary",
-                            //    callback: function() {
-                            //        document.location.href = $('#cancelUrl').attr('href');
-                            //    }
-                            //}
                         }
                     });
                 } else {
@@ -1142,7 +1133,7 @@ function TradeViewModel(
                 var message = "error: " + XMLHttpRequest.responseText;
                 bootbox.dialog({
                     message: message,
-                    title: "Relative Performance",
+                    title: "Absolute Performance",
                     className: "alert-danger",
                     buttons: {
                         danger: {
@@ -1156,7 +1147,6 @@ function TradeViewModel(
             }
         });
     };
-
 
     //Test api calls section
 
