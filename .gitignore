@@ -231,3 +231,4 @@ TradesApp/Web.config
 TradesWebApplication/Api/ValuesController.cs.orig
 packages/RestSharp.104.4.0/lib/net4/RestSharp.xml
 packages/log4net.2.0.3/lib/net40-full/log4net.xml
+TradesWebApplication/error-log-file.txt
