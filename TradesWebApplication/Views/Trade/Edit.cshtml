@@ -489,6 +489,7 @@
                         </div>
                         <div class="col-sm-4" data-bind="visible: edit_abs_measure_type_id() == 2">
                             <input  id="modalAbsCurrencyTypeAhead" type="hidden" data-bind="value: edit_abs_currency_id" />
+<span class="validationMessage" data-bind="validationMessage: edit_abs_currency_id"></span> 
                         </div>
                         <div class="col-sm-3">
                             <input type="text" data-bind="value: edit_abs_return_value"  />
@@ -498,7 +499,7 @@
                             <div class="input-append date" id="dpAddAbsPerformance" data-datepicker-format="YYYY-MM-DD">
                                 <input class="span2" size="20" type="text" data-bind="value: edit_abs_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
                                 <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
-                                <span class="validationMessage" data-bind="validationMessage: instruction_entry_date"></span>
+                                <span class="validationMessage" data-bind="validationMessage: edit_abs_return_date"></span>
                             </div>  
                         </div>
                     </div>
@@ -506,7 +507,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-primary" onclick="vm.Save_AbsPerformance_Edit_Record()">Save</button>
+               <button type="submit" class="btn btn-primary" onclick="vm.Save_AbsPerformance_Edit_Record()">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
             </div>
         </div>
@@ -549,6 +550,7 @@
         </div>
         <div class="col-sm-4" data-bind="visible: edit_abs_measure_type_id() == 2">
             <input  id="modalEditAbsCurrencyTypeAhead" type="hidden" data-bind="value: edit_abs_currency_id" />
+<span class="validationMessage" data-bind="validationMessage: edit_abs_currency_id"></span>
         </div>
         <div class="col-sm-3">
             <input type="text" data-bind="value: edit_abs_return_value"  />
@@ -592,6 +594,7 @@
                         </div>
                         <div class="col-sm-4" data-bind="visible: edit_rel_measure_type_id() == 2">
                             <input  id="modalRelCurrencyTypeAhead" type="hidden" data-bind="value: edit_rel_currency_id" />
+<span class="validationMessage" data-bind="validationMessage: edit_rel_currency_id"></span> 
                         </div>
                         <div class="col-sm-3">
                             <input type="text" data-bind="value: edit_rel_return_value"  />
@@ -636,7 +639,7 @@
             </div>
             <div class="modal-body">
 
-               <div class="center-block"id="grid" style="height: 350px; width: 800px"  
+               <div class="center-block"id="grid" style="height: 325px; width: 800px"  
                     data-bind="koGrid: { data: rel_Performanceitems, afterSelectionChange: function () { return true; },
     columnDefs: [{ field: 'measure_type', displayName: 'Return Type',width:'300'},
                  { field: 'return_value', displayName: 'Value',width:'100' },
@@ -663,6 +666,7 @@
         </div>
         <div class="col-sm-4" data-bind="visible: edit_rel_measure_type_id() == 2">
             <input  id="modalEditRelCurrencyTypeAhead" type="hidden" data-bind="value: edit_rel_currency_id" />
+<span class="validationMessage" data-bind="validationMessage: edit_rel_currency_id"></span>
         </div>
         <div class="col-sm-3">
             <input type="text" data-bind="value: edit_rel_return_value"  />
@@ -672,7 +676,7 @@
             <div class="input-append date" id="dpEditRelPerformance" data-datepicker-format="YYYY-MM-DD">
                 <input class="span2" size="20" type="text" data-bind="value: edit_rel_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
                 <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
-                <span class="validationMessage" data-bind="validationMessage: edit_rel_return_value"></span>
+                <span class="validationMessage" data-bind="validationMessage: edit_rel_return_date"></span>
             </div>  
         </div>
     </div>
@@ -845,22 +849,19 @@
             //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpInstructionEntry').datepicker(
                 {
-                    setDate: moment(new Date(), "YYYY-MM-DD")
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
                 });
             $('#dpInstructionExit').datepicker();
 
             //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpAddAbsPerformance').datepicker(
                 {
-                    setDate: moment(new Date(), "YYYY-MM-DD")
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
                 });
 
             //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpEditAbsPerformance').datepicker(
                 {
-                    
-                    
-                    
                     
                     //setDate: moment(new Date(), "YYYY-MM-DD")
                 });
@@ -868,16 +869,12 @@
             //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpAddRelPerformance').datepicker(
                 {
-                    setDate: moment(new Date(), "YYYY-MM-DD")
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
                 });
 
             //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpEditRelPerformance').datepicker(
                 {
-                    
-                    
-                    
-                    
                     //setDate: moment(new Date(), "YYYY-MM-DD")
                 });
             //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
@@ -1773,6 +1770,8 @@
                 vm.comments(parsed.comments);
             });
             
+
+
         }
 
     </script>

@@ -928,9 +928,9 @@ function TradeViewModel(
     this.edit_abs_return_benchmark_id = ko.observable(0);
 
     edit_abs_return_value = typeof (edit_abs_return_value) !== 'undefined' ? edit_abs_return_value : "";
-    this.edit_abs_return_value = ko.observable(edit_abs_return_value).extend({ number: true });
+    this.edit_abs_return_value = ko.validatedObservable(edit_abs_return_value).extend({ required: true }).extend({ number: true });
 
-    this.edit_abs_return_date = ko.observable("").extend({ required: true, dateISO: true });
+    this.edit_abs_return_date = ko.validatedObservable("").extend({ required: true, dateISO: true });
     ;;
 
     this.abs_Performanceitems = ko.observableArray([]);
@@ -958,78 +958,124 @@ function TradeViewModel(
                //self.edit_abs_return_benchmark_id();
                self.edit_abs_return_value("");
                self.edit_abs_return_date("");
+               $('#modalEditAbsCurrencyTypeAhead').trigger('change');
            }
        });
+    
+    this.abs_edit_isValid = function() {
+        return self.edit_abs_track_performance_id.isValid() &&
+            self.edit_abs_measure_type_id.isValid() &&
+            //self.edit_abs_return_apl_func(record.return_apl_function);
+            self.edit_abs_currency_id.isValid() &&
+            //self.edit_abs_return_benchmark_id();
+            self.edit_abs_return_value.isValid() &&
+            self.edit_abs_return_date.isValid();
+    };
+    
+    self.Save_AbsPerformance_Edit_Record = function () {
+        if (self.abs_edit_isValid()) {
+            console.log('Posting AbsolutePerformances to server to save.');
+            var apiURL = baseUrl;
+            apiURL += "api/AbsolutePerformances/post/";
+            $.ajax({
+                url: apiURL,
+                type: 'post',
+                contentType: 'application/json',
+                async: false,
+                data: JSON.stringify({
+                    "trade_performance_id": self.edit_abs_track_performance_id(),
+                    "trade_id": self.trade_id(),
+                    "measure_type_id": self.edit_abs_measure_type_id(),
+                    "return_currency_id": self.edit_abs_currency_id(),
+                    "return_value": self.edit_abs_return_value(),
+                    "return_date": self.edit_abs_return_date()
+                }),
+                success: function(data) {
+                    if (data.Success) {
+                        //update trade info
+                        self.abs_Performanceitems.removeAll();
+                        self.abs_SelectedItems.removeAll();
+                        var apiGetURL = baseUrl;
+                        apiGetURL += "Trade/GetAbsolutePerformances/";
+                        apiGetURL += self.trade_id();
 
-    self.Save_AbsPerformance_Edit_Record = function() {
-        console.log('Posting AbsolutePerformances to server to save.');
-        var apiURL = baseUrl;
-        apiURL += "api/AbsolutePerformances/post/";
-        $.ajax({
-            url: apiURL,
-            type: 'post',
-            contentType: 'application/json',
-            async: false,
-            data: JSON.stringify({
-                "trade_performance_id": self.edit_abs_track_performance_id(),
-                "trade_id": self.trade_id(),
-                "measure_type_id": self.edit_abs_measure_type_id(),
-                "return_currency_id": self.edit_abs_currency_id(),
-                "return_value": self.edit_abs_return_value(),
-                "return_date": self.edit_abs_return_date()
-            }),
-            success: function(data) {
-                if (data.Success) {
-                    //update trade info
-                    self.abs_Performanceitems.removeAll();
-                    self.abs_SelectedItems.removeAll();
-                    var apiGetURL = baseUrl;
-                    apiGetURL += "Trade/GetAbsolutePerformances/";
-                    apiGetURL += self.trade_id();
+                        $.getJSON(apiGetURL, function(allData) {
+                            self.abs_Performanceitems(allData);
+                        });
+                        afterModalEditLoadData();
+                        window.onbeforeunload = null;
+                        console.log(data.Message);
+                        bootbox.dialog({
+                            message: data.Message,
+                            title: "Absolute Performance",
+                            buttons: {
+                                success: {
+                                    label: "OK",
+                                    className: "btn-success",
+                                    callback: function () {
+                                        return true;
+                                    }
+                                },
+                            }
+                        });
+                    } else {
+                        console.log(data.Message);
+                        bootbox.alert(data.Message); //display exception
 
-                    $.getJSON(apiGetURL, function (allData) {
-                        self.abs_Performanceitems(allData);
-                    });
-                    afterModalEditLoadData();
-                    window.onbeforeunload = null;
-                    console.log(data.Message);
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log("error: " + XMLHttpRequest.responseText);
+                    var message = "error: " + XMLHttpRequest.responseText;
                     bootbox.dialog({
-                        message: data.Message,
+                        message: message,
                         title: "Absolute Performance",
+                        className: "alert-danger",
                         buttons: {
-                            success: {
+                            danger: {
                                 label: "OK",
-                                className: "btn-success",
-                                callback: function () {
-                                    return true;
+                                className: "btn-danger",
+                                callback: function() {
                                 }
-                            },
-                        }
-                    });
-                } else {
-                    console.log(data.Message);
-                    bootbox.alert(data.Message); //display exception
-
-                }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                console.log("error: " + XMLHttpRequest.responseText);
-                var message = "error: " + XMLHttpRequest.responseText;
-                bootbox.dialog({
-                    message: message,
-                    title: "Absolute Performance",
-                    className: "alert-danger",
-                    buttons: {
-                        danger: {
-                            label: "OK",
-                            className: "btn-danger",
-                            callback: function() {
                             }
                         }
+                    });
+                }
+            });
+        } else {
+            console.log('Validation errors found, please check form.');
+            self.vmMessages("Validation errors found, please check form.");
+            //bootbox.alert(self.vmMessages());
+            var message = self.vmMessages();
+            bootbox.dialog({
+                message: message,
+                title: "Trade Edit",
+                className: "alert-danger",
+                buttons: {
+                    //success: {
+                    //    label: "Create",
+                    //    className: "btn-success",
+                    //    callback: function () {
+                    //        //Example.show("great success");
+                    //    }
+                    //},
+                    danger: {
+                        label: "OK",
+                        className: "btn-danger",
+                        callback: function () {
+                            //Example.show("uh oh, look out!");
+                        }
                     }
-                });
-            }
-        });
+                    //main: {
+                    //    label: "Exit",
+                    //    className: "btn-primary",
+                    //    callback: function () {
+                    //        //Example.show("Primary button");
+                    //    }
+                    //}
+                }
+            });
+        }
     };
 
 
@@ -1052,10 +1098,10 @@ function TradeViewModel(
     });
 
     edit_rel_return_value = typeof (edit_rel_return_value) !== 'undefined' ? edit_rel_return_value : "";
-    this.edit_rel_return_value = ko.observable(edit_rel_return_value).extend({ number: true });
+    this.edit_rel_return_value = ko.observable(edit_rel_return_value).extend({ required: true, number: true });
     
     this.edit_rel_return_date = ko.observable("").extend({ required: true, dateISO: true });
-    ;
+
 
     edit_rel_return_benchmark_id = typeof (edit_rel_return_benchmark_id) !== 'undefined' ? edit_rel_return_benchmark_id : "";
     this.edit_rel_return_benchmark_id = ko.observable(edit_rel_return_benchmark_id).extend({
@@ -1081,7 +1127,7 @@ function TradeViewModel(
               self.edit_rel_currency_id(record.return_currency_id);
               self.edit_rel_return_benchmark_id(record.return_benchmark_id);
               self.edit_rel_return_value(record.return_value);
-              self.edit_rel_last_updated(record.lreturn_date);
+              self.edit_rel_return_date(record.return_date);
               $('#modalEditRelCurrencyTypeAhead').trigger('change');
               $('#editRelBenchmarkTypeAhead').trigger('change');
           } else {
@@ -1092,80 +1138,127 @@ function TradeViewModel(
               self.edit_rel_return_benchmark_id("");
               self.edit_rel_return_value("");
               self.edit_rel_return_date("");
+              $('#modalEditRelCurrencyTypeAhead').trigger('change');
+              $('#editRelBenchmarkTypeAhead').trigger('change');
           }
       });
 
-    self.Save_RelPerformance_Edit_Record = function () {
-        console.log('Posting RelativePerformances to server to save.');
-        var apiURL = baseUrl;
-        apiURL += "api/RelativePerformances/post/";
-        $.ajax({
-            url: apiURL,
-            type: 'post',
-            contentType: 'application/json',
-            async: false,
-            data: JSON.stringify({
-                "trade_performance_id": self.edit_rel_track_performance_id(),
-                "trade_id": self.trade_id(),
-                "measure_type_id": self.edit_rel_measure_type_id(),
-                "return_currency_id": self.edit_rel_currency_id(),
-                "return_value": self.edit_rel_return_value(),
-                "return_benchmark_id": self.edit_rel_return_benchmark_id(),
-                "return_date": self.edit_rel_return_date()
-            }),
-            success: function (data) {
-                if (data.Success) {
-                    //update trade info
-                    self.rel_Performanceitems.removeAll();
-                    self.rel_SelectedItems.removeAll();
-                    var apiGetURL = baseUrl;
-                    apiGetURL += "Trade/GetRelativePerformances/";
-                    apiGetURL += self.trade_id();
+    this.rel_edit_isValid = function () {
+        return self.edit_rel_track_performance_id.isValid() &&
+            self.edit_rel_measure_type_id.isValid() &&
+            //self.edit_abs_return_apl_func(record.return_apl_function);
+            self.edit_rel_currency_id.isValid() &&
+            self.edit_rel_return_benchmark_id() &&
+            self.edit_rel_return_value.isValid() &&
+            self.edit_rel_return_date.isValid();
+    };
+    
+    self.Save_RelPerformance_Edit_Record = function() {
+        if (self.rel_edit_isValid()) {
+            console.log('Posting RelativePerformances to server to save.');
+            var apiURL = baseUrl;
+            apiURL += "api/RelativePerformances/post/";
+            $.ajax({
+                url: apiURL,
+                type: 'post',
+                contentType: 'application/json',
+                async: false,
+                data: JSON.stringify({
+                    "trade_performance_id": self.edit_rel_track_performance_id(),
+                    "trade_id": self.trade_id(),
+                    "measure_type_id": self.edit_rel_measure_type_id(),
+                    "return_currency_id": self.edit_rel_currency_id(),
+                    "return_value": self.edit_rel_return_value(),
+                    "return_benchmark_id": self.edit_rel_return_benchmark_id(),
+                    "return_date": self.edit_rel_return_date()
+                }),
+                success: function(data) {
+                    if (data.Success) {
+                        //update trade info
+                        self.rel_Performanceitems.removeAll();
+                        self.rel_SelectedItems.removeAll();
+                        var apiGetURL = baseUrl;
+                        apiGetURL += "Trade/GetRelativePerformances/";
+                        apiGetURL += self.trade_id();
 
-                    $.getJSON(apiGetURL, function (allData) {
-                        self.rel_Performanceitems(allData);
-                    });
-                    afterModalEditLoadData();
-                    window.onbeforeunload = null;
-                    console.log(data.Message);
+                        $.getJSON(apiGetURL, function(allData) {
+                            self.rel_Performanceitems(allData);
+                        });
+                        afterModalEditLoadData();
+                        window.onbeforeunload = null;
+                        console.log(data.Message);
+                        bootbox.dialog({
+                            message: data.Message,
+                            title: "Relative Performance",
+                            buttons: {
+                                success: {
+                                    label: "OK",
+                                    className: "btn-success",
+                                    callback: function() {
+                                        return true;
+                                    }
+                                },
+                            }
+                        });
+                    } else {
+                        console.log(data.Message);
+                        bootbox.alert(data.Message); //display exception
+
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log("error: " + XMLHttpRequest.responseText);
+                    var message = "error: " + XMLHttpRequest.responseText;
                     bootbox.dialog({
-                        message: data.Message,
+                        message: message,
                         title: "Relative Performance",
+                        className: "alert-danger",
                         buttons: {
-                            success: {
+                            danger: {
                                 label: "OK",
-                                className: "btn-success",
-                                callback: function () {
-                                    return true;
+                                className: "btn-danger",
+                                callback: function() {
                                 }
-                            },
-                        }
-                    });
-                } else {
-                    console.log(data.Message);
-                    bootbox.alert(data.Message); //display exception
-
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log("error: " + XMLHttpRequest.responseText);
-                var message = "error: " + XMLHttpRequest.responseText;
-                bootbox.dialog({
-                    message: message,
-                    title: "Relative Performance",
-                    className: "alert-danger",
-                    buttons: {
-                        danger: {
-                            label: "OK",
-                            className: "btn-danger",
-                            callback: function () {
                             }
                         }
+                    });
+                }
+            });
+        } else {
+            console.log('Validation errors found, please check form.');
+            self.vmMessages("Validation errors found, please check form.");
+            //bootbox.alert(self.vmMessages());
+            var message = self.vmMessages();
+            bootbox.dialog({
+                message: message,
+                title: "Trade Edit",
+                className: "alert-danger",
+                buttons: {
+                    //success: {
+                    //    label: "Create",
+                    //    className: "btn-success",
+                    //    callback: function () {
+                    //        //Example.show("great success");
+                    //    }
+                    //},
+                    danger: {
+                        label: "OK",
+                        className: "btn-danger",
+                        callback: function () {
+                            //Example.show("uh oh, look out!");
+                        }
                     }
-                });
-            }
-        });
-    };
+                    //main: {
+                    //    label: "Exit",
+                    //    className: "btn-primary",
+                    //    callback: function () {
+                    //        //Example.show("Primary button");
+                    //    }
+                    //}
+                }
+            });
+        }
+};
 
     //Test api calls section
 
