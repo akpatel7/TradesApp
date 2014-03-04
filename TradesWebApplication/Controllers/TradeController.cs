@@ -195,7 +195,7 @@ namespace TradesWebApplication.Controllers
             {
                 //absolute performance
                 bool perfFound = false;
-                var absolutePerformance = relatedTradePerformances.LastOrDefault( r => r.trade_id == viewModel.Trade.trade_id && r.return_benchmark_id == null );
+                var absolutePerformance = relatedTradePerformances.OrderBy(t => t.return_date).LastOrDefault( r => r.trade_id == viewModel.Trade.trade_id && r.return_benchmark_id == null && r.return_date != null);
                 if (absolutePerformance != null)
                 {
                     perfFound = true;
@@ -207,7 +207,7 @@ namespace TradesWebApplication.Controllers
                
 
                 //relative performance
-                var relativePerformance = relatedTradePerformances.LastOrDefault(r => r.trade_id == viewModel.Trade.trade_id && r.return_benchmark_id != null);
+                var relativePerformance = relatedTradePerformances.OrderBy(t => t.return_date).LastOrDefault(r => r.trade_id == viewModel.Trade.trade_id && r.return_benchmark_id != null && r.return_date != null);
                 if (relativePerformance != null)
                 {
                     perfFound = true;
@@ -627,7 +627,8 @@ namespace TradesWebApplication.Controllers
             var tradeId = int.Parse(id);
             var list = unitOfWork.TradePerformanceRepository.GetAll().Where(t => t.trade_id == tradeId && t.return_benchmark_id == null).ToList();
             var result = (from r in list
-                          where r.last_updated != null
+                          where r.return_date != null
+                          orderby r.return_date descending 
                           select new
                           {
                               r.trade_performance_id,
@@ -650,8 +651,8 @@ namespace TradesWebApplication.Controllers
             var tradeId = int.Parse(id);
             var list = unitOfWork.TradePerformanceRepository.GetAll().Where(t => t.trade_id == tradeId && t.return_benchmark_id != null).ToList();
             var result = (from r in list
-                          where r.last_updated != null
-                          where r.last_updated != null
+                          where r.return_date != null
+                          orderby r.return_date descending 
                           select new
                           {
                               r.trade_performance_id,

@@ -117,7 +117,8 @@ namespace TradesWebApplication.Api
             tradePerformance.measure_type_id = vm.measure_type_id;
             tradePerformance.return_currency_id = vm.return_currency_id;
             tradePerformance.return_value = vm.return_value;
-            tradePerformance.last_updated = vm.last_updated;
+            tradePerformance.return_date = vm.return_date;
+            tradePerformance.last_updated = DateTime.Now;
 
             if (isNewTradePerfromance)
             {

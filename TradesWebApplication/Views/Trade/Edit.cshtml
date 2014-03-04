@@ -496,7 +496,7 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="input-append date" id="dpAddAbsPerformance" data-datepicker-format="YYYY-MM-DD">
-                                <input class="span2" size="20" type="text" data-bind="value: edit_abs_last_updated, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                                <input class="span2" size="20" type="text" data-bind="value: edit_abs_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
                                 <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
                                 <span class="validationMessage" data-bind="validationMessage: instruction_entry_date"></span>
                             </div>  
@@ -527,7 +527,7 @@
                     data-bind="koGrid: { data: abs_Performanceitems, afterSelectionChange: function () { return true; },
     columnDefs: [{ field: 'measure_type', displayName: 'Return Type',width:'300'},
                  { field: 'return_value', displayName: 'Value',width:'150' },
-                 { field: 'last_updated',displayName: 'Last Updated',width:'125' }],
+                 { field: 'return_date',displayName: 'Return Date',width:'125' }],
     autogenerateColumns: false,  
     multiSelect: false,
     showFilter: true,
@@ -556,9 +556,9 @@
         </div>
         <div class="col-sm-3">
             <div class="input-append date" id="dpEditAbsPerformance" data-datepicker-format="YYYY-MM-DD">
-                <input class="span2" size="20" type="text" data-bind="value: edit_abs_last_updated, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                <input class="span2" size="20" type="text" data-bind="value: edit_abs_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
                 <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
-                <span class="validationMessage" data-bind="validationMessage: edit_abs_last_updated"></span>
+                <span class="validationMessage" data-bind="validationMessage: edit_abs_return_date"></span>
             </div>  
         </div>
     </div>
@@ -599,9 +599,9 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="input-append date" id="dpAddRelPerformance" data-datepicker-format="YYYY-MM-DD">
-                                <input class="span2" size="20" type="text" data-bind="value: edit_rel_last_updated, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                                <input class="span2" size="20" type="text" data-bind="value: edit_rel_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
                                 <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
-                                <span class="validationMessage" data-bind="validationMessage: edit_rel_last_updated"></span>
+                                <span class="validationMessage" data-bind="validationMessage: edit_rel_return_date"></span>
                             </div>  
                         </div>
                     </div>
@@ -640,8 +640,8 @@
                     data-bind="koGrid: { data: rel_Performanceitems, afterSelectionChange: function () { return true; },
     columnDefs: [{ field: 'measure_type', displayName: 'Return Type',width:'300'},
                  { field: 'return_value', displayName: 'Value',width:'100' },
-                 { field: 'benchmark_type', displayName: 'Return Type',width:'250'},
-                 { field: 'last_updated',displayName: 'Last Updated',width:'125' }],
+                 { field: 'benchmark_type', displayName: 'Relative To',width:'250'},
+                 { field: 'return_date',displayName: 'Return Date',width:'125' }],
     autogenerateColumns: false,  
     multiSelect: false,
     showFilter: true,
@@ -670,9 +670,9 @@
         </div>
         <div class="col-sm-3">
             <div class="input-append date" id="dpEditRelPerformance" data-datepicker-format="YYYY-MM-DD">
-                <input class="span2" size="20" type="text" data-bind="value: edit_rel_last_updated, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                <input class="span2" size="20" type="text" data-bind="value: edit_rel_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
                 <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
-                <span class="validationMessage" data-bind="validationMessage: edit_rel_last_updated"></span>
+                <span class="validationMessage" data-bind="validationMessage: edit_rel_return_value"></span>
             </div>  
         </div>
     </div>
@@ -1703,6 +1703,8 @@
         }
 
         function LoadRelativePerformanceData() {
+            vm.rel_Performanceitems.removeAll();
+            vm.rel_SelectedItems.removeAll();
             var apiGetURL = baseUrl;
             apiGetURL += "Trade/GetRelativePerformances/";
             apiGetURL += vm.trade_id();
@@ -1727,7 +1729,7 @@
         ;
 
         function afterModalEditLoadData() {
-
+            
             var apiGetURL = baseUrl;
             apiGetURL += "Api/Values/Get/";
             apiGetURL += vm.trade_id();
@@ -1770,6 +1772,7 @@
                 vm.comment_id(parsed.comment_id);
                 vm.comments(parsed.comments);
             });
+            
         }
 
     </script>

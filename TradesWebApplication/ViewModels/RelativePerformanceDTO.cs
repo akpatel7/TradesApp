@@ -48,5 +48,7 @@ namespace TradesWebApplication.ViewModels
             get;
             set;
         }
+
+        public DateTime? return_date { get; set; }
     }
 }

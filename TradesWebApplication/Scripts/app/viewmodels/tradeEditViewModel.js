@@ -917,14 +917,21 @@ function TradeViewModel(
     this.edit_abs_return_apl_func = ko.observable("");
 
     edit_abs_currency_id = typeof (edit_abs_currency_id) !== 'undefined' ? edit_abs_currency_id : ""; //default value
-    this.edit_abs_currency_id = ko.observable(edit_abs_currency_id);
+    this.edit_abs_currency_id = ko.observable(edit_abs_currency_id).extend({
+        required: {
+            onlyIf: function() {
+                return self.edit_abs_measure_type_id() == 2;
+            },
+        }
+    });
 
     this.edit_abs_return_benchmark_id = ko.observable(0);
 
     edit_abs_return_value = typeof (edit_abs_return_value) !== 'undefined' ? edit_abs_return_value : "";
     this.edit_abs_return_value = ko.observable(edit_abs_return_value).extend({ number: true });
 
-    this.edit_abs_last_updated = ko.observable("");
+    this.edit_abs_return_date = ko.observable("").extend({ required: true, dateISO: true });
+    ;;
 
     this.abs_Performanceitems = ko.observableArray([]);
 
@@ -941,7 +948,7 @@ function TradeViewModel(
                self.edit_abs_currency_id(record.return_currency_id);
                //self.edit_abs_return_benchmark_id();
                self.edit_abs_return_value(record.return_value);
-               self.edit_abs_last_updated(record.last_updated);
+               self.edit_abs_return_date(record.return_date);
                $('#modalEditAbsCurrencyTypeAhead').trigger('change');
            } else {
                self.edit_abs_track_performance_id(0);
@@ -950,7 +957,7 @@ function TradeViewModel(
                self.edit_abs_currency_id("");
                //self.edit_abs_return_benchmark_id();
                self.edit_abs_return_value("");
-               self.edit_abs_last_updated("");
+               self.edit_abs_return_date("");
            }
        });
 
@@ -969,11 +976,20 @@ function TradeViewModel(
                 "measure_type_id": self.edit_abs_measure_type_id(),
                 "return_currency_id": self.edit_abs_currency_id(),
                 "return_value": self.edit_abs_return_value(),
-                "last_updated": self.edit_abs_last_updated()
+                "return_date": self.edit_abs_return_date()
             }),
             success: function(data) {
                 if (data.Success) {
                     //update trade info
+                    self.abs_Performanceitems.removeAll();
+                    self.abs_SelectedItems.removeAll();
+                    var apiGetURL = baseUrl;
+                    apiGetURL += "Trade/GetAbsolutePerformances/";
+                    apiGetURL += self.trade_id();
+
+                    $.getJSON(apiGetURL, function (allData) {
+                        self.abs_Performanceitems(allData);
+                    });
                     afterModalEditLoadData();
                     window.onbeforeunload = null;
                     console.log(data.Message);
@@ -1019,7 +1035,7 @@ function TradeViewModel(
 
     //Relative Performance edit section
     edit_rel_track_performance_id = typeof (edit_rel_track_performance_id) !== 'undefined' ? edit_rel_track_performance_id : "";
-    this.edit_rel_track_performance_id = ko.observable(edit_rel_track_performance_id);
+    this.edit_rel_track_performance_id = ko.observable(0);
 
     edit_rel_measure_type_id = typeof (edit_rel_measure_type_id) !== 'undefined' ? edit_rel_measure_type_id : 2; //default value
     this.edit_rel_measure_type_id = ko.observable(2);
@@ -1027,12 +1043,19 @@ function TradeViewModel(
     this.edit_abs_return_apl_func = ko.observable("");
 
     edit_rel_currency_id = typeof (edit_rel_currency_id) !== 'undefined' ? edit_rel_currency_id : "";
-    this.edit_rel_currency_id = ko.observable(edit_rel_currency_id);
+    this.edit_rel_currency_id = ko.observable(edit_rel_currency_id).extend({
+        required: {
+            onlyIf: function () {
+                return self.edit_rel_measure_type_id() == 2;
+            },
+        },
+    });
 
     edit_rel_return_value = typeof (edit_rel_return_value) !== 'undefined' ? edit_rel_return_value : "";
     this.edit_rel_return_value = ko.observable(edit_rel_return_value).extend({ number: true });
     
-    this.edit_rel_last_updated = ko.observable("");
+    this.edit_rel_return_date = ko.observable("").extend({ required: true, dateISO: true });
+    ;
 
     edit_rel_return_benchmark_id = typeof (edit_rel_return_benchmark_id) !== 'undefined' ? edit_rel_return_benchmark_id : "";
     this.edit_rel_return_benchmark_id = ko.observable(edit_rel_return_benchmark_id).extend({
@@ -1048,30 +1071,17 @@ function TradeViewModel(
     this.rel_SelectedItems = ko.observableArray([]);
     
     self.rel_SelectedItems.subscribe(
-       function () {
-           var recordindex = (self.rel_SelectedItems().length) - 1;
-           var record = self.rel_SelectedItems()[recordindex];
-           self.edit_rel_track_performance_id(record.trade_performance_id);
-           self.edit_rel_measure_type_id(record.measure_type_id);
-           self.edit_rel_return_apl_func(record.return_apl_function);
-           self.edit_rel_currency_id(record.return_currency_id);
-           self.edit_rel_return_benchmark_id(record.benchmark_id);
-           self.edit_rel_return_value(record.return_value);
-           self.edit_rel_last_updated(record.last_updated);
-       });
-    
-    self.rel_SelectedItems.subscribe(
       function () {
           var recordindex = (self.rel_SelectedItems().length) - 1;
           if (recordindex >= 0) {
               var record = self.rel_SelectedItems()[recordindex];
               self.edit_rel_track_performance_id(record.trade_performance_id);
               self.edit_rel_measure_type_id(record.measure_type_id);
-              self.edit_rel_return_apl_func(record.return_apl_function);
+              //self.edit_rel_return_apl_func(record.return_apl_function);
               self.edit_rel_currency_id(record.return_currency_id);
-              self.edit_rel_return_benchmark_id();
+              self.edit_rel_return_benchmark_id(record.return_benchmark_id);
               self.edit_rel_return_value(record.return_value);
-              self.edit_rel_last_updated(record.last_updated);
+              self.edit_rel_last_updated(record.lreturn_date);
               $('#modalEditRelCurrencyTypeAhead').trigger('change');
               $('#editRelBenchmarkTypeAhead').trigger('change');
           } else {
@@ -1081,12 +1091,12 @@ function TradeViewModel(
               self.edit_rel_currency_id("");
               self.edit_rel_return_benchmark_id("");
               self.edit_rel_return_value("");
-              self.edit_rel_last_updated("");
+              self.edit_rel_return_date("");
           }
       });
 
     self.Save_RelPerformance_Edit_Record = function () {
-        console.log('Posting AbsolutePerformances to server to save.');
+        console.log('Posting RelativePerformances to server to save.');
         var apiURL = baseUrl;
         apiURL += "api/RelativePerformances/post/";
         $.ajax({
@@ -1101,17 +1111,26 @@ function TradeViewModel(
                 "return_currency_id": self.edit_rel_currency_id(),
                 "return_value": self.edit_rel_return_value(),
                 "return_benchmark_id": self.edit_rel_return_benchmark_id(),
-                "last_updated": self.edit_rel_last_updated()
+                "return_date": self.edit_rel_return_date()
             }),
             success: function (data) {
                 if (data.Success) {
                     //update trade info
+                    self.rel_Performanceitems.removeAll();
+                    self.rel_SelectedItems.removeAll();
+                    var apiGetURL = baseUrl;
+                    apiGetURL += "Trade/GetRelativePerformances/";
+                    apiGetURL += self.trade_id();
+
+                    $.getJSON(apiGetURL, function (allData) {
+                        self.rel_Performanceitems(allData);
+                    });
                     afterModalEditLoadData();
                     window.onbeforeunload = null;
                     console.log(data.Message);
                     bootbox.dialog({
                         message: data.Message,
-                        title: "Absolute Performance",
+                        title: "Relative Performance",
                         buttons: {
                             success: {
                                 label: "OK",
@@ -1133,7 +1152,7 @@ function TradeViewModel(
                 var message = "error: " + XMLHttpRequest.responseText;
                 bootbox.dialog({
                     message: message,
-                    title: "Absolute Performance",
+                    title: "Relative Performance",
                     className: "alert-danger",
                     buttons: {
                         danger: {

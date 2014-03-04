@@ -146,12 +146,12 @@ namespace TradesWebApplication.Api
             bool isTradePerfomanceCreated = false;
 
 
-            var tradePerformances = unitOfWork.TradePerformanceRepository.GetAll().Where(t => t.trade_id == trade.trade_id).ToList();
+            var tradePerformances = unitOfWork.TradePerformanceRepository.GetAll().Where(t => t.trade_id == trade.trade_id && t.return_date != null).ToList();
 
             if (tradePerformances.Any())
             {
 
-                var abs_perf = tradePerformances.LastOrDefault(t => t.return_benchmark_id == null);
+                var abs_perf = tradePerformances.OrderBy(t => t.return_date).LastOrDefault(t => t.return_benchmark_id == null);
 
                 // absolute performance
                 if ( abs_perf != null )
@@ -172,7 +172,7 @@ namespace TradesWebApplication.Api
 
                 }
             
-                var rel_perf = tradePerformances.LastOrDefault(t => t.return_benchmark_id != null); 
+                var rel_perf = tradePerformances.OrderBy(t => t.return_date).LastOrDefault(t => t.return_benchmark_id != null); 
 
                 // relative performance
                 if ( rel_perf != null )
@@ -677,7 +677,7 @@ namespace TradesWebApplication.Api
                     {
                         absPerformance.return_apl_function = apl_func;
                     }
-                    absPerformance.created_on = absPerformance.last_updated = DateTime.Now;
+                    absPerformance.return_date = absPerformance.created_on = absPerformance.last_updated = DateTime.Now;
                     unitOfWork.TradePerformanceRepository.Insert(absPerformance);
                 }
 
@@ -703,7 +703,7 @@ namespace TradesWebApplication.Api
                     {
                         relPerformance.return_apl_function = apl_func;
                     }
-                    relPerformance.created_on = relPerformance.last_updated = DateTime.Now;
+                    relPerformance.return_date = relPerformance.created_on = relPerformance.last_updated = DateTime.Now;
                     unitOfWork.TradePerformanceRepository.Insert(relPerformance);
                 }
 
