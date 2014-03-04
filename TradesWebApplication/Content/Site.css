@@ -1018,10 +1018,6 @@ tr.pager td {
 
 }
 
-/* to center it: Left Margin = (600px – [New Width]) / 2*/
-#addRelativePerformanceModal .modal-body {
-  height: 150px;
-}
 
 
 #editRelativePerformanceModal .modal {
@@ -1064,6 +1060,55 @@ tr.pager td {
 
 }
 
+/* to center it: Left Margin = (600px – [New Width]) / 2*/
+#addRelativePerformanceModal .modal-body {
+  height: 150px;
+}
+
+#editTradeInstructionModal .modal {
+    width: 900px; /* SET THE WIDTH OF THE MODAL */
+    /*margin: -250px 0 0 -450px; *//* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+    }
+#editTradeInstructionModal .modal-dialog {
+  width: 900px;
+}
+/* to center it: Left Margin = (600px – [New Width]) / 2*/
+#editTradeInstructionModal .modal-content {
+  width: 900px; 
+  margin-bottom: -300px;
+  margin-right: -460px;
+  bottom: 50%;
+  right: 50%;
+  position: absolute;
+}
+
+/* to center it: Left Margin = (600px – [New Width]) / 2*/
+#editTradeInstructionModal .modal-body {
+  height: 500px;
+}
+
+#addTradeInstructionModal .modal {
+    width: 900px; /* SET THE WIDTH OF THE MODAL */
+    /*margin: -250px 0 0 -450px; *//* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+    }
+#addTradeInstructionModal .modal-dialog {
+  width: 900px;
+}
+
+#addTradeInstructionModal .modal-content {
+  width: 900px; 
+  margin-bottom: 50px;
+  margin-left: -440px;
+  bottom: 50%;
+  left: 50%;
+  position: absolute;
+
+}
+
+/* to center it: Left Margin = (600px – [New Width]) / 2*/
+#addTradeInstructionModal .modal-body {
+  height: 150px;
+}
 /********************
 *   Mobile Styles   *
 ********************/

@@ -691,6 +691,31 @@ namespace TradesWebApplication.Controllers
             return benchmarkType.benchmark_label;
         }
 
+        //For edit relative performances
+        public JsonResult GetTradeInstructions(string id)
+        {
+            var tradeId = int.Parse(id);
+            var list = unitOfWork.TradeInstructionRepository.GetAll().Where(t => t.trade_id == tradeId).ToList();
+            var result = (from r in list
+                          orderby r.last_updated descending
+                          select new
+                          {
+                              r.trade_instruction_id,
+                              r.trade_id,
+                              r.instruction_entry,
+                              instruction_entry_date = r.instruction_entry_date.HasValue  ? ((DateTime)r.instruction_entry_date).ToString("yyyy-MM-dd") : "",
+                              r.instruction_exit,
+                              instruction_exit_date = r.instruction_exit_date.HasValue ? ((DateTime)r.instruction_exit_date).ToString("yyyy-MM-dd") : "",
+                              r.instruction_label,
+                              r.instruction_type_id, //need descritption
+                              r.hedge_id, //need description
+                              //currency for trade
+                              //currency_type = GetCurrencyDescription(currency_id),
+                              last_updated = r.last_updated.HasValue ? ((DateTime)r.last_updated).ToString("yyyy-MM-dd") : ""
+                          }).Distinct();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         public IEnumerable<int> StringToIntList(string str)
         {
             if (String.IsNullOrEmpty(str))

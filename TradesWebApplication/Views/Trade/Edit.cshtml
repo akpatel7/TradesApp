@@ -1887,6 +1887,22 @@
             $('#editRelativePerformanceModal').modal('show');
 
         }
+        
+        function LoadTradeInstructionData() {
+            //vm.rel_Performanceitems.removeAll();
+            //vm.rel_SelectedItems.removeAll();
+            var apiGetURL = baseUrl;
+            apiGetURL += "Trade/GetTradeInstructions/";
+            apiGetURL += vm.trade_id();
+
+            $.getJSON(apiGetURL, function(allData) {
+                //vm.rel_Performanceitems(allData);
+            });
+
+            $('#addTradeInstructionModal').modal('show');
+
+        }
+
 
         //send save request to API            
 
