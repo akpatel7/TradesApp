@@ -40,25 +40,40 @@ namespace TradesWebApplication.Api
             return JsonConvert.SerializeObject(comment);
         }
 
-       
-       
 
-        // POST api/<controller>
-        public HttpResponseMessage Post([FromBody] string value)
+
+
+        // POST api/<controller> [FromBody] string value
+        public HttpResponseMessage Post(AbsolutePerformanceDTO vm)
         {
-
             if (ModelState.IsValid)
             {
-                var vm = new AbsolutePerformanceDTO();
+                //var vm = new AbsolutePerformanceDTO();
 
-                string jsonData = value;
+                //string jsonData = value;
 
                 string resultingTrackPerformanceRecordId = "";
 
-                vm = JsonConvert.DeserializeObject<AbsolutePerformanceDTO>(value);
+                //vm = JsonConvert.DeserializeObject<AbsolutePerformanceDTO>(value);
                 try
                 {
                     resultingTrackPerformanceRecordId = PersistToDb(vm);
+
+                    if (!String.IsNullOrEmpty(resultingTrackPerformanceRecordId))
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.Created)
+                            {
+                                Content = new JsonContent(new
+                                    {
+                                        Success = true, //error
+                                        Message =
+                                                              "Trade Performance id: " +
+                                                              resultingTrackPerformanceRecordId + " sucessfully saved",
+                                        result = resultingTrackPerformanceRecordId
+                                    })
+                            };
+                    }
+
                 }
                 catch (DataException ex)
                 {
@@ -67,28 +82,19 @@ namespace TradesWebApplication.Api
                     LogManager.GetLogger("EmailLogger").Error(ex);
 
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                    {
-                        Content = new JsonContent(new
                         {
-                            Success = false,
-                            Message = "Database Exception occured: " + ex.InnerException.ToString(),
-                            //return exception
-                            result = "Database Exception occured: " + ex.InnerException.ToString()
-                        })
-                    };
+                            Content = new JsonContent(new
+                                {
+                                    Success = false,
+                                    Message = "Database Exception occured: " + ex.InnerException.ToString(),
+                                    //return exception
+                                    result = "Database Exception occured: " + ex.InnerException.ToString()
+                                })
+                        };
                 }
 
-                return new HttpResponseMessage(HttpStatusCode.Created)
-                {
-                    Content = new JsonContent(new
-                    {
-                        Success = true, //error
-                        Message = "Trade Performance id: " + resultingTrackPerformanceRecordId + " sucessfully saved",
-                        result = resultingTrackPerformanceRecordId
-                    })
-                };
+            }//end  if (ModelState.IsValid)
 
-            }
             return new HttpResponseMessage(HttpStatusCode.BadRequest)
             {
                 Content = new JsonContent(new
@@ -102,9 +108,11 @@ namespace TradesWebApplication.Api
 
         private string PersistToDb(AbsolutePerformanceDTO vm)
         {
+            var isNewTradePerfromance = true;
             var tradePerformance = new Trade_Performance();
-            if (vm.trade_performance_id != null)
+            if (vm.trade_performance_id != null && vm.trade_performance_id > 0)
             {
+                isNewTradePerfromance = false;
                 tradePerformance = unitOfWork.TradePerformanceRepository.GetByID((int)vm.trade_performance_id);
             }
 
@@ -115,7 +123,7 @@ namespace TradesWebApplication.Api
             tradePerformance.return_value = vm.return_value;
             tradePerformance.last_updated = vm.last_updated;
 
-            if (vm.trade_performance_id == null)
+            if (isNewTradePerfromance)
             {
                 unitOfWork.TradePerformanceRepository.Insert(tradePerformance);
             }

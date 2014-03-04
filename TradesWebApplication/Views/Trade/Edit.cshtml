@@ -783,10 +783,6 @@
         </div>
     </script>
 
-<div class="col-sm-3">
-                    <input class="input-xlarge" id="CurrencyTypeAhead" type="hidden" data-bind="value: currency_id" disabled="disabled"/>
-                </div>
-
     <script type="text/html" id="AddInterestRateDiff">   
         <div class="modal fade" id="AddInterestRateDiff" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -1678,6 +1674,8 @@
         };
 
         function LoadAbsolutePerformanceData() {
+            vm.abs_Performanceitems.removeAll();
+            vm.abs_SelectedItems.removeAll();
             var apiGetURL = baseUrl;
             apiGetURL += "Trade/GetAbsolutePerformances/";
             apiGetURL += vm.trade_id();

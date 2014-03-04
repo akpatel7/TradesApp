@@ -908,7 +908,7 @@ function TradeViewModel(
 
 
 
-    edit_abs_track_performance_id = typeof (edit_abs_track_performance_id) !== 'undefined' ? edit_abs_track_performance_id : "";
+    edit_abs_track_performance_id = typeof (edit_abs_track_performance_id) !== 'undefined' ? edit_abs_track_performance_id : 0;
     this.edit_abs_track_performance_id = ko.observable(edit_abs_track_performance_id);
 
     edit_abs_measure_type_id = typeof (edit_abs_measure_type_id) !== 'undefined' ? edit_abs_measure_type_id : 1; //default value
@@ -919,7 +919,7 @@ function TradeViewModel(
     edit_abs_currency_id = typeof (edit_abs_currency_id) !== 'undefined' ? edit_abs_currency_id : ""; //default value
     this.edit_abs_currency_id = ko.observable(edit_abs_currency_id);
 
-    this.edit_abs_return_benchmark_id = ko.observable("");
+    this.edit_abs_return_benchmark_id = ko.observable(0);
 
     edit_abs_return_value = typeof (edit_abs_return_value) !== 'undefined' ? edit_abs_return_value : "";
     this.edit_abs_return_value = ko.observable(edit_abs_return_value).extend({ number: true });
@@ -933,14 +933,25 @@ function TradeViewModel(
     self.abs_SelectedItems.subscribe(
        function () {
            var recordindex = (self.abs_SelectedItems().length) - 1;
-           var record = self.abs_SelectedItems()[recordindex];      
-           self.edit_abs_track_performance_id(record.trade_performance_id);
-           self.edit_abs_measure_type_id(record.measure_type_id);
-           self.edit_abs_return_apl_func(record.return_apl_function);
-           self.edit_abs_currency_id(record.return_currency_id);
-           //self.edit_abs_return_benchmark_id();
-           self.edit_abs_return_value(record.return_value);
-           self.edit_abs_last_updated(record.last_updated);
+           if (recordindex >= 0) {
+               var record = self.abs_SelectedItems()[recordindex];
+               self.edit_abs_track_performance_id(record.trade_performance_id);
+               self.edit_abs_measure_type_id(record.measure_type_id);
+               self.edit_abs_return_apl_func(record.return_apl_function);
+               self.edit_abs_currency_id(record.return_currency_id);
+               //self.edit_abs_return_benchmark_id();
+               self.edit_abs_return_value(record.return_value);
+               self.edit_abs_last_updated(record.last_updated);
+               $('#modalEditAbsCurrencyTypeAhead').trigger('change');
+           } else {
+               self.edit_abs_track_performance_id(0);
+               self.edit_abs_measure_type_id(1);
+               //self.edit_abs_return_apl_func(record.return_apl_function);
+               self.edit_abs_currency_id("");
+               //self.edit_abs_return_benchmark_id();
+               self.edit_abs_return_value("");
+               self.edit_abs_last_updated("");
+           }
        });
 
     //self.abs_selectedItemApplyChanges = function () {
@@ -969,9 +980,8 @@ function TradeViewModel(
         $.ajax({
             url: apiURL,
             type: 'post',
-            contentType: 'json',
-            timeout: 15000,
-            data:  JSON.stringify({
+            contentType: 'application/json',
+            data: JSON.stringify({
                 "trade_performance_id": self.edit_abs_track_performance_id(),
                 "trade_id": self.trade_id(),
                 "measure_type_id": self.edit_abs_measure_type_id(),
