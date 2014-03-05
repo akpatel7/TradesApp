@@ -201,6 +201,7 @@
     <Compile Include="Api\MarkToMarketRateController.cs" />
     <Compile Include="Api\RelativePerformancesController.cs" />
     <Compile Include="Api\RestClient.cs" />
+    <Compile Include="Api\TradeInstructionsController.cs" />
     <Compile Include="Api\TradesAppSettings.cs" />
     <Compile Include="Api\TradesPlatoController.cs" />
     <Compile Include="Api\ValuesController.cs" />
@@ -390,6 +391,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AbsolutePerformanceDTO.cs" />
     <Compile Include="ViewModels\RelativePerformanceDTO.cs" />
+    <Compile Include="ViewModels\TradeInstructionDTO.cs" />
     <Compile Include="ViewModels\TradeLineDTOViewModel.cs" />
     <Compile Include="ViewModels\TradeLineGroupDTOViewModel.cs" />
     <Compile Include="ViewModels\TradesDTOViewModel.cs" />

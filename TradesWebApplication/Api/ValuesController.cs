@@ -88,7 +88,7 @@ namespace TradesWebApplication.Api
            
 
             // trade instructions
-            var tradeInstructionList = unitOfWork.TradeInstructionRepository.GetAll().Where( i => i.trade_id == trade.trade_id ).ToList();
+            var tradeInstructionList = unitOfWork.TradeInstructionRepository.GetAll().Where( i => i.trade_id == trade.trade_id ).OrderBy(t => t.last_updated).ToList();
             var tradeInstruction = tradeInstructionList.LastOrDefault();
             if( tradeInstruction != null )
             {

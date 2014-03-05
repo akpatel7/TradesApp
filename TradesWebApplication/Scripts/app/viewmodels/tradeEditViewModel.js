@@ -1261,7 +1261,7 @@ function TradeViewModel(
     };
     
     //Section TradeInstructionsEdit
-    edit_trade_instruction_id = typeof (edit_trade_instruction_id) !== 'undefined' ? edit_trade_instruction_id : "";
+    edit_trade_instruction_id = typeof (edit_trade_instruction_id) !== 'undefined' ? edit_trade_instruction_id : 0;
     this.edit_trade_instruction_id = ko.observable(edit_trade_instruction_id);
 
     edit_instruction_entry = typeof (edit_instruction_entry) !== 'undefined' ? edit_instruction_entry : "";
@@ -1380,6 +1380,7 @@ function TradeViewModel(
                 contentType: 'application/json',
                 async: false,
                 data: JSON.stringify({
+                    "trade_id": self.trade_id(),
                     "trade_instruction_id": self.edit_trade_instruction_id(),
                     "instruction_entry": self.edit_instruction_entry(),
                     "instruction_entry_date": self.edit_instruction_entry_date(),
