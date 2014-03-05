@@ -502,7 +502,7 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="input-append date" id="dpAddInstructionEntry" data-datepicker-format="YYYY-MM-DD">
-                        <input class="span2" size="20" type="text" data-bind="value: edit_instruction_entry_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }" disabled="disabled">
+                        <input class="span2" size="20" type="text" data-bind="value: edit_instruction_entry_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
                         <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
                   <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry_date"></span>
                     </div>  
@@ -524,7 +524,7 @@
                 </div>
  <div class="col-sm-3">
                 <div class="input-append date" id="dpAddInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
-<input class="span2" size="20" type="text" data-bind="value: instruction_exit_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }" >
+<input class="span2" size="20" type="text" data-bind="value: edit_instruction_exit_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }" >
                     <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
                     <span data-bind="visible: editInstructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
                 </div>
@@ -566,7 +566,7 @@
             </div>
             </div>
             <div class="modal-footer">
-               <button type="submit" class="btn btn-primary" onclick="vm.Save_TradeInstruction_Edit_Record()">Save</button>
+               <button type="submit" class="btn btn-primary" onclick="vm.Save_TradeInstructions_Edit_Record()">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
             </div>
         </div>
@@ -1902,31 +1902,26 @@
         }
         
         function LoadTradeInstructionData() {
-            vm.tradePerformanceitems.removeAll();
-            vm.tradePerformance_SelectedItems.removeAll();
+            vm.tradeInstructionitems.removeAll();
+            vm.tradeInstructionitems_SelectedItems.removeAll();
             var apiGetURL = baseUrl;
             apiGetURL += "Trade/GetTradeInstructions/";
             apiGetURL += vm.trade_id();
 
             $.getJSON(apiGetURL, function(allData) {
-                //vm.rel_Performanceitems(allData);
+                vm.tradeInstructionitems(allData);
             });
 
-            $('#addTradeInstructionModal').modal('show');
+            $('#editTradeInstructionModal').modal('show');
 
         }
 
-
         //send save request to API            
-
         function saveTrade() {
             if (vm.saveTradeData() == true) {
                 //alert('Trade successfully created');  
             }
-
-        }
-
-        ;
+        };
 
         function afterModalEditLoadData() {
             

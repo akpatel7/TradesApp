@@ -1306,10 +1306,161 @@ function TradeViewModel(
 
     }, self);
     
-    this.tradePerformanceitems = ko.observableArray([]);
-
-    this.tradePerformance_SelectedItems = ko.observableArray([]);
+    ///Trade/GetTradeInstructions
+    //currency_id: 44
+    //currency_type: "Emerging Markets Currencies"
+    //hedge_id: 1
+    //hedge_type: "Hedge"
+    //instruction_entry: 5
+    //instruction_entry_date: "2014-03-05"
+    //instruction_exit: 6
+    //instruction_exit_date: "2014-03-06"
+    //instruction_label: "567"
+    //instruction_type: "Buy stop"
+    //instruction_type_id: 1
+    //last_updated: "2014-03-05"
+    //trade_id: 645
+    //trade_instruction_id: 611
     
+    this.tradeInstructionitems = ko.observableArray([]);
+
+    this.tradeInstructionitems_SelectedItems = ko.observableArray([]);
+    
+    self.tradeInstructionitems_SelectedItems.subscribe(
+     function () {
+         var recordindex = (self.tradeInstructionitems_SelectedItems().length) - 1;
+         if (recordindex >= 0) {
+             
+             var record = self.tradeInstructionitems_SelectedItems()[recordindex];
+             self.edit_trade_instruction_id(record.trade_instruction_id);
+             self.edit_instruction_entry(record.instruction_entry);
+             self.edit_instruction_entry_date(record.instruction_entry_date);
+             self.edit_instruction_exit(record.instruction_exit);
+             self.edit_instruction_exit_date(record.instruction_exit_date);
+             self.edit_instruction_type_id(record.instruction_type_id);
+             self.edit_instruction_label(record.instruction_label);
+             self.edit_hedge_id(record.hedge_id);
+             self.edit_currency_id(record.currency_id);
+             ('#editCurrencyTypeAhead').trigger('change');
+
+         } else {
+             self.edit_trade_instruction_id(0);
+             self.edit_instruction_entry("");
+             self.edit_instruction_entry_date("");
+             self.edit_instruction_exit("");
+             self.edit_instruction_exit_date("");
+             self.edit_instruction_type_id("");
+             self.edit_instruction_label("");
+             self.edit_hedge_id(2);
+             self.edit_currency_id("");
+             $('#editCurrencyTypeAhead').trigger('change');
+         }
+     });
+    
+    this.tradeInstruction_edit_isValid = function () {
+        return self.edit_trade_instruction_id.isValid() &&
+        self.edit_instruction_entry.isValid() &&
+        self.edit_instruction_entry_date.isValid() &&
+        self.edit_instruction_exit.isValid() &&
+        self.edit_instruction_exit_date.isValid() &&
+        self.edit_instruction_type_id.isValid() &&
+        self.edit_instruction_label.isValid() &&
+        self.edit_hedge_id.isValid() &&
+        self.edit_currency_id.isValid();
+    };
+    
+    self.Save_TradeInstructions_Edit_Record = function () {
+        if (self.tradeInstruction_edit_isValid()) {
+            console.log('Posting TradeInstructions to server to save.');
+            var apiURL = baseUrl;
+            apiURL += "api/TradeInstructions/post/";
+            $.ajax({
+                url: apiURL,
+                type: 'post',
+                contentType: 'application/json',
+                async: false,
+                data: JSON.stringify({
+                    "trade_instruction_id": self.edit_trade_instruction_id(),
+                    "instruction_entry": self.edit_instruction_entry(),
+                    "instruction_entry_date": self.edit_instruction_entry_date(),
+                    "instruction_exit": self.edit_instruction_exit(),
+                    "instruction_type_id": self.edit_instruction_type_id(),
+                    "instruction_label": self.edit_instruction_label(),
+                    "hedge_id": self.edit_hedge_id(),
+                    "currency_id": self.edit_currency_id()
+                }),
+                success: function (data) {
+                    if (data.Success) {
+                        //update trade instructions
+                        vm.tradeInstructionitems.removeAll();
+                        vm.tradeInstructionitems_SelectedItems.removeAll();
+                        var apiGetURL = baseUrl;
+                        apiGetURL += "Trade/GetTradeInstructions/";
+                        apiGetURL += self.trade_id();
+
+                        $.getJSON(apiGetURL, function (allData) {
+                            self.tradeInstructionitems(allData);
+                        });
+                        afterModalEditLoadData();
+                        window.onbeforeunload = null;
+                        console.log(data.Message);
+                        bootbox.dialog({
+                            message: data.Message,
+                            title: "Trade Instruction",
+                            buttons: {
+                                success: {
+                                    label: "OK",
+                                    className: "btn-success",
+                                    callback: function () {
+                                        return true;
+                                    }
+                                },
+                            }
+                        });
+                    } else {
+                        console.log(data.Message);
+                        bootbox.alert(data.Message); //display exception
+
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log("error: " + XMLHttpRequest.responseText);
+                    var message = "error: " + XMLHttpRequest.responseText;
+                    bootbox.dialog({
+                        message: message,
+                        title: "Trade Instruction",
+                        className: "alert-danger",
+                        buttons: {
+                            danger: {
+                                label: "OK",
+                                className: "btn-danger",
+                                callback: function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        } else {
+            console.log('Validation errors found, please check form.');
+            self.vmMessages("Validation errors found, please check form.");
+            var message = self.vmMessages();
+            bootbox.dialog({
+                message: message,
+                title: "Trade Instruction",
+                className: "alert-danger",
+                buttons: {
+                    danger: {
+                        label: "OK",
+                        className: "btn-danger",
+                        callback: function () {
+                        }
+                    }
+                }
+            });
+        }
+    };
+
     //End Section TradeInstructionsEdit
 
     //Test api calls section
