@@ -1097,7 +1097,7 @@ tr.pager td {
 
 #addTradeInstructionModal .modal-content {
   width: 900px; 
-  margin-bottom: 50px;
+  margin-bottom: -25px;
   margin-left: -440px;
   bottom: 50%;
   left: 50%;
@@ -1107,7 +1107,7 @@ tr.pager td {
 
 /* to center it: Left Margin = (600px – [New Width]) / 2*/
 #addTradeInstructionModal .modal-body {
-  height: 150px;
+  height: 250px;
 }
 /********************
 *   Mobile Styles   *
