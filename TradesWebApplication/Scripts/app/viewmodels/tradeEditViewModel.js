@@ -1305,6 +1305,11 @@ function TradeViewModel(
         return true;
 
     }, self);
+    
+    this.tradePerformanceitems = ko.observableArray([]);
+
+    this.tradePerformance_SelectedItems = ko.observableArray([]);
+    
     //End Section TradeInstructionsEdit
 
     //Test api calls section

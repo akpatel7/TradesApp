@@ -695,6 +695,7 @@ namespace TradesWebApplication.Controllers
         public JsonResult GetTradeInstructions(string id)
         {
             var tradeId = int.Parse(id);
+            var trade = unitOfWork.TradeRepository.Get(tradeId);
             var list = unitOfWork.TradeInstructionRepository.GetAll().Where(t => t.trade_id == tradeId).ToList();
             var result = (from r in list
                           orderby r.last_updated descending
@@ -707,13 +708,30 @@ namespace TradesWebApplication.Controllers
                               r.instruction_exit,
                               instruction_exit_date = r.instruction_exit_date.HasValue ? ((DateTime)r.instruction_exit_date).ToString("yyyy-MM-dd") : "",
                               r.instruction_label,
-                              r.instruction_type_id, //need descritption
-                              r.hedge_id, //need description
-                              //currency for trade
-                              //currency_type = GetCurrencyDescription(currency_id),
+                              r.instruction_type_id, 
+                              instruction_type = GetInstructionTypeDescription(r.instruction_type_id),
+                              r.hedge_id, 
+                              hedge_type = GetHedgeDescription(r.hedge_id),
+                              currency_id = trade.currency_id,//currency for trade
+                              currency_type = GetCurrencyDescription(trade.currency_id),
                               last_updated = r.last_updated.HasValue ? ((DateTime)r.last_updated).ToString("yyyy-MM-dd") : ""
                           }).Distinct();
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private string GetCurrencyDescription(int? currencyId)
+        {
+            return currencyId.HasValue ? unitOfWork.CurrencyRepository.GetByID(currencyId).currency_label : "";
+        }
+
+        private string GetHedgeDescription(int? hedgeId)
+        {
+            return hedgeId.HasValue ? unitOfWork.HedgeTypeRepository.GetByID(hedgeId).hedge_label : "";
+        }
+
+        private string GetInstructionTypeDescription(int? instructionTypeId)
+        {
+            return instructionTypeId.HasValue ? unitOfWork.InstructionTypeRepository.GetByID(instructionTypeId).instruction_type_label : "";
         }
 
         public IEnumerable<int> StringToIntList(string str)

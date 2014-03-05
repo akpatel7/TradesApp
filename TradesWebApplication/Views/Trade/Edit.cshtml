@@ -1230,12 +1230,13 @@
             function format_currency(item) {
                 return item.currency_label;
             }
-
+            //currency main form
             $("#CurrencyTypeAhead").select2({
                 minimumInputLength: 1,
                 placeholder: "{Currency Selection}",
-                width: '200px',
+                width: '250px',
                 allowClear: true,
+                async: false,
                 ajax: {
                     url: baseUrl + "Trade/AutoCompleteCurrency",
                     dataType: 'json',
@@ -1253,6 +1254,18 @@
                 },
                 id: function(obj) {
                     return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency
@@ -1889,8 +1902,8 @@
         }
         
         function LoadTradeInstructionData() {
-            //vm.rel_Performanceitems.removeAll();
-            //vm.rel_SelectedItems.removeAll();
+            vm.tradePerformanceitems.removeAll();
+            vm.tradePerformance_SelectedItems.removeAll();
             var apiGetURL = baseUrl;
             apiGetURL += "Trade/GetTradeInstructions/";
             apiGetURL += vm.trade_id();
