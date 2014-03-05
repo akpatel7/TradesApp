@@ -1341,7 +1341,7 @@ function TradeViewModel(
              self.edit_instruction_label(record.instruction_label);
              self.edit_hedge_id(record.hedge_id);
              self.edit_currency_id(record.currency_id);
-             ('#editCurrencyTypeAhead').trigger('change');
+             $('#editCurrencyTypeAhead').trigger('change');
 
          } else {
              self.edit_trade_instruction_id(0);
