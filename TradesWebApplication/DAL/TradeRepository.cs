@@ -18,7 +18,7 @@ namespace TradesWebApplication.DAL
 
         public IEnumerable<Trade> GetTrades()
         {
-            return context.Trades.Include(t => t.Benchmark).Include(t => t.Currency).Include(t => t.Length_Type).Include(t => t.Relativity).Include(t => t.Service).Include(t => t.Status1).Include(t => t.Structure_Type).ToList();
+            return context.Trades.Include(t => t.Benchmark).Include(t => t.Currency).Include(t => t.Length_Type).Include(t => t.Relativity).Include(t => t.Service).Include(t => t.Status1).Include(t => t.Structure_Type).Include( t => t.Trade_Instruction).ToList();
 
         }
 

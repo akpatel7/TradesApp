@@ -43,7 +43,7 @@ namespace TradesWebApplication.Controllers
             ViewBag.CurrentFilter = searchString;
 
 
-            var trades = unitOfWork.TradeRepository.GetTrades();
+            var trades = unitOfWork.TradeRepository.GetTrades().ToList();
 
 
             if (!String.IsNullOrEmpty(searchString))
@@ -52,12 +52,12 @@ namespace TradesWebApplication.Controllers
                 var searchIndexFound = int.TryParse(searchString, out searchIndex);
                 if (searchIndexFound)
                 {
-                    trades = trades.Where(s => s.trade_id == searchIndex);
+                    trades = trades.Where(s => s.trade_id == searchIndex).ToList();
                 }
             }
             else if (serviceId.HasValue)
             {
-               trades = trades.Where(s => s.service_id == serviceId);
+               trades = trades.Where(s => s.service_id == serviceId).ToList();
             }
 
             var serviceItems = unitOfWork.ServiceRepository.GetAll().ToList();
@@ -66,23 +66,23 @@ namespace TradesWebApplication.Controllers
             switch (sortOrder)
             {
                 case "TradeId":
-                    trades = trades.OrderBy(s => s.trade_id);
+                    trades = trades.OrderBy(s => s.trade_id).ToList();
                     ViewBag.TradeIdSortParm = "TradeIdDesc";
                     break;
                 case "TradeIdDesc":
-                    trades = trades.OrderByDescending(s => s.trade_id);
+                    trades = trades.OrderByDescending(s => s.trade_id).ToList();
                     ViewBag.TradeIdSortParm = "TradeId";
                     break;
                 case "LastUpdatedDate":
-                    trades = trades.OrderByDescending(s => s.last_updated).ThenByDescending(t => t.trade_id);
+                    trades = trades.OrderByDescending(s => s.last_updated).ThenByDescending(t => t.trade_id).ToList();
                     ViewBag.LastUpdatedSortParm = "Date_Asc";
                     break;
                 case "Date_Asc":
-                    trades = trades.OrderBy(s => s.last_updated).ThenBy( t => t.trade_id );
+                    trades = trades.OrderBy(s => s.last_updated).ThenBy( t => t.trade_id ).ToList();
                     ViewBag.LastUpdatedSortParm = "LastUpdatedDate";
                     break;
                 default:
-                    trades = trades.OrderByDescending(s => s.last_updated).ThenByDescending(t => t.trade_id);
+                    trades = trades.OrderByDescending(s => s.last_updated).ThenByDescending(t => t.trade_id).ToList();
                     break;
             }
 

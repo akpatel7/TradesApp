@@ -24,6 +24,12 @@
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
+    <p>
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </p>
 }
 
 <table class="table">
@@ -83,7 +89,25 @@
                 @Html.DisplayFor(modelItem => item.Status1.status_label)
             </td>
             <td>
-                Open
+                @{
+                    var tradeInstruction = item.Trade_Instruction.OrderBy(i => i.created_on).LastOrDefault();
+                }
+                @if (tradeInstruction == null)
+                {
+                    <text>Open</text>
+                }
+                else
+                {
+                    if( tradeInstruction.instruction_exit_date == null)
+                    { 
+                        <text>Open</text>
+                    }
+                    else
+                    {   
+                        <text>Closed</text>
+                    }
+                }
+               
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.last_updated)
