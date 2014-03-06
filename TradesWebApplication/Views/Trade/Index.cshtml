@@ -124,10 +124,10 @@
                 <a id="detailsUrl" href="@Html.AttributeEncode(Url.Action("Details", "Trade", new { id = item.trade_id }))" style="display:none;"></a>
                
                 <button id="addComment" type="button" class="btn btn-sm btn-info"
-                        onclick="var trade_id = @Html.DisplayFor(modelItem => item.trade_id); vm.trade_id( @Html.DisplayFor(modelItem => item.trade_id)); vm.addComment();">
+                        onclick="vm.trade_id( @Html.DisplayFor(modelItem => item.trade_id)); vm.addComment();">
                     Update Comment  </button>                                                             
                 <button id="addTradeInstruction" type="button" class="btn btn-sm btn-info"
-                        onclick="var trade_id = @Html.DisplayFor(modelItem => item.trade_id); vm.trade_id(trade_id); $('#addTradeInstructionModal').modal('show');">
+                        onclick="vm.trade_id(@Html.DisplayFor(modelItem => item.trade_id)); $('#addTradeInstructionModal').modal('show');">
                     Update Instruction</button>
             </td>
         </tr>
@@ -201,7 +201,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                     </div>
 
                     <div class="col-sm-3">
-                    @Html.DropDownList("instructionTypeId", (SelectList)ViewBag.InstructionTypes, String.Empty, new { @data_bind = "value: edit_instruction_type_id", @class = "form-control"})
+                    @Html.DropDownList("instructionTypeId", (SelectList)ViewBag.InstructionTypes, new { @data_bind = "value: edit_instruction_type_id", @class = "form-control"})
 
                     </div>
        
@@ -218,7 +218,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                     </div>
 
                     <div class="col-sm-3">
-                     @Html.DropDownList("hedgeTypeId", (SelectList)ViewBag.HedgeTypes, String.Empty, new { @data_bind = "value: edit_hedge_id", @class = "form-control" })
+                     @Html.DropDownList("hedgeTypeId", (SelectList)ViewBag.HedgeTypes, new { @data_bind = "value: edit_hedge_id", @class = "form-control" })
                     </div>
 
                     <div class="control-label col-sm-3">
@@ -234,7 +234,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" onclick="vm.Save_TradeInstructions_Edit_Record()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData(); window.location.reload();">Close</button> 
             </div>
 
     </div>
@@ -290,9 +290,9 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
             $.fn.modal.Constructor.prototype.enforceFocus = function() {
             };
 
-            window.onbeforeunload = function() {
-                return 'Are you sure you want to navigate away from this page?';
-            };
+            //window.onbeforeunload = function() {
+            //    return 'Are you sure you want to navigate away from this page?';
+            //};
 
 
             $('#dpAddInstructionExit').datepicker();
