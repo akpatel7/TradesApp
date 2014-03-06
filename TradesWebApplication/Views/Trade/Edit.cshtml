@@ -470,7 +470,7 @@
         <div class="pull-right">
 <button id="create" type="submit" class="btn btn-primary">Save</button>
             <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
-            <button name="ClientCancel" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
+            <button name="ClientCancel" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Exit</button>
             <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Trade"))" style="display:none;"></a>
         </div>
 

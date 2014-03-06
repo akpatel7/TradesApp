@@ -785,13 +785,6 @@ function TradeViewModel(
                                 callback: function() {
                                     return true;
                                 }
-                            },
-                            main: {
-                                label: "Exit",
-                                className: "btn-primary",
-                                callback: function() {
-                                    document.location.href = $('#cancelUrl').attr('href');
-                                }
                             }
                         }
                     });
@@ -852,13 +845,6 @@ function TradeViewModel(
                                     return true;
                                 }
                             },
-                            main: {
-                                label: "Exit",
-                                className: "btn-primary",
-                                callback: function() {
-                                    document.location.href = $('#cancelUrl').attr('href');
-                                }
-                            }
                         }
                     });
                 } else {
@@ -1052,27 +1038,13 @@ function TradeViewModel(
                 title: "Trade Edit",
                 className: "alert-danger",
                 buttons: {
-                    //success: {
-                    //    label: "Create",
-                    //    className: "btn-success",
-                    //    callback: function () {
-                    //        //Example.show("great success");
-                    //    }
-                    //},
                     danger: {
                         label: "OK",
                         className: "btn-danger",
                         callback: function () {
                             //Example.show("uh oh, look out!");
                         }
-                    }
-                    //main: {
-                    //    label: "Exit",
-                    //    className: "btn-primary",
-                    //    callback: function () {
-                    //        //Example.show("Primary button");
-                    //    }
-                    //}
+                    }                   
                 }
             });
         }
@@ -1234,13 +1206,6 @@ function TradeViewModel(
                 title: "Trade Edit",
                 className: "alert-danger",
                 buttons: {
-                    //success: {
-                    //    label: "Create",
-                    //    className: "btn-success",
-                    //    callback: function () {
-                    //        //Example.show("great success");
-                    //    }
-                    //},
                     danger: {
                         label: "OK",
                         className: "btn-danger",
@@ -1248,14 +1213,6 @@ function TradeViewModel(
                             //Example.show("uh oh, look out!");
                         }
                     }
-                    //main: {
-                    //    label: "Exit",
-                    //    className: "btn-primary",
-                    //    callback: function () {
-                    //        //Example.show("Primary button");
-                    //    }
-                    //}
-                }
             });
         }
     };
