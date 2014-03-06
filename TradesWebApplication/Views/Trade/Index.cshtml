@@ -117,17 +117,17 @@
                 <script type="text/javascript">
                     var trade_id = @Html.DisplayFor(modelItem => item.trade_id);
                 </script>
-                <button name="Edit" class="btn btn-sm btn-primary" onclick="window.onbeforeunload = null; document.location.href = $('#editUrl').attr('href');">Edit</button>
-                <a id="editUrl" href="@Html.AttributeEncode(Url.Action("Edit", "Trade", new { id = item.trade_id }))" style="display:none;"></a>
+                <button name="Edit" class="btn btn-sm btn-primary" onclick="window.onbeforeunload = null; document.location.href = '@Url.Action("Edit", "Trade", new { id = item.trade_id })'">Edit</button>
+               
                 
-                <button name="Edit" class="btn btn-sm btn-primary" onclick="window.onbeforeunload = null; document.location.href = $('#detailsUrl').attr('href');">Details</button>
+                <button name="Edit" class="btn btn-sm btn-primary" onclick="window.onbeforeunload = null; document.location.href = document.location.href = '@Url.Action("Details", "Trade", new { id = item.trade_id })'">Details</button>
                 <a id="detailsUrl" href="@Html.AttributeEncode(Url.Action("Details", "Trade", new { id = item.trade_id }))" style="display:none;"></a>
                
                 <button id="addComment" type="button" class="btn btn-sm btn-info"
-                        onclick="vm.trade_id(trade_id); vm.addComment();">
+                        onclick="var trade_id = @Html.DisplayFor(modelItem => item.trade_id); vm.trade_id( @Html.DisplayFor(modelItem => item.trade_id)); vm.addComment();">
                     Update Comment  </button>                                                             
                 <button id="addTradeInstruction" type="button" class="btn btn-sm btn-info"
-                        onclick="vm.trade_id(trade_id); $('#addTradeInstructionModal').modal('show');">
+                        onclick="var trade_id = @Html.DisplayFor(modelItem => item.trade_id); vm.trade_id(trade_id); $('#addTradeInstructionModal').modal('show');">
                     Update Instruction</button>
             </td>
         </tr>
@@ -294,22 +294,24 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                 return 'Are you sure you want to navigate away from this page?';
             };
 
-         
+
             $('#dpAddInstructionExit').datepicker();
-            
+
             //datetimepickers - moment-datetimepicker for bootstrap
             $('#dpAddInstructionEntry').datepicker(
                 {
+                    
+                    
                     //setDate: moment(new Date(), "YYYY-MM-DD")
                 });
-            
+
             //to remotely get currencies for typeaheads
 
             function format_currency(item) {
                 return item.currency_label;
             }
-            
-            
+
+
             $("#editCurrencyTypeAhead").select2({
                 minimumInputLength: 1,
                 placeholder: "{Currency Selection}",
@@ -348,9 +350,9 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency
-            }); 
+            });
             //end typeAhead
-            
+
             $("#addCurrencyTypeAhead").select2({
                 minimumInputLength: 1,
                 placeholder: "{Currency Selection}",
@@ -389,12 +391,67 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                 },
                 formatResult: format_currency,
                 formatSelection: format_currency
-            });   
+            });
             //end typeAhead
 
-          
+
         });
-    //end document.ready
+        //end document.ready
+
+        function afterModalEditLoadData() {
+
+            return true;
+
+            //var apiGetURL = baseUrl;
+            //apiGetURL += "Api/Values/Get/";
+            //apiGetURL += vm.trade_id();
+
+            //$.getJSON(apiGetURL, function(allData) {
+            //    var parsed = JSON.parse(allData);
+            //vm.trade_id(parsed.trade_id);
+            //vm.service_id(parsed.service_id);
+            //vm.length_type_id(parsed.length_type_id);
+            //vm.relativity_id(parsed.relativity_id);
+            //vm.benchmark_id(parsed.benchmark_id);
+            //vm.last_updated(parsed.last_updated);
+            //vm.trade_editorial_label(parsed.trade_editorial_label);
+            //vm.structure_type_id(parsed.structure_type_id);
+            //vm.trade_instruction_id(parsed.trade_instruction_id);
+            //vm.instruction_entry(parsed.instruction_entry);
+            //vm.instruction_entry_date(parsed.instruction_entry_date);
+            //vm.instruction_exit(parsed.instruction_exit);
+            //vm.instruction_exit_date(parsed.instruction_exit_date);
+            //vm.instruction_type_id(parsed.instruction_type_id);
+            //vm.instruction_label(parsed.instruction_label);
+            //vm.hedge_id(parsed.hedge_id);
+            //vm.currency_id(parsed.currency_id);
+            //vm.related_trade_ids(parsed.related_trade_ids),
+            //vm.apl_func(parsed.apl_func);
+            //vm.mark_track_record_id(parsed.mark_track_record_id);
+            //vm.mark_to_mark_rate(parsed.mark_to_mark_rate);
+            //vm.int_track_record_id(parsed.int_track_record_id);
+            //vm.int_track_record_id(parsed.int_track_record_id);
+            //vm.interest_rate_diff(parsed.interest_rate_diff);
+            //vm.abs_track_performance_id(parsed.abs_track_performance_id);
+            //vm.abs_measure_type_id(parsed.abs_measure_type_id);
+            //vm.abs_currency_id(parsed.abs_currency_id);
+            //vm.abs_return_value(parsed.abs_return_value);
+            //vm.rel_track_performance_id(parsed.rel_track_performance_id);
+            //vm.rel_measure_type_id(parsed.rel_measure_type_id);
+            //vm.rel_currency_id(parsed.rel_currency_id);
+            //vm.rel_return_value(parsed.rel_return_value);
+            //vm.return_benchmark_id(parsed.return_benchmark_id);
+            //vm.comment_id(parsed.comment_id);
+            //vm.comments(parsed.comments);
+
+            //$("#BenchmarkTypeAhead").select2("val", parsed.benchmark_id);
+            //$("#CurrencyTypeAhead").select2("val", parsed.currency_id);
+            //$("#absCurrencyTypeAhead").select2("val", parsed.abs_currency_id);
+            //$("#relCurrencyTypeAhead").select2("val", parsed.rel_currency_id);
+            //$("#relBenchmarkTypeAhead").select2("val", parsed.return_benchmark_id);
+            //$("#selectRelatedTrades").select2("val", parsed.trade_id);
+
+        }
 
     </script>
 

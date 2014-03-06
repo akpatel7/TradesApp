@@ -703,8 +703,12 @@ function TradeViewModel(
         $.ajax({
             url: apiURL,
             type: 'post',
-            data: JSON.stringify(ko.toJSON(this)),
             contentType: 'application/json',
+            data: JSON.stringify({
+                "trade_id" : vm.trade_id(),
+                "comment_id" : vm.comment_id(),
+                "comments": vm.comments()
+                   }),
             timeout: 15000,
             success: function(data) {
                 if (data.Success) {
@@ -1209,10 +1213,11 @@ function TradeViewModel(
                     danger: {
                         label: "OK",
                         className: "btn-danger",
-                        callback: function () {
+                        callback: function() {
                             //Example.show("uh oh, look out!");
                         }
                     }
+                }
             });
         }
     };
@@ -1306,7 +1311,7 @@ function TradeViewModel(
              self.edit_instruction_entry_date("");
              self.edit_instruction_exit("");
              self.edit_instruction_exit_date("");
-             self.edit_instruction_type_id("");
+             self.edit_instruction_type_id(1);
              self.edit_instruction_label("");
              self.edit_hedge_id(2);
              self.edit_currency_id("");
@@ -1342,6 +1347,7 @@ function TradeViewModel(
                     "instruction_entry": self.edit_instruction_entry(),
                     "instruction_entry_date": self.edit_instruction_entry_date(),
                     "instruction_exit": self.edit_instruction_exit(),
+                    "instruction_exit_date": self.edit_instruction_exit_date(),
                     "instruction_type_id": self.edit_instruction_type_id(),
                     "instruction_label": self.edit_instruction_label(),
                     "hedge_id": self.edit_hedge_id(),
@@ -1497,7 +1503,7 @@ function TradeViewModel(
     
     //set this to true to see ko.toJson on form for debugging knockout bindings
     this.APItester = new ResultViewModel();
-    this.debug = false;
+    this.debug = true;
     //////////////////
 }
 

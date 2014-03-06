@@ -43,21 +43,18 @@ namespace TradesWebApplication.Api
         }
 
         // POST api/<controller>
-        public HttpResponseMessage Post([FromBody]string value)
+        public HttpResponseMessage Post(CommentsDTO value)
         {
 
             if (ModelState.IsValid)
             {
-                var vm = new TradesViewModel();
-
-                string jsonData = value;
+                
 
                 string resultingCommentId = "";
 
-                vm = JsonConvert.DeserializeObject<TradesViewModel>(value);
                 try
                 {
-                    resultingCommentId = PersistToDb(vm);
+                    resultingCommentId = PersistToDb(value);
                 }
                 catch (DataException ex)
                 {
@@ -97,18 +94,9 @@ namespace TradesWebApplication.Api
             };
         }
 
-        private string PersistToDb(TradesViewModel vm)
+        private string PersistToDb(CommentsDTO vm)
         {
-            Trade trade = new Trade();
-            if (!String.IsNullOrEmpty(vm.CRUDMode) && vm.CRUDMode == "edit")
-            { //edit mode
-                trade = unitOfWork.TradeRepository.Get(vm.trade_id);
-            }
-            else
-            { //should never be in trade Create mode in this contrller
-                return "";
-            }
-
+           
             var comment = new Trade_Comment();
             if (vm.comment_id > 0)
             {

@@ -390,6 +390,7 @@
     <Compile Include="SemanticModels\PlatoTradeLineDTO.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AbsolutePerformanceDTO.cs" />
+    <Compile Include="ViewModels\CommentsDTO.cs" />
     <Compile Include="ViewModels\RelativePerformanceDTO.cs" />
     <Compile Include="ViewModels\TradeInstructionDTO.cs" />
     <Compile Include="ViewModels\TradeLineDTOViewModel.cs" />
