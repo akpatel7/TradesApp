@@ -7,63 +7,73 @@
     ViewBag.Title = "Trades List";
 }
 
-<h2>Trades List</h2>
+
 
 
 
 @using (Html.BeginForm("Index", "Trade", FormMethod.Get))
 {
-    <p>
-        Find by ID: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @id="FindByIdText"})
-        <input type="submit" onclick="$('#FindByService').val('');" value="Search" />
-    </p>
-     <p>
-        Find by Service: @Html.DropDownList("serviceId", (SelectList)ViewBag.Services, String.Empty, new { @id="FindByService"})
-        <input type="submit" onclick="$('#FindByIdText').val('');" value="Search" />
-    </p>
-    <p>
-        <button type="button" name="Create" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#createUrl').attr('href');">Create New Trade</button>
-            <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>               
-    </p>
-    <p>
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-    </p>
+    <div class="control-group">
+        <div class="row">
+            <h2>Trades List</h2>
+<span>Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
+            <div class="pull-right">
+                
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+            </div>
+@*class="btn btn-sm btn-primary pull-left"*@
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <span>Find by ID: </span>  
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @id="FindByIdText"})
+                <input type="submit" onclick="$('#FindByService').val('');" value="Search" />
+            </div>
+            <div class="col-sm-5">
+                <span>Find by Service: </span>
+                @Html.DropDownList("serviceId", (SelectList)ViewBag.Services, String.Empty, new { @id="FindByService"} )
+                <input type="submit" onclick="$('#FindByIdText').val('');" value="Search" />
+            </div>
+            <div>
+                <button type="button" name="Create" class="btn btn-sm btn-primary pull-right" onclick=" window.onbeforeunload = null; document.location.href = $('#createUrl').attr('href');">Create New Trade</button>
+                <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>   
+            </div>
+        </div>
+    </div>
 }
-
+<div class="table-condensed" style="width:100%">
 <table class="table">
     <tr>
         <th>
-            @*@Html.DisplayNameFor(model => model.trade_uri)*@
-            @Html.ActionLink("Id", "Index", new { sortOrder = ViewBag.TradeIdSortParm, currentFilter = ViewBag.CurrentFilter })
+            @*<span><strong>@Html.ActionLink("Id", "Index", new { sortOrder = ViewBag.TradeIdSortParm, currentFilter = ViewBag.CurrentFilter }, new { @class="control-label"})</span>*@
+                <span>Id</span>
         </th>
         <th>
-            Service
+            <span>Service</span>
         </th>
         <th>
-            Trade Label
+            <span>Trade Label</span>
         </th>
         <th>
-            System Label
+            <span>System Label</span>
         </th>
         <th>
-            Created On
+            <span>Created On</span>
         </th>
         <th>
-            Created By
+           <span>Created By</span> 
         </th>
         <th>
-            Status
+            <span>Status</span>
         </th>
         <th>
-            Publication Status
+            <span>Publication Status</span>
         </th>
         <th>
-            @Html.ActionLink("Last Updated", "Index", new { sortOrder = ViewBag.LastUpdatedSortParm, currentFilter = ViewBag.CurrentFilter })
+            @*<span>@Html.ActionLink("Last Updated", "Index", new { sortOrder = ViewBag.LastUpdatedSortParm, currentFilter = ViewBag.CurrentFilter })</span>*@
+<span>Last Updated</span>
         </th>
-        <th style="width:200px"></th>
+        <th style="width:225px"></th>
     </tr>
 
     @foreach (var item in Model) {
@@ -71,8 +81,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.trade_id)
             </td>
-             <td>
-                 @Html.DisplayFor(modelItem => item.Service.service_code)
+            <td>
+                @Html.DisplayFor(modelItem => item.Service.service_code)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.trade_editorial_label)
@@ -123,10 +133,10 @@
                 <button name="Edit" class="btn btn-sm btn-primary" onclick="window.onbeforeunload = null; document.location.href = document.location.href = '@Url.Action("Details", "Trade", new { id = item.trade_id })'">Details</button>
                 <a id="detailsUrl" href="@Html.AttributeEncode(Url.Action("Details", "Trade", new { id = item.trade_id }))" style="display:none;"></a>
                
-                <button id="addComment" type="button" class="btn btn-sm btn-info"
+                <button id="addComment" type="button"
                         onclick="vm.trade_id( @Html.DisplayFor(modelItem => item.trade_id)); vm.addComment();">
                     Update Comment  </button>                                                             
-                <button id="addTradeInstruction" type="button" class="btn btn-sm btn-info"
+                <button id="addTradeInstruction" type="button"
                         onclick="vm.trade_id(@Html.DisplayFor(modelItem => item.trade_id)); $('#addTradeInstructionModal').modal('show');">
                     Update Instruction</button>
             </td>
@@ -134,6 +144,7 @@
     }
 
 </table>
+</div>
 <br />
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
