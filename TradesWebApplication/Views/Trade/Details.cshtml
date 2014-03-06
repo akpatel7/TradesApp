@@ -393,7 +393,7 @@
         </fieldset>
 
         <p>
-            <button name="ClientCancel" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Exit</button>
+            <button type="button" name="ClientCancel" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Back to List</button>
             <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Trade"))" style="display:none;"></a>
         </p>
 
@@ -406,528 +406,706 @@
 @section scripts{
     <script src="~/Scripts/app/viewmodels/tradeEditViewModel.js"></script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        //window.onbeforeunload = function () {
-        //    return 'Are you sure you want to navigate away from this page?';
-        //};
+    <script type="text/javascript">
 
-        //init form custom controls
-        $('#relativityId').val(2);
+        $(document).ready(function() {
 
-        //datetimepickers - moment-datetimepicker for bootstrap
-        $('#dpInstructionEntry').datepicker(
-                    {
-                        startDate: moment(new Date(), "YYYY-MM-DD")
-                    });
-        $('#dpInstructionExit').datepicker();
+            // when .modal-wide opened, set content-body height based on browser height; 200 is appx height of modal padding, modal title and button bar
 
-        //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
-        //TODO: Api call for searches on tradable things
-        //$(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
+            $(".modal-wide").on("show.bs.modal", function() {
+                var height = $(window).height() - 200;
+                $(this).find(".modal-body").css("max-height", height);
+            });
 
-        //trigger changes on typeaheads
-        //select2.3.5 jquery control for typeaheads
-        //to remotely get Benchmarks for typeaheads
-        function format_benchmark(item) {
-            return item.benchmark_label;
-        }
-        $("#BenchmarkTypeAhead").select2({
-            minimumInputLength: 1,
-            placeholder: "{Benchmark Selection}",
-            width: '200px',
-            allowClear: true,
-            async: false,
-            ajax: {
-                url: baseUrl + "Trade/AutoCompleteBenchmark",
-                dataType: 'json',
-                type: 'POST',
-                data: function (term, page) {
-                    return {
-                        term: term, //search term 
-                    };
-                },
-                results: function (data, page) {
-                    return {
-                        results: data
-                    };
-                }
-            },
-            id: function (obj) {
-                return obj.benchmark_id;
-            },
-            initSelection: function (element, callback) {
-                //console.log('reached here: id:' + element.val())
-                $.ajax({
-                    type: "POST",
-                    url: baseUrl + "Trade/GetBenchmark",
-                    dataType: 'json',
-                    async: false,
-                    data: { id: (element.val()) },
-                    success: function (data) {
-                    }
-                }).done(function (data) { callback(data[0]); });
-            },
-            formatResult: format_benchmark,
-            formatSelection: format_benchmark
-            
-        });
+            //HACK to show select2 in bootstrap modals
+            $.fn.modal.Constructor.prototype.enforceFocus = function() {
+            };
 
-        $("#relBenchmarkTypeAhead").select2({
-            minimumInputLength: 1,
-            placeholder: "{Benchmark Selection}",
-            width: '200px',
-            allowClear: true,
-            async: false,
-            ajax: {
-                url: baseUrl + "Trade/AutoCompleteBenchmark",
-                dataType: 'json',
-                type: 'POST',
-                data: function (term, page) {
-                    return {
-                        term: term, //search term 
-                    };
-                },
-                results: function (data, page) {
-                    return {
-                        results: data
-                    };
-                }
-            },
-            id: function (obj) {
-                return obj.benchmark_id;
-            },
-            initSelection: function (element, callback) {
-                //console.log('reached here: id:' + element.val())
-                $.ajax({
-                    type: "POST",
-                    url: baseUrl + "Trade/GetBenchmark",
-                    dataType: 'json',
-                    async: false,
-                    data: { id: (element.val()) },
-                    success: function (data) {
-                    }
-                }).done(function (data) { callback(data[0]); });
-            },
-            formatResult: format_benchmark,
-            formatSelection: format_benchmark,
+            window.onbeforeunload = function() {
+                return 'Are you sure you want to navigate away from this page?';
+            };
 
-        });
-        //end typeAhead
+            //init form custom controls
+            $('#relativityId').val(2);
 
-        //to remotely get linked trades for typeaheads
-        function format_trade(item) {
-            return item.trade_editorial_label;
-        }
-        $("#selectRelatedTrades").select2({
-            minimumInputLength: 1,
-            placeholder: "{Linked Trades}",
-            width: '500px',
-            allowClear: true,
-            multiple: true,
-            async: false,
-            ajax: {
-                url: baseUrl + "Trade/AutoCompleteLinkedTrades",
-                dataType: 'json',
-                type: 'POST',
-                data: function (term, page) {
-                    return {
-                        term: term, //search term 
-                    };
-                },
-                results: function (data, page) {
-                    return {
-                        results: data
-                    };
-                }
-            },
-            initSelection: function (element, callback) {
-                //console.log('reached here: id:' + element.val())
-                $.ajax({
-                    type: "POST",
-                    url: baseUrl + "Trade/GetLinkedTrade",
-                    dataType: 'json',
-                    async: false,
-                    data: { id: (element.val()) },
-                    success: function (data) {
-                    }
-                }).done(function (data)  { 
-                    var results = [];
-                    for( var i = 0; i < data.length; i++ )
-                    {
-                        results.push(data[i]);
-                    }
-                    callback(results); 
-                });
-            },
-
-            id: function (obj) {
-                return obj.trade_id;
-            },
-            formatResult: format_trade,
-            formatSelection: format_trade
-        });
-        //end typeAhead
-
-        //to remotely get currencies for typeaheads
-        function format_currency(item) {
-            return item.currency_label;
-        }
-        $("#CurrencyTypeAhead").select2({
-            minimumInputLength: 1,
-            placeholder: "{Currency Selection}",
-            width: '200px',
-            allowClear: true,
-            async: false,
-            ajax: {
-                url: baseUrl + "Trade/AutoCompleteCurrency",
-                dataType: 'json',
-                type: 'POST',
-                data: function (term, page) {
-                    return {
-                        term: term, //search term 
-                    };
-                },
-                results: function (data, page) {
-                    return {
-                        results: data
-                    };
-                }
-            },
-            id: function (obj) {
-                return obj.currency_id;
-            },
-            initSelection: function (element, callback) {
-                //console.log('reached here: id:' + element.val())
-                $.ajax({
-                    type: "POST",
-                    url: baseUrl + "Trade/GetCurrency",
-                    dataType: 'json',
-                    async: false,
-                    data: { id: (element.val()) },
-                    success: function (data) {
-                    }
-                }).done(function (data) { callback(data[0]); });
-            },
-            formatResult: format_currency,
-            formatSelection: format_currency
-        });
-        //end typeAhead
-
-        //to remotely get currencies for typeaheads
-        $("#absCurrencyTypeAhead").select2({
-            minimumInputLength: 1,
-            placeholder: "{Currency Selection}",
-            width: '200px',
-            allowClear: true,
-            async: false,
-            ajax: {
-                url: baseUrl + "Trade/AutoCompleteCurrency",
-                dataType: 'json',
-                type: 'POST',
-                data: function (term, page) {
-                    return {
-                        term: term, //search term 
-                    };
-                },
-                results: function (data, page) {
-                    return {
-                        results: data
-                    };
-                }
-            },
-            id: function (obj) {
-                return obj.currency_id;
-            },
-            initSelection: function (element, callback) {
-                //console.log('reached here: id:' + element.val())
-                $.ajax({
-                    type: "POST",
-                    url: baseUrl + "Trade/GetCurrency",
-                    dataType: 'json',
-                    async: false,
-                    data: { id: (element.val()) },
-                    success: function (data) {
-                    }
-                }).done(function (data) { callback(data[0]); });
-            },
-            formatResult: format_currency,
-            formatSelection: format_currency
-        });
-        //end typeAhead
-
-        //to remotely get currencies for typeaheads
-        $("#relCurrencyTypeAhead").select2({
-            minimumInputLength: 1,
-            placeholder: "{Currency Selection}",
-            width: '200px',
-            allowClear: true,
-            async: false,
-            ajax: {
-                url: baseUrl + "Trade/AutoCompleteCurrency",
-                dataType: 'json',
-                type: 'POST',
-                data: function (term, page) {
-                    return {
-                        term: term, //search term 
-                    };
-                },
-                results: function (data, page) {
-                    return {
-                        results: data
-                    };
-                }
-            },
-            id: function (obj) {
-                return obj.currency_id;
-            },
-            initSelection: function (element, callback) {
-                //console.log('reached here: id:' + element.val())
-                $.ajax({
-                    type: "POST",
-                    url: baseUrl + "Trade/GetCurrency",
-                    dataType: 'json',
-                    async: false,
-                    data: { id: (element.val()) },
-                    success: function (data) {
-                    }
-                }).done(function (data) { callback(data[0]); });
-            },
-            formatResult: format_currency,
-            formatSelection: format_currency
-        });
-        //end typeAhead
-
-        //confirm change of relatvity id
-        $('#relativityId').on("focus", function (ev) {
-            toastr.options.closeButton = true;
-            toastr.options.positionClass = "toast-top-left";
-            toastr.options.timeOut = 5000; // 5s
-            toastr.warning('Changing "Benchmark" will clear all selected "Positions" in all Trade Lines on the form', 'WARNING');
-        });
-
-        //ko.mapping.fromJS(GetTradeData('608'), vm);
-        // Load initial state from server, convert it to Task instances, then populate self.tasks
-        var id = @Html.DisplayFor(model => model.trade_id);
-        LoadTradeData(id);
-
-    });//end document.ready
-
-   
-        
-    
-    //to remotely get Financial Instrument for typeaheads
-    function typeAheadFinInstr() {
-        var newTradableThing = '#' + ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter;
-        $(newTradableThing).select2({
-            minimumInputLength: 1,
-            placeholder: "{Financial Instrument}",
-            width: '275px',
-            allowClear: true,
-            async: false,
-            ajax: {
-                url: baseUrl + "Trade/AutoCompleteTradableThing",
-                dataType: 'json',
-                type: 'POST',
-                data: function (term, page) {
-                    return {
-                        term: term, //search term 
-                    };
-                },
-                results: function (data, page) {
-                    return {
-                        results: data
-                    };
-                }
-            },
-            id: function (obj) {
-                return obj.tradable_thing_id;
-            },
-            formatResult: function (item) {
-                return item.tradable_thing_label;
-            },
-            formatSelection: function (item) {
-                return item.tradable_thing_label;
-            }
-        });
-    };
-
-    //to remotely get positon for typeaheads
-    function typeAheadPosition() {
-        var newPosition = '#' + ko.bindingHandlers.uniqueIdPosition.prefix + ko.bindingHandlers.uniqueIdPosition.counter;
-        $(newPosition).select2({
-            minimumResultsForSearch: -1,
-            placeholder: "{Position}",
-            width: '175px',
-            allowClear: false,
-            async: false,
-            ajax: {
-                url: baseUrl + "Trade/AutoCompletePosition",
-                dataType: 'json',
-                type: 'POST',
-                data: function () {
-                    var relativityId = $('#relativityId').val();
-                    if (relativityId == "" || relativityId == 'undefined') {
-                        relativityId = "0";
-                    }
-                    return {
-                        relativityId: relativityId, //search term 
-                    };
-                },
-                results: function (data, page) {
-                    return {
-                        results: data
-                    };
-                }
-            },
-            id: function (obj) {
-                return obj.position_id;
-            },
-            formatResult: function (item) {
-                return item.position_label;
-            },
-            formatSelection: function (item) {
-                return item.position_label;
-            },
-            formatNoMatches: function () {
-                return "Please select a Trade Benchmark";
-            }
-        });
-        $('#relativityId').change(function () {
-            $(newPosition).select2("val", "").trigger("change");
-        });
-    };
-
-    $('#btnAddGroup').click(function () {
-        $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '250px' });
-    });
-
-    function LoadTradeData(id) {
-        var apiGetURL = baseUrl;
-        apiGetURL += "Api/Values/Get/";
-        apiGetURL += id;
-
-        $.getJSON(apiGetURL, function (allData) {
-            var parsed = JSON.parse(allData);
-            vm.trade_id(parsed.trade_id);
-            vm.service_id(parsed.service_id);
-            vm.length_type_id(parsed.length_type_id);
-            vm.relativity_id(parsed.relativity_id);
-            vm.benchmark_id(parsed.benchmark_id);
-            vm.last_updated(parsed.last_updated);
-            vm.trade_editorial_label(parsed.trade_editorial_label);
-            vm.structure_type_id(parsed.structure_type_id);
-            vm.instruction_entry(parsed.instruction_entry);
-            vm.instruction_entry_date(parsed.instruction_entry_date);
-            vm.instruction_exit(parsed.instruction_exit);
-            vm.instruction_exit_date(parsed.instruction_exit_date);
-            vm.instruction_type_id(parsed.instruction_type_id);
-            vm.instruction_label(parsed.instruction_label);
-            vm.hedge_id(parsed.hedge_id);
-            vm.currency_id(parsed.currency_id); 
-            vm.related_trade_ids(parsed.related_trade_ids),
-            vm.apl_func(parsed.apl_func);
-            vm.mark_to_mark_rate(parsed.mark_to_mark_rate);
-            vm.interest_rate_diff(parsed.interest_rate_diff);
-            vm.abs_measure_type_id(parsed.abs_measure_type_id);
-            vm.abs_currency_id(parsed.abs_currency_id);
-            vm.abs_return_value(parsed.abs_return_value);
-            vm.rel_measure_type_id(parsed.rel_measure_type_id);
-            vm.rel_currency_id(parsed.rel_currency_id);
-            vm.rel_return_value(parsed.rel_return_value);
-            vm.return_benchmark_id(parsed.return_benchmark_id);
-            vm.comments(parsed.comments);
-
-            $("#BenchmarkTypeAhead").select2("val", parsed.benchmark_id);
-            $("#CurrencyTypeAhead").select2("val", parsed.currency_id);
-            $("#absCurrencyTypeAhead").select2("val", parsed.abs_currency_id);
-            $("#relCurrencyTypeAhead").select2("val", parsed.rel_currency_id);
-            $("#relBenchmarkTypeAhead").select2("val", parsed.return_benchmark_id);
-            $("#selectRelatedTrades").select2("val",parsed.trade_id);
-
-            //trade groups and lines      
-            for( var i = 0; i < parsed.tradegroups.length; i++ )
-            {
-                
-                var currentParsedGroup = parsed.tradegroups[i];
-                var tradeLinesArray = new Array();                                                                        
-                for( var j = 0; j < currentParsedGroup.tradeLines.length; j++ )
+            //datetimepickers - moment-datetimepicker for bootstrap
+            $('#dpInstructionEntry').datepicker(
                 {
-                    tradeLinesArray[j] = new TradeLine(
-                                                    currentParsedGroup.tradeLines[j].trade_line_id,                                                               currentParsedGroup.tradeLines[j].position_id,
-                                                    currentParsedGroup.tradeLines[j].tradable_thing_id
-                    );
-                    tradeLinesArray[j].CRUDMode = "edit";
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
+                });
+            $('#dpAddInstructionExit').datepicker();
+            
+            //datetimepickers - moment-datetimepicker for bootstrap
+            $('#dpAddInstructionEntry').datepicker(
+                {
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
+                });
+            $('#dpEditInstructionExit').datepicker();
+            
+            //datetimepickers - moment-datetimepicker for bootstrap
+            $('#dpEditInstructionEntry').datepicker(
+                {
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
+                });
+            $('#dpInstructionExit').datepicker();
 
-                }
+            //datetimepickers - moment-datetimepicker for bootstrap
+            $('#dpAddAbsPerformance').datepicker(
+                {
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
+                });
 
-                
-                var newGroup = new TradeGroup(
-                                            parsed.tradegroups[i].trade_line_group_id,
-                                            parsed.tradegroups[i].trade_line_group_type_id,
-                                            parsed.tradegroups[i].trade_line_group_label,
-                                            parsed.tradegroups[i].trade_line_group_editorial_label,
-                                            tradeLinesArray);
-                newGroup.CRUDMode = "edit";
-                vm.tradegroups.push(newGroup);
+            //datetimepickers - moment-datetimepicker for bootstrap
+            $('#dpEditAbsPerformance').datepicker(
+                {
+                    
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
+                });
+
+            //datetimepickers - moment-datetimepicker for bootstrap
+            $('#dpAddRelPerformance').datepicker(
+                {
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
+                });
+
+            //datetimepickers - moment-datetimepicker for bootstrap
+            $('#dpEditRelPerformance').datepicker(
+                {
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
+                });
+            //due to complexiity of nested knockout on tradeleines, all Financial Instruments will be loaded in the viewmodel from server.
+            //TODO: Api call for searches on tradable things
+            //$(".tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '200px' });
+
+            //trigger changes on typeaheads
+            //select2.3.5 jquery control for typeaheads
+            //to remotely get Benchmarks for typeaheads
+
+            function format_benchmark(item) {
+                return item.benchmark_label;
             }
 
-            $('.tradeLinePosition').select2({
-                minimumResultsForSearch: -1,
-                placeholder: "{Position}",
-                width: '175px',
-                allowClear: false,
+            $("#BenchmarkTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Benchmark Selection}",
+                width: '200px',
+                allowClear: true,
                 async: false,
                 ajax: {
-                    url: baseUrl + "Trade/AutoCompletePosition",
+                    url: baseUrl + "Trade/AutoCompleteBenchmark",
                     dataType: 'json',
                     type: 'POST',
-                    data: function () {
-                        var relativityId = $('#relativityId').val();
-                        if (relativityId == "" || relativityId == 'undefined') {
-                            relativityId = "0";
-                        }
+                    data: function(term, page) {
                         return {
-                            relativityId: relativityId, //search term 
+                            term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                initSelection: function (element, callback) {
+                id: function(obj) {
+                    return obj.benchmark_id;
+                },
+                initSelection: function(element, callback) {
                     //console.log('reached here: id:' + element.val())
                     $.ajax({
                         type: "POST",
-                        url: baseUrl +  "Trade/GetPosition",
+                        url: baseUrl + "Trade/GetBenchmark",
                         dataType: 'json',
                         async: false,
                         data: { id: (element.val()) },
-                        success: function (data) {
+                        success: function(data) {
                         }
-                    }).done(function (data) { callback(data[0]); });
+                    }).done(function(data) { callback(data[0]); });
                 },
-                id: function (obj) {
-                    return obj.position_id;
-                },
-                formatResult: function (item) {
-                    return item.position_label;
-                },
-                formatSelection: function (item) {
-                    return item.position_label;
-                },
-                formatNoMatches: function () {
-                    return "Please select a Trade Benchmark";
-                }
+                formatResult: format_benchmark,
+                formatSelection: format_benchmark
             });
 
-            $('#relativityId').change(function () {
-                $('.tradeLinePosition').select2("val", "").trigger("change");
+            $("#relBenchmarkTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Benchmark Selection}",
+                width: '350px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteBenchmark",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.benchmark_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetBenchmark",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_benchmark,
+                formatSelection: format_benchmark,
+            });
+            //end typeAhead
+
+            $("#addRelBenchmarkTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Benchmark Selection}",
+                width: '350px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteBenchmark",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.benchmark_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetBenchmark",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_benchmark,
+                formatSelection: format_benchmark,
+            });
+            //end typeAhead
+
+            $("#editRelBenchmarkTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Benchmark Selection}",
+                width: '350px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteBenchmark",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.benchmark_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetBenchmark",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_benchmark,
+                formatSelection: format_benchmark,
+            });
+            //end typeAhead
+
+            //to remotely get linked trades for typeaheads
+
+            function format_trade(item) {
+                return item.trade_editorial_label;
+            }
+
+            $("#selectRelatedTrades").select2({
+                minimumInputLength: 1,
+                placeholder: "{Linked Trades}",
+                width: '490px',
+                allowClear: true,
+                multiple: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteLinkedTrades",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetLinkedTrade",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) {
+                        var results = [];
+                        for (var i = 0; i < data.length; i++) {
+                            results.push(data[i]);
+                        }
+                        callback(results);
+                    });
+                },
+
+                id: function(obj) {
+                    return obj.trade_id;
+                },
+                formatResult: format_trade,
+                formatSelection: format_trade
+            });
+            //end typeAhead
+
+            //to remotely get currencies for typeaheads
+
+            function format_currency(item) {
+                return item.currency_label;
+            }
+            //currency main form
+            $("#CurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '250px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+            
+            $("#editCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            }); 
+            //end typeAhead
+            
+            $("#addCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });   
+            //end typeAhead
+
+            //to remotely get currencies for typeaheads
+            $("#modalEditAbsCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '250px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+
+            //to remotely get currencies for typeaheads
+            $("#modalAbsCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '250px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+
+            //to remotely get currencies for typeaheads
+            $("#absCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+
+            //to remotely get currencies for typeaheads
+            $("#modalEditRelCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '250px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+
+            //to remotely get currencies for typeaheads
+            $("#modalRelCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '250px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+            //to remotely get currencies for typeaheads
+            $("#relCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });
+            //end typeAhead
+
+            //confirm change of relatvity id
+            $('#relativityId').on("focus", function(ev) {
+                toastr.options.closeButton = true;
+                toastr.options.positionClass = "toast-top-left";
+                toastr.options.timeOut = 5000; // 5s
+                toastr.warning('Changing "Benchmark" will clear all selected "Positions" in all Trade Lines on the form', 'WARNING');
             });
 
-            $('.tradeLineTradeableThing').select2({
+            //ko.mapping.fromJS(GetTradeData('608'), vm);
+            // Load initial state from server, convert it to Task instances, then populate self.tasks
+            var id = @Html.DisplayFor(model => model.trade_id);
+            LoadTradeData(id);
+
+        });
+        //end document.ready
+   
+        
+    
+        //to remotely get Financial Instrument for typeaheads
+
+        function typeAheadFinInstr() {
+            var newTradableThing = '#' + ko.bindingHandlers.uniqueIdTradableThing.prefix + ko.bindingHandlers.uniqueIdTradableThing.counter;
+            $(newTradableThing).select2({
                 minimumInputLength: 1,
                 placeholder: "{Financial Instrument}",
                 width: '275px',
@@ -937,51 +1115,375 @@
                     url: baseUrl + "Trade/AutoCompleteTradableThing",
                     dataType: 'json',
                     type: 'POST',
-                    data: function (term, page) {
+                    data: function(term, page) {
                         return {
                             term: term, //search term 
                         };
                     },
-                    results: function (data, page) {
+                    results: function(data, page) {
                         return {
                             results: data
                         };
                     }
                 },
-                initSelection: function (element, callback) {
-                    //console.log('reached here: id:' + element.val())
-                    $.ajax({
-                        type: "POST",
-                        url: baseUrl +  "Trade/GetTradableThing",
-                        dataType: 'json',
-                        async: false,
-                        data: { id: (element.val()) },
-                        success: function (data) {
-                        }
-                    }).done(function (data) { callback(data[0]); });
-                },
-                id: function (obj) {
+                id: function(obj) {
                     return obj.tradable_thing_id;
                 },
-                formatResult: function (item) {
+                formatResult: function(item) {
                     return item.tradable_thing_label;
                 },
-                formatSelection: function (item) {
+                formatSelection: function(item) {
                     return item.tradable_thing_label;
                 }
             });
+        }
 
+        ;
+
+        //to remotely get positon for typeaheads
+
+        function typeAheadPosition() {
+            var newPosition = '#' + ko.bindingHandlers.uniqueIdPosition.prefix + ko.bindingHandlers.uniqueIdPosition.counter;
+            $(newPosition).select2({
+                minimumResultsForSearch: -1,
+                placeholder: "{Position}",
+                width: '175px',
+                allowClear: false,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompletePosition",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function() {
+                        var relativityId = $('#relativityId').val();
+                        if (relativityId == "" || relativityId == 'undefined') {
+                            relativityId = "0";
+                        }
+                        return {
+                            relativityId: relativityId, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.position_id;
+                },
+                formatResult: function(item) {
+                    return item.position_label;
+                },
+                formatSelection: function(item) {
+                    return item.position_label;
+                },
+                formatNoMatches: function() {
+                    return "Please select a Trade Benchmark";
+                }
+            });
+            $('#relativityId').change(function() {
+                $(newPosition).select2("val", "").trigger("change");
+            });
+        }
+
+        ;
+
+        $('#btnAddGroup').click(function() {
+            $("select.tradableThingList").select2({ placeholder: "{Financial Instrument}", width: '250px' });
         });
 
-        vm.CRUDMode = "edit";
+        function LoadTradeData(id) {
+            var apiGetURL = baseUrl;
+            apiGetURL += "Api/Values/Get/";
+            apiGetURL += id;
 
-    };
+            $.getJSON(apiGetURL, function(allData) {
+                var parsed = JSON.parse(allData);
+                vm.trade_id(parsed.trade_id);
+                vm.service_id(parsed.service_id);
+                vm.length_type_id(parsed.length_type_id);
+                vm.relativity_id(parsed.relativity_id);
+                vm.benchmark_id(parsed.benchmark_id);
+                vm.last_updated(parsed.last_updated);
+                vm.trade_editorial_label(parsed.trade_editorial_label);
+                vm.structure_type_id(parsed.structure_type_id);
+                vm.trade_instruction_id(parsed.trade_instruction_id);
+                vm.instruction_entry(parsed.instruction_entry);
+                vm.instruction_entry_date(parsed.instruction_entry_date);
+                vm.instruction_exit(parsed.instruction_exit);
+                vm.instruction_exit_date(parsed.instruction_exit_date);
+                vm.instruction_type_id(parsed.instruction_type_id);
+                vm.instruction_label(parsed.instruction_label);
+                vm.hedge_id(parsed.hedge_id);
+                vm.currency_id(parsed.currency_id);
+                vm.related_trade_ids(parsed.related_trade_ids),
+                vm.apl_func(parsed.apl_func);
+                vm.mark_track_record_id(parsed.mark_track_record_id);
+                vm.mark_to_mark_rate(parsed.mark_to_mark_rate);
+                vm.int_track_record_id(parsed.int_track_record_id);
+                vm.int_track_record_id(parsed.int_track_record_id);
+                vm.interest_rate_diff(parsed.interest_rate_diff);
+                vm.abs_track_performance_id(parsed.abs_track_performance_id);
+                vm.abs_measure_type_id(parsed.abs_measure_type_id);
+                vm.abs_currency_id(parsed.abs_currency_id);
+                vm.abs_return_value(parsed.abs_return_value);
+                vm.rel_track_performance_id(parsed.rel_track_performance_id);
+                vm.rel_measure_type_id(parsed.rel_measure_type_id);
+                vm.rel_currency_id(parsed.rel_currency_id);
+                vm.rel_return_value(parsed.rel_return_value);
+                vm.return_benchmark_id(parsed.return_benchmark_id);
+                vm.comment_id(parsed.comment_id);
+                vm.comments(parsed.comments);
 
-    //send save request to API            
-    function saveTrade() {
-       
+                $("#BenchmarkTypeAhead").select2("val", parsed.benchmark_id);
+                $("#CurrencyTypeAhead").select2("val", parsed.currency_id);
+                $("#absCurrencyTypeAhead").select2("val", parsed.abs_currency_id);
+                $("#relCurrencyTypeAhead").select2("val", parsed.rel_currency_id);
+                $("#relBenchmarkTypeAhead").select2("val", parsed.return_benchmark_id);
+                $("#selectRelatedTrades").select2("val", parsed.trade_id);
 
-    };
+                //trade groups and lines      
+                for (var i = 0; i < parsed.tradegroups.length; i++) {
 
-</script>
+                    var currentParsedGroup = parsed.tradegroups[i];
+                    var tradeLinesArray = new Array();
+                    for (var j = 0; j < currentParsedGroup.tradeLines.length; j++) {
+                        tradeLinesArray[j] = new TradeLine(
+                            currentParsedGroup.tradeLines[j].trade_line_id, currentParsedGroup.tradeLines[j].position_id,
+                            currentParsedGroup.tradeLines[j].tradable_thing_id
+                        );
+                        tradeLinesArray[j].CRUDMode = "edit";
+
+                    }
+
+
+                    var newGroup = new TradeGroup(
+                        parsed.tradegroups[i].trade_line_group_id,
+                        parsed.tradegroups[i].trade_line_group_type_id,
+                        parsed.tradegroups[i].trade_line_group_label,
+                        parsed.tradegroups[i].trade_line_group_editorial_label,
+                        tradeLinesArray);
+                    newGroup.CRUDMode = "edit";
+                    vm.tradegroups.push(newGroup);
+                }
+
+                $('.tradeLinePosition').select2({
+                    minimumResultsForSearch: -1,
+                    placeholder: "{Position}",
+                    width: '175px',
+                    allowClear: false,
+                    async: false,
+                    ajax: {
+                        url: baseUrl + "Trade/AutoCompletePosition",
+                        dataType: 'json',
+                        type: 'POST',
+                        data: function() {
+                            var relativityId = $('#relativityId').val();
+                            if (relativityId == "" || relativityId == 'undefined') {
+                                relativityId = "0";
+                            }
+                            return {
+                                relativityId: relativityId, //search term 
+                            };
+                        },
+                        results: function(data, page) {
+                            return {
+                                results: data
+                            };
+                        }
+                    },
+                    initSelection: function(element, callback) {
+                        //console.log('reached here: id:' + element.val())
+                        $.ajax({
+                            type: "POST",
+                            url: baseUrl + "Trade/GetPosition",
+                            dataType: 'json',
+                            async: false,
+                            data: { id: (element.val()) },
+                            success: function(data) {
+                            }
+                        }).done(function(data) { callback(data[0]); });
+                    },
+                    id: function(obj) {
+                        return obj.position_id;
+                    },
+                    formatResult: function(item) {
+                        return item.position_label;
+                    },
+                    formatSelection: function(item) {
+                        return item.position_label;
+                    },
+                    formatNoMatches: function() {
+                        return "Please select a Trade Benchmark";
+                    }
+                });
+
+                $('#relativityId').change(function() {
+                    $('.tradeLinePosition').select2("val", "").trigger("change");
+                });
+
+                $('.tradeLineTradeableThing').select2({
+                    minimumInputLength: 1,
+                    placeholder: "{Financial Instrument}",
+                    width: '275px',
+                    allowClear: true,
+                    async: false,
+                    ajax: {
+                        url: baseUrl + "Trade/AutoCompleteTradableThing",
+                        dataType: 'json',
+                        type: 'POST',
+                        data: function(term, page) {
+                            return {
+                                term: term, //search term 
+                            };
+                        },
+                        results: function(data, page) {
+                            return {
+                                results: data
+                            };
+                        }
+                    },
+                    initSelection: function(element, callback) {
+                        //console.log('reached here: id:' + element.val())
+                        $.ajax({
+                            type: "POST",
+                            url: baseUrl + "Trade/GetTradableThing",
+                            dataType: 'json',
+                            async: false,
+                            data: { id: (element.val()) },
+                            success: function(data) {
+                            }
+                        }).done(function(data) { callback(data[0]); });
+                    },
+                    id: function(obj) {
+                        return obj.tradable_thing_id;
+                    },
+                    formatResult: function(item) {
+                        return item.tradable_thing_label;
+                    },
+                    formatSelection: function(item) {
+                        return item.tradable_thing_label;
+                    }
+                });
+
+            });
+
+            vm.CRUDMode = "edit";
+
+        }
+
+        ;
+
+        function LoadAbsolutePerformanceData() {
+            vm.abs_Performanceitems.removeAll();
+            vm.abs_SelectedItems.removeAll();
+            var apiGetURL = baseUrl;
+            apiGetURL += "Trade/GetAbsolutePerformances/";
+            apiGetURL += vm.trade_id();
+
+            $.getJSON(apiGetURL, function(allData) {
+                vm.abs_Performanceitems(allData);
+            });
+
+            $('#editAbsolutePerformanceModal').modal('show');
+
+        }
+
+        function LoadRelativePerformanceData() {
+            vm.rel_Performanceitems.removeAll();
+            vm.rel_SelectedItems.removeAll();
+            var apiGetURL = baseUrl;
+            apiGetURL += "Trade/GetRelativePerformances/";
+            apiGetURL += vm.trade_id();
+
+            $.getJSON(apiGetURL, function(allData) {
+                vm.rel_Performanceitems(allData);
+            });
+
+            $('#editRelativePerformanceModal').modal('show');
+
+        }
+        
+        function LoadTradeInstructionData() {
+            vm.tradeInstructionitems.removeAll();
+            vm.tradeInstructionitems_SelectedItems.removeAll();
+            var apiGetURL = baseUrl;
+            apiGetURL += "Trade/GetTradeInstructions/";
+            apiGetURL += vm.trade_id();
+
+            $.getJSON(apiGetURL, function(allData) {
+                vm.tradeInstructionitems(allData);
+            });
+
+            $('#editTradeInstructionModal').modal('show');
+
+        }
+
+        //send save request to API            
+        function saveTrade() {
+            if (vm.saveTradeData() == true) {
+                //alert('Trade successfully created');  
+            }
+        };
+
+        function afterModalEditLoadData() {
+            
+            var apiGetURL = baseUrl;
+            apiGetURL += "Api/Values/Get/";
+            apiGetURL += vm.trade_id();
+
+            $.getJSON(apiGetURL, function(allData) {
+                var parsed = JSON.parse(allData);
+                //vm.trade_id(parsed.trade_id);
+                //vm.service_id(parsed.service_id);
+                //vm.length_type_id(parsed.length_type_id);
+                //vm.relativity_id(parsed.relativity_id);
+                //vm.benchmark_id(parsed.benchmark_id);
+                //vm.last_updated(parsed.last_updated);
+                //vm.trade_editorial_label(parsed.trade_editorial_label);
+                //vm.structure_type_id(parsed.structure_type_id);
+                vm.trade_instruction_id(parsed.trade_instruction_id);
+                vm.instruction_entry(parsed.instruction_entry);
+                vm.instruction_entry_date(parsed.instruction_entry_date);
+                vm.instruction_exit(parsed.instruction_exit);
+                vm.instruction_exit_date(parsed.instruction_exit_date);
+                vm.instruction_type_id(parsed.instruction_type_id);
+                vm.instruction_label(parsed.instruction_label);
+                vm.hedge_id(parsed.hedge_id);
+                vm.currency_id(parsed.currency_id);
+                vm.related_trade_ids(parsed.related_trade_ids),
+                vm.apl_func(parsed.apl_func);
+                vm.mark_track_record_id(parsed.mark_track_record_id);
+                vm.mark_to_mark_rate(parsed.mark_to_mark_rate);
+                vm.int_track_record_id(parsed.int_track_record_id);
+                vm.int_track_record_id(parsed.int_track_record_id);
+                vm.interest_rate_diff(parsed.interest_rate_diff);
+                vm.abs_track_performance_id(parsed.abs_track_performance_id);
+                vm.abs_measure_type_id(parsed.abs_measure_type_id);
+                vm.abs_currency_id(parsed.abs_currency_id);
+                vm.abs_return_value(parsed.abs_return_value);
+                vm.rel_track_performance_id(parsed.rel_track_performance_id);
+                vm.rel_measure_type_id(parsed.rel_measure_type_id);
+                vm.rel_currency_id(parsed.rel_currency_id);
+                vm.rel_return_value(parsed.rel_return_value);
+                vm.return_benchmark_id(parsed.return_benchmark_id);
+                vm.comment_id(parsed.comment_id);
+                vm.comments(parsed.comments);
+                
+                $("#BenchmarkTypeAhead").select2("val", parsed.benchmark_id);
+                $("#CurrencyTypeAhead").select2("val", parsed.currency_id);
+                $("#absCurrencyTypeAhead").select2("val", parsed.abs_currency_id);
+                $("#relCurrencyTypeAhead").select2("val", parsed.rel_currency_id);
+                $("#relBenchmarkTypeAhead").select2("val", parsed.return_benchmark_id);
+                $("#selectRelatedTrades").select2("val", parsed.trade_id);
+
+            });
+            
+
+
+        }
+
+    </script>
+
 }

@@ -22,7 +22,8 @@
         <input type="submit" onclick="$('#FindByIdText').val('');" value="Search" />
     </p>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        <button type="button" name="Create" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#createUrl').attr('href');">Create New Trade</button>
+            <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>               
     </p>
     <p>
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
@@ -112,11 +113,22 @@
             <td>
                 @Html.DisplayFor(modelItem => item.last_updated)
             </td>
-<td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.trade_id }) | 
-                @Html.ActionLink("Details", "Details", new { id = item.trade_id }) |
-               <a data-toggle="modal" href="external.html" data-target="#modal">Update Comment</a> |                                                              
-               <a data-toggle="modal" href="external.html" data-target="#modal">Update Instruction</a>
+            <td>
+                <script type="text/javascript">
+                    var trade_id = @Html.DisplayFor(modelItem => item.trade_id);
+                </script>
+                <button name="Edit" class="btn btn-sm btn-primary" onclick="window.onbeforeunload = null; document.location.href = $('#editUrl').attr('href');">Edit</button>
+                <a id="editUrl" href="@Html.AttributeEncode(Url.Action("Edit", "Trade", new { id = item.trade_id }))" style="display:none;"></a>
+                
+                <button name="Edit" class="btn btn-sm btn-primary" onclick="window.onbeforeunload = null; document.location.href = $('#detailsUrl').attr('href');">Details</button>
+                <a id="detailsUrl" href="@Html.AttributeEncode(Url.Action("Details", "Trade", new { id = item.trade_id }))" style="display:none;"></a>
+               
+                <button id="addComment" type="button" class="btn btn-sm btn-info"
+                        onclick="vm.trade_id(trade_id); vm.addComment();">
+                    Update Comment  </button>                                                             
+                <button id="addTradeInstruction" type="button" class="btn btn-sm btn-info"
+                        onclick="vm.trade_id(trade_id); $('#addTradeInstructionModal').modal('show');">
+                    Update Instruction</button>
             </td>
         </tr>
     }
@@ -127,3 +139,265 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+<!-- /.modal -->
+<!-- Modal -->
+<div class="modal fade" id="addTradeInstructionModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="afterModalEditLoadData();">&times;</button>
+            <h3 class="modal-title">Update Trade Instruction</h3>
+        </div>
+        <div class="modal-body">
+            <div class="control-group">
+               
+                <div class="row">
+                    <div class="control-label col-sm-3">
+                        <label>Entry Level:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-xlarge" data-bind="value: edit_instruction_entry" />
+                        <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry"></span>
+                    </div>
+  
+                    <div class="control-label col-sm-3">
+                        <label>Start Date:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-append date" id="dpAddInstructionEntry" data-datepicker-format="YYYY-MM-DD">
+                            <input class="span2" size="20" type="text" data-bind="value: edit_instruction_entry_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                            <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
+                            <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry_date"></span>
+                        </div>  
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="control-label col-sm-3">
+                        <label>Exit Level:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input class="form-control input-xlarge" type="text" data-bind="value: edit_instruction_exit" />
+                    </div>
+     
+
+                    <div class="control-label col-sm-3">
+                        <label>Exit Date:</label>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="input-append date" id="dpAddInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
+                            <input class="span2" size="20" type="text" data-bind="value: edit_instruction_exit_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }" >
+                            <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                            <span data-bind="visible: editInstructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
+                        </div>
+                    </div>
+                </div>
+         
+<br/>
+                <div class="row">    
+                    <div class="control-label col-sm-3">
+                        <label>Instruction:</label>
+                    </div>
+
+                    <div class="col-sm-3">
+                    @Html.DropDownList("instructionTypeId", (SelectList)ViewBag.InstructionTypes, String.Empty, new { @data_bind = "value: edit_instruction_type_id", @class = "form-control"})
+
+                    </div>
+       
+                        <div class="col-sm-2">
+                            <input type="text" data-bind="value: edit_instruction_label" />
+
+                        </div>
+            
+                </div>  
+<br/>
+                <div class="row">
+                    <div class="control-label col-sm-3">
+                       <label>Hedge Instructions:</label>
+                    </div>
+
+                    <div class="col-sm-3">
+                     @Html.DropDownList("hedgeTypeId", (SelectList)ViewBag.HedgeTypes, String.Empty, new { @data_bind = "value: edit_hedge_id", @class = "form-control" })
+                    </div>
+
+                    <div class="control-label col-sm-3">
+                        <label>Trade Execution Currency:</label>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <input class="input-xlarge" id="addCurrencyTypeAhead" type="hidden" data-bind="value: edit_currency_id"/>
+                    </div>
+                </div>
+
+            </div>
+</div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" onclick="vm.Save_TradeInstructions_Edit_Record()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
+            </div>
+
+    </div>
+        <!-- /.modal-content -->
+</div>
+<!-- /.modal -->
+<!-- Modal -->
+@section scripts
+{
+    <script type="text/html" id="AddComment">
+        <div class="modal fade" id="AddComment">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" aria-hidden="true" data-bind="click: cancel">&times;</button>
+                        <h3>Update Comment</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#" data-bind="submit: add">
+                            <div class="control-group">
+                                <label class="control-label">Comments:</label>
+                                <div class="controls">
+                                    <textarea data-bind="value: text" rows="6" cols="75"></textarea>
+                                    <span class="validationMessage" data-bind="validationMessage: text"></span> 
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bind="click: add">Update</button>
+                        <button type="button" class="btn btn-default" data-bind="click: cancel">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script src="~/Scripts/app/viewmodels/tradeEditViewModel.js"></script>
+    <script src="~/Scripts/app/viewmodels/commentEditViewModel.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            // when .modal-wide opened, set content-body height based on browser height; 200 is appx height of modal padding, modal title and button bar
+
+            $(".modal-wide").on("show.bs.modal", function() {
+                var height = $(window).height() - 200;
+                $(this).find(".modal-body").css("max-height", height);
+            });
+
+            //HACK to show select2 in bootstrap modals
+            $.fn.modal.Constructor.prototype.enforceFocus = function() {
+            };
+
+            window.onbeforeunload = function() {
+                return 'Are you sure you want to navigate away from this page?';
+            };
+
+         
+            $('#dpAddInstructionExit').datepicker();
+            
+            //datetimepickers - moment-datetimepicker for bootstrap
+            $('#dpAddInstructionEntry').datepicker(
+                {
+                    //setDate: moment(new Date(), "YYYY-MM-DD")
+                });
+            
+            //to remotely get currencies for typeaheads
+
+            function format_currency(item) {
+                return item.currency_label;
+            }
+            
+            
+            $("#editCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            }); 
+            //end typeAhead
+            
+            $("#addCurrencyTypeAhead").select2({
+                minimumInputLength: 1,
+                placeholder: "{Currency Selection}",
+                width: '200px',
+                allowClear: true,
+                async: false,
+                ajax: {
+                    url: baseUrl + "Trade/AutoCompleteCurrency",
+                    dataType: 'json',
+                    type: 'POST',
+                    data: function(term, page) {
+                        return {
+                            term: term, //search term 
+                        };
+                    },
+                    results: function(data, page) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                id: function(obj) {
+                    return obj.currency_id;
+                },
+                initSelection: function(element, callback) {
+                    //console.log('reached here: id:' + element.val())
+                    $.ajax({
+                        type: "POST",
+                        url: baseUrl + "Trade/GetCurrency",
+                        dataType: 'json',
+                        async: false,
+                        data: { id: (element.val()) },
+                        success: function(data) {
+                        }
+                    }).done(function(data) { callback(data[0]); });
+                },
+                formatResult: format_currency,
+                formatSelection: format_currency
+            });   
+            //end typeAhead
+
+          
+        });
+    //end document.ready
+
+    </script>
+
+
+
+}

@@ -422,7 +422,7 @@
             <button id="create" type="submit" class="btn btn-primary">Create</button>
             <a id="createUrl" href="@Html.AttributeEncode(Url.Action("Create", "Trade"))" style="display:none;"></a>
             <button name="ClientCancel" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Cancel</button>
-            <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Home"))" style="display:none;"></a>
+            <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Trade"))" style="display:none;"></a>
         </div>
 
     </fieldset>

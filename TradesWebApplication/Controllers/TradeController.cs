@@ -59,10 +59,7 @@ namespace TradesWebApplication.Controllers
             {
                trades = trades.Where(s => s.service_id == serviceId).ToList();
             }
-
-            var serviceItems = unitOfWork.ServiceRepository.GetAll().ToList();
-            ViewBag.Services = new SelectList(serviceItems, "service_id", "service_code");
-            
+  
             switch (sortOrder)
             {
                 case "TradeId":
@@ -85,6 +82,13 @@ namespace TradesWebApplication.Controllers
                     trades = trades.OrderByDescending(s => s.last_updated).ThenByDescending(t => t.trade_id).ToList();
                     break;
             }
+
+            var serviceTypeItems = unitOfWork.ServiceRepository.GetAll().ToList();
+            ViewBag.Services = new SelectList(serviceTypeItems, "service_id", "service_code");
+            var instructionTypeItems = unitOfWork.InstructionTypeRepository.GetAll().ToList();
+            ViewBag.InstructionTypes = new SelectList(instructionTypeItems, "instruction_type_id", "instruction_type_label");
+            var hedgeTypeItems = unitOfWork.HedgeTypeRepository.GetAll().ToList();
+            ViewBag.HedgeTypes = new SelectList(hedgeTypeItems, "hedge_id", "hedge_label");
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
