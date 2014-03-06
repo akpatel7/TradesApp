@@ -25,7 +25,7 @@ namespace TradesWebApplication.Controllers
         private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: /Trade/
-        public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? serviceId, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.TradeIdSortParm = String.IsNullOrEmpty(sortOrder) ? "TradeId" : "TradeIdDesc";
@@ -48,10 +48,21 @@ namespace TradesWebApplication.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                int searchIndex = int.Parse(searchString);
-                trades = trades.Where(s => s.trade_id == searchIndex);
-                // || s.trade_label.ToUpper().Contains(searchString.ToUpper()));
+                int searchIndex;
+                var searchIndexFound = int.TryParse(searchString, out searchIndex);
+                if (searchIndexFound)
+                {
+                    trades = trades.Where(s => s.trade_id == searchIndex);
+                }
             }
+            else if (serviceId.HasValue)
+            {
+               trades = trades.Where(s => s.service_id == serviceId);
+            }
+
+            var serviceItems = unitOfWork.ServiceRepository.GetAll().ToList();
+            ViewBag.Services = new SelectList(serviceItems, "service_id", "service_code");
+            
             switch (sortOrder)
             {
                 case "TradeId":
@@ -698,7 +709,7 @@ namespace TradesWebApplication.Controllers
             var trade = unitOfWork.TradeRepository.Get(tradeId);
             var list = unitOfWork.TradeInstructionRepository.GetAll().Where(t => t.trade_id == tradeId).ToList();
             var result = (from r in list
-                          orderby r.last_updated descending
+                          orderby r.created_on descending
                           select new
                           {
                               r.trade_instruction_id,
