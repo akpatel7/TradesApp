@@ -531,8 +531,37 @@ function TradeViewModel(
 
     this.vmMessages = ko.observable(""); //used for bootstrap UI alerts
 
+    this.makeModalDataValid = function () {
+        //edit absolute performances
+        self.edit_abs_track_performance_id(0);
+        self.edit_abs_measure_type_id(1);
+        self.edit_abs_currency_id(0);
+        self.edit_abs_return_benchmark_id(0);
+        self.edit_abs_return_value(0);
+        self.edit_abs_return_date("1900-01-01");
+        //edit relative performances 
+        self.edit_rel_track_performance_id(0);
+        self.edit_rel_measure_type_id(1);
+        self.edit_rel_currency_id(0);
+        self.edit_rel_return_value(0);
+        self.edit_rel_return_date("1900-01-01");
+        self.edit_rel_return_benchmark_id(0);
+        //edit trade instructions
+        self.edit_trade_instruction_id(0);
+        self.edit_instruction_entry(0);
+        self.edit_instruction_entry_date("1900-01-01");
+        self.edit_instruction_exit(0);
+        self.edit_instruction_exit_date("1900-02-02");
+        self.edit_instruction_type_id(0);
+        self.edit_instruction_label("");
+        self.edit_hedge_id(2);
+        self.edit_currency_id(0);
+    };
+
+
     self.saveTradeData = function (baseApiUrl) {
-       
+        //HACK make modal observables valid with dummy data.
+        self.makeModalDataValid();
         if (this.isValid()) {
             console.log('Posting Trade to server to save.');
             self.vmMessages("Posting Trade to server to save.");
