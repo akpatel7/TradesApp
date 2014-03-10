@@ -898,69 +898,7 @@ function TradeViewModel(
 
 
 
-    edit_abs_track_performance_id = typeof (edit_abs_track_performance_id) !== 'undefined' ? edit_abs_track_performance_id : 0;
-    this.edit_abs_track_performance_id = ko.observable(edit_abs_track_performance_id);
-
-    edit_abs_measure_type_id = typeof (edit_abs_measure_type_id) !== 'undefined' ? edit_abs_measure_type_id : 1; //default value
-    this.edit_abs_measure_type_id = ko.observable(1);
-
-    this.edit_abs_return_apl_func = ko.observable("");
-
-    edit_abs_currency_id = typeof (edit_abs_currency_id) !== 'undefined' ? edit_abs_currency_id : ""; //default value
-    this.edit_abs_currency_id = ko.observable(edit_abs_currency_id).extend({
-        required: {
-            onlyIf: function() {
-                return self.edit_abs_measure_type_id() == 2;
-            },
-        }
-    });
-
-    this.edit_abs_return_benchmark_id = ko.observable(0);
-
-    edit_abs_return_value = typeof (edit_abs_return_value) !== 'undefined' ? edit_abs_return_value : "";
-    this.edit_abs_return_value = ko.validatedObservable(edit_abs_return_value).extend({ required: true }).extend({ number: true });
-
-    this.edit_abs_return_date = ko.validatedObservable("").extend({ required: true, dateISO: true });
-    ;;
-
-    this.abs_Performanceitems = ko.observableArray([]);
-
-    this.abs_SelectedItems = ko.observableArray([]);
-
-    self.abs_SelectedItems.subscribe(
-       function () {
-           var recordindex = (self.abs_SelectedItems().length) - 1;
-           if (recordindex >= 0) {
-               var record = self.abs_SelectedItems()[recordindex];
-               self.edit_abs_track_performance_id(record.trade_performance_id);
-               self.edit_abs_measure_type_id(record.measure_type_id);
-               self.edit_abs_return_apl_func(record.return_apl_function);
-               self.edit_abs_currency_id(record.return_currency_id);
-               //self.edit_abs_return_benchmark_id();
-               self.edit_abs_return_value(record.return_value);
-               self.edit_abs_return_date(record.return_date);
-               $('#modalEditAbsCurrencyTypeAhead').trigger('change');
-           } else {
-               self.edit_abs_track_performance_id(0);
-               self.edit_abs_measure_type_id(1);
-               //self.edit_abs_return_apl_func(record.return_apl_function);
-               self.edit_abs_currency_id("");
-               //self.edit_abs_return_benchmark_id();
-               self.edit_abs_return_value("");
-               self.edit_abs_return_date("");
-               $('#modalEditAbsCurrencyTypeAhead').trigger('change');
-           }
-       });
     
-    this.abs_edit_isValid = function() {
-        return self.edit_abs_track_performance_id.isValid() &&
-            self.edit_abs_measure_type_id.isValid() &&
-            //self.edit_abs_return_apl_func(record.return_apl_function);
-            self.edit_abs_currency_id.isValid() &&
-            //self.edit_abs_return_benchmark_id();
-            self.edit_abs_return_value.isValid() &&
-            self.edit_abs_return_date.isValid();
-    };
     
     self.Save_AbsPerformance_Edit_Record = function () {
         if (self.abs_edit_isValid()) {
@@ -1055,79 +993,7 @@ function TradeViewModel(
     };
 
 
-    //Relative Performance edit section
-    edit_rel_track_performance_id = typeof (edit_rel_track_performance_id) !== 'undefined' ? edit_rel_track_performance_id : "";
-    this.edit_rel_track_performance_id = ko.observable(0);
-
-    edit_rel_measure_type_id = typeof (edit_rel_measure_type_id) !== 'undefined' ? edit_rel_measure_type_id : 2; //default value
-    this.edit_rel_measure_type_id = ko.observable(2);
-
-    this.edit_abs_return_apl_func = ko.observable("");
-
-    edit_rel_currency_id = typeof (edit_rel_currency_id) !== 'undefined' ? edit_rel_currency_id : "";
-    this.edit_rel_currency_id = ko.observable(edit_rel_currency_id).extend({
-        required: {
-            onlyIf: function () {
-                return self.edit_rel_measure_type_id() == 2;
-            },
-        },
-    });
-
-    edit_rel_return_value = typeof (edit_rel_return_value) !== 'undefined' ? edit_rel_return_value : "";
-    this.edit_rel_return_value = ko.observable(edit_rel_return_value).extend({ required: true, number: true });
     
-    this.edit_rel_return_date = ko.observable("").extend({ required: true, dateISO: true });
-
-
-    edit_rel_return_benchmark_id = typeof (edit_rel_return_benchmark_id) !== 'undefined' ? edit_rel_return_benchmark_id : "";
-    this.edit_rel_return_benchmark_id = ko.observable(edit_rel_return_benchmark_id).extend({
-        required: {
-            onlyIf: function () {
-                return (self.edit_rel_return_value() !== "" && self.edit_rel_return_value() !== null && self.edit_rel_return_value() !== 'undefined');
-            },
-        },
-    });
-    
-    this.rel_Performanceitems = ko.observableArray([]);
-    
-    this.rel_SelectedItems = ko.observableArray([]);
-    
-    self.rel_SelectedItems.subscribe(
-      function () {
-          var recordindex = (self.rel_SelectedItems().length) - 1;
-          if (recordindex >= 0) {
-              var record = self.rel_SelectedItems()[recordindex];
-              self.edit_rel_track_performance_id(record.trade_performance_id);
-              self.edit_rel_measure_type_id(record.measure_type_id);
-              //self.edit_rel_return_apl_func(record.return_apl_function);
-              self.edit_rel_currency_id(record.return_currency_id);
-              self.edit_rel_return_benchmark_id(record.return_benchmark_id);
-              self.edit_rel_return_value(record.return_value);
-              self.edit_rel_return_date(record.return_date);
-              $('#modalEditRelCurrencyTypeAhead').trigger('change');
-              $('#editRelBenchmarkTypeAhead').trigger('change');
-          } else {
-              self.edit_rel_track_performance_id(0);
-              self.edit_rel_measure_type_id(1);
-              //self.edit_abs_return_apl_func(record.return_apl_function);
-              self.edit_rel_currency_id("");
-              self.edit_rel_return_benchmark_id("");
-              self.edit_rel_return_value("");
-              self.edit_rel_return_date("");
-              $('#modalEditRelCurrencyTypeAhead').trigger('change');
-              $('#editRelBenchmarkTypeAhead').trigger('change');
-          }
-      });
-
-    this.rel_edit_isValid = function () {
-        return self.edit_rel_track_performance_id.isValid() &&
-            self.edit_rel_measure_type_id.isValid() &&
-            //self.edit_abs_return_apl_func(record.return_apl_function);
-            self.edit_rel_currency_id.isValid() &&
-            self.edit_rel_return_benchmark_id() &&
-            self.edit_rel_return_value.isValid() &&
-            self.edit_rel_return_date.isValid();
-    };
     
     self.Save_RelPerformance_Edit_Record = function() {
         if (self.rel_edit_isValid()) {
@@ -1222,117 +1088,7 @@ function TradeViewModel(
         }
     };
     
-    //Section TradeInstructionsEdit
-    edit_trade_instruction_id = typeof (edit_trade_instruction_id) !== 'undefined' ? edit_trade_instruction_id : 0;
-    this.edit_trade_instruction_id = ko.observable(edit_trade_instruction_id);
-
-    edit_instruction_entry = typeof (edit_instruction_entry) !== 'undefined' ? edit_instruction_entry : "";
-    this.edit_instruction_entry = ko.validatedObservable(null).extend({ required: true }).extend({ number: true });
-
-    edit_instruction_entry_date = typeof (edit_instruction_entry_date) !== 'undefined' ? edit_instruction_entry_date : "";
-    this.edit_instruction_entry_date = ko.validatedObservable(edit_instruction_entry_date).extend({ required: true, dateISO: true });
-
-    edit_instruction_exit = typeof (edit_instruction_exit) !== 'undefined' ? edit_instruction_exit : "";
-    this.edit_instruction_exit = ko.observable(edit_instruction_exit).extend({ number: true });
-
-    edit_instruction_exit_date = typeof (edit_instruction_exit_date) !== 'undefined' ? edit_instruction_exit_date : "";
-    this.edit_instruction_exit_date = ko.observable(edit_instruction_exit_date);
-
-    edit_instruction_type_id = typeof (edit_instruction_type_id) !== 'undefined' ? edit_instruction_type_id : 0;
-    this.edit_instruction_type_id = ko.observable(edit_instruction_type_id);
-
-    edit_instruction_label = typeof (edit_instruction_label) !== 'undefined' ? edit_instruction_label : "";
-    this.edit_instruction_label = ko.observable(edit_instruction_label);
-
-    edit_hedge_id = typeof (edit_hedge_id) !== 'undefined' ? edit_hedge_id : 2; //default value
-    this.edit_hedge_id = ko.observable(2);
-
-    edit_currency_id = typeof (edit_currency_id) !== 'undefined' ? edit_currency_id : "";
-    this.edit_currency_id = ko.observable(edit_currency_id);
-    
-    this.editInstructionDateCheck = ko.computed(function () {
-        if (self.edit_instruction_exit_date() == "") {
-            //self.edit_instruction_exit_date.__valid__(true);
-            return true;
-        }
-
-        if (self.edit_instruction_entry_date.isValid() && self.edit_instruction_exit_date() != "" && self.edit_instruction_exit_date() != null) {
-            var startDate = moment(self.edit_instruction_entry_date());
-            var endDate = moment(self.edit_instruction_exit_date());
-            //self.edit_instruction_exit_date.__valid__(moment(startDate).isBefore(endDate));
-            return moment(startDate).isBefore(endDate);
-        }
-
-        //self.edit_instruction_exit_date.__valid__(true);
-        return true;
-
-    }, self);
-    
-    ///Trade/GetTradeInstructions
-    //currency_id: 44
-    //currency_type: "Emerging Markets Currencies"
-    //hedge_id: 1
-    //hedge_type: "Hedge"
-    //instruction_entry: 5
-    //instruction_entry_date: "2014-03-05"
-    //instruction_exit: 6
-    //instruction_exit_date: "2014-03-06"
-    //instruction_label: "567"
-    //instruction_type: "Buy stop"
-    //instruction_type_id: 1
-    //last_updated: "2014-03-05"
-    //trade_id: 645
-    //trade_instruction_id: 611
-    
-    this.tradeInstructionitems = ko.observableArray([]);
-
-    this.tradeInstructionitems_SelectedItems = ko.observableArray([]);
-    
-    self.tradeInstructionitems_SelectedItems.subscribe(
-     function () {
-         var recordindex = (self.tradeInstructionitems_SelectedItems().length) - 1;
-         if (recordindex >= 0) {
-             
-             var record = self.tradeInstructionitems_SelectedItems()[recordindex];
-             self.edit_trade_instruction_id(record.trade_instruction_id);
-             self.edit_instruction_entry(record.instruction_entry);
-             self.edit_instruction_entry_date(record.instruction_entry_date);
-             self.edit_instruction_exit(record.instruction_exit);
-             self.edit_instruction_exit_date(record.instruction_exit_date);
-             self.edit_instruction_type_id(record.instruction_type_id);
-             self.edit_instruction_label(record.instruction_label);
-             self.edit_hedge_id(record.hedge_id);
-             self.edit_currency_id(record.currency_id);
-             $('#editCurrencyTypeAhead').trigger('change');
-             $('#addCurrencyTypeAhead').trigger('change');
-
-         } else {
-             self.edit_trade_instruction_id(0);
-             self.edit_instruction_entry("");
-             self.edit_instruction_entry_date("");
-             self.edit_instruction_exit("");
-             self.edit_instruction_exit_date("");
-             self.edit_instruction_type_id(1);
-             self.edit_instruction_label("");
-             self.edit_hedge_id(2);
-             self.edit_currency_id("");
-             $('#editCurrencyTypeAhead').trigger('change');
-             $('#addCurrencyTypeAhead').trigger('change');
-         }
-     });
-    
-    this.tradeInstruction_edit_isValid = function () {
-        return self.edit_trade_instruction_id.isValid() &&
-        self.edit_instruction_entry.isValid() &&
-        self.edit_instruction_entry_date.isValid() &&
-        self.edit_instruction_exit.isValid() &&
-        self.edit_instruction_exit_date.isValid() &&
-        self.edit_instruction_type_id.isValid() &&
-        self.edit_instruction_label.isValid() &&
-        self.edit_hedge_id.isValid() &&
-        self.edit_currency_id.isValid();
-    };
-    
+   
     self.Save_TradeInstructions_Edit_Record = function () {
         if (self.tradeInstruction_edit_isValid()) {
             console.log('Posting TradeInstructions to server to save.');
@@ -1505,7 +1261,7 @@ function TradeViewModel(
     
     //set this to true to see ko.toJson on form for debugging knockout bindings
     this.APItester = new ResultViewModel();
-    this.debug = false;
+    this.debug = true;
     //////////////////
 }
 

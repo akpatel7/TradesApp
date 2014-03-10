@@ -297,7 +297,7 @@
                         @Html.LabelFor(model => model.apl_func)
                     </div>
                     <div class="col-sm-3">
-                        <input type="text" data-bind="value: apl_func" maxlength="255" , disabled="disabled" />
+                        <input type="text" data-bind="value: apl_func" maxlength="255" disabled="disabled" />
                     </div>
                 </div>
         </fieldset>
@@ -393,12 +393,11 @@
         </fieldset>
 
         <p>
-            <button type="button" name="ClientCancel" class="btn btn-primary" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Exit</button>
+            <button type="button" name="ClientCancel" class="btn btn-primary pull-right" onclick=" window.onbeforeunload = null; document.location.href = $('#cancelUrl').attr('href');">Exit</button>
             <a id="cancelUrl" href="@Html.AttributeEncode(Url.Action("Index", "Trade"))" style="display:none;"></a>
         </p>
 
     </fieldset>
-    </div>
 </form>
 
 <pre data-bind='text: ko.toJSON($root, null, 2), visible: debug'></pre>

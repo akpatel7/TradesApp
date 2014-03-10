@@ -765,6 +765,9 @@
     <Content Include="Images\orderedList9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\app\viewmodels\absPerformaceEditViewModel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\app\viewmodels\commentEditViewModel.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

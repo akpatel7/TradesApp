@@ -391,12 +391,21 @@
                     <span class="validationMessage" data-bind="validationMessage: abs_return_value"></span> 
                 </div>
             </div>
- <div class="pull-right">
-            <button type="button" data-toggle="modal" onclick="  LoadAbsolutePerformanceData();" class="btn btn-sm btn-info">Correct Absolute Performance</button>
+            @* <div class="pull-right">
+                <button type="button" data-toggle="modal" onclick="vm.editAbsPerformance()" class="btn btn-sm btn-info">Correct Absolute Performance</button>
                                         
-    <button type="button" data-toggle="modal" onclick="$('#addAbsolutePerformanceModal').modal('show');" class="btn btn-sm btn-info">Update Absolute Performance</button>
-                </div>
+                <button type="button" data-toggle="modal" onclick="vm.addAbsPerformance()" class="btn btn-sm btn-info">Update Absolute Performance</button>
+            </div>*@
+ <div class="pull-right">
+                <button id="editComment" type="button" class="btn btn-sm btn-info"
+                    onclick="vm.editAbsPerformance()">
+                    Correct Absolute Performance</button>
+                <button id="addComment" type="button" class="btn btn-sm btn-info"
+                    onclick="vm.addAbsPerformance()">
+                    Update Absolute Performance</button>
+            </div>
         </fieldset>
+       
 
         <!-- Rel performance ------------------------------------- -->
         <fieldset class="tgroup">
@@ -478,18 +487,22 @@
 </form>
 
 <pre data-bind='text: ko.toJSON($root, null, 2), visible: debug'></pre>
-<!-- Modal -->
-<div class="modal fade" id="editTradeInstructionModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="afterModalEditLoadData();">&times;</button>
-            <h3 class="modal-title">Correct Trade Instruction</h3>
-        </div>
-        <div class="modal-body">
-            <div class="control-group">
-                <div class="row">
-                    <div class="center-block"id="grid" style="height: 350px; width: 900px"  
-                         data-bind="koGrid: { data: tradeInstructionitems, afterSelectionChange: function () { return true; },
+
+@section scripts{
+
+    <script type="text/html" id="EditTradeInstruction">
+        <!-- Modal -->
+        <div class="modal fade" id="editTradeInstructionModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="afterModalEditLoadData();">&times;</button>
+                    <h3 class="modal-title">Correct Trade Instruction</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="control-group">
+                        <div class="row">
+                            <div class="center-block"id="grid" style="height: 350px; width: 900px"  
+                                 data-bind="koGrid: { data: tradeInstructionitems, afterSelectionChange: function () { return true; },
     columnDefs: [{ field: 'instruction_type', displayName: 'Type',width:'100'},
                  { field: 'instruction_label', displayName: 'Instructions',width:'100' },
 				 { field: 'instruction_entry', displayName: 'Entry Level',width:'80' },
@@ -505,255 +518,261 @@
     selectedItems: tradeInstructionitems_SelectedItems,
     footerRowHeight: 30
 }">
-                    </div>
-                </div>
- <br/>
+                            </div>
+                        </div>
+                        <br/>
                
-                <div class="row">
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.instruction_entry)
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control input-xlarge" data-bind="value: edit_instruction_entry" />
-                        <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry"></span>
-                    </div>
+                        <div class="row">
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.instruction_entry)
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-xlarge" data-bind="value: edit_instruction_entry" />
+                                <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry"></span>
+                            </div>
   
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.instruction_entry_date)
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="input-append date" id="dpEditInstructionEntry" data-datepicker-format="YYYY-MM-DD">
-                            <input class="span2" size="20" type="text" data-bind="value: edit_instruction_entry_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
-                            <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
-                            <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry_date"></span>
-                        </div>  
-                    </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.instruction_exit)
-                    </div>
-                    <div class="col-sm-3">
-                        <input class="form-control input-xlarge" type="text" data-bind="value: edit_instruction_exit" />
-                    </div>
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.instruction_entry_date)
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-append date" id="dpEditInstructionEntry" data-datepicker-format="YYYY-MM-DD">
+                                    <input class="span2" size="20" type="text" data-bind="value: edit_instruction_entry_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
+                                    <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry_date"></span>
+                                </div>  
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.instruction_exit)
+                            </div>
+                            <div class="col-sm-3">
+                                <input class="form-control input-xlarge" type="text" data-bind="value: edit_instruction_exit" />
+                            </div>
      
 
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.instruction_exit_date)
-                    </div>
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.instruction_exit_date)
+                            </div>
 
-                    <div class="col-sm-3">
-                        <div class="input-append date" id="dpEditInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
-                            <input class="span2" size="20" type="text" data-bind="value: edit_instruction_exit_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }" >
-                            <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
-                            <span data-bind="visible: editInstructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
+                            <div class="col-sm-3">
+                                <div class="input-append date" id="dpEditInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
+                                    <input class="span2" size="20" type="text" data-bind="value: edit_instruction_exit_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }" >
+                                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    <span data-bind="visible: editInstructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
          
-                <br/>
-                <div class="row">    
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.instruction_type_id)
-                    </div>
+                        <br/>
+                        <div class="row">    
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.instruction_type_id)
+                            </div>
 
-                    <div class="col-sm-3">
-                        @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: edit_instruction_type_id", @class = "form-control" })
-                    </div>
+                            <div class="col-sm-3">
+                                @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: edit_instruction_type_id", @class = "form-control" })
+                            </div>
        
-                    <div class="col-sm-2">
-                        <input type="text" data-bind="value: edit_instruction_label" />
+                            <div class="col-sm-2">
+                                <input type="text" data-bind="value: edit_instruction_label" />
 
-                    </div>
+                            </div>
             
-                </div>  
-                <br/>
-                <div class="row">
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.hedge_id)
-                    </div>
-
-                    <div class="col-sm-3">
-                        @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: edit_hedge_id", @class = "form-control" })
-                    </div>
-
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.currency_id)
-                    </div>
-
-                    <div class="col-sm-3">
-                        <input class="input-xlarge" id="editCurrencyTypeAhead" type="hidden" data-bind="value: edit_currency_id"/>
-                    </div>
-                </div>
-
-            </div>
-</div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" onclick="vm.Save_TradeInstructions_Edit_Record()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
-            </div>
-
-    </div>
-        <!-- /.modal-content -->
-</div>
-<!-- /.modal -->
-<!-- Modal -->
-<div class="modal fade" id="addTradeInstructionModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="afterModalEditLoadData();">&times;</button>
-            <h3 class="modal-title">Update Trade Instruction</h3>
-        </div>
-        <div class="modal-body">
-            <div class="control-group">
-               
-                <div class="row">
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.instruction_entry)
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control input-xlarge" data-bind="value: edit_instruction_entry" />
-                        <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry"></span>
-                    </div>
-  
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.instruction_entry_date)
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="input-append date" id="dpAddInstructionEntry" data-datepicker-format="YYYY-MM-DD">
-                            <input class="span2" size="20" type="text" data-bind="value: edit_instruction_entry_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
-                            <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
-                            <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry_date"></span>
                         </div>  
+                        <br/>
+                        <div class="row">
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.hedge_id)
+                            </div>
+
+                            <div class="col-sm-3">
+                                @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: edit_hedge_id", @class = "form-control" })
+                            </div>
+
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.currency_id)
+                            </div>
+
+                            <div class="col-sm-3">
+                                <input class="input-xlarge" id="editCurrencyTypeAhead" type="hidden" data-bind="value: edit_currency_id"/>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <br/>
-                <div class="row">
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.instruction_exit)
-                    </div>
-                    <div class="col-sm-3">
-                        <input class="form-control input-xlarge" type="text" data-bind="value: edit_instruction_exit" />
-                    </div>
+                <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary" data-bind="click: save">Save</button>
+                      <button type="button" class="btn" data-bind="click: cancel">Cancel</button>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </script>
+
+    <script type="text/html" id="AddTradeInstruction">
+        <!-- Modal -->
+        <div class="modal fade" id="addTradeInstructionModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="afterModalEditLoadData();">&times;</button>
+                    <h3 class="modal-title">Update Trade Instruction</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="control-group">
+               
+                        <div class="row">
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.instruction_entry)
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-xlarge" data-bind="value: edit_instruction_entry" />
+                                <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry"></span>
+                            </div>
+  
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.instruction_entry_date)
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-append date" id="dpAddInstructionEntry" data-datepicker-format="YYYY-MM-DD">
+                                    <input class="span2" size="20" type="text" data-bind="value: edit_instruction_entry_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
+                                    <span class="validationMessage" data-bind="validationMessage: edit_instruction_entry_date"></span>
+                                </div>  
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.instruction_exit)
+                            </div>
+                            <div class="col-sm-3">
+                                <input class="form-control input-xlarge" type="text" data-bind="value: edit_instruction_exit" />
+                            </div>
      
 
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.instruction_exit_date)
-                    </div>
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.instruction_exit_date)
+                            </div>
 
-                    <div class="col-sm-3">
-                        <div class="input-append date" id="dpAddInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
-                            <input class="span2" size="20" type="text" data-bind="value: edit_instruction_exit_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }" >
-                            <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
-                            <span data-bind="visible: editInstructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
+                            <div class="col-sm-3">
+                                <div class="input-append date" id="dpAddInstructionExit" data-date="" data-datepicker-format="YYYY-MM-DD">
+                                    <input class="span2" size="20" type="text" data-bind="value: edit_instruction_exit_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }" >
+                                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    <span data-bind="visible: editInstructionDateCheck() == false" class="validationMessage">This field must be greater than instruction entry date.</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
          
-<br/>
-                <div class="row">    
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.instruction_type_id)
-                    </div>
+                        <br/>
+                        <div class="row">    
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.instruction_type_id)
+                            </div>
 
-                    <div class="col-sm-3">
-                        @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: edit_instruction_type_id", @class = "form-control" })
-                    </div>
+                            <div class="col-sm-3">
+                                @Html.DropDownListFor(model => model.instruction_type_id, new SelectList(Model.InstructionTypes, "instruction_type_id", "instruction_type_label"), new { @data_bind = "value: edit_instruction_type_id", @class = "form-control" })
+                            </div>
        
-                        <div class="col-sm-2">
-                            <input type="text" data-bind="value: edit_instruction_label" />
+                            <div class="col-sm-2">
+                                <input type="text" data-bind="value: edit_instruction_label" />
 
-                        </div>
+                            </div>
             
-                </div>  
-<br/>
-                <div class="row">
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.hedge_id)
-                    </div>
+                        </div>  
+                        <br/>
+                        <div class="row">
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.hedge_id)
+                            </div>
 
-                    <div class="col-sm-3">
-                        @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: edit_hedge_id", @class = "form-control" })
-                    </div>
+                            <div class="col-sm-3">
+                                @Html.DropDownListFor(model => model.hedge_id, new SelectList(Model.HedgeTypes, "hedge_id", "hedge_label"), new { @data_bind = "value: edit_hedge_id", @class = "form-control" })
+                            </div>
 
-                    <div class="control-label col-sm-3">
-                        @Html.LabelFor(model => model.currency_id)
-                    </div>
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.currency_id)
+                            </div>
 
-                    <div class="col-sm-3">
-                        <input class="input-xlarge" id="addCurrencyTypeAhead" type="hidden" data-bind="value: edit_currency_id"/>
+                            <div class="col-sm-3">
+                                <input class="input-xlarge" id="addCurrencyTypeAhead" type="hidden" data-bind="value: edit_currency_id"/>
+                            </div>
+                        </div>
+
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-bind="click: add">Save</button>
+                    <button type="button" class="btn btn-default" data-bind="click: cancel">Close</button>
                 </div>
 
             </div>
-</div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" onclick="vm.Save_TradeInstructions_Edit_Record()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
-            </div>
-
-    </div>
-        <!-- /.modal-content -->
-</div>
-<!-- /.modal -->
-<!-- Modal -->
-<div class="modal fade" id="addAbsolutePerformanceModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="afterModalEditLoadData();">&times;</button>
-                 <h3 class="modal-title">Update Absolute Performance</h3>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.abs_measure_type_id)
-                        </div>
-                    </div>      
-                    <div class="row">
-                        <div class="col-sm-2">
-                            @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: edit_abs_measure_type_id", @class = "form-control" , @width="300px"})
-                        </div>
-                        <div class="col-sm-4" data-bind="visible: edit_abs_measure_type_id() == 2">
-                            <input  id="modalAbsCurrencyTypeAhead" type="hidden" data-bind="value: edit_abs_currency_id" />
-<span class="validationMessage" data-bind="validationMessage: edit_abs_currency_id"></span> 
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" data-bind="value: edit_abs_return_value"  />
-                            <span class="validationMessage" data-bind="validationMessage: edit_abs_return_value"></span> 
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="input-append date" id="dpAddAbsPerformance" data-datepicker-format="YYYY-MM-DD">
-                                <input class="span2" size="20" type="text" data-bind="value: edit_abs_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
-                                <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
-                                <span class="validationMessage" data-bind="validationMessage: edit_abs_return_date"></span>
-                            </div>  
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="modal-footer">
-               <button type="submit" class="btn btn-primary" onclick="vm.Save_AbsPerformance_Edit_Record()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
-            </div>
+            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
-</div>
-<!-- /.modal -->
+        <!-- /.modal -->
+    </script>
+    <script type="text/html" id="AddAbsPerformance">
+        <!-- Modal -->
+        <div class="modal fade" id="addAbsolutePerformanceModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="afterModalEditLoadData();">&times;</button>
+                    <h3 class="modal-title">Update Absolute Performance</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="control-label col-sm-2">
+                                @Html.LabelFor(model => model.abs_measure_type_id)
+                            </div>
+                        </div>      
+                        <div class="row">
+                            <div class="col-sm-2">
+                                @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: edit_abs_measure_type_id", @class = "form-control" , @width="300px"})
+                            </div>
+                            <div class="col-sm-4" data-bind="visible: edit_abs_measure_type_id() == 2">
+                                <input  id="modalAbsCurrencyTypeAhead" type="hidden" data-bind="value: edit_abs_currency_id" />
+                                <span class="validationMessage" data-bind="validationMessage: edit_abs_currency_id"></span> 
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" data-bind="value: edit_abs_return_value"  />
+                                <span class="validationMessage" data-bind="validationMessage: edit_abs_return_value"></span> 
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-append date" id="dpAddAbsPerformance" data-datepicker-format="YYYY-MM-DD">
+                                    <input class="span2" size="20" type="text" data-bind="value: edit_abs_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
+                                    <span class="validationMessage" data-bind="validationMessage: edit_abs_return_date"></span>
+                                </div>  
+                            </div>
+                        </div>
 
-<!-- Modal -->
-<div class="modal fade" id="editAbsolutePerformanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" onclick="afterModalEditLoadData();">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h3 class="modal-title">Correct Absolute Performance</h3>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                     <button type="submit" class="btn btn-primary" data-bind="click: add">Save</button>
+                    <button type="button" class="btn btn-default" data-bind="click: cancel">Close</button>
+                </div>
             </div>
-            <div class="modal-body">
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </script>
+    <script type="text/html" id="EditAbsPerformance">
+        <!-- Modal -->
+        <div class="modal fade" id="editAbsolutePerformanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" onclick="afterModalEditLoadData();">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title">Correct Absolute Performance</h3>
+                </div>
+                <div class="modal-body">
 
-               <div class="center-block"id="grid" style="height: 400px; width: 600px"  
-                    data-bind="koGrid: { data: abs_Performanceitems, afterSelectionChange: function () { return true; },
+                    <div class="center-block"id="grid" style="height: 400px; width: 600px"  
+                         data-bind="koGrid: { data: abs_Performanceitems, afterSelectionChange: function () { return true; },
     columnDefs: [{ field: 'measure_type', displayName: 'Return Type',width:'300'},
                  { field: 'return_value', displayName: 'Value',width:'150' },
                  { field: 'return_date',displayName: 'Return Date',width:'125' }],
@@ -764,100 +783,103 @@
     selectedItems: abs_SelectedItems,
     footerRowHeight: 30
 }">
-                </div>
-                <br/>
-<div class="form-group">
-                    <div class="row">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.abs_measure_type_id)
-                        </div>
-                    </div>      
-    <div class="row">
-        <div class="col-sm-2">
-            @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: edit_abs_measure_type_id", @class = "form-control" , @width="300px"})
-        </div>
-        <div class="col-sm-4" data-bind="visible: edit_abs_measure_type_id() == 2">
-            <input  id="modalEditAbsCurrencyTypeAhead" type="hidden" data-bind="value: edit_abs_currency_id" />
-<span class="validationMessage" data-bind="validationMessage: edit_abs_currency_id"></span>
-        </div>
-        <div class="col-sm-3">
-            <input type="text" data-bind="value: edit_abs_return_value"  />
-            <span class="validationMessage" data-bind="validationMessage: edit_abs_return_value"></span> 
-        </div>
-        <div class="col-sm-3">
-            <div class="input-append date" id="dpEditAbsPerformance" data-datepicker-format="YYYY-MM-DD">
-                <input class="span2" size="20" type="text" data-bind="value: edit_abs_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
-                <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
-                <span class="validationMessage" data-bind="validationMessage: edit_abs_return_date"></span>
-            </div>  
-        </div>
-    </div>
-  </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="vm.Save_AbsPerformance_Edit_Record()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="afterModalEditLoadData();">Close</button> 
-            </div>
-        </div>
-        <!-- /.modal-content -->
-</div>
-<!-- /.modal -->
-<!-- Modal -->
-<div class="modal fade" id="addRelativePerformanceModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h3 class="modal-title">Update Relative Performance</h3>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="control-label col-sm-2">
-                            @Html.LabelFor(model => model.rel_measure_type_id)
-                        </div>
-                    </div>      
-                    <div class="row">
-                        <div class="col-sm-2">
-                            @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: edit_rel_measure_type_id", @class = "form-control" , @width="300px"})
-                        </div>
-                        <div class="col-sm-4" data-bind="visible: edit_rel_measure_type_id() == 2">
-                            <input  id="modalRelCurrencyTypeAhead" type="hidden" data-bind="value: edit_rel_currency_id" />
-<span class="validationMessage" data-bind="validationMessage: edit_rel_currency_id"></span> 
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" data-bind="value: edit_rel_return_value"  />
-                            <span class="validationMessage" data-bind="validationMessage: edit_rel_return_value"></span> 
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="input-append date" id="dpAddRelPerformance" data-datepicker-format="YYYY-MM-DD">
-                                <input class="span2" size="20" type="text" data-bind="value: edit_rel_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
-                                <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
-                                <span class="validationMessage" data-bind="validationMessage: edit_rel_return_date"></span>
-                            </div>  
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="control-label col-sm-3">
-                            @Html.LabelFor(model => model.return_benchmark_id)
-                        </div>
-                    </div>
-                <div class="row">
-                        <div class="col-sm-3">
-                            <input class="input-xlarge" id="addRelBenchmarkTypeAhead" type="hidden" data-bind="value: edit_rel_return_benchmark_id"/>
-                            <span class="validationMessage" data-bind="validationMessage: edit_rel_return_benchmark_id"></span>
+                    <br/>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="control-label col-sm-2">
+                                @Html.LabelFor(model => model.abs_measure_type_id)
+                            </div>
+                        </div>      
+                        <div class="row">
+                            <div class="col-sm-2">
+                                @Html.DropDownListFor(model => model.abs_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: edit_abs_measure_type_id", @class = "form-control" , @width="300px"})
+                            </div>
+                            <div class="col-sm-4" data-bind="visible: edit_abs_measure_type_id() == 2">
+                                <input  id="modalEditAbsCurrencyTypeAhead" type="hidden" data-bind="value: edit_abs_currency_id" />
+                                <span class="validationMessage" data-bind="validationMessage: edit_abs_currency_id"></span>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" data-bind="value: edit_abs_return_value"  />
+                                <span class="validationMessage" data-bind="validationMessage: edit_abs_return_value"></span> 
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-append date" id="dpEditAbsPerformance" data-datepicker-format="YYYY-MM-DD">
+                                    <input class="span2" size="20" type="text" data-bind="value: edit_abs_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
+                                    <span class="validationMessage" data-bind="validationMessage: edit_abs_return_date"></span>
+                                </div>  
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                     <button type="submit" class="btn btn-primary" data-bind="click: save">Save</button>
+                        <button type="button" class="btn" data-bind="click: cancel">Cancel</button>
+                </div>
             </div>
-            <div class="modal-footer">         
-                 <button type="button" class="btn btn-primary" onclick="vm.Save_RelPerformance_Edit_Record()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
-</div>
-<!-- /.modal -->
-
+        <!-- /.modal -->
+    </script>
+    <script type="text/html" id="AddRelPerformance">
+        <!-- Modal -->
+        <div class="modal fade" id="addRelativePerformanceModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title">Update Relative Performance</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="control-label col-sm-2">
+                                @Html.LabelFor(model => model.rel_measure_type_id)
+                            </div>
+                        </div>      
+                        <div class="row">
+                            <div class="col-sm-2">
+                                @Html.DropDownListFor(model => model.rel_measure_type_id, new SelectList(Model.MeasureTypes, "measure_type_id", "measure_type_label"), new { @data_bind = "value: edit_rel_measure_type_id", @class = "form-control" , @width="300px"})
+                            </div>
+                            <div class="col-sm-4" data-bind="visible: edit_rel_measure_type_id() == 2">
+                                <input  id="modalRelCurrencyTypeAhead" type="hidden" data-bind="value: edit_rel_currency_id" />
+                                <span class="validationMessage" data-bind="validationMessage: edit_rel_currency_id"></span> 
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" data-bind="value: edit_rel_return_value"  />
+                                <span class="validationMessage" data-bind="validationMessage: edit_rel_return_value"></span> 
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-append date" id="dpAddRelPerformance" data-datepicker-format="YYYY-MM-DD">
+                                    <input class="span2" size="20" type="text" data-bind="value: edit_rel_return_date, datepickerOptions: { format: 'YYYY-MM-DD', startDate: '1900-01-01', endDate: '2100-12-31' }">
+                                    <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>  
+                                    <span class="validationMessage" data-bind="validationMessage: edit_rel_return_date"></span>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="control-label col-sm-3">
+                                @Html.LabelFor(model => model.return_benchmark_id)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <input class="input-xlarge" id="addRelBenchmarkTypeAhead" type="hidden" data-bind="value: edit_rel_return_benchmark_id"/>
+                                <span class="validationMessage" data-bind="validationMessage: edit_rel_return_benchmark_id"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">         
+                    <button type="submit" class="btn btn-primary" data-bind="click: add">Save</button>
+                    <button type="button" class="btn btn-default" data-bind="click: cancel">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+</script>
+<script type="text/html" id="EditRelPerformance">
 <!-- Modal -->
 <div class="modal fade" id="editRelativePerformanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-content">
@@ -922,15 +944,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                 <button type="button" class="btn btn-primary" onclick="vm.Save_RelPerformance_Edit_Record()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                 <button type="submit" class="btn btn-primary" data-bind="click: save">Save</button>
+                        <button type="button" class="btn" data-bind="click: cancel">Cancel</button>
             </div>
         </div>
         <!-- /.modal-content -->
 </div>
 <!-- /.modal -->
-@section scripts{
-
+</script>
     <script type="text/html" id="AddComment">
         <div class="modal fade" id="AddComment">
             <div class="modal-dialog">
@@ -1052,6 +1073,7 @@
     <script src="~/Scripts/app/viewmodels/commentEditViewModel.js"></script>
     <script src="~/Scripts/app/viewmodels/markRateEditViewModel.js"></script>
     <script src="~/Scripts/app/viewmodels/interestRateDiffEditViewModel.js"></script>
+    <script src="~/Scripts/app/viewmodels/absPerformaceEditViewModel.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function() {
@@ -2021,50 +2043,35 @@
 
         ;
 
-        function LoadAbsolutePerformanceData() {
-            vm.abs_Performanceitems.removeAll();
-            vm.abs_SelectedItems.removeAll();
-            var apiGetURL = baseUrl;
-            apiGetURL += "Trade/GetAbsolutePerformances/";
-            apiGetURL += vm.trade_id();
+        //function LoadRelativePerformanceData() {
+        //    vm.rel_Performanceitems.removeAll();
+        //    vm.rel_SelectedItems.removeAll();
+        //    var apiGetURL = baseUrl;
+        //    apiGetURL += "Trade/GetRelativePerformances/";
+        //    apiGetURL += vm.trade_id();
 
-            $.getJSON(apiGetURL, function(allData) {
-                vm.abs_Performanceitems(allData);
-            });
+        //    $.getJSON(apiGetURL, function(allData) {
+        //        vm.rel_Performanceitems(allData);
+        //    });
 
-            $('#editAbsolutePerformanceModal').modal('show');
+        //    $('#editRelativePerformanceModal').modal('show');
 
-        }
-
-        function LoadRelativePerformanceData() {
-            vm.rel_Performanceitems.removeAll();
-            vm.rel_SelectedItems.removeAll();
-            var apiGetURL = baseUrl;
-            apiGetURL += "Trade/GetRelativePerformances/";
-            apiGetURL += vm.trade_id();
-
-            $.getJSON(apiGetURL, function(allData) {
-                vm.rel_Performanceitems(allData);
-            });
-
-            $('#editRelativePerformanceModal').modal('show');
-
-        }
+        //}
         
-        function LoadTradeInstructionData() {
-            vm.tradeInstructionitems.removeAll();
-            vm.tradeInstructionitems_SelectedItems.removeAll();
-            var apiGetURL = baseUrl;
-            apiGetURL += "Trade/GetTradeInstructions/";
-            apiGetURL += vm.trade_id();
+        //function LoadTradeInstructionData() {
+        //    vm.tradeInstructionitems.removeAll();
+        //    vm.tradeInstructionitems_SelectedItems.removeAll();
+        //    var apiGetURL = baseUrl;
+        //    apiGetURL += "Trade/GetTradeInstructions/";
+        //    apiGetURL += vm.trade_id();
 
-            $.getJSON(apiGetURL, function(allData) {
-                vm.tradeInstructionitems(allData);
-            });
+        //    $.getJSON(apiGetURL, function(allData) {
+        //        vm.tradeInstructionitems(allData);
+        //    });
 
-            $('#editTradeInstructionModal').modal('show');
+        //    $('#editTradeInstructionModal').modal('show');
 
-        }
+        //}
 
         //send save request to API            
         function saveTrade() {
