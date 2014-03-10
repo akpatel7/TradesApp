@@ -896,10 +896,14 @@ function TradeViewModel(
   //}
   //  ]
 
+    this.edit_abs_track_performance_id = ko.observable();
+    this.edit_abs_measure_type_id = ko.observable();
+    this.edit_abs_return_apl_func = ko.observable();
+    this.edit_abs_currency_id = ko.observable();
+    this.edit_abs_return_benchmark_id = ko.observable();
+    this.edit_abs_return_value = ko.observable();
+    this.edit_abs_return_date = ko.observable();
 
-
-    
-    
     self.Save_AbsPerformance_Edit_Record = function () {
         if (self.abs_edit_isValid()) {
             console.log('Posting AbsolutePerformances to server to save.');
