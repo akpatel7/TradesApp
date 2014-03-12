@@ -388,6 +388,9 @@ function TradeViewModel(
     structure_type_id = typeof (structure_type_id) !== 'undefined' ? structure_type_id : 0; //default value
     this.structure_type_id = ko.observable(structure_type_id).extend({ required: true });
 
+    status = typeof (status) !== 'undefined' ? status : 1; //default value
+    this.status = ko.observable(status).extend({ required: true });
+
     //form values - bottom
     trade_instruction_id = typeof (trade_instruction_id) !== 'undefined' ? trade_instruction_id : "";
     this.trade_instruction_id = ko.observable(trade_instruction_id);
